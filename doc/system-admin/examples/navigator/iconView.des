@@ -1,0 +1,69 @@
+DESCRIPTION "NAVIGATOR ICONVIEW example";
+
+DATAPOOL
+  STRUCT
+    Elements {
+      STRING {EDITABLE}
+        name { TAG=(nametag) }
+      , type
+      ;
+    }
+  ;
+  STRUCT
+    Parent {
+      STRING {EDITABLE}
+        name { TAG=(nametag) }
+      ;
+      Elements elements;
+    }
+  ;
+  Parent parent;
+
+  STRING fileName;
+END DATAPOOL;
+
+UI_MANAGER
+  NAVIGATOR { ICONVIEW }
+    iconView_navigator
+    { SIZE ( 200, 200 )
+    , COL ("" nametag)
+    , TOOLTIP(nametag)
+    }
+    (
+      parent { AUTOLEVEL }
+    )
+  ;
+  FORM
+    iconView_form { HIDE_CYCLE } (
+      iconView_navigator
+    )
+  ;
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC
+    INIT {
+      parent.elements[0].name = "A";
+      parent.elements[1].name = "B";
+      parent.elements[2].name = "C";
+      parent.elements[3].name = "D";
+      parent.elements[4].name = "E";
+
+      parent.elements[0].type = "A";
+      parent.elements[1].type = "B";
+      parent.elements[2].type = "C";
+      parent.elements[3].type = "D";
+      parent.elements[4].type = "E";
+    }
+  ;
+
+  FUNC
+    createScreenshot_func {
+      MAP ( iconView_form );
+      fileName = "iconView.png";
+      SAVE ( iconView_form, fileName );
+      EXIT;
+    }
+  ;
+END FUNCTIONS;
+END.

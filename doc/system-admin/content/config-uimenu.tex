@@ -1,0 +1,259 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                 Menu                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Menu}
+\label{sec:uimenu}
+\INTENS{} automatically generates a number of menus to display forms,
+to open, save and print files.
+These menus can be rearranged to create a specific menu structure.
+%%\index{menu!open} \index{menu!save} \index{menu!print}
+
+\input{diagrams/ui_menu_list}
+
+\index{MENU@\MENU!UI\_MANAGER!file-menu}
+\index{MENU@\MENU!UI\_MANAGER!OPEN}
+\index{MENU@\MENU!UI\_MANAGER!SAVE}
+\index{MENU@\MENU!UI\_MANAGER!PRINT}
+\index{MENU@\MENU!UI\_MANAGER!EXPLICIT}
+\index{MENU@\MENU!UI\_MANAGER!PLOT2D}
+\index{MENU@\MENU!UI\_MANAGER!NAVIGATOR}
+\index{MENU@\MENU!UI\_MANAGER!LIST}
+\index{MENU@\MENU!UI\_MANAGER!THERMO}
+\index{MENU@\MENU!UI\_MANAGER!DATASTRUCTURE}
+\index{MENU@\MENU!UI\_MANAGER}
+\index{OPEN@\OPEN!UI\_MANAGER menu}
+\index{SAVE@\SAVE!UI\_MANAGER menu}
+\index{PRINT@\PRINT!ui\_manager menu}
+\index{EXPLICIT@\EXPLICIT!ui\_manager menu}
+\index{PLOT2D@\PLOTTWOD!ui\_manager menu}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax     & description \\
+\hline
+\OPEN           & References the Open submenu in the menu {\bfseries File}.\\
+\SAVE           & References the Save submenu the menu {\bfseries File}.\\
+\PRINT          & References Print submenu in the menu {\bfseries File}.\\
+\EXPLICIT       & Only show these explicit entries (hide automatic entries). \\
+ui form element identifier    & References the right click menu of a \NAVIGATOR, \LIST{} or \THERMO{}. \\
+{\bfseries ID\_DATASTRUCTURE}  & References the right click menu of a {\bfseries DATA\-STRUCTURE}. \\
+\PLOTTWOD         & References the right click menu of all \PLOTTWOD.  \\
+\end{tabularx}
+
+\input{diagrams/menu_menu_declaration}
+\input{diagrams/menu_option_list}
+\label{sec:uimenuid}
+
+%%(not implemented in intens4) \index{MENU@\MENU!UI\_MANAGER!HELPTEXT}
+\index{MENU@\MENU!UI\_MANAGER!FORM}
+%%(not implemented in intens4) \index{HELPTEXT@\HELPTEXT!ui\_manager menu option}
+\index{FORM@\FORM!ui\_manager menu option}
+
+\begin{tabularx}{\textwidth}{l|X}
+MENU options  & description \\
+\hline
+string        & Define a menu label (default is the menu id) \\
+%%(not implemented in intens4) \HELPTEXT     & Displays defined helptext (string) when moving the mouse pointer over the menu label.\\
+\FORM         & Places the menu in the form referenced by identifier.\\
+\end{tabularx}
+
+The user can display a form by activating the corresponding menu button.
+\INTENS{} creates
+the necessary buttons automatically in the form menu of the main window.
+This menu structure can be specified with the following syntax. 
+
+\input{diagrams/ui_form_menu_button_list}
+\label{key:menu_form}
+\input{diagrams/menu_button_label}
+\input{diagrams/menu_submenu_declaration}
+
+\index{MENU@\MENU!UI\_MANAGER!form-menu}
+\index{MENU@\MENU!UI\_MANAGER!submenu}
+\index{MENU@\MENU!UI\_MANAGER!FORM}
+\index{MENU@\MENU!UI\_MANAGER!TOGGLE}
+\index{MENU@\MENU!UI\_MANAGER!FUNC}
+\index{MENU@\MENU!UI\_MANAGER!SEPARATOR}
+\index{FORM@\FORM!ui\_manager forms menu}
+\index{TOGGLE@\TOGGLE!ui\_manager forms menu}
+\index{FUNC@\FUNC!ui\_manager forms menu}
+\index{SEPARATOR@\SEPARATOR!ui\_manager forms  menu}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax       & description \\ 
+\hline
+\MENU             & creates a new submenu.\\
+\FORM             & creates a menu button within the submenu containing the name of the form to be displayed with this button.\\
+\TOGGLE           & The menu entry is created as a toggle, which opens and closes the form.\\
+\FUNC             & calls a function defined in section \nameref{sec:functions} page \pageref{sec:functions}.\\
+\SEPARATOR        & creates a separator line.\\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\MENU 
+   "Results" (
+      \FORM Form_1,
+      \FORM Form_2,
+      \MENU "Plots" (
+         \FORM curve_form
+      )
+    );
+\end{alltt}
+\end{boxedminipage}
+
+\vspace{1cm}
+
+The file menus \OPEN, \SAVE{} and \PRINT{} can be rearranged as well.
+
+\label{uifilemenu}
+\input{diagrams/ui_file_menu_button_list}
+
+\index{MENU@\MENU!UI\_MANAGER!file-menu}
+\index{MENU@\MENU!UI\_MANAGER!submenu}
+\index{MENU@\MENU!UI\_MANAGER!SEPARATOR}
+\index{MENU@\MENU!UI\_MANAGER!STD\_WINDOW}
+\index{MENU@\MENU!UI\_MANAGER!LOG\_WINDOW}
+\index{MENU@\MENU!UI\_MANAGER!FUNC}
+\index{SEPARATOR@\SEPARATOR!ui\_manager file  menu}
+\index{STD\_WINDOW@\STDWINDOW!ui\_manager file menu}
+\index{LOG\_WINDOW@\LOGWINDOW!ui\_manager file menu}
+\index{FUNC@\FUNC!ui\_manager file menu}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax       & description \\
+\hline
+\MENU             & creates a new submenu.\\
+\verb+identifier+ & creates a file menu button within the corresponding submenu. Must be a previously declared FILESTREAM or plotdiagram identifier.\\
+\SEPARATOR        & creates a separator line.\\
+\STDWINDOW        & references the standard window and sets the menu label.\\
+\LOGWINDOW        & references the log window and sets the menu label.\\
+\FUNC             & calls a function defined in section \nameref{sec:functions} page \pageref{sec:functions}.\\
+\end{tabularx}
+
+\label{uiprintmenu}
+\input{diagrams/ui_print_menu_button_list}
+
+\index{MENU@\MENU!UI\_MANAGER!PRINT}
+\index{MENU@\MENU!UI\_MANAGER!submenu}
+\index{MENU@\MENU!UI\_MANAGER!SEPARATOR}
+\index{MENU@\MENU!UI\_MANAGER!STD\_WINDOW}
+\index{MENU@\MENU!UI\_MANAGER!LOG\_WINDOW}
+\index{SEPARATOR@\SEPARATOR!ui\_manager print  menu}
+\index{STD\_WINDOW@\STDWINDOW!ui\_manager print menu}
+\index{LOG\_WINDOW@\LOGWINDOW!ui\_manager print menu}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax              & description \\
+\hline
+\SEPARATOR               & creates a separator line.\\
+\verb+menu button label+ & creates a print menu button for a previously
+                           declared element.\\
+\STDWINDOW               & references the standard window and sets the menu label.\\
+\LOGWINDOW               & references the log window and sets the menu label.\\
+\MENU                    & creates a new submenu.\\
+\end{tabularx}
+\vspace{0.5cm}
+
+\STDWINDOW{} and \LOGWINDOW{} are only shown in the print menu if
+their \MENU{} option is TRUE (see page \pageref{sec:uistdlogwindow}).
+
+
+Example of a print menu:
+\index{PRINT@\PRINT!ui\_manager menu!example}
+
+\label{example:uimanagermenu}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\MENU 
+   \PRINT (
+      \MENU Windows (
+         \STDWINDOW = "Standard",
+         \LOGWINDOW = "Log"
+      ),
+      \MENU Plots (
+         Plot1 = "First Plot",
+         Plot2 = "Second Plot"
+      )
+   );
+\end{alltt}
+\end{boxedminipage}
+
+
+\input{diagrams/ui_form_element_menu_button_list}
+
+\index{MENU@\MENU!UI\_MANAGER!FUNC}
+\index{MENU@\MENU!UI\_MANAGER!SEPARATOR}
+\index{FUNC@\FUNC!ui\_manager list menu}
+\index{SEPARATOR@\SEPARATOR!ui\_manager list menu}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax     & description \\
+\hline
+\SEPARATOR   & creates a separator line.\\
+\FUNC        & calls a function defined in section \nameref{sec:functions} page \pageref{sec:functions}.\\
+\end{tabularx}
+
+
+\label{uistructuremenu}
+\input{diagrams/ui_structure_menu_option}
+\input{diagrams/ui_structure_drop_menu_option}
+\input{diagrams/ui_structure_menu_button_list}
+
+\index{MENU@\MENU!UI\_MANAGER!FUNC}
+\index{MENU@\MENU!UI\_MANAGER!SEPARATOR}
+\index{FUNC@\FUNC!ui\_manager structure menu}
+\index{SEPARATOR@\SEPARATOR!ui\_manager structure menu}
+\index{DROP@\DROP!ui\_manager structure menu option}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax     & description \\
+\hline
+\INDEX       & you can define multiple menus for the same structure for the \DIAGRAM{} \NAVIGATOR{}
+               (See section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram}) \newline
+               Use \INDEX{} option to declare which menu you are defining. \newline
+               defaults to 0. \\
+\DROP        & create a DROP menu. The menu is opened when an item is dropped to this item. \\
+\SEPARATOR   & creates a separator line.\\
+\FUNC        & calls a function defined in section \nameref{sec:functions} page \pageref{sec:functions}.\\
+\end{tabularx}
+
+\input{diagrams/ui_plot2d_menu_entry_list}
+\label{uiplot2dmenu}
+
+All \PLOTTWOD{}s have the same right click menu. The default menu contains all possible
+entries. If that is too much, the desired entries can be defined. And the order can be changed.
+As this is valid for all \PLOTTWOD, it can only be done once. \\
+
+These are the possible entries: \\
+\begin{tabularx}{\textwidth}{l|X}
+string       & {\bfseries menu entry} description \\
+\hline
+Redraw       & {\bfseries Redraw}
+               Redraw the plot. \\
+Zoom         & {\bfseries UI Mode}
+               Select a UI mode. \newline
+               See paragraph \nameref{par:uiplot2duimode}
+               in section \nameref{sec:uiplot2d}
+               on page \pageref{par:uiplot2duimode}. \\
+Annotation   & {\bfseries Show X-Annotation-Labels ...}
+               Show or hide the X-Annotation labels. (only in plots with X-Annotations). \\
+Reset        & {\bfseries Zoom Out}
+               Reset the zoom. \\
+Print        & {\bfseries Print ...}
+               Print the plot. \\
+Config       & {\bfseries Configuration ...}
+               Open the configuration dialog where you can choose what to plot where. \\
+Cycles       & {\bfseries Select cycles ...}
+               Open the dialog to select what cycles to plot.
+               The menu entry is only active when more than one cycles are present. \\
+Scale        & {\bfseries Scale ...}
+               Open the scale dialog to scale the axes. \\
+Logarithmic  & {\bfseries Logarithmic}
+               Submenu to select what axes should be scaled logarithmic. \\
+Style        & {\bfseries Style Y1, Style Y2}
+               Two submenus to select the style for the graphs on the respective y-axis. \\
+Copy         & {\bfseries Copy}
+               Copy the plot to the clipboard. \\
+Fullscreen   & {\bfseries Fullscreen}
+               Open a new window with only this \PLOTTWOD. \\
+Property     & {\bfseries Property}
+               Show Plot2D Properties window. \\
+\end{tabularx}

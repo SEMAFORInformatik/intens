@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Form {
+  GuiElement base = 1;
+  string title = 2;
+  bool main = 3;
+  bool modal = 4;
+  repeated ElementRef elements = 5;
+}
+

@@ -1,0 +1,34 @@
+Bei den folgenden 'Parts' fehlt die Beschreibung
+*/
+ui_field_additional_attributes                          : 1. Beschreibung nicht vollständig
+ui_fieldgroup_option                                    : 1. nur Beschreibung von STRETCH, ALIGN and JUSTIFY
+ui_list_option_list                                     : 1. nur Beschreibung von STRETCH
+
+# Bin mir mit den Zugehörigkeiten nicht sicher...
+
+ui_xrtgraph_item_option                                 : 1. nur Beschreibung von LINESTYLTE, LINEAR, STEP
+
+ui_menu_list                                            : 1. nur Beschreibung von EXPLICIT
+ui_plugin_item_options                                  : 1. Beschreibung fehlt
+op_processgroup_option_list                             : 1  nur Beschreibung von AUTOCLEAR_DEPENDENCIES, SLIENT
+op_reportstream_option                                  : 1. nur Beschreibung von DIRNAME, STYLESHEET,XML,TEMPLATE
+op_message_queue_option,
+        op_message_queue_header_option                  : 1. Beschreibung fehlt, siehe bei Fehler...
+file_statement                                          : 1. nur Beschreibung von SERIALIZE_FROM
+print_statement                                         : 1. nur Beschreibung von PREVIEW, PRINT_LOG, SET_MSG
+messageQueue_action
+timer_statement,
+        job_timer_options,
+        database_statement                              : 1. Beschreibung fehlt
+db_group_option_list                                    : 1. nur Beschreibung von SLIENT, REASON
+
+/*
+Verbesserungsvorschläge für ...
+*/
+ui_xrtgraph_..., ui_xrt3graph_...                       : 1. Screenshots wären gut.
+
+data_dimension                                          : 1. Beschreibung fehlt
+
+ProgressDialog MainTitle, MainPercent, SubTitle, SubPercent
+  ProgressDialogAbortCommand, ProgressDialogLoopTitle
+AFTER_PROGRESS_DIALOG_ABORTED, PROGRESS_DIALOG

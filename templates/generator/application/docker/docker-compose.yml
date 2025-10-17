@@ -1,0 +1,56 @@
+services:
+  traefik:
+    image: traefik:2.10
+    ports:
+      - 8080:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+
+  config-service:
+    image: hub.semafor.ch/semafor/config-controller:1.5.0
+    environment:
+      - LABEL_KEY=app
+      - DOCKER=true
+    ports:
+      - 3333:3333
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config-controller:/etc/config-controller
+
+  api-gw:
+    image: hub.semafor.ch/semafor/${application}/api-gateway:latest
+    build:
+        context: ../api-gateway
+    expose:
+      - 15558
+      - 15574
+
+  webtens:
+    image: hub.semafor.ch/semafor/webtens-vue:latest
+    expose:
+      - 8000
+    environment:
+      - APP_NAME=${applicationShortName} latest
+      - CONTAINER_TYPE=${application}
+      - CUSTOM_STYLES=${application}/${application}.css
+      - SESSION_TIMEOUT=900
+    volumes:
+      - ../qss:/home/app/server/public/${application}
+    labels:
+      - "traefik.http.routers.webtens-router.rule=PathPrefix(`/`)"
+      - "traefik.http.services.webtens-service.loadbalancer.server.port=8000"
+
+  workbook:
+    image: hub.semafor.ch/semafor/generic-workbook:3.3-SNAPSHOT
+    expose:
+      - 8080
+    environment:
+      - spring.datasource.url=jdbc:h2:file:/tmp/${application}
+      - spring.profiles.active=jpa,auth-jwt
+    volumes:
+      # - ./db:/db
+      - ../db/liquibase/changes:/workspace/liquibase/changes
+    labels:
+      - "traefik.http.routers.svc-router.rule=PathPrefix(`/workbook`)"
+      - "traefik.http.services.svc-service.loadbalancer.server.port=8080"

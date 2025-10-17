@@ -1,0 +1,114 @@
+{
+  "name": "vscode-intens",
+  "displayName": "INTENS tools",
+  "description": "Tooling for use with INTENS",
+  "version": "0.0.6",
+  "publisher": "SemaforInformatikundEnergieAG",
+  "repository": "https://github.com/SEMAFORInformatik/Intens",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Rei Schädeli",
+    "email": "rei@fae.red",
+    "url": "https://fae.red/"
+  },
+  "icon": "images/logo.png",
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "Syntax",
+    "Parser"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "vscode:package": "node ./node_modules/.bin/vsce package",
+    "compile": "tsc -p ./",
+    "postinstall": "#node ./scripts/wasm-build.js"
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@stylistic/eslint-plugin": "^2.9.0",
+    "@types/node": "^22.9.0",
+    "@types/vscode": "^1.95.0",
+    "@vscode/vsce": "^3.2.1",
+    "eslint": "^9.13.0",
+    "tree-sitter": "^0.22.4",
+    "tree-sitter-cli": "^0.25.3",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0"
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Intens",
+      "properties": {
+        "intens.installation": {
+          "default": "/usr/local/intens/current",
+          "type": "string",
+          "markdownDescription": "Path to your `INTENS` installation."
+        },
+        "intens.msys": {
+          "default": "C:\\msys64",
+          "type": "string",
+          "markdownDescription": "Path to your MSYS installation."
+        },
+        "intens.venv": {
+          "default": "${workspaceFolder}/.venv",
+          "type": "string",
+          "markdownDescription": "The python virtual environment required to build current workspace."
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "intens",
+        "aliases": [
+          "intens",
+          "INTENS"
+        ],
+        "extensions": [
+          ".des",
+          ".inc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "intens",
+        "scopeName": "source.intens",
+        "path": "./out/intens.tmGrammar.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "intens.gen",
+        "title": "Generate INTENS files"
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "punctuation",
+        "description": "Punctuation symbols"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "scopes": {
+          "punctuation": [
+            "punctuation"
+          ],
+          "type.modification": [
+            "storage.modifier"
+          ]
+        }
+      }
+    ]
+  }
+}

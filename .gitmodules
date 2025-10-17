@@ -1,0 +1,6 @@
+[submodule "third-party/jwt-cpp"]
+	path = third-party/jwt-cpp
+	url = https://github.com/Thalhammer/jwt-cpp
+[submodule "third-party/rapidjson"]
+	path = third-party/rapidjson
+	url = https://github.com/Tencent/rapidjson

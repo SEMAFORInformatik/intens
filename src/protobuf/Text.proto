@@ -1,0 +1,9 @@
+syntax = "proto3";
+import "Datafield.proto";
+import "IndexMenu.proto";
+package in_proto;
+
+message Text {
+  DataField base = 1;
+  PopupMenu popup_base_menu = 2;
+}

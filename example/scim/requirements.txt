@@ -1,0 +1,7 @@
+Jinja2
+lxml
+Mako
+PyInstaller
+python-dateutil
+pyzmq
+requests

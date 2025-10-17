@@ -1,0 +1,24 @@
+DESCRIPTION "Multifont strings";
+UI_MANAGER
+  FIELDGROUP 
+    fieldgroup_identifier (
+      "@text@This is an example of a multifont string",
+      "@text@========================================",
+      "@text@text @huge@huge @large@large",
+      "@titel@titel @tab@tab @label@label",
+      "@index@index @menu@menu @button@button",
+      "@pulldown@pulldown @banner@banner @Title@Title"
+    );
+  FORM
+    form_identifier {MAIN} ((fieldgroup_identifier));
+END UI_MANAGER;
+
+UI_MANAGER
+  FORM
+    stdwin_form ( STD_WINDOW )
+  , logwin_form ( LOG_WINDOW )
+  ;
+END UI_MANAGER;
+
+END.
+

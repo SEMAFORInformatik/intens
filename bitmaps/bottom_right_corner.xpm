@@ -1,0 +1,14 @@
+/* XPM */
+static char * bottom_right_corner_xpm[] = {
+"8 8 3 1 0 0",
+" 	c grey32",
+".	c grey90",
+"X	s None	c None",
+" .X .X .",
+"..X .X .",
+"XXX .X .",
+"    .X .",
+".....X .",
+"XXXXXX .",
+"       .",
+"........"};

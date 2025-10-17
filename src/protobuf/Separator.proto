@@ -1,0 +1,9 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Separator {
+  GuiElement.Orientation orientation = 1;
+  uint32 id = 2;
+  string style_class = 3;
+}

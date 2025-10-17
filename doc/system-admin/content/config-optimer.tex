@@ -1,0 +1,41 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            TIMER                                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Timer}
+\label{sec:optimer}
+Timers are used to start a function periodically. They are defined
+in the OPERATOR. They are started or stopped using timer function statements
+(see timer\_statement on page \pageref{dia:timerstatement}). \\[2ex]
+
+See \nameref{sec:opexamples:messagequeue:publishsubscribe}
+on page \pageref{sec:opexamples:messagequeue:publishsubscribe}. \\[2ex]
+
+
+\input{diagrams/op_timer_declaration_list}
+\index{TIMER@\TIMER}
+
+\begin{tabularx}{\textwidth}{l|X}
+timer            & description \\
+\hline
+\verb+identifier+ & Identifies the Timer. \\
+\end{tabularx}
+
+\input{diagrams/op_timer_option}
+\index{FUNC@\FUNC!timer option}
+\index{MAX\_PENDING\_FUNCTIONS@\MAXPENDINGFUNCTIONS!timer option}
+
+\begin{tabularx}{\textwidth}{l|X}
+timer options & description \\
+\hline
+\FUNC         & Defines the function that will be called repeatedly by the timer.
+               (see also section \nameref{sec:functions} on page \pageref{sec:functions}) \\
+\MAXPENDINGFUNCTIONS & Defines the maximal number of pending functions. This includes
+                a possibly running function, the functions waiting to be executed (after
+                the running function) and the \FUNC{} to be started by the timer. \newline
+                When this number exceeds \MAXPENDINGFUNCTIONS, \FUNC{} is not started. \newline
+                The timer continues and \FUNC{} may be started after another \PERIOD. \newline
+                0 (default): no maximum, \FUNC{} is always started. \newline
+                1: \FUNC{} is started when no function is running or waiting. \newline
+                2: \FUNC{} is started when a function is running or not, but when no function is waiting. \newline
+                n: \FUNC{} is started when at most n - 2 functions are waiting. \\
+\end{tabularx}

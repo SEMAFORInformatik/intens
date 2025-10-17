@@ -1,0 +1,34 @@
+
+add_library(xml OBJECT
+        XMLComplexVector.cc
+        XMLContents.cc
+        XMLDocumentHandler.cc
+        XMLElement.cc
+        XMLErrorHandler.cc
+        XMLFactory.cc
+        XMLGnomeXPathFactory.cc
+        XMLIntegerVector.cc
+        XMLRealVector.cc
+        XMLStringVector.cc
+        XMLStructVector.cc
+        XMLStructure.cc
+        XMLValue.cc
+        XMLVariable.cc
+        XMLVector.cc
+        XMLXPathDocumentHandler.cc
+        XMLXPathFactory.cc
+        XMLXPathJobAction.cc
+        XMLXPathNodeManager.cc
+        XMLXPathRoot.cc
+        XMLXPathStructure.cc
+        )
+target_include_directories(xml
+        PRIVATE
+        ${PROJECT_SOURCE_DIR}/src
+        ${CMAKE_BINARY_DIR}/src
+        )
+target_link_libraries(xml
+    PRIVATE
+    LibXml2::LibXml2
+    Qt::Core
+    Qt::Widgets)

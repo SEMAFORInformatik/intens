@@ -1,0 +1,1885 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Intens",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#preprocessor"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#builtins"
+    },
+    {
+      "include": "#identifier"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "name": "constant.numeric.intens",
+      "match": "[eE]?[+-]?[[:digit:]]+(\\.[[:digit:]]*)?"
+    }
+  ],
+  "repository": {
+    "operators": {
+      "patterns": [
+        {
+          "match": ">=",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": ">",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "<",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "<=",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "!=",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "!",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\|\\|",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "&&",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "&",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\+\\+",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\+",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\-\\-",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\-",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\+=",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "=",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\*",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "/",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "{",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "}",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\(",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\)",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\[",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\]",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": ",",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": "\\.",
+          "name": "keyword.operator.intens"
+        },
+        {
+          "match": ";",
+          "name": "keyword.operator.intens"
+        }
+      ]
+    },
+    "builtins": {
+      "patterns": [
+        {
+          "match": "ABORT",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ABS",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ACOS",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ALLOW",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ARG",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ASIN",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ASSIGN_CONSISTENCY",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ASSIGN_CORR",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ATAN",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ATAN2",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ATTRS",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "AVG",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "BEEP",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "CLEAR",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "CLEARCYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "CLEAR_SELECTION",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "COMPARE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "COMPOSE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "COMPOSE_STRING",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "CONFIRM",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "CONFIRM_CANCEL",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "COPY",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "COS",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "CYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "DELETE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "DELETECYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "DISABLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ENABLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ERASE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "EXIT",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "GET",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "GETCYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "GET_SELECTION",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "GOCYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "HIDE_CYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "LENGTH",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "LOAD",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "LOCK",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "LOG",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "LOG10",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "LOG_WINDOW",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "MAP",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "MESSAGEBOX",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "MINMAX",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "MOVE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "NEWCYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "NEXTCYCLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "OPEN",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "OPEN_FILE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "OPEN_URL",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "PACK",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "PASTE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "PRINT",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "PRINT_LOG",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "PYTHON",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "REPLACE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "RESET",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "RESET_ERROR",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "REST_JWT_LOGON",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "REST_LOGOFF",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "REST_LOGON",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ROTATE_180",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ROUND",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ROUND10",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "ROUND5",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SAVE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SEND",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SERIALIZE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SERIALIZE_FORM",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_CURRENT_FORM",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_DB_TIMESTAMP",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_ERROR",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_FUNC_ARGS",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_INDEX",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_MQ_HOST",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_MSG",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_REASON",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_RESOURCE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SET_THIS",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SIN",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SKIP",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SORT",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "STD_WINDOW",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "SUBSCRIBE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "TOGGLE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "TO_STRING_DATETIME",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "TO_STRING_TIME",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "UI_UPDATE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "UNMAP",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "UNSET",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "UPDATE",
+          "name": "entity.name.function.intens"
+        },
+        {
+          "match": "UPDATE_FORMS",
+          "name": "entity.name.function.intens"
+        },
+
+        {
+          "match": "CDATA",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "COLOR",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "COMPLEX",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "FIELDGROUP",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "FILESTREAM",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "FOLDER",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "FORM",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "FUNC",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "IMAGE",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "INDEX",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "INTEGER",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "LATEXREPORT",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "LINEPLOT",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "LIST",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "LISTPLOT",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "MENU",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "MESSAGE_QUEUE",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "NAVIGATOR",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "PLOT2D",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "PLUGIN",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "PROCESS",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "PROCESSGROUP",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "REAL",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "REPORTSTREAM",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "SOCKET",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STREAM",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STRING",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STRING_DATE",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STRING_DATETIME",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STRING_TIME",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STRING_VALUE",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "STRUCT",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "TABLE",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "TASK",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "TEXT_WINDOW",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "THERMO",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "TIMER",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "UNIPLOT",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "USERGROUPS",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "VOID",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "XRT3DPLOT",
+          "name": "storage.type.intens"
+        },
+        {
+          "match": "XRTGRAPH",
+          "name": "storage.type.intens"
+        },
+
+        {
+          "match": "FALSE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_ACTIVATE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CLEAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CLOSE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CONNECTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CYCLE_CLEAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CYCLE_DELETE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CYCLE_NEW",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CYCLE_RENAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_CYCLE_SWITCH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_DROP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_DUPLICATE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_FUNCTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_GUI_UPDATE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_INPUT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_FOCUS_OUT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_FOCUS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_INSERT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_MOVE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_OPEN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_PACK",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_REMOVE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_REMOVE_CONNECTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_REMOVE_ELEMENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_SELECT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_SELECT_POINT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_SELECT_RECTANGLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_TASK",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REASON_UNSELECT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "THIS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TRUE",
+          "name": "constant.language.intens"
+        },
+
+        {
+          "match": "ABORTTRANSACTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ALARM_COLOR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ALARM_LEVEL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ALIGN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ALLCYCLES",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ALWAYS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ANNOTATION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "APPEND",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "APP_MODAL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AREA",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ARROWS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ASCII",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ASPECT_RATIO",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ASPECT_RATIO_REF_AXIS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AUTOCLEAR_DEPENDENCIES",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AUTOLEVEL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AUTO_SCROLL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AXES_ORIGIN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AXES_ORIGIN_X",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "AXES_ORIGIN_Y",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BASE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BASENAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BATCH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BINARY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BOTTOM",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BUTTON",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BUTTON_CANCEL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BUTTON_NO",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BUTTONS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BUTTON_YES",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "BY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CAPTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CELL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CENTER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CHANGED",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CLASSNAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CLOSE_BUTTON",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "COL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "COLORBIT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "COLOR_SCALE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "COLSPAN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "COMBOBOX",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "COMMITTRANSACTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CONTOUR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CURRENT_DATE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CURRENT_DATETIME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CURRENT_TIME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "CYCLENAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DAEMON",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DATA",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DATAPOOL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DATASET_TEXT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DATA_SIZE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DBASSEMBLY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DBATTR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DBLIST",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DBUNIT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DEADLY_SILENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DEBUG",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DELAY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DELIMITER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DEPENDENCIES",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DESCRIPTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FOCUS_FUNC",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DISABLE_DRAG",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DIAGRAM",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DIAGRAM_XPOS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DIAGRAM_YPOS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DIRNAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DISALLOW",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DISCRETE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DISPLAY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DOTS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "DROP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "EDITABLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ELSE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "END",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ERROR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "EXPAND",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "EXPLICIT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "EXTENSION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FATAL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FILENAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FILTER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FIRSTCYCLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FIRSTLEVEL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FORMAT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FORTRAN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FRAME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FROM_STRING_DATETIME",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "FUNCTIONS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "GLOBAL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "GUI_ELEMENT_METHOD",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HEADER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HELPFILE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HELPKEY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HELPTEXT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HIDDEN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HIDE_EMPTY_FOLDER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HIGH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HORIZONTAL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "HOST",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ICON",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ICONVIEW",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "IF",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "IMAG",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "INDENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "INDEXED_SET",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "INFO",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "INPUT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "INVALID",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "INVERTED",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "JSON",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "JUSTIFY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "JUSTLEFT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "JUSTRIGHT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "KEY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LABEL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LASTCYCLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LASTLEVEL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LATEX",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LEFT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LEGEND",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LINEAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LINESTYLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LOCALE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LOCKABLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LOG_X",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "LOG_Y",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MAIN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MARGIN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MARKER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MATLAB",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MATRIX",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MAXCYCLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MAX_OCCURS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MAX_PENDING_FUNCTIONS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MFM",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MODIFIED",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "MULTIPLE_SELECTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NAMESPACE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NAVIGATION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NO_COLORBIT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NODE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NO_DEPENDENCIES",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NO_GZ",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NO_LOG",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NONE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "NS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OFFSET",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OLDVALUE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OMIT_ACTIVATE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OMIT_TTRAIL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ON_EOS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ON_VIEW_ACTION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OPENLEVELS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OPERATOR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "OPTIONAL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ORIENTATION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PARENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PASSWORD",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PATH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PATTERN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PERIOD",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PERSISTENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PIXMAP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PLACEHOLDER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PLOT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "POLAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PORT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PORT_REQUEST",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "POSITION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "POST",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PREVIEW",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PRINTSTYLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PRIORITY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PROTO",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PSPLOT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PUBLISH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PUT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "PW",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RADIO",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RANGE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "READONLY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REPLY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REPORT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "REQUEST",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RESPONSE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RETURN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RIGHT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RMS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ROW",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "ROWSPAN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "RUN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SAME_YRANGE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SCALAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SCALE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SCHEMA",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SCROLLBARS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SELECT_LIST",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SEPARATOR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SETTINGS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SILENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SIZE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SLIDER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SORTORDER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SOURCE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SOURCE2",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SQRT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STACKING_BAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "START",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STEP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STOP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STREAMER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STRETCH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STYLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "STYLESHEET",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "SURFACE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TABLESIZE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TAG",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TAN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TEMPLATE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "THUMBNAIL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TIMEOUT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TIMESTAMP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TIMETABLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TOOLTIP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TOP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TOUCH",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TRANSIENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TRANSPARENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "TSEP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "UI_MANAGER",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "UNIT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "URL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "VALID",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "VAR",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "VERSION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "VERTICAL",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "VISIBLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WARN",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WEBAPI",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WHEEL_EVENT",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WHILE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WRAP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WRITEONLY",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "WRITE_SETTINGS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "XANNOTATION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "XAXIS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "XAXIS2",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "XML",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "XMLGROUP",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "Y1_STYLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "Y2_STYLE",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "YANNOTATION",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "YAXIS",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "YAXIS1",
+          "name": "constant.language.intens"
+        },
+        {
+          "match": "YAXIS2",
+          "name": "constant.language.intens"
+        },
+        {
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.intens",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.intens",
+          "match": "\\."
+        }
+      ]
+    },
+    "comment": {
+      "name": "comment.line.double-slash.intens",
+      "begin": "//",
+      "end": "$"
+    },
+    "identifier": {
+      "patterns": [
+        {
+          "name": "variable.other",
+          "match": "[a-zA-Z][a-zA-Z_0-9\\.]*"
+        }
+      ]
+    },
+    "preprocessor": {
+      "patterns": [
+        {
+          "name": "keyword.control.directive",
+          "begin": "^#",
+          "end": "$"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.intens"
+}

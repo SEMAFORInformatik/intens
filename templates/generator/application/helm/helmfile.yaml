@@ -1,0 +1,27 @@
+repositories:
+  - name: semafor
+    url: https://charts.semafor.ch
+
+releases:
+  - chart: semafor/config-controller
+    name: config-controller
+    values:
+      - config-controller.yaml
+
+  - chart: ./workbook
+    name: workbook
+
+  - chart: ./intens-app
+    name: ${application}-intens
+    values:
+      - appImage:
+          pullPolicy: Always
+
+  - chart: semafor/webtens
+    name: ${application}-webtens
+    values:
+      - webtens.yaml
+
+  - chart: ingress
+    name: ingress
+    version: 0.1.0

@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+
+message FieldGroup {
+  GuiElement base = 1;
+  string label = 2;
+  GuiElement.Alignment label_alignment = 3;
+
+  GuiElement.Orientation orientation = 4;
+  bool frame = 5;
+  repeated GridTemplateField grid_template_columns = 6;
+  message GridTemplateField {
+    float min_max = 1;
+  }
+  repeated FieldGroupLine lines = 7;
+  message OverlayGeometry {
+    float x = 1;
+    float y = 2;
+    float width = 3;
+    float height = 4;
+  }
+  OverlayGeometry overlay = 8;
+  bool scrollbars = 9;
+}
+
+message FieldGroupLine {
+  uint32 id = 1;
+  repeated ElementRef elements = 2;
+}
+

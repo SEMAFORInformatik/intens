@@ -1,0 +1,9 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+configure.ac text eol=lf
+po/*.po text eol=lf
+po/Makefile.in.in text eol=lf
+# keep .m, .cmd and .doxy files as they are
+*.m	-text
+*.cmd	-text
+*.doxy	-text

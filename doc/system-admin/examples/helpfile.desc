@@ -1,0 +1,24 @@
+DESCRIPTION "Introduction";
+HELPFILE "helpfile.hlp";
+
+HELPFILE OPEN_URL "www.gentoo.org/doc/de/distcc.xml" ( HELPKEY = "doc_chap6" );
+HELPFILE OPEN_FILE "http://www.gentoo.org/doc/de/distcc.xml" ( HELPKEY = "doc_chap5" );
+
+UI_MANAGER
+  FIELDGROUP
+    file_fg ( "file"
+    )
+  , url_fg ( "url"
+    )
+  ;
+  FORM
+    file_form { HELPKEY "doc_chap5" } (
+      file_fg
+    )
+  , url_form { HELPKEY "doc_chap6" } (
+      url_fg
+    )
+  ;
+END UI_MANAGER;
+
+END.

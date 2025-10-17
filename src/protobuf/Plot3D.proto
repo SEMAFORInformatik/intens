@@ -1,0 +1,35 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Plot3D {
+  GuiElement base = 1;
+  enum Plot3DStyle {
+    Unknown = 0;
+    Contour = 1;
+    Surface = 2;
+    Bar = 3;
+  }
+  Plot3DStyle style = 2;
+  string header_text = 3;
+  bool draw_contour = 4;
+  bool draw_interpolated = 5;
+
+  message Axis {
+    string label = 1;
+    uint32 numwc = 2;
+    uint32 numdims = 3;
+    double min_range = 4;
+    double max_range = 5;
+    double scale = 6;
+    repeated double data = 7;
+    message MatrixLine {
+      repeated double a = 1;
+    }
+    repeated MatrixLine matrix = 8;
+  }
+
+  Axis x_axis = 6;
+  Axis y_axis = 7;
+  Axis z_axis = 8;
+}

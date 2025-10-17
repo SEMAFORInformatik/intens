@@ -1,0 +1,88 @@
+
+#  $Id: imot.in,v 1.2 2007/08/24 07:11:07 amg Exp $
+#
+#  Copyright (C) 1994-2007 by Bombardier Transportation (Austria) Ltd.
+#                             1211 Wien, Austria
+#
+#           We reserve all rights in this program and in the information
+#           contained therein. Reproduction, use or disclosure to third
+#           parties without express authority is strictly forbidden.
+#
+#  Authors: Hans-Georg Pabst, CSC Computer Sciences
+#           Ronald Tanner, Semafor AG 
+#
+#  Purpose: Run Imot.
+#
+
+INTENS_HOME=/usr/local/intens/4.0
+export INTENS_HOME
+
+TOP_DIR=/home/tar/set/imot
+PROJ_DIR=/usr/local/home/tar/projekte/imot
+SHARE_DIR=/home/tar/set/imot/share
+
+CONFIG_DIR=/usr/local/setapp/conf
+if [ -d $CONFIG_DIR ]; then
+  . $CONFIG_DIR/db_connection
+  . $CONFIG_DIR/intens_license_file
+else
+  echo "The common setting directory ($CONFIG_DIR) is missing.
+  echo "$0 aborted.
+  exit 1
+fi
+
+#
+# Mathematica settings
+#
+MATHEMATICA_PATH=/opt/mathematica/4.2.1/Executables/Linux
+#
+# Enable correct non-ascii handling
+#
+LANG=C
+export LANG
+#
+# Oracle settings
+#
+ORACLE_HOME=/oracle/app/oracle/product/10.2.0
+export ORACLE_HOME
+
+#
+# Force use of the test DB
+#
+TNS_ADMIN=/usr/local/setapp/conf_test
+export TNS_ADMIN
+TWO_TASK=trac3.oerlikon.bombardier.com
+export TWO_TASK
+
+LD_LIBRARY_PATH=${ORACLE_HOME}/lib:/usr/local/lib:
+export LD_LIBRARY_PATH
+
+PATH=/usr/local/home/tar/projekte/imot/scripts:/usr/local/home/tar/projekte/imot/share/util/scripts:/usr/local/home/tar/projekte/imot/share/motor/imload:/usr/local/home/tar/projekte/imot/share/motor/sievpar:/usr/local/home/tar/projekte/imot/share/gear/gear:/usr/local/home/tar/projekte/imot/share/characurve/characurve:/usr/local/home/tar/projekte/imot/imot:/usr/local/home/tar/projekte/imot/hm047:/usr/local/home/tar/projekte/imot/hm078:/usr/local/home/tar/projekte/imot/as7:/usr/local/home/tar/projekte/imot/hi056:/usr/local/home/tar/projekte/imot/ht302:${MATHEMATICA_PATH}:/usr/local/bin:/usr/local/tetex/bin:/usr/bin:/bin:/usr/bin/X11
+export PATH
+
+if [ "$HOSTNAME" = "ampere" ]; then
+  TEXINPUTS=".:$TOP_DIR/texinputs//:$SHARE_DIR/texinputs//:/usr/local/share/texmf//"
+else
+  TEXINPUTS=".:$TOP_DIR/texinputs//:$SHARE_DIR/texinputs//:/usr/local/share/texmf//:/usr/local/share/texmf.local//"
+fi
+export TEXINPUTS
+
+MATHNODE=
+
+XUSERFILESEARCHPATH=$TOP_DIR/share/characurve/%T/%N%S:$TOP_DIR/share/texinputs/%T/%N%S:~/%N
+export XUSERFILESEARCHPATH
+
+if [ "$MATHNODE" ]; then
+  $INTENS_HOME/bin/intens $PROJ_DIR/etc/imot.des \
+    -helpmsg --qtGuiStyle Plastique \
+    -mathnode $MATHNODE \
+    -maxlines 10000 \
+    -resfile $PROJ_DIR/etc/imot.res \
+    -fontname Helvetica,Helvetica-Bold
+else 
+  $INTENS_HOME/bin/intens $PROJ_DIR/etc/imot.des \
+    --helpmsg --qtGuiStyle Plastique \
+    --maxlines 10000 \
+    --resfile $PROJ_DIR/etc/imot.rc \
+    --fontname Helvetica,Helvetica-Bold
+fi

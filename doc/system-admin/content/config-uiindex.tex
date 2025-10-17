@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                Index                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Index-Object}
+\label{sec:uiindex}
+
+\begin{figure}[h]\label{fig:indexObject}
+  \begin{center}
+    \includegraphics{grab_index-object}
+  \end{center}
+  \caption{Index-Object}
+\end{figure}
+
+An index-object is a GUI-Object which may be invisible or placed in a fieldgroup.
+It can be used as a variable index.
+(see section \nameref{sec:uivariables} on page \pageref{sec:uivariables}). \\
+The index-object displays like a scrollbar. Its arrows let you navigate through
+the associated data items by mouse click. \\
+
+\input{diagrams/ui_index_list}
+\input{diagrams/ui_index_option_list}
+\index{INDEX@\INDEX!ui\_manager index}
+
+\index{ORIENTATION@\ORIENTATION!ui\_manager index}
+\index{STEP@\STEP!ui\_manager index}
+\index{RANGE@\RANGE!ui\_manager index}
+\index{VERTICAL@\VERTICAL!ui\_manager index}
+\index{HORIZONTAL@\HORIZONTAL!ui\_manager index}
+\index{FUNC@\FUNC!ui\_manager index}
+\begin{tabularx}{\textwidth}{l|X}
+index options  & description \\
+\hline
+\ORIENTATION   & The index-object-arrows are shown: \\
+               & \VERTICAL ($\bigtriangleup$ $\bigtriangledown$) \\
+               & \HORIZONTAL ($\triangleleft$ $\triangleright$) \\
+\STEP          & defines the step for each arrow-pressing (back and forward) \\
+\FUNC          & calls a function defined in section \nameref{sec:functions} page \pageref{sec:functions}.\\
+\RANGE         & determines the index range that can be used for the associated
+                 data items. The default starting index is 0.\\
+
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Examples                                 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{0.5cm}
+
+Examples:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DESCRIPTION "Example INDEX";
+\DATAPOOL
+  \REAL \{\EDITABLE\}
+    a
+   ;
+\END \DATAPOOL;
+  ...
+\UIMANAGER
+  \INDEX
+    index\_a \{ \RANGE(1,10) \}
+  ;
+  \FIELDGROUP
+    fieldgroup\_a (
+      "Variable a"  a[index\_a]:10
+     ,"Index of a"  index\_a
+    );
+\END \UIMANAGER;
+\END.
+\end{alltt}
+\end{boxedminipage}
+

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${application}-config
+  labels:
+    config-controller.semafor.ch/template: 'true'
+data:
+  ${application}-intens.yaml: |-
+    {{ include "${application}.job.tpl" . | nindent 4 }}
+

@@ -1,0 +1,18 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message IndexMenu {
+  GuiElement base = 1;
+  string label = 2;
+  bool menu = 3;
+  PopupMenu popup_menu = 4;
+  string guielement = 5;
+}
+
+message PopupMenu {
+  string title = 1;
+  repeated ElementRef elements = 2;
+  bool tear_off = 3;
+  bool clear_default_menu = 4;
+}

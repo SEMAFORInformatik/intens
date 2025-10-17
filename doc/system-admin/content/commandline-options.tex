@@ -1,0 +1,319 @@
+\newpage
+\section{Commandline options}
+\label{sec:cloptions}
+%        -------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            Commandline options                        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+An INTENS application is started calling intens followed by the name of the
+description file: \\
+\verb+intens description.des+ \\
+In addition, INTENS knows the following options.
+The list of INTENS commandline options can be printed using the command: \\
+\verb+intens --help+
+
+\begin{description}
+\item[\texttt{--}geometry <argument>] defines the geometry of the main window (on linux only). \\
+  <argument> is <width>x<height>[+<xOffset>+<yOffset>]
+%
+%\item[\texttt{--}name <argument>]
+%  TODO
+%
+%\item[\texttt{--}display <argument>]
+%  TODO
+%
+%\item[\texttt{--}mathnode <argument>]
+%  TODO
+%
+%\item[\texttt{--}mathport <argument>]
+%  TODO
+%
+%\item[\texttt{--}matlabnode <argument>]
+%  TODO
+%
+%\item[\texttt{--}fontname <argument>]
+%  TODO
+%
+%\item[\texttt{--}background <argument>]
+%  TODO
+%
+%\item[\texttt{--}xfontlist <argument>]
+%  TODO
+%
+\item[\texttt{--}logconfig <argument>] is obsolete.
+  It used to be the configuration filename for log4cxx.
+%
+\item[\texttt{--}localeDomain <argument>]
+  INTENS uses gettext for translation. There are two locale domains:
+  \begin{description}
+  \item[INTENS] itself is translated using the locale domain name ``intens''
+  and the locale directory ``<INTENS\_HOME>/share/locale''.
+  The mo file for the german translation is
+  ``<INTENS\_HOME>/share/locale/de/LC\_MESSAGES/intens.mo''.
+  \item[The Application] is translated using a second locale domain.
+  The default locale domain name for the application is the name
+  of the description file, without the extension. You can, however,
+  provide the locale domain name using this commandline option.
+  This is needed i.E. when you want multiple applications to use the
+  same translation files. \\
+  The locale directory is ``<APPHOME>/share/locale''.
+  The mo file for the german translation is
+  ``<APPHOME>/share/locale/de/LC\_MESSAGES/<localeDomainName>.mo''.
+  \end{description}
+%
+\item[\texttt{--}init <argument>] defines the filename of a datapool init file.
+  That file is read at startup to initialize the datapool. \\
+  The file has one value per line:
+  \begin{description}
+  \item[Scalar] speed 0.0
+  \item[List] \# speed 1 1.0
+  \item[Matrix] \# \# speed 1 2 2.0
+  \item[Struct] points[3].x 3.0
+  \end{description}
+%
+\item[\texttt{--}notitle] hides the titlebar at startup.
+  The titlebar shows
+  \begin{itemize}
+  \item a title (apptitle.text from the resource file)
+  \item a subtitle (appsubtitle.text from the resource file)
+  \item a left bitmap
+  \item a right bitmap
+  \end{itemize}
+  (see Minimal Example on page \pageref{fig:minimalExample}).
+  It is shown at startup unless this option is given.
+  It can be shown and hidden later using the menu Options > Titlebar.
+%
+\item[\texttt{--}shortMainTitle]
+  The operating systems title bar
+  (Maintitle in Minimal Example on page \pageref{fig:minimalExample})
+  of the main window shows
+  \begin{itemize}
+  \item the application title (string after DESCRIPTION)
+  \item the path of INTENS
+  \item the hostname
+  \item the INTENS version
+  \end{itemize}
+  With this option, however, it only shows the application title.
+%
+\item[\texttt{--}toolbar]
+  obsolete
+%
+\item[\texttt{--}undo] enables undo/redo in INTENS. \\
+  The Edit menu is added with two entries:
+  \begin{description}
+  \item[Undo Ctrl-Z] Use this menu or the keyboard shortcut Ctrl-Z to undo a changed value.
+  \item[Redo Ctrl-Y] Use this menu or the keyboard shortcut Ctrl-Y to undo an undo.
+  \end{description}
+  You can undo at most five changes.
+%
+%\item[\texttt{--}detailGrid]
+%  TODO
+%
+\item[\texttt{--}helpmsg] enables help messages, shown in the Statusbar.
+  The help message mode can be changed later using the menu Options > Help messages. \\
+  INTENS can show a help message of the content under the mouse-pointer. The help message is defined
+  using \HELPTEXT.
+  INTENS knows three types of help messages:
+  \begin{description}
+  \item[Statusbar] shows the help message in the Statusbar
+  (see Minimal Example on page \pageref{fig:minimalExample}).
+  \item[Tooltip] shows the help message as a tooltip.
+  \item[Disabled] does not show help messages.
+  \end{description}
+%
+\item[\texttt{--}resfile <argument>]
+  INTENS reads resources (Colors, fonts, plot line styles, etc.) from the file
+  provided with this option.
+%
+\item[\texttt{--}createRes <argument>] asks INTENS to write a default resource file.
+  <argument> is the filename. \\
+  No description file is needed.
+%
+%\item[\texttt{--}listFonts]
+%  TODO
+%
+\item[\texttt{--}qtGuiStyle <argument>] sets the Qt Style. \\
+  Use \texttt{--}listQtGuiStyles to get a list of available styles.
+%
+\item[\texttt{--}listQtGuiStyles] prints the available Qt Styles. \\
+  No description file is needed.
+%
+\item[\texttt{--}maxoptions <argument>] sets the maximal number of options shown in a \COMBOBOX.
+  The default value is 25.
+%
+\item[\texttt{--}maxlines <argument>] sets the maximal number of lines of the \LOGWINDOW{} and the \STDWINDOW{}.
+  The default value is 500.
+  When the content exeed this maximum, the oldest 20\% lines are deleted.
+%
+\item[\texttt{--}toolTipDuration <argument>] sets the maximal number of seconds a help message is shown.
+  The default value is 10.
+%
+\item[\texttt{--}leftIcon <argument>] defines the name of the left bitmap in the titlebar.
+  The default value is ``semafor'' and shows the Semafor logo.
+  See Minimal Example on page \pageref{fig:minimalExample}.
+%
+\item[\texttt{--}rightIcon <argument>] defines the name of the right bitmap in the titlebar.
+  The default value is ``'' and shows no right bitmap in the titlebar.
+  See Minimal Example on page \pageref{fig:minimalExample}.
+%
+\item[\texttt{--}startupImage <argument>] defines the name of the splash screen bitmap.
+  When this option is given and the bitmap is found, it is shown as a splash screen during application startup.
+%
+\item[\texttt{--}rolefile <argument>]
+  TODO
+%
+\item[\texttt{--}includePath <argument>] defines the path where INCLUDE files are searched for.
+  Multiple paths are separated by ':'. \\
+  An \INTENS{} description file can be split into multiple files. These files are included using \\
+  INCLUDE file.inc (see \nameref{sec:opexamples:messagequeue:publishsubscribe}
+  on page \pageref{sec:opexamples:messagequeue:publishsubscribe}). \\
+  The INCLUDE statement can include the path, a subpath or no path at all. \\
+  INCLUDE files are (also) searched in the current directory:
+  \begin{itemize}
+  \item without this option
+  \item when <argument> is an empty string
+  \item when it is included in <argument> (as '.' or '': foo:, :foo, foo:., .:foo, foo::bar, foo:.:bar)
+  \end{itemize}
+
+  Examples (- -includePath include:/tmp/include): \\
+  \begin{description}
+  \item[INCLUDE common.inc] (filename only):
+  \begin{itemize}
+  \item ./include/common.inc
+  \item /tmp/include/common.inc
+  \end{itemize}
+  \item[INCLUDE etc/common.inc] (filename with subpath):
+  \begin{itemize}
+  \item ./include/etc/common.inc
+  \item /tmp/include/etc/common.inc
+  \end{itemize}
+  \end{description}
+%
+\item[\texttt{--}disableSVGSupport]
+  TODO
+%
+\item[\texttt{--}pspreviewer <argument>]
+  TODO
+%
+\item[\texttt{--}printerConfig <argument>]
+  TODO
+%
+%\item[\texttt{--}create]
+%  TODO
+%
+%\item[\texttt{--}xml <argument>]
+%  TODO
+%
+%\item[\texttt{--}jsb <argument>]
+%  TODO
+%
+%\item[\texttt{--}cpp]
+%  TODO
+%
+%\item[\texttt{--}xmlPath <argument>]
+%  TODO
+%
+\item[\texttt{--}apprunPath <argument>]
+  TODO
+%
+\item[\texttt{--}dbdriver <argument>]
+  TODO
+%
+\item[\texttt{--}dbautologon]
+  TODO
+%
+\item[\texttt{--}corba <argument>]
+  TODO
+%
+\item[\texttt{--}debug <argument>]
+  TODO
+%
+\item[\texttt{--}persistfile <filename>]
+  INTENS parses the description file, writes information about persistent components
+  into <filename> (using XML) and exits.
+%
+\item[\texttt{--}persistfileREST <filename>]
+  Same as \texttt{--}persistfile, but \LABEL{} and \HELPTEXT{} are not written
+  to <filename>. This allows the usage of html tags in \LABEL{} and \HELPTEXT{}.
+%
+\item[\texttt{--}log4cplusPropertiesFile <argument>] sets the filename of the log4cplus properties file.
+  The default is APPHOME/config/log4cplus.properties.
+%
+\item[\texttt{--}startToken <argument>]
+  TODO
+%
+\item[\texttt{--}reflistfile <argument>]
+  TODO
+%
+\item[\texttt{--}helpdir <argument>]
+  TODO
+%
+\item[\texttt{--}version] prints the INTENS version and exits. \\
+  No description file is needed.
+%
+\item[\texttt{--}help] prints the list of INTENS commandline options and exists. \\
+  No description file is needed.
+%
+\item[\texttt{--}whichGui] prints the GUI type (QT) and exists. \\
+  No description file is needed.
+%
+\item[\texttt{--}withWheelEvent] enables the mouse wheel event for:
+  \begin{description}
+  \item[Number] increase/decrease a number using the mouse wheel
+  (unless \texttt{--}withoutArrowKeys is given) \\
+  The mouse wheel event can be enabled for single numeric data items using the datapool option \WHEELEVENT
+  (see \nameref{dia:dataitemmoreoption} on page \pageref{dia:dataitemmoreoption}).
+  \item[\COMBOBOX] select different entries using the mouse wheel
+  \item[\INDEX] increase/decrease a GUI \INDEX{} using the mouse wheel
+  \end{description}
+%
+\item[\texttt{--}withInputStructFunc] enables the call of a struct (or parent) function
+  when an input variable is changed that does not have a function. \\
+  See example \nameref{fuexample3} on page \pageref{fuexample3}.
+%
+\item[\texttt{--}withoutArrowKeys] disables the ``arrow keys''. \\
+  When enabled (default), you can use the up/down keys to increment/decrement
+  the digit of a number before the cursor.
+%
+\item[\texttt{--}defaultScaleFactor1] sets the default scale factor to 1.0.
+  See section \nameref{sec:scale} on page \pageref{sec:scale}.
+%
+\item[\texttt{--}withoutEditableComboBox] disables the completer of \COMBOBOX{}es. \\
+  The completer makes it possible to type some characters into the \COMBOBOX{} and the options
+  are filtered to the values that start with the typed characters.
+%
+\item[\texttt{--}withoutTextPopupMenu] disables the right click menu of multiline text input fields.
+%
+\item[\texttt{--}ORBIIOPVersion <argument>]
+  TODO
+%
+\item[\texttt{--}ORBInitRef <argument>]
+  TODO
+%
+\item[\texttt{--}test <argument>] enables TestMode:
+  \begin{itemize}
+  \item The given function is called after the INIT function.
+        End the function with the \EXIT{} statement to close the application automatically.
+  \item The QUIT function is not run when the application is closed.
+  \item \MESSAGEBOX{}es are not shown. Their content is printed to stderr.
+  \end{itemize}
+%
+\item[\texttt{--}replyPort <argument>]
+  TODO
+%
+\item[\texttt{--}sendMessageQueueWithMetadata]
+  TODO
+%
+\item[\texttt{--}defaultMessageQueueDependencies <argument>]
+  A \MESSAGEQUEUE{} \REQUEST{} may define dependencies between input (\REQUEST) and output (\RESPONSE) \STREAM{}s
+  (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}). \\
+  Each \STREAM{} can have an explicit option \DEPENDENCIES{} or \NODEPENDENCIES{}
+  (see \nameref{dia:jobmessagequeueoption} on page \pageref{dia:jobmessagequeueoption} or
+  \nameref{dia:jobpluginoption} on page \pageref{dia:jobpluginoption}). \\
+  Without such an option, the default \MESSAGEQUEUE{} dependencies are used. \\
+  This commandline options defines that default:
+  \begin{itemize}
+  \item 1 or ``true'' (=default): The \STREAM{} is used with dependencies
+  \item 0 or ``false'': The \STREAM{} is not used with dependencies
+  \end{itemize}
+\end{description}

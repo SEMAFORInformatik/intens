@@ -1,0 +1,7 @@
+###### Requirements without Version Specifiers ######
+behave
+allure-behave
+pytest
+pyzmq
+Flask
+psutil

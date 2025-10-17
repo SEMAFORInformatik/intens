@@ -1,0 +1,54 @@
+.intens-button {
+  background: linear-gradient(to bottom,
+      #adc5e7,
+      #7da7d8);
+  border: 1px solid #7da7d8;
+  color: black;
+  border-radius: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  min-height: 20px;
+}
+
+.intens-button:hover {
+  border: 2px solid #f07415;
+}
+
+.intens-button:disabled {
+  background: linear-gradient(to bottom,
+      #dddddd,
+      #aaaaaa);
+  border: 1px solid #aaaaaa;
+  color: #444444;
+}
+
+.intens-button:active {
+  color: black;
+  background: linear-gradient(to bottom, #7da7d8,
+      #adc5e7);
+}
+
+.tabs__link {
+  background: linear-gradient(to bottom,
+      #adc5e7,
+      #7da7d8);
+  border: 1px solid #7da7d8;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-style: outset;
+  padding: 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.tabs__link.active_tab {
+  background: #eeeeee;
+  border: 1px solid grey;
+  border-bottom-color: #eeeeee;
+  /* expand/overlap to the left and right by 4px */
+}
+
+.tabs__link:not(.active_tab) {
+  margin-top: 2px;
+  /* make non-selected tabs look smaller */
+}

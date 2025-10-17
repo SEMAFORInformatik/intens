@@ -1,0 +1,79 @@
+DESCRIPTION "NAVIGATOR example";
+
+DATAPOOL
+  STRUCT
+    STRU_1 {
+      STRING {EDITABLE}
+        noname      {TAG = (tag_col_1)},
+        data_item_1 {TAG = (tag_col_2)},
+        data_item_2 {TAG = (tag_col_3)}
+      ;
+    };
+  STRUCT
+    STRU_2 {
+      STRING {EDITABLE}
+        noname      {TAG = (tag_col_1)},
+        data_item_1 {TAG = (tag_col_2)},
+        data_item_2 {TAG = (tag_col_3)}
+      ;
+    };
+  STRUCT
+    STRU_MAIN {
+      STRING {EDITABLE}
+        noname {TAG = (tag_col_1)};
+      STRU_1
+        stru_1;
+      STRU_2
+        stru_2;
+    };
+  STRU_MAIN
+    stru_main
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  NAVIGATOR
+    navigator_identifier
+    { COL ("Label column1" tag_col_1:20,
+           "Label column2" tag_col_2:10,
+           "Label column3" tag_col_3:10)
+    }
+    (
+      stru_main[*]
+    )
+  ;
+  FIELDGROUP
+    fg ( VOID(500,1) )
+  ;
+  FORM
+    form {MAIN} (
+      fg, navigator_identifier
+    )
+  , fo_windows {"Text Windows",HIDE_CYCLE}
+    ( LOG_WINDOW, STD_WINDOW )
+  ;
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC
+    INIT {
+      stru_main.noname = "Struct";
+      stru_main.stru_1.noname = "Struct 1";
+      stru_main.stru_1.data_item_1 = "data 1";
+      stru_main.stru_1.data_item_2 = "data 2";
+
+      stru_main.stru_2[0].noname = "Struct 2[0]";
+      stru_main.stru_2[0].data_item_1 = "data 1";
+      stru_main.stru_2[0].data_item_2 = "data 2";
+
+      stru_main.stru_2[1].noname = "Struct 2[1]";
+      stru_main.stru_2[1].data_item_1 = "data 1";
+      stru_main.stru_2[1].data_item_2 = "data 2";
+
+      stru_main.stru_2[2].noname = "Struct 2[2]";
+      stru_main.stru_2[2].data_item_1 = "data 1";
+      stru_main.stru_2[2].data_item_2 = "data 2";
+    }
+  ;
+END FUNCTIONS;
+END.

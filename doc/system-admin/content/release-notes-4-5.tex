@@ -1,0 +1,258 @@
+\subsubsection{Release Notes 4.5}
+%           =================
+\label{sec:releasenotes-4-5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                        Release Notes 4.5                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The following features have been changed or added in Version 4.5:\\
+
+%%---------------------------------------------------------------
+\paragraph{4.5.29 (2019-04-15)}
+\begin{enumerate}
+\item Right-click \MENU{} for \THERMO{} added. Define a \MENU{} with the identifier of the \THERMO{}.
+\item \FUNC{} tion of item is called with \REASONSELECT{} when some text is selected in a multiline \STRING{} input field.
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.28 (2019-04-03)}
+\begin{enumerate}
+\item A \REPLY{} \MESSAGEQUEUE{} can have default \FUNC, \REQUEST{} and \RESPONSE{} used when the received header
+      is unknown. See \nameref{dia:opmessagequeueoption} on page \pageref{dia:opmessagequeueoption}.
+\item \TIMER{} option \MAXPENDINGFUNCTIONS{} added.
+      See section \nameref{sec:optimer} on page \pageref{sec:optimer}.
+\item The \HOST{} of a \SUBSCRIBE{} \MESSAGEQUEUE{} can be set later using \SETMQHOST.
+      This also delays the subscribing.
+      See \nameref{dia:messagequeueaction} on page \pageref{dia:messagequeueaction}.
+\end{enumerate}
+%%---------------------------------------------------------------
+%% \paragraph{4.5.27 (2018-11-20)}
+%%---------------------------------------------------------------
+\paragraph{4.5.26 (2018-11-05)}
+\begin{enumerate}
+\item \COMPOSESTRING{} added: It is now possible to compose a string (during parsing) from multiple strings.
+      This is useful for translation: \\
+      \COMPOSESTRING(\_("\%1 database"), LABEL(motor)) \\
+      The string needs to be translated once but can be used for different components. \\
+      See section \nameref{sec:string} on page \pageref{sec:string}.
+\end{enumerate}
+%%---------------------------------------------------------------
+%% \paragraph{4.5.25 (2018-08-23)}
+%%---------------------------------------------------------------
+%% \paragraph{4.5.24 (2018-08-15)}
+%%---------------------------------------------------------------
+%% \paragraph{4.5.23 (2018-08-13)}
+%%---------------------------------------------------------------
+%% \paragraph{4.5.22 (2018-06-29)}
+%%---------------------------------------------------------------
+\paragraph{4.5.21 (2018-06-07)}
+\begin{enumerate}
+\item \PLOTTWOD{} axes options \ASPECTRATIOREFAXIS{} and \ASPECTRATIO{} added.
+      See \nameref{dia:uiplot2dxaxisoptions} on page \pageref{dia:uiplot2dxaxisoptions}.
+
+\item \SETREASON{} added.
+      See \nameref{dia:setfuncstatement} on page \pageref{dia:setfuncstatement}.
+
+\item \SETINDEX{} added.
+      See \nameref{dia:setfuncstatement} on page \pageref{dia:setfuncstatement}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.20 (2018-01-31)}
+\begin{enumerate}
+\item \INTENS{} commandline option \texttt{--}defaultScaleFactor1 added.
+      See section \nameref{sec:scale} on page \pageref{sec:scale}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+%% \paragraph{4.5.19 (2018-01-10)}
+%%---------------------------------------------------------------
+\paragraph{4.5.18 (2017-12-14)}
+\begin{enumerate}
+\item Possibility to set a \STYLESHEET{} string added.
+  See \nameref{dia:guimorestatement} on page \pageref{dia:guimorestatement}.
+
+\item \MARKER{}s (\PLOTTWOD) can have a value dependend color.
+  See \nameref{dia:uiplot2dyitemoption} on page \pageref{dia:uiplot2dyitemoption}.
+
+\item Colors of a \COLORSCALE{} \THERMO{} can be interpolated.
+  See \nameref{dia:uithermooption} on page \pageref{dia:uithermooption}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.17 (2017-09-26)}
+\begin{enumerate}
+\item \INTENS{} commandline option \texttt{--}withInputStructFunc added.
+      See example \nameref{fuexample3} on page \pageref{fuexample3}.
+
+\item \NODE{} added.
+      See section \nameref{fuexpressionsfunctions} page \pageref{fuexpressionsfunctions}
+      and example \nameref{fuexample3} on page \pageref{fuexample3}.
+
+\item \BASE{} added.
+      See section \nameref{fu:data:reference} page \pageref{fu:data:reference}
+      and example \nameref{fuexample3} on page \pageref{fuexample3}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.16 (2017-08-29)}
+\begin{enumerate}
+
+\item \VISIBLE{} argument can be a string variable. The value of the variable is the name of the element
+  to check: \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+  \STRING{} ui\_element;
+  ...
+  ui\_element = ``motor\_form'';
+  \IF (\VISIBLE(ui\_element)) \{
+    ...
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:jobvisibleaction} on page \pageref{dia:jobvisibleaction}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.15 (2017-07-03)}
+\begin{enumerate}
+
+\item \INDEX{} statement: \INDEX(\THIS, idx);
+
+  See \nameref{dia:datastatement} on page \pageref{dia:datastatement}.
+
+\item \FIELDGROUP{} field option \HELPTEXT{} = ID\_STREAM added. \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+    input:20 \{\COLSPAN=2, \HELPTEXT=stream\}
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:uifieldadditionalattributes} on page \pageref{dia:uifieldadditionalattributes}.
+
+\item \DATAPOOL{} data item option \PLACEHOLDER{} added.
+
+  See \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.10 (2017-03-21)}
+\begin{enumerate}
+
+\item \FORM{} option \EXPAND{} added.
+
+  See \nameref{dia:uiformoptionlist} on page \pageref{dia:uiformoptionlist}.
+
+\item \FILENAME{} option \OPEN{} and \SAVE{} added. \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+// existing file
+filename = \FILENAME \{ \OPEN{} \};
+// new file
+filename = \FILENAME \{ \SAVE{} \};
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:fileexpression} on page \pageref{dia:fileexpression}.
+
+\item \STREAM{} option \LOCALE{} added. \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+\STREAMER
+  data_locale_stream \{\LOCALE\} ( ... );
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:stoptionlist} on page \pageref{dia:stoptionlist}.
+
+\item \FIELDGROUP{} option \ARROWS=\HIDDEN{} added.
+
+  See \nameref{dia:uifieldgroupoption} on page \pageref{dia:uifieldgroupoption}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.9 (2016-12-14)}
+\begin{enumerate}
+
+\item Possibility to \COMPOSE{} strings added, for translation. \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+\MESSAGEBOX( \COMPOSE( _("The motor \%1 was changed by \%2 at \%3"),
+                       motor.name, motor.changer, motor.changedate) );
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:functionexpression} on page \pageref{dia:functionexpression}
+  and \nameref{dia:datastatement} on page \pageref{dia:datastatement}.
+
+\item \FIELDGROUP{} field option \VERTICAL{} and \ROTATEONEEIGHTY{} added.
+
+  See \nameref{dia:uifieldadditionalattributes} on page \pageref{dia:uifieldadditionalattributes}
+  and \nameref{dia:uifieldoptions} on page \pageref{dia:uifieldoptions}.
+
+\item Confirm dialog: button labels configurable.
+
+  See \nameref{dia:jobconfirmoption} on page \pageref{dia:jobconfirmoption}.
+
+%% hide in docu (not complete enough yet) \item Description file logging added.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.8 (2016-11-21)}
+\begin{enumerate}
+
+\item \OPEN{} and \SAVE{} with filename as string constant.
+
+  See \nameref{dia:filestatement} on page \pageref{dia:filestatement}.
+
+\item \TABLE{} option \FUNC{} added.
+
+  See \nameref{dia:uitbloption} on page \pageref{dia:uitbloption}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.7 (2016-11-09)}
+\begin{enumerate}
+
+\item \SETRESOURCE{} statement added: set resource value.
+
+  See \nameref{dia:functionexpression} on page \pageref{dia:functionexpression}
+  and \nameref{dia:datastatement} on page \pageref{dia:datastatement}.
+
+\item \WRITESETTINGS{} statement added: write settings to user resource file.
+
+  See \nameref{dia:filestatement} on page \pageref{dia:filestatement}.
+
+\end{enumerate}
+%%---------------------------------------------------------------
+\paragraph{4.5.5 (2016-09-30)}
+\begin{enumerate}
+
+\item \TOUCH{} statement: touch data item to cause a gui update. \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+\TOUCH( data_item );
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:setstatement} on page \pageref{dia:setstatement}.
+
+\item Python functions can be called directly from INTENS.
+
+  See section \nameref{sec:oppython} on page \pageref{sec:oppython}.
+
+\item \CLEARSELECTION{} statement: clear selection of \LIST, \TABLE{} and \NAVIGATOR. \\
+  \begin{boxedminipage}[t]{\linewidth}
+    \begin{alltt}
+\CLEARSELECTION( some_list );
+    \end{alltt}
+  \end{boxedminipage}
+
+  See \nameref{dia:guimorestatement} on page \pageref{dia:guimorestatement}.
+
+\item \CHANGED{} statement: second data item is optional.
+
+  See \nameref{dia:functionexpression} on page \pageref{dia:functionexpression}.
+
+\end{enumerate}
+%%
+%%---------------------------------------------------------------
+%%---------------------------------------------------------------

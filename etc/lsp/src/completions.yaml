@@ -1,0 +1,1860 @@
+item_options:
+  triggers:
+    - data_V2_item_option
+    - data_V2_item_options
+    - data_V2_item_option_list
+  completions:
+    - token: SET
+      doc: |
+        The items values are part of a `SET`. A set is a limited number
+        of values of the same type. The item is displayed as Combobox
+        on the user interface. `ID_DATASET` must be previously defined
+    - token: INDEXED_SET
+      doc: |
+        The items values are part of a `SET`. A set is a limited number
+        of values of the same type. The item is displayed as Combobox
+        on the user interface. `ID_DATASET` must be previously defined
+    - token: COLOR=
+      doc: |
+        The field is shown in the colors that corresponds to its items value.
+        `ID_COLORSET` must be previously defined
+    - token: COLOR
+      doc: |
+        String data item to define a color. The item is displayed as a color
+        picker: a button that shows the color. Pressing the button opens
+        a color dialog to choose a color. The chosen color is stored as the
+        value of the variable
+    - token: NO_COLORBIT
+      doc: |
+        The eight available color bits are interpreted as a 8-bit number. This
+        gives the possibility to use up to 255 different colors.
+    - token: FUNC
+      doc: |
+        Defines the function that will be called after an interactive modification of the items value.
+    - token: LABEL
+      doc: |
+        The item has a label which can be used by the `UI_MANAGER`
+        and `STREAMER`
+    - token: UNIT
+      doc: |
+        The item has a unit which can be used by the `UI_MANAGER`
+        and `STREAMER`.
+    - token: PATTERN
+      doc: |
+        A regular expression that defines the possible input values
+    - token: HELPTEXT
+      doc: |
+        For each item a helptext may be defined. This text appears as
+        soon as the mouse-pointer crosses the field, which contains the
+        data-item.
+    - token: BUTTON
+      doc: |
+        The item is displayed as button on the user interface. Activating
+        the button executes the associated function (see above `FUNC`).
+    - token: SLIDER
+      doc: |
+        The item is displayed as a slider.
+    - token: RANGE
+      doc: |
+        Minimal and maximal values for a `SLIDER`.
+    - token: STEP
+      doc: |
+        Difference between the labels of `SLIDER`.
+    - token: TOGGLE
+      doc: |
+        The item is displayed as Toggle on the user interface. Activating
+        the toggle changes the value from 0 to 1.
+    - token: RADIO
+      doc: |
+        The item is displayed as radio button on the user interface. Activating the radio button changes the value from 0 to 1.
+    - token: LABEL
+      doc: |
+        The item is displayed as a label (not editable).
+    - token: CLASSNAME
+      doc: |
+        Data items having a classname are transferred as objects to the
+        Matlab workspace.
+        The `CLASSNAME `can also be used in `FUNCTIONS`:
+        `CLASSNAME`(item)
+    - token: SCALAR
+      doc: |
+        Data items with this attribute are transferred as scalars instead of
+        matrices to the Matlab workspace (or instread of vectors to and
+        from the database). They are not written as a list in a `JSON
+        STREAM`.
+    - token: MATRIX
+      doc: |
+        Data items with this attribute are transferred as matrices to and
+        from the database instead of vectors.
+    - token: CELL
+      doc: |
+        The data item is transferred to Matlab workspace as cell instead
+        of array.
+    - token: HIDDEN
+      doc: |
+        The data item is not transferred to Matlab. It is, by default, not
+        written in `JSON STREAM`s (see st_json_options on page 63). It
+        is however sent to the rest service
+    - token: PLACEHOLDER
+      doc: |
+        For each item a placeholder text may be defined. This text appears
+        in the field which contains the data-item when it is `INVALID`.
+    - token: PERSISTENT
+      doc: |
+        This data item can be stored to and retrieved from the database
+    - token: TRANSIENT
+      doc: |
+        This data item is not stored to and retrieved from the database.
+        It is useful in a `PERSISTENT STRUCT`.
+    - token: DBATTR
+      doc: |
+        defines the corresponding db attribute name
+    - token: DBUNIT
+      doc: |
+        defines the corresponding db attribute unit.
+    - token: DBLIST
+      doc: |
+        defines the corresponding db list type.
+    - token: DBASSEMBLY
+      doc: |
+        defines the corresponding db assembly type.
+    - token: KEY
+      doc: |
+        defines the corresponding db key.
+    - token: TAG
+      doc: |
+        The TAG-identifier is referenced by the navigators `COL`-definition.
+    - token: STRING_DATE
+      doc: |
+        String data item to show and enter a date (popup calendar may
+        be used).
+    - token: STRING_TIME
+      doc: |
+        String data item to show and enter a time.
+    - token: STRING_DATETIME
+      doc: |
+        String data item to show and enter a date and time.
+    - token: PASSWORD
+      doc: |
+        String data item is displayed in password mode.
+    - token: WHEEL_EVENT
+      doc: |
+        The mouse wheel can be used to increment and decrement the
+        value, just as the up and down keys can be used for every numeric
+        data item.
+        This does not work when commandline option
+        `--withoutArrowKeys` is given.
+        This option enables the mouse wheel event for one numeric
+        data item, whereas the commandline option `--withWheelEvent`
+        enables it for every numeric data item.
+
+form_options:
+  triggers:
+    - ui_form_options
+    - ui_form_option
+    - ui_form_option_list
+  completions:
+    - token: MAIN
+      doc: |
+        places this form in the main window.
+    - token: APP_MODAL
+      doc: |
+        opens the window modal.
+    - token: HIDDEN
+      doc: |
+        No menu entry will be created for this form.
+        You have to use the `MAP` `FORM` command to map this
+        form on the screen
+        When you create a menu entry for this form, you don't need this option
+    - token: SCROLLBARS
+      doc: |
+        The form has vertical and horizontal scroll bars
+        as needed. This is the default layout.
+    - token: NO_SCROLLBARS
+      doc: |
+        The form has no scroll bars.
+    - token: PANEDWINDOW
+      doc: |
+        The fieldgroups will have a scrollable window separator.
+    - token: NO_PANEDWINDOW
+      doc: |
+        The fieldgroups will not have a scrollable window separator.
+    - token: HIDE_CYCLE
+      doc: |
+        The button to change the datapool `CYCLE` is not created.
+    - token: HELPKEY
+      doc: |
+        A help button is created that references a page in the help file.
+    - token: BUTTONS
+      doc: |
+        Limits the number of buttons on the same action bar line and creates additional lines if needed.
+    - token: USERGROUPS
+      doc: |
+        A list of usergroups or the identifier of a predefined group of usergroups.
+    - token: FUNC
+      doc: |
+        Defines the function that will be called when a form is opened, closed or activated.
+    - token: CLOSE_BUTTON
+      doc: |
+        Do not show a **Close** button at the bottom of the `FORM`.
+    - token: EXPAND
+      doc: |
+        Adapt the size of the `FORM` when it is opened and when an element in it is shown or hidden.
+    - token: MAIN
+      doc: |
+        esignates the form as the main form.
+    - token: APP_MODAL
+      doc: |
+        odal forms take focus and prevent interactions with other forms while open.
+datatypes:
+  triggers:
+    - data_V2_datatype
+    - data_V2_item_declaration
+    - data_V2_item_declaration_list
+  completions:
+    - token: REAL
+      doc: |
+        defines data items for storing real number values.
+    - token: INTEGER
+      doc: |
+        defines data items for storing integer number values.
+    - token: STRING
+      doc: |
+        defines data items for storing characters.
+    - token: COMPLEX
+      doc: |
+        defines data items for storing **complex** quantities
+    - token: CDATA
+      doc: |
+        defines data items for storing character or binary data.
+    - token: ID_DATASTRUCTURE
+      doc: |
+        defines data items for storing structured data.
+        must be a previously defined structure
+data_variable_attributes:
+  triggers:
+    - opt_data_V2_variable_attributes
+    - data_V2_variable_attributes
+    - data_V2_variable_attr_list
+    - data_V2_variable_attr
+  completions:
+    - token: EDITABLE
+      doc: |
+        The value can be changed (edited) by the user
+    - token: OPTIONAL
+      doc: |
+        Same as `EDITABLE`. The corresponding text fields
+        may be given different foreground/background color, font etc.
+    - token: LOCKABLE
+      doc: |
+        The data item can be protected against being overwritten
+        by stream operations.
+    - token: SCALAR
+      doc: |
+        Data items with this attribute are transferred as scalars
+        instead of matrices to any Matlab function
+        (or instread of vectors to and from the database).
+        They are not written as a list in a `JSON STREAM`.
+    - token: MATRIX
+      doc: |
+        Data items with this attribute are transferred as matrices
+        to and from the database instead of vectors.
+    - token: CELL
+      doc: |
+        The data item is transferred to the Matlab workspace as cell instead of array.
+    - token: GLOBAL
+      doc: |
+        The data item is not changed by cycle operations.
+    - token: OMITTTRAIL
+      doc: |
+        The data item is not handled by transactions (ABORT, UNDO, ...).
+    - token: NODEPENDENCIES
+      doc: |
+        No dependencies between this input and its outputs (results) are added.
+    - token: CLASSNAME
+      doc: |
+        Data items having a classname are transferred as
+        objects to any Matlab function.
+        The `CLASSNAME` can also be used in `FUNCTIONS: CLASSNAME`(item).
+field_attributes:
+  triggers:
+    - ui_field_additional_attr
+    - ui_field_additional_attributes
+  completions:
+    - token: PIXMAP
+      doc: |
+        display button-items picture fa
+    - token: SIZE
+      doc: |
+        scale the `PIXMAP` to this size (in pixel)
+    - token: SCROLLBARS
+      doc: |
+        attach a scrollbar to the multiline textfi
+    - token: AUTOSCROLL
+      doc: |
+        automatically scroll to the end of the multiline textfi
+    - token: EXPAND
+      doc: |
+        make field expanda
+    - token: COLSPAN
+      doc: |
+        ui field uses n columns
+    - token: ROWSPAN
+      doc: |
+        ui field uses n rows
+    - token: VERTICAL
+      doc: |
+        draw ui field vertically
+    - token: ROTATEONEEIGHTY
+      doc: |
+        draw ui field rotated 180 degrees
+    - token: HELPTEXT
+      doc: |
+        use the given `STREAM` as the `HELPTEXT` of the field
+    - token: CLASS
+      doc: |
+        set `CLASS` property of the field (used in qt style sheets)
+
+data_statement:
+  completions:
+    # data_statement
+    - token: CLEAR
+      doc: |
+        clears all values of the specified datapool item elements.
+    - token: ID_TEXTWINDOW
+      doc: |
+        clears the content of the text window.
+    - token: STD_WINDOW
+      doc: |
+        clears the content of the text window `STD_WINDOW`.
+    - token: LOG_WINDOW
+      doc: |
+        clears the content of the text window `LOGWINDOW`.
+    - token: ERASE
+      doc: |
+        clears all values and attributes (color, etc.) of the specified datapool item elements.
+    - token: PACK
+      doc: |
+        removes empty entries
+        `job_data_reference` should have wildcard(s) (nothing is done otherwise).
+        The wildcard(s) specify the dimension on which `PACK` operates.
+    - token: ROW
+      doc: (=default) with two wildcards, empty rows (first wildcard) are removed.
+    - token: COL
+      doc: |
+        with two wildcards, empty columns (second wildcard) are removed.
+    - token: SIZE
+      doc: |
+        stores the number of elements of the first argument into the second.
+        When the first argument has multiple dimentions (on the last level), the
+        second stores a list of sizes:
+        `data.value[2,3] = 0; \SIZE(data.value, size);` -> size[0] is 3, size[1] is 4.
+        The first argument may have wildcards. The second argument gets the size of every
+        wildcard: `SIZE(data[*].value[*,*], size);` -> size[0] is size of data, size[1] is size of
+        first dimension of data.value, size[2] is size of second dimension of data.value
+    - token: DATA_SIZE
+      doc:
+        stores the size of the first argument (number of characters when written as JSON) into the second.
+        `TRANSIENT` items are ignored (not counted)
+        Can be used to know the data size of an object before if is sent to the database.
+    - token: INDEX
+      doc: |
+        `INDEX` is used to know the index of the field that called the function.
+        stores up the index of the first argument into the second.
+        The first argument may be `THIS`, `PARENT(THIS)`, `PARENT(PARENT(THIS))`, etc., `BASE`.
+        Example: data[2].value[3] was changed on the GUI and a function was called.
+        After `INDEX(THIS, idx);`, idx is 2.
+    - token: COMPARE
+      doc: |
+        compare structure data. All arguments must be of the same data type (usually a Structure).
+        With a third argument, the second and third arguments are compared.
+        Without a third argument, the values of the second argument in all cycles are compared.
+        The result is written to the first argument. It can be used in
+        * a NAVIGATOR with the option `COMPARE`
+        * the compare dialog: fill COMPAREDIALOG struct and call MAP ( COMPARE_DIALOG );
+    - token: ASSIGN_CORR
+      doc: |
+        assign corresponding elements from second argument structure to first argument structure.
+    - token: SET_RESOURCE
+      doc: |
+        Set value of a resource property (with name **string**).
+        The value is written to the user resource file when the `INTENS` application
+        is quit or when `WRITE_SETTINGS` is called.
+        It can then be used when the `INTENS` application is started next time(s).
+    - token: COMPOSE
+      doc: |
+        Compose string: write values into string. Needed for translatable strings.
+        The (format-)string (first argument) contains %1, %2, ... and the value(s) of the
+        corresponding data reference is put in these places.
+        Up to 15 values are implemented.
+    - token: ASSIGN_CONSISTENCY
+      doc: |
+        Assign the (value of the) second argument to the first.
+        `INVALID`: clear the first arguments value.
+        Then, clear all dependent results
+
+file_statement:
+  completions:
+    - token: OPEN
+      doc: |
+        read a file and write its content to the `DATAPOOL`.
+        opens the file OPEN dialog unless the filename is given as the
+        second argument
+    - token: LOAD
+      doc: |
+        parse the content of the `STRING` data reference
+    - token: SAVE
+      doc: |
+        saves the contens of the first argument to a file.
+        opens the file SAVE dialog window unless the filename is given
+        as the second argument
+    - token: SERIALIZE
+    - token: SERIALIZE_FORM
+    - token: WRITE_SETTINGS
+      doc: |
+        write settings to user resource file now - as done when the
+        `INTENS` application is quit.
+
+set_statement:
+  completions:
+    - token: SET
+    - token: UNSET
+    - token: TOUCH
+      doc: |
+        Sets the attribute timestamp of `job_data_reference`. This causes the
+        next gui update to update the gui elements.
+        The data timestamp is not touched, so
+        `MODIFIED ( job_data_reference )` stays at it was.
+
+gui_statement:
+  completions:
+    - token: UPDATE_FORMS
+      doc: |
+        updates all forms
+    - token: UPDATE
+      # TODO: UPDATE METHOD COMPLETION
+      doc: Update a gui element.
+    - token: MAP
+      # TODO: MAP METHOD COMPLETION
+      doc: |
+        shows the form, progressbar, folder tab or gui element referenced
+        by the identifier.
+        `OMIT_TTRAIL`: The folder tab mapping is not handled by transactions (ABORT, UNDO, ...).
+        `temp_data_reference` : The value of a string variable is used as
+        the identifier. This can be used to map something different in different situations.
+        To map a folder tab, use its `IF_FOLDERGROUP` or the identifier of the `FOLDER`, followed by a : and the tab index (as a
+        integer or a variable)
+    - token: UNMAP
+      # TODO: UNMAP METHOD COMPLETION
+      doc: closes (form) or hides (folder tab, gui element) specified element.
+    - token: ALLOW
+      # TODO: ALLOW METHOD COMPLETION
+      doc: mapping, opening or execution of specified identifier is allowed.
+    - token: DISALLOW
+      # TODO: DISALLOW METHOD COMPLETION
+      doc: mapping, opening or execution of specified identifier is not allowed. (Menu buttons are gray).
+    - token: ENABLE
+      # TODO: ENABLE METHOD COMPLETION
+      doc: entry fields (data items) or menu items are enabled (editable, choosable).
+    - token: DISABLE
+      # TODO: DISABLE METHOD COMPLETION
+      doc: entry fields (data items) or menu items are disabled (no entries are possible. Menu buttons are gray).
+    - token: RANGE
+      doc: Range of tables in previously declared fieldgroups (TABLESIZE) are set to from-expression until-expression
+    - token: SELECT_LIST
+      doc: Select the line(s) defined in the second argument (array with integer index(es)) in the `LIST`, the `TABLE` or the `NAVIGATOR`.
+    - token: GET_SELECTION
+      doc: |
+        `LIST` and `NAVIGATOR`: write the selected row(s) index(es) to the
+        second argument (array with integer index(es)).
+        `TABLE`: write the selected cell(s) row and column index(es) to
+        the second (rows) and third (cols) arguments (array with integer
+        index(es)).
+
+        When (at least) one complete row and/or column is selected, the
+        index(es) of all completely selected row(s) and/or column(s) are
+        writen to the second (rows) and third (cols).
+
+        `PLOT2D`: write the coordinates (x and y), the y-axis type (1 or
+        2) and the y-axis title of the selected points to the arguments (x,
+        y, axisType, axisLabel).
+    - token: CLEAR_SELECTION
+      doc: |
+        `LIST`, `TABLE` and `NAVIGATOR`: unselect all elements
+    - token: STYLESHEET
+      doc: |
+        To customize their look, you can set the Qt Style Sheet (qss) string
+        of a gui element or a data reference. The second argument (a data
+        reference), contains the string. With a data reference, the qss
+        string is passed to the gui field showing that data reference.
+        Example (gui element): use a picture as the background of a
+        `PLOT2D`:
+        ```css
+          QwtPlotCanvas {background-repeat: no-repeat; border-image:
+        url(./bitmaps/fans/xy.png) 0 0 0 0 stretch stretch;}
+        ```
+        Example (data reference): show a data item with bold font:
+        ```css
+        QLineEdit {font-weight:bold;}
+        ```
+    - token: CLASS
+      doc: |
+        Set the `CLASS` of an element. This is intended for updating styles written in QSS or for webtens CSS
+    - token: REPLACE
+      doc: Replace the first gui element by the second.
+
+cycle_statement:
+  completions:
+    - token: NEWCYCLE
+      doc: creates a new cycle (with optional name)
+    - token: DELETECYCLE
+      doc: deletes current cycle (as long as another one remains)
+    - token: CLEARCYCLE
+      doc: clears all values of recent cycle whithout removing it. And executes INIT-function.
+    - token: FIRSTCYCLE
+      doc: switches to the first cycle
+    - token: LASTCYCLE
+      doc: switches to the last cycle
+    - token: NEXTCYCLE
+      doc: switches to the next cycle. If already in last cycle, a new cycle is created.
+    - token: GOCYCLE
+      doc: switches to cycle no. ’(int)’
+    - token: CYCLENAME
+      doc: sets name of current or specified cycle
+
+print_statement:
+  completions:
+    - token: PRINT
+      doc: prints its arguments to `LOG_WINDOW`
+    - token: SET_MSG
+      doc: text to be printed after execution.
+    - token: LOG
+      doc: log a message with the given level.
+    - token: REPORT
+      doc: opens printer dialog to print the specified reportstream.
+    - token: PREVIEW
+      doc: opens printer dialog to preview the specified reportstream.
+    - token: PRINT_LOG
+
+error_statement:
+  completions:
+    - token: SET_ERROR
+      doc: prints its arguments to a dialog window.
+    - token: ABORT
+      doc: works like `SET_ERROR` and aborts the running task immediately.
+    - token: RESET_ERROR
+      doc: resets error setting.
+
+exit_statement:
+  completions:
+    - token: EXIT
+      doc: quit INTENS execution.
+
+system_statement:
+  completions:
+    - token: BEEP
+      doc: play a system beep.
+
+messagebox_statement:
+  completions:
+    - token: MESSAGEBOX
+      doc: displays a messagebox with an OK-Button.
+
+run_statement:
+  completions:
+    - token: RUN
+      doc: Starts the process group, function, task, python function, DB-filter or DB-transaction referenced by the identifier
+
+return_statement:
+  completions:
+    - token: RETURN
+      doc: exits the function back to calling instance.
+
+send_statement:
+  completions:
+    - token: SEND
+      # TODO: SEND METHOD COMPLETION
+      doc:
+
+message_queue_statement:
+  completions:
+    -
+
+timer_statement:
+  completions:
+    -
+
+database_statement:
+  completions:
+    -
+
+set_func_statement:
+  completions:
+    - token: SET_THIS
+      doc: THIS now references job_data_reference
+    - token: SET_INDEX
+      doc: Set INDEX to the value of job_data_reference.
+    - token: SET_REASON
+      doc: |
+        Set the REASON. To set REASON_INPUT, do
+        s = "INPUT";
+        SET_REASON(s);.
+
+restService_statement:
+  completions:
+    # TODO: METHOD COMPLETIONS
+    - token: REST_LOGON
+      doc: Set rest credentials. The three arguments are base url, username and password.
+    - token: REST_LOGOFF
+      doc: Clear rest credentials. Login will appear with next `GET`, `PUT`or `DELETE`.
+    - token: DELETE
+      doc: Send DELETE request.
+    - token: GET
+      doc: Send GET request.
+    - token: PUT
+      doc: Send PUT request.
+    - token: POST
+      doc: Send POST request.
+
+job_statements:
+  give_variables: after
+  inherits:
+    - data_statement
+    - file_statement
+    - set_statement
+    - gui_statement
+    - cycle_statement
+    - print_statement
+    - error_statement
+    - exit_statement
+    - system_statement
+    - messagebox_statement
+    - run_statement
+    - return_statement
+    - send_statement
+    - message_queue_statement
+    - timer_statement
+    - database_statement
+    - set_func_statement
+    - restService_statement
+
+job_data_reference:
+  give_variables: before
+  completions:
+    - token: VAR
+      doc: |
+        references a datapool item element.
+
+        String dataitem contains the identifier of a data item.
+        By changing the contents of string-item at runtime, specified datapool item is referenced.
+    - token: PARENT
+      doc: |
+        references parent structure of `job_expression`
+    - token: DATASETTEXT
+      doc: |
+        references the string of the `SET` associated with the item (can only be
+        used if the item has a `SET`)
+    - token: STRING_TIME
+      doc: |
+        see `CURRENT_TIME`
+    - token: STRING_DATE
+      doc: |
+        see `CURRENT_DATE`
+    - token: STRING_DATETIME
+      doc: |
+        see `CURRENT_DATETIME`
+    - token: CURRENT_TIME
+      doc: |
+        references the current time
+    - token: CURRENT_DATE
+      doc: |
+        references the current date
+    - token: CURRENT_DATETIME
+      doc: |
+        references the current datetime
+    - token: INPUT
+      doc: |
+        references the user input of the field that called the function
+    - token: SOURCE
+      doc: |
+        references structure of data item, which was dragged or connected.
+    - token: SOURCE2
+      doc: |
+        references second structure of data item, which was connected
+    - token: THIS
+      doc: |
+        references structure of data item, which called the function.
+    - token: BASE
+      doc: |
+        references structure of called function.
+
+job_save:
+  regex_triggers:
+    - SAVE_ARG0
+  give_variables: before
+  completions:
+    # TODO: make it show variables of those types when we get vartypes going
+    - token: ID_STREAM
+      doc: |
+        saves the content of the stream.
+    - token: ID_REPORTSTREAM
+      doc: |
+        saves the content of the reportstream.
+    - token: ID_TEXTWINDOW
+      doc: |
+        saves the content of the text window.
+    - token: STD_WINDOW
+      doc: |
+        saves the content of the text window STD_WINDOW.
+    - token: LOG_WINDOW
+      doc: |
+        saves the content of the text window LOG_WINDOW.
+
+job_set:
+  regex_triggers:
+    - SET_ARG0
+  give_variables: after
+  completions:
+    - token: LOCK
+      doc: See `LOCKABLE` attribute
+    - token: EDIT
+      doc: See `EDITABLE` attribute
+    - token: TIMESTAMP
+      doc: Affects the modify status.
+    - token: COLOR
+      doc: |
+        SET the color to corresponding value 1-8 (or 1 - 255 with the
+        `NO_COLORBIT` options).
+
+        Value 0 is used to reset color settings.
+
+        Previously set colors will be lost.
+    - token: COLORBIT
+      doc: SET the color to corresponding value 1-8.
+
+map_unmap:
+  regex_triggers:
+    - MAP_ARG0
+    - UNMAP_ARG0
+  give_variables: ui
+
+job_unset:
+  regex_triggers:
+    - UNSET_ARG0
+  give_variables: after
+  completions:
+    - token: LOCK
+      doc: See `LOCKABLE` attribute
+    - token: EDIT
+      doc: See `EDITABLE` attribute
+    - token: TIMESTAMP
+      doc: Affects the modify status.
+    - token: COLORBIT
+      doc: UNSETting higher level color (smaller value), the item is displayed whith next lower lever color.
+
+job_print:
+  regex_triggers:
+    - LOG_ARG0
+  completions:
+    - token: DEBUG
+    - token: INFO
+    - token: WARN
+    - token: ERROR
+    - token: FATAL
+
+variable_attributes:
+  triggers:
+    - data_V2_variable_attr
+    - data_V2_variable_attributes
+    - data_V2_variable_attr_list
+  completions:
+    - token: EDITABLE
+      doc: The value can be changed (edited) by the user
+    - token: OPTIONAL
+      doc: Same as `EDITABLE`. The corresponding text fields
+        may be given different foreground/background color, font etc.
+    - token: LOCKABLE
+      doc: The data item can be protected against being overwritten
+        by stream operations.
+    - token: SCALAR
+      doc: Data items with this attribute are transferred as scalars
+        instead of matrices to any Matlab function
+        (or instread of vectors to and from the database).
+        They are not written as a list in a `JSON STREAM`.
+    - token: MATRIX
+      doc: Data items with this attribute are transferred as matrices
+        to and from the database instead of vectors.
+    - token: CELL
+      doc: The data item is transferred to the Matlab workspace as cell instead of array.
+    - token: GLOBAL
+      doc: The data item is not changed by cycle operations.
+    - token: OMIT_TTRAIL
+      doc: The data item is not handled by transactions (ABORT, UNDO, ...).
+    - token: NO_DEPENDENCIES
+      doc: No dependencies between this input and its outputs (results) are added.
+    - token: CLASSNAME
+      doc: Data items having a classname are transferred as
+        objects to any Matlab function.
+        The `CLASSNAME` can also be used in `FUNCTION`
+
+st_declaration:
+  triggers:
+    - st_declaration
+    - st_declaration_list
+  completions:
+    - token: JSON
+    - token: XML
+
+st_options:
+  triggers:
+    - st_options
+    - st_option
+    - st_option_list
+  completions:
+    - token: LATEX
+      doc: |
+        `LaTeX` special characters
+         (i.E. . \ ^ | or {)
+         are replaced with their `LaTeX` command.
+    - token: URL
+      doc: reserved characters are percent-encoded and no `DELIMITER`s are added.
+    - token: DELIMITER
+      doc: defines the character used to separete stream items.
+        default is the blank character.
+    - token: LOCALE
+      doc: stream uses locale decimal separator.
+    - token: PROCESS
+      doc: defines a filter process.
+        The streams data is processed by the filter process.
+    - token: APPEND
+      doc: append received data to the `CDATA` element of the `STREAM`.
+    - token: NO_GZ
+      doc: Stream content is not gunzipped when reading a file stream,
+        although the filename ends in '.gz'.
+    - token: FILE
+      doc: write to or read from a temporary file instead of the `DATAPOOL`.
+        This reduces memory needed by `INTENS`, but values are not in the `DATAPOOL`.
+
+st_format_command:
+  triggers:
+    - st_format_command_list
+    - st_format_command
+  completions:
+    #!         & perform a validation check
+    #data reference & the possibly indexed data item
+    #(see section \nameref{sec:stvariables} page \pageref{fig:st_data_reference})
+    - token: MATRIX
+      doc: The data item will be transferred as a matrix
+    #\verb+scale factor+   & see section \nameref{sec:scale} page
+    # \pageref{sec:scale}.
+    # & The value of the data item is multiplied by the scale factor on
+    # an output operation and divided by the scale factor on an input operation.
+    #\verb+field conversion+ & see page \pageref{par:fieldconversion}.
+    - token: DATASET_TEXT
+      doc:
+        includes the string of the `SET` associated with the item (can only be
+        used if the item has a `SET`)
+    - token: STRING_DATE
+      doc: prints the date in the local format (i.E. 24.01.08 instead of 2008-01-24)
+    - token: STRING_TIME
+      doc: prints the time in the local format (i.E. 15:08:00:000 instead of 15:08:00)
+    - token: STRING_DATETIME
+      doc: prints the date-time in the local format (i.E. 24.01.08 15:08 instead of 2008-01-24T15:08:00)
+    - token: STRING_VALUE
+      doc: extracts the value of a dynamic `COMBOBOX`
+    #\verb+#+              & represents the explicit index of {\bfseries pre-indexed} arrays.
+    # & On input-operations data will not be filled into the array in
+    #   order of incoming from the stream, but exactly to the position where
+    #    this value points to.
+    # & On output-operations it represents the index value  of
+    #   the data-item in the array.
+    #\verb+# IDENTIFIER+   & \verb+#+ may be followed by any number or letter sign.
+    # & This is used as an identifier when having more than one array-index.
+    # &  (section \nameref{sec:stvariables}
+    #      page \pageref{fig:st_data_reference}), each array may have its own index.
+    #\verb+string+         & a string constant (section \nameref{sec:string} page \pageref{sec:string})
+    #\verb+st field length+ & see page \pageref{par:stfieldlength}.
+    - token: PLOTGROUP
+      doc:
+        the following identifier specifies a plot group which will be included as
+        PostSript file (Should only be used with `LaTeX`)
+    - token: MAIN ID_FORM
+      doc: |
+        `XML` tree of `MAINFORM` or `ID_FORM`.
+    - token: SKIP:n+
+      doc: the following `n+` characters
+    - token: EOLN
+      doc: a new line
+    - token: RANGE(X-val1, X-val2)
+      snipped: RANGE(${1:X-val1}, ${2:X-val2})
+      doc: Shows plot beginning at x-axis position X-val1 through X-val2
+    - token: TRANSPARENT
+      doc: Shows the plot with (`TRUE`, default) or without (`FALSE`) a transparent background.
+
+fieldgroup_line:
+  triggers:
+    - ui_field_item
+    - ui_field_item_list
+    - ui_fieldgroup_line
+    - ui_fieldgroup_line_list
+    - ui_fieldgroup_fields
+  give_variables: after
+  completions:
+    - token: VOID(x, y)
+      snippet: VOID($1, $2)
+      doc: |
+        creates an empty space which can be used for alignment.
+    - token: STRETCH
+      doc: |
+        define stretch factors for the column and row.
+        They make the column / row expand if additional space is available.
+        A higher stretch factor expands more.
+    - token: PIXMAP(name)
+      snippet: PIXMAP(${1:name})
+      doc: |
+        Filename (with or without extension). 
+          Displays a image. 
+          File is searched in following directories: 
+          * $BITMAP_PATH : colon (linux) or semicolon (windows)
+             separated list of directories 
+          * $APPHOME/bitmaps 
+          * IntensHome/bitmaps : IntensHome is the parent directory of
+          * the **INTENS** executable 
+          * ./bitmaps 
+          * .
+          Alternatively, a Datapool variable (`STRING` or `CDATA`). 
+          The value of the variable can be a filename (with or without extension)
+          of the image to display or the image itself (image file content). 
+          If it is a filename, the file is searched in the directories as described above
+    - token: SEPARATOR
+      doc: |
+        creates a horizontal (default) or vertical separator 
+        To create a vertical separator, add the option `VERTICAL`. 
+        To create a vertical separator over multiple rows, add the option `ROWSPAN` = n. 
+        The vertical separator can be left (default), center or right aligned (within the column). 
+        Example: centered vertical separator, two rows high: 
+        `SEPARATOR | {VERTICAL, ROWSPAN=2}`
+
+field_additional_attr:
+  triggers:
+    - ui_field_additional_attr
+    - ui_field_additional_attr_list
+    - ui_field_additional_attributes
+  inherits:
+    - field_options
+  completions:
+    - token: PIXMAP
+      doc: display button-items picture faced
+    - token: SIZE(w, h)
+      snippet: SIZE(${1:w}, ${2:h})
+      doc: scale the `PIXMAP` to this size (in pixel)
+    - token: SCROLLBARS
+      doc: attach a scrollbar to the multiline textfield
+    - token: AUTOSCROLL
+      doc: automatically scroll to the end of the multiline textfield
+    - token: EXPAND
+      doc: make field expandable
+
+field_options:
+  tiggers:
+    - ui_field_options
+    - ui_field_option
+    - ui_field_option_list
+  completions:
+    - token: COLSPAN=n
+      doc: ui field uses n columns
+    - token: ROWSPAN=n
+      doc: ui field uses n rows
+    - token: VERTICAL
+      doc: draw ui field vertically
+    - token: ROTATE_180
+      doc: draw ui field rotated 180 degrees
+    - token: HELPTEXT
+      doc: use the given `STREAM` as the `HELPTEXT` of the field
+    - token: CLASS
+      doc: set `CLASS` property of the field (used in qt style sheets)
+
+fieldgroup_options:
+  triggers:
+    - ui_fieldgroup_option
+    - ui_fieldgroup_options
+    - ui_fieldgroup_option_list
+  completions:
+    - token: JUSTLEFT
+    - token: JUSTRIGHT
+    - token: CENTER
+    - token: TABLESIZE
+      doc: creates a table with arrow buttons to scroll
+        through the items. There is only one
+        `data_item` per line allowed.
+    - token: STEP
+      doc: defines the step width that is scrolled with one
+        arrow click.
+    - token: STEP=0
+      doc: no scrolling is possible (the arrow buttons are not created)
+    - token: ORIENTATION
+      doc: The tables default orientation is HORIZONTAL.
+    - token: NAVIGATION
+      doc: determines the direction in which the tables
+        text fields are to be traversed during keyboard navigation.
+        `HORIZONTAL` is the default value.
+    - token: POSITION=n
+      snippet: POSITION=$1
+      doc: defines which element is shown multiple times.
+        n = 2 would show the first two elements (0 and 1) once and the
+        third element (index 2) multiple times.
+        **1** is the default value.
+    - token: RANGE
+      doc: determines the index range that can be used
+        for the associated data items. The default starting index is 0.
+    - token: MENU=HIDDEN
+      doc:
+        Do not display table row/column menu, when right mouse button is pressed at row/column header.
+        Is used in conjunction with option `TABLESIZE`.
+    - token: ARROWS=HIDDEN
+      doc: Do not display table row/column header.
+        Is used in conjunction with option `TABLESIZE`.
+    - token: FRAME
+      doc: Display a frame around the fieldgroup
+    - token: MARGIN
+      doc: Set margin (and optionally spacing) in pixels
+    - token: INDEX=
+      doc: Use an `INDEX` object as the `INDEX` of the `FIELDGROUP`.
+        This makes it possible to set and read the value of
+        the `FIELDGROUP INDEX`.
+        Is used in conjunction with option `TABLESIZE`.
+    - token: CLASS
+      doc: set `CLASS` property of the `FIELDGROUP` (used in qt style sheets)
+
+tbl_options:
+  triggers:
+    - ui_tbl_options
+    - ui_tbl_option
+    - ui_tbl_option_list
+  completions:
+    - token: JUSTLEFT
+      doc: TODO
+    - token: JUSTRIGHT
+      doc: TODO
+    - token: CENTER
+      doc: Without one of these options, `INTENS` places the table fields left
+        justified within each column.
+    - token: ORIENTATION
+      doc: The tables default orientation is horizontal.
+    - token: NAVIGATION
+      doc: determines the direction in which the tables
+        text fields are to be traversed during keyboard navigation.
+        `HORIZONTAL` is the default value.
+    - token: HORIZONTAL
+      doc: horizontal size and range
+    - token: VERTICAL
+      doc: vertical size and range
+    - token: MENU=HIDDEN
+      doc: Do not display table row/column menu, when right mouse button is pressed at row/column header.
+    - token: FUNC
+      doc: function to call by mouse click or enter key \newline
+        The function can use a `Reason`
+        to distinguish select, unselect, ...
+    - token: AUTO_WIDTH
+      doc: tell webtens to determine the column widths automatically,
+        based on the content
+
+tbl_size_options:
+  triggers:
+    - ui_tbl_size_options
+    - ui_tbl_size_option
+    - ui_tbl_size_option_list
+  completions:
+    - token: TABLESIZE
+      doc:
+        defines the minimal number of rows (`VERTICAL`) or columns (`HORIZONTAL`)
+        shown in the `TABLE` part.
+        `TOP` and `BOTTOM` rows are shown in addition.
+        `LEFT` and `RIGHT` columns are shown in addition.
+    - token: RANGE
+      doc: determines the index range that can be used for the associated
+        data items. The default starting index is 0.
+        The first number defines the number shown for index 0.
+        It is the offset of the number shown on the gui.
+        The optional second index is the maximal number shown.
+        The second index also defines the maximal number of data items shown.
+        When that number is less than or equal `TABLESIZE`, the `SCROLLBAR` is not shown.
+    - token: HIDDEN
+      doc: |
+        `HORIZONTAL` or `VERTICAL` headers are not shown
+
+tbl_part:
+  triggers:
+    - ui_tbl_part
+    - ui_tbl_part_list
+  completions:
+    - token: TOP
+      doc: positions following lines at the top of the table.
+    - token: BOTTOM
+      doc: positions following lines at the bottom of the table.
+    - token: LEFT
+      doc: positions following lines to the left of the table.
+    - token: RIGHT
+      doc: positions following lines to the right of the table.
+    - token: TABLE
+      doc: specifies the table entries (data displayed in the table)
+
+list_options:
+  triggers:
+    - ui_list_options
+    - ui_list_option
+    - ui_list_option_list
+
+  completions:
+    - token: TABLESIZE
+      doc: defines size of displayed rows
+    - token: MULTIPLE_SELECTION
+      doc: enable the selection of multiple rows
+    - token: FUNC
+      doc: function to call by mouse click or enter key
+        The function can use a `Reason`
+        to distinguish select, unselect, activate.
+    - token: INDEX
+      doc: displays row numbers
+    - token: SORT DISABLE
+      doc: disable the possibility to click on a column header to sort the list by this column
+
+list_item:
+  triggers:
+    - ui_list_item_list
+    - ui_list_item
+    - ui_list_items
+  give_variables: after
+  completions:
+    - token: TOOLTIP
+      doc: The values of this column are not shown but used as the tooltips
+    - token: COLOR
+      doc: The values of this column are not shown.
+        The colors corresponding to them are used for the rows
+    - token: OPTIONAL
+      doc:
+        The column is hidden, but it can be shown using the 'Column Configuration',
+        which can be opened in the right click menu
+
+index_options:
+  triggers:
+    - ui_index_options
+    - ui_index_option
+    - ui_index_option_list
+  completions:
+    - token: ORIENTATION
+      doc: The index-object-arrows are shown
+    - token: STEP
+      doc: defines the step for each arrow-pressing (back and forward)
+    - token: FUNC
+      doc: calls a function defined in section functions
+    - token: RANGE
+      doc: determines the index range that can be used for the associated
+        data items. The default starting index is 0.
+
+listplot_options:
+  triggers:
+    - ui_listplot_option_list
+    - ui_listplot_option
+    - ui_listplot_options
+  completions:
+    - token: CAPTION
+      doc:
+        defines the caption text that will be printed in the right most column of
+        the plot. The identifier must be a previously declared stream.
+    - token: SIZE
+
+listplot_graph_options:
+  triggers:
+    - ui_listplot_graph_option
+    - ui_listplot_graph_options
+    - ui_listplot_graph_option_list
+  give_variables: after
+  completions:
+    - token: XAXIS
+      doc: defines the data item whose values give the x-coordinates
+    - token: AXESORIGIN
+      doc: defines the origin for all y-values
+    - token: LOGX
+      doc: the x-axis is scaled logarithmically
+    - token: LOGY
+      doc: the y-axis is scaled logarithmically
+    - token: SAME_YRANGE
+      doc: sets all y-axes to the the same range
+    - token: LABEL
+      doc: TODO
+
+listplot_item_options:
+  triggers:
+    - ui_listplot_item_option
+    - ui_listplot_item_options
+    - ui_listplot_item_option_list
+  completions:
+    - token: LINESTYLE
+      doc: defines the line style
+    - token: LINEAR
+      doc: the points are connected by straight lines
+    - token: STEP
+      doc: the points are connected with horizontal and vertical lines
+    - token: DISCRETE
+      doc: the points are not connected.
+    - token: LABEL
+      doc: string or stream identifier
+    - token: UNIT
+      doc: string or stream identifier
+
+ui_plot2d_options:
+  triggers:
+    - ui_plot2d_options
+    - ui_plot2d_option
+    - ui_plot2d_option_list
+  completions:
+    - token: CAPTION
+      doc: |
+        Footertext: Title displayed in the graphics-form. (Using special-characters such as space, you need to use string-representation.) 
+        identifier may also refere to a previously declared stream.
+    - token: PRINTSTYLE
+      doc: = `TRUE` prints out graph descriptions. Use extra resources for printing (fonts, line styles, background etc.).
+    - token: HIDDEN
+      doc: don't add the plot to the `File Print` menu
+    - token: MINMAX
+      doc: show(`TRUE`, default) or hide (`FALSE`) min and max of a selected curve.
+    - token: RMS
+      doc: show(`TRUE`, default) or hide (`FALSE`) rms of a selected curve.
+    - token: AVG
+      doc: show(`TRUE`, default) or hide (`FALSE`) avg and max of a selected curve.
+
+ui_plot2d_graph_options:
+  trigger:
+    - ui_plot2d_graph_option
+    - ui_plot2d_graph_options
+    - ui_plot2d_graph_option_list
+  completions:
+    - token: XAXIS {..}
+      doc: describes the x-axis.
+    - token: XAXISTWO {..}
+      doc:
+        describes the x2-axis. This only draws an axis on top of the plot with the given `SCALE`.
+        Without `SCALE`, this option does not make sense.
+    - token: YAXISONE {..}
+      doc: describes the y1-axis.
+    - token: YAXISTWO {..}
+      doc: describes the y2-axis.
+    - token: AXES_ORIGIN_X
+      doc: defines the origin for the x-axis.
+    - token: AXES_ORIGIN_Y
+      doc: defines the origin for all y-axis.
+    - token: LOG_X
+      doc: the x-axis is scaled logarithmically.
+    - token: LOG_Y
+      doc: the y-axis is scaled logarithmically.
+    - token: COMBOBOX
+      doc: displays the item names as a combobox when the config menu is opened pressing the right mouse button over the plot.
+    - token: STYLE
+      doc: style of all curves.
+    - token: Y1_STYLE
+      doc: style of y1 curves.
+    - token: Y2_STYLE
+      doc: style of y2 curves.
+    - token: ALLCYCLES
+      doc: Shows data of each cylcle in same graph.
+    - token: SCROLLBARS
+      doc: Shows scroll-bars in 'zoomed zone' mode.
+    - token: XANNOTATION
+      doc: Shows x-axis as defined in x-graph-item option `XANNOTATION`
+    - token: FUNC
+      doc: Defines the function that will be called when a point or rectangle is selected.
+    - token: COLOR=
+      doc: Defines the color set that will be used for the colors of the plot curves.
+
+ui_plot2d_xaxis_options:
+  triggers:
+    - ui_plot2d_xaxis_options
+    - ui_plot2d_xaxis_option
+    - ui_plot2d_xaxis_option_list
+  completions:
+    - token: LABEL
+      doc: axis label
+    - token: SCALE
+      doc: axis scale (min, max)
+    - token: FORMAT
+      doc: |
+        axis label number format: width[:precision] 
+         `10` : width of the number 
+         `10:2` : width and decimals of the number
+    - token: HIDDEN
+      doc: hide the axis labels
+    - token: ASPECT_RATIO_REF_AXIS
+      doc:
+        This axis is the reference axis for calculating the unit scaling of the plot.
+        The length (in pixel) and axis range of this axis is the reference for the other axis.
+        The length of the other axis is adapted to get the desired unit scaling.
+        Define `ASPECT_RATIO` for both axes.
+    - token: ASPECT_RATIO
+      doc: |
+        The meaning of this option differs for the reference axis (with `ASPECT_RATIO_REF_AXIS`)
+        and the other axis: 
+        **Reference axis**: Range of the reference axis relative to the other axis.
+        As this axis is the reference axis, the range of the other axis is calculated as
+        (range reference axis / this factor). 
+        Example: Reference axis range: 0 .. 250 = 250. 
+        ~ 2: range of the other axis is 250 / 2 = 125. 
+        ~ 0.5: range of the other axis is 250 / 0.5 = 500. 
+        **Other axis**: Defines the unit scaling (pixel per unit) of this axis
+        relative to the reference axis. 
+        Examples: 
+        ~ 1: same unit scaling as the reference axis. 
+        ~ 2: 1 unit on this axis needs twice the pixels as on the reference axis. 
+        ~ 0.5: 1 unit on this axis needs half the pixels as on the reference axis.
+
+ui_plot2d_x_item_options:
+  riggers:
+    - ui_plot2d_x_item_options
+    - ui_plot2d_x_item_option
+    - ui_plot2d_x_item_option_list
+  completions:
+    - token: LABEL
+      doc:
+        defines the item name which will be printed as the x-axis description.
+        use a `STREAM` when the name needs to be variable.
+    - token: UNIT
+      doc: defines the unit description which will be printed to the right of x-axis description.
+    - token: XANNOTATION
+      doc: defines extra labels for x axis
+    - token: INDEX
+      doc: Data reference has two wildcards. One (defined here) is used to create many curves.
+    - token: XAXIS
+      doc: defines the x-coordinates of the x-axis.
+
+ui_plot2d_y_item_options:
+  triggers:
+    - ui_plot2d_y_item_options
+    - ui_plot2d_y_item_option
+    - ui_plot2d_y_item_option_list
+  completions:
+    - token: YAXISONE
+      doc: defines the y-coordinates of the left y-axis.
+        If this option is omited, the axis is not displayed at startup.
+    - token: YAXISTWO
+      doc: defines the y-coordinates of the right y-axis.
+        If this option is omited, the axis is not displayed at startup.
+    - token: LABEL
+      doc: defines the item name which is used in the plot legend.
+        use a `STREAM` when the name needs to be variable.
+    - token: UNIT
+      doc: defines the unit description which will be printed at the top of the axis.
+    - token: HIDDEN
+      doc: does not display the axis.
+    - token: MARKER
+      doc: show markers with optional labels
+    - token: COLOR=
+      doc: use a color set to show the markers in different colors.
+        The provided marker labels are the values used to get a color from the color set.
+    - token: INDEX
+      doc: Data reference has two wildcards. One (defined here) is used to create many curves.
+    - token: LEGEND
+      doc: show (`TRUE`, default) or hide (`FALSE`) this curve in the legend
+    - token: XAXIS
+      doc: defines the x-coordinates of the x-axis.
+    - token: XANNOTATION
+      doc: defines extra labels for x axis
+
+ui_navigator_type_options:
+  triggers:
+    - ui_navigator_type_options
+    - ui_navigator_type_option
+    - ui_navigator_type_option_list
+  completions:
+    - token: ICONVIEW
+      doc: Show as icons.
+    - token: DIAGRAM
+      doc: Create a diagram to place, move and connect items.
+
+ui_navigator_options:
+  triggers:
+    - ui_navigator_options
+    - ui_navigator_option
+    - ui_navigator_option_list
+  completions:
+    - token: SIZE
+      doc: Size of navigator window.
+    - token: EXPAND
+      doc: TODO.
+    - token: COL
+      doc: Columns declarations.
+    - token: TOOLTIP
+      doc: the value of the referenced structure field is shown as the tooltip of this row
+    - token: MULTIPLESELECTION
+      doc: enable the selection of multiple rows
+    - token: COMPARE
+      doc: This navigator is used to display a compare result
+
+ui_navigator_root_options:
+  triggers:
+    - ui_navigator_root_options
+    - ui_navigator_root_option
+    - ui_navigator_root_option_list
+  completions:
+    - token: AUTOLEVEL
+      doc: Does not display any structure-identifiers at all.
+    - token: HIDEEMPTYFOLDERS
+      doc: Does not display any structure-identifiers without entries.
+    - token: OPENLEVELS
+      doc: Displays open folders beginnig in tree-level 'integer'.
+    - token: FIRSTLEVEL
+      doc: Does not display structure-identifiers before tree-level 'integer'.
+    - token: LASTLEVEL
+      doc: Stops display after tree-level 'integer'.
+
+ui_text_window_options:
+  triggers:
+    - ui_text_window_options
+    - ui_text_window_option
+    - ui_text_window_option_list
+  completions:
+    - token: WRAP
+      doc: wrap the words, if the line is too long
+    - token: SIZE
+      doc:
+        defines the displayed `height` and `width` of the text window as number
+        of characters. The text window itself will always be sized according
+        to the other fieldgroups within the same form.
+    - token: FORTRAN
+      doc: The text-window expects data in Fortran printfile-format.
+    - token: FILTER
+      doc:
+        The option declares an external program (string), which preprocesses the text
+        before sending it to the printer (usually an ASCII-to-PostScript converter,
+        default is a2ps)
+
+ui_folder_options:
+  triggers:
+    - ui_folder_options
+    - ui_folder_option
+    - ui_folder_option_list
+  completions:
+    - token: TOP
+      doc: places the tab buttons on the top side of the form.
+    - token: BOTTOM
+      doc: places the tab buttons on the bottom side of the form.
+    - token: LEFT
+      doc: places the tab buttons on the left side of the form.
+    - token: RIGHT
+      doc: places the tab buttons on the right side of the form.
+    - token: STRETCH
+      doc: All tab buttons have equal size.
+    - token: HORIZONTAL
+      doc: All tab button labels are horizontally oriented.
+    - token: VERTICAL
+      doc: All tab button labels are vertically oriented.
+    - token: EXPAND
+      doc: The folder can be expanded (when its form is expanded).
+    - token: MOVE
+      doc: Enable the possibility to move tabs.
+    - token: BUTTON=NONE
+      doc: Do not create tabs. You can show the different tabs using
+        `MAP ( tab_group )` in a `FUNCTION`.
+    - token: BUTTON=TRUE
+      doc: Show the tab of a `FOLDER` with only one page. Without
+        this option, a single tab is not shown.
+
+ui_folder_button_options:
+  triggers:
+    - ui_folder_button_options
+    - ui_folder_button_option
+    - ui_folder_button_option_list
+  completions:
+    - token: PIXMAP
+    - token: HIDDEN
+
+ui_form_container_options:
+  triggers:
+    - ui_form_container_options
+    - ui_form_container_option
+    - ui_form_container_option_list
+  completions:
+    - token: SCROLLBARS
+      doc: |
+        The container will have vertical and/or horizontal scroll bars.
+                  options | horizontal | vertical
+                  - | - | -
+                   | as needed | as needed
+                  `ALWAYS` | always | always
+                  `HORIZONTAL` | as needed | never
+                  `HORIZONTAL ALWAYS` | always | as needed
+                  `VERTICAL` | never | as needed
+                  `VERTICAL ALWAYS` | as needed | always
+    - token: NOSCROLLBARS
+      doc: The container has no scroll bars.
+    - token: PANEDWINDOW
+      doc: The container will have a scrollable window separator (paned window).
+    - token: NOPANEDWINDOW
+      doc: The container has no scrollable window separator (no paned window).
+    - token: JUSTIFY
+      doc: The rows or columns of the fieldgroups in the container are justified (aligned).
+    - token: FRAME
+      doc: Display a frame around the container.
+    - token: HELPTEXT
+      doc: This text appears in the statusbar (or as a tooltip) as soon as the mouse-pointer is over this container.
+
+op_socket_options:
+  triggers:
+    - op_socket_options
+    - op_socket_option
+    - op_socket_option_list
+  completions:
+    - token: PORT
+      doc: tcp/ip port the server socket listenes at \\
+    - token: STREAM
+      doc: References a stream
+        Data sent to this socket is read and stored in the datapool
+        according to this stream.
+    - token: FUNC
+      doc:
+        Function to call when all data is sent to this socket ( `EOF` on a single line)
+        and, if a `STREAM` is defined, after the data has been read using that `STREAM`.
+    - token: MFM
+      doc: MFM socket. Data sent to this socket is interpreted as MFM scan data.
+    - token: ONEOS
+      doc:
+        Function to call when the stream starts with `EOS` (End Of Scan). In this case, no data is
+        stored in the datapool even if a socket is defined.
+    - token: ONVIEWACTION
+      doc:
+        Function to call when a view action is called from an image using this socket.
+        ( for MFM sockets only )
+    - token: THUMBNAIL
+      doc:
+        Data item to store thumbnail of scan data, followed by width and height in pixels.
+        ( for MFM sockets only )
+
+op_socket_header_options:
+  triggers:
+    - op_socket_header_options
+    - op_socket_header_option
+    - op_socket_header_option_list
+  completions:
+    - token: HEADER
+      doc: Defines the header string used to identify the message type.
+    - token: REQUEST
+      doc: References a stream
+        Data sent to this socket is read and stored in the datapool
+        according to this stream.
+    - token: RESPONSE
+      doc: References a stream
+        A response is read from the datapool and sent
+        according to this stream.
+    - token: FUNC
+      doc:
+        Function to call when all data with this `HEADER` is sent to this socket
+        and, if a `REQUEST` is defined, after the data has been read using that `STREAM`
+        and, if a `RESPONSE` is defined, before that response is sent.
+
+op_message_queue_options:
+  triggers:
+    - op_message_queue_options
+    - op_message_queue_option
+    - op_message_queue_option_list
+  completions:
+    - token: PUBLISH
+      doc: Create a publish message queue to publish messages on a `PORT`.
+    - token: SUBSCRIBE
+      doc: Subscribe to messages published by another programm.
+        `PORT` must be given.
+    - token: REQUEST
+      doc: Create a request message queue to send requests to another program.
+        `PORT` must be given.
+    - token: REPLY
+      doc: Create a reply message queue to listen for requests on a `PORT`.
+    - token: PORT
+      doc: TCP port used for the communication.
+    - token: PORT_REQUEST
+      doc: TCP port used for requests. Will soon be obsolete and `PORT` is used in all cases.
+    - token: HOST
+      doc: |
+        `SUBSCRIBE` or `REQUEST`: Hostname where the other program listens. 
+        Defaults is `localhost`. 
+        `SUBSCRIBE`: Set `HOST` to "" if it is not known yet or to delay subscribing.
+        Use `SET_MQ_HOST` to set the `HOST` later
+    - token: TIMEOUT
+      doc: |
+        `REQUEST`: Timeout in seconds used with `REQUEST`
+         when the `REQUEST` itself does not define a `TIMEOUT`. 
+         Number of seconds to wait for a connection to the receiver and its `RESPONSE`. 
+         Default is 10 seconds. 
+         Set `TIMEOUT` to 0 to have no `TIMEOUT`.
+    - token: FUNC
+      doc: |
+        `REPLY`: Function used when the received header is unknown.
+    - token: REQUEST
+      doc: |
+        `REPLY`: Request stream(s) used when the received header is unknown.
+    - token: RESPONSE
+      doc: |
+        `REPLY`: Response stream(s) used when the received header is unknown.
+
+op_message_queue_header_options:
+  triggers:
+    - op_message_queue_header_options
+    - op_message_queue_header_option
+    - op_message_queue_header_option_list
+  completions:
+    - token: HEADER
+      doc: String that identifies the message.
+    - token: REQUEST
+      doc: |
+        `REPLY`: The received message(s) is/are written to this/these stream(s).
+    - token: RESPONSE
+      doc: |
+        `REPLY`: Stream(s) define the response message(s).
+    - token: STREAM
+      doc: |
+        `SUBSCRIBE`: The received message is written to this/these stream(s).
+    - token: FUNC
+      doc: Function to call after receiving the message(s).
+    - token: PLUGIN
+      doc: Forward the received message to the plugin.
+
+ui_structure_menu_button:
+  triggers:
+    - ui_structure_menu_button
+    - ui_structure_menu_button_list
+  completions:
+    - token: INDEX
+      doc:
+        you can define multiple menus for the same structure for the `DIAGRAM NAVIGATOR`
+        Use `INDEX` option to declare which menu you are defining.
+        defaults to 0.
+    - token: DROP
+      doc: create a DROP menu. The menu is opened when an item is dropped to this item.
+    - token: SEPARATOR
+      doc: creates a separator line.
+    - token: FUNC
+      doc: calls a function
+
+ui_form_element_menu_button:
+  triggers:
+    - ui_form_element_menu_button
+    - ui_form_element_menu_button_list
+  completions:
+    - token: SEPARATOR
+      doc: creates a separator line.
+    - token: FUNC
+      doc: calls a function.
+
+ui_thermo_options:
+  triggers:
+    - ui_thermo_options
+    - ui_thermo_option
+    - ui_thermo_option_list
+  completions:
+    - token: RANGE(min, max)
+      snippet: RANGE(${1:min}, ${2:max})
+      doc: Thermo range from min to max. \newline
+        min, max can be constant (real_value) or variable
+    - token: OFFSET
+      doc: Offset added to the value before looking up the color in the *ID_COLORSET*
+    - token: COLOR
+      doc: Use colors defined in colorset
+    - token: COLOR_SCALE
+      doc: |
+        The thermo is shown as a color scale. 
+         `SCALE`: The colors (in the color scale) are interpolated.
+    - token: ORIENTATION
+      doc: Thermo orientation.
+    - token: SIZE(w, h)
+      snippet: SIZE(${1:w}, ${2:h})
+      doc: Width and height of the thermo in pixels.
+    - token: FORMAT
+      doc: |
+        Axis number format. 
+        `10` : width of the number 
+        `10g` : width of the number, change to scientific if number is too wide
+    - token: LABEL
+      doc: Thermo label.
+    - token: UNIT
+      doc: |
+        Thermo unit.
+        `NONE` : no label or unit.
+        string : constant label or unit
+        *temp_data_reference* : variable label or unit (references a data item declared in the datapool)
+    - token: ALARM_LEVEL
+      doc: Specify the alarm threshold. The part above this value is shown in `ALARMCOLOR`.
+    - token: ALARM_COLOR
+      doc: Specify the alarm color. The part above `ALARMLEVEL` is shown in this color.
+    - token: INVERTED
+      doc: |
+        Default is `TRUE`. If set to `FALSE` but max < min: use a different color.
+
+ui_timetable_options:
+  triggers:
+    - ui_timetable_options
+    - ui_timetable_option
+    - ui_timetable_option_list
+  completions:
+    - token: FROM_STRING_DATETIME
+    - token: TO_STRING_TIME
+    - token: TO_STRING_DATETIME
+    - token: SIZE
+
+op_processgroup_options:
+  triggers:
+    - op_processgroup_options
+    - op_processgroup_option
+    - op_processgroup_option_list
+  completions:
+    - token: FORM
+      doc: creates the push button in the button bar of the form *identifier*.
+        The push button is created in the main window if this option is missing.
+    - token: FORM=NONE
+      doc: This processgroup will NOT have an associated button.
+    - token: USERGROUPS
+      doc: A list of usergroups or the identifier of a predefined group of usergroups.
+    - token: UI_UPDATE(n)
+      snippet: UI_UPDATE($1)
+      doc: Updates the user interface after n lines received while processing
+        a previously defined process.
+    - token: NO_LOG
+      doc: Does not print log-messages at log window
+    - token: SILENT
+      doc: The busy cursor is shown instead of the Process Dialog.
+    - token: HIDDEN
+      doc: Processgroup is not added to the process-menu
+    - token: NO_DEPENDENCIES
+      doc: No dependencies between input and output are added.
+    - token: AUTOCLEAR_DEPENDENCIES
+      doc: Dependencies are cleared without user confirmation.
+
+op_output_stream_options:
+  triggers:
+    - op_output_stream_options
+    - op_output_stream_option
+    - op_output_stream_option_list
+  completions:
+    - token: DISPLAY
+      doc: Output that is read by `INTENS` from  the
+        calculation process can be directed to a user defined text window
+        (default is `STD_WINDOW`).
+    - token: DISPLAY=NONE
+      doc: The output can be suppressed by setting `DISPLAY` to `NONE`.
+    - token: FORMAT
+      doc: |
+        `ASCII` or `BINARY`
+
+op_reportstream_options:
+  triggers:
+    - op_reportstream_options
+    - op_reportstream_option
+    - op_reportstream_option_list
+  completions:
+    - token: LATEX
+      doc: the stream contains `LaTeX`  commands.
+    - token: FILTER
+      doc: the stream is piped to a unix-process.
+    - token: XML
+    - token: STYLESHEET
+    - token: TEMPLATE
+    - token: DIRNAME
+
+op_filestream_options:
+  triggers:
+    - op_filestream_options
+    - op_filestream_option
+    - op_filestream_option_list
+  completions:
+    - token: FILTER
+      doc: defines the file filter in the file selection dialog (default is **\\**)
+    - token: PROCESS
+      doc:
+        defines the executable UNIX program that is called for a reading or writing
+        operation. The program must always read from standard input
+        and write to standard output. This feature can be used for format conversions.
+    - token: READONLY
+      doc: The stream is used for reading files only.
+        It is not added to the **File Save** menu.
+    - token: WRITEONLY
+      doc: The stream is used for writing files only.
+        It is not added to the **File Open** menu.
+    - token: RESET
+      doc: A read operation resets the modify status of the datapool items and
+        deletes the associated results.
+    - token: NO_LOG
+      doc: Does not print log-messages at log window
+    - token: EXTENSION
+      doc: Defines extension text, which will be automaticly added to the filename.
+    - token: HIDDEN
+      doc: Don't add the filestream to the **File Open** and **File Save** menus
+    - token: DIRNAME
+      doc: Defines the default directory for this filestream.
+
+job_task_options:
+  triggers:
+    - job_task_options
+    - job_task_option
+    - job_task_option_list
+  completions:
+    - token: FORM
+      doc: creates the push button in the button bar of the form *identifier*.
+        The push button is created in the main window if this option is missing.
+    - token: FORM=NONE
+      doc: If the identifier is NONE no button will be created at all.
+    - token: USERGROUPS
+      doc: A list of usergroups or the identifier of a predefined group of usergroups.
+    - token: HIDDEN
+      doc: Does not create a menu-entry in process-menu.
+    - token: NO_LOG
+      doc: Does not print log-messages in `LOG_WINDOW`.
+    - token: SILENT
+      doc: The busy cursor is shown instead of the Process Dialog.
+
+
+ui_guielement_declarations:
+  triggers:
+    - ui_guielement_declaration
+    - ui_declaration
+    - ui_declaration_list
+  completions:
+    - token: FIELDGROUP
+    - token: TABLE
+    - token: LIST
+    - token: INDEX
+    - token: LISTPLOT
+    - token: UNIPLOT
+    - token: XRT3DPLOT
+    - token: XRTGRAPH
+    - token: PLOT2D
+    - token: NAVIGATOR
+    - token: TEXT_WINDOW
+    - token: STD_WINDOW
+    - token: LOG_WINDOW
+    - token: FOLDER
+    - token: FORM
+    - token: MENU
+    - token: PSPLOT
+    - token: IMAGE
+    - token: LINEPLOT
+    - token: THERMO
+    - token: TIMETABLE
+    - token: PLUGIN
+
+
+op_declaration_list:
+  triggers:
+    - op_element_declaration
+    - op_declaration_list 
+    - op_declarations
+    - op_declaration
+  completions:
+    - token: PROCESS
+    - token: PROCESSGROUP
+    - token: STREAM
+    - token: FILESTREAM
+    - token: REPORTSTREAM
+    - token: LATEXREPORT
+    - token: TASK
+    - token: MATHEMATICA
+    - token: MESSAGE_QUEUE
+    - token: MENU
+    - token: SOCKET
+    - token: TIMER
+    - token: PYTHON

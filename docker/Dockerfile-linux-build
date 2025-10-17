@@ -1,0 +1,64 @@
+# Dockerfile for semafor/intens/linux-build
+# used to Build and Test Intens by gitlab ci/cd
+FROM ubuntu:24.04
+LABEL maintainer="Ronald Tanner <tar@semafor.ch>"
+LABEL org.label-schema.vendor="Semafor Informatik & Energie AG"
+LABEL org.label-schema.url="https://semafor.ch"
+#
+RUN set -eux; \
+  apt-get update; \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    unzip \
+    cmake \
+    libprotobuf-dev \
+    protobuf-compiler \
+    pkg-config \
+    libssl-dev \
+    libfl-dev \
+    bison \
+    gettext \
+    libcurl4-openssl-dev \
+    liblog4cpp5-dev \
+    liblog4cplus-dev \
+    libnsl-dev \
+    libxml2-dev \
+    libxslt-dev \
+    nodejs \
+    libjsoncpp-dev \
+    cppzmq-dev \
+    libltdl-dev \
+    qt6-base-dev \
+    qt6-5compat-dev \
+    qt6-svg-dev \
+    qt6-charts-dev \
+    qt6-networkauth-dev \
+    qt6-charts-dev \
+    wget file \
+    libgtest-dev \
+    zlib1g-dev \
+    libxkbcommon-dev \
+    libcups2-dev \
+    python3-dev \
+    python3-venv; \
+    rm -rf /var/lib/apt/lists/*; \
+    python3 -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install mako pytest behave zmq psutil flask
+WORKDIR /work
+RUN wget --no-check-certificate https://deac-riga.dl.sourceforge.net/project/qwt/qwt/6.3.0/qwt-6.3.0.tar.bz2 && \
+  tar xfj qwt-6.3.0.tar.bz2 && cd qwt-6.3.0 && sed -e 's/doc//' -i qwt.pro && \
+  qmake6 qwt.pro && make -j$(nproc) && make install
+#
+# we need a recent version of tree-sitter
+RUN wget https://github.com/tree-sitter/tree-sitter/releases/download/v0.25.6/tree-sitter-linux-x64.gz && \
+ gunzip tree-sitter-linux-x64.gz && install -m 755 tree-sitter-linux-x64 /usr/local/bin/tree-sitter && \
+ mkdir -m 777 /.cache/
+#
+ADD https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip /opt
+
+RUN unzip /opt/sonar-scanner-cli-7.0.2.4839-linux-x64.zip -d /opt/
+ENV PATH=/opt/sonar-scanner-7.0.2.4839-linux-x64/bin:$PATH

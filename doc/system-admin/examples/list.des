@@ -1,0 +1,32 @@
+DESCRIPTION "Example LIST";
+
+DATAPOOL
+  STRING
+    data_item_1
+  , data_item_2
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  LIST
+    list_identifier { "List"|, TABLESIZE = 10, INDEX } (
+      "Label 1" data_item_1[*] :30,
+      "Label 2" data_item_2[*] :10
+    )
+  ;
+  FORM
+    Form1 {"List"} ( list_identifier )
+  ;
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC
+    INIT {
+      data_item_1[0] = "Line 1";
+      data_item_1[1] = "Line 2";
+      data_item_1[2] = "Line 3";
+      data_item_1[3] = "Line 4";
+    }
+  ;
+END FUNCTIONS;
+END.

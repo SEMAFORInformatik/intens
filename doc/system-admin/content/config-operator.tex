@@ -1,0 +1,495 @@
+\newpage
+\subsection{OPERATOR}
+%           --------
+\label{sec:operator}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Description                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Description}
+\label{sec:opdescription}
+The Operator communicates with the operating system and the
+  external calculation programs using the pipe mechanism or the
+  MathLink \index{Mathlink} protocol. Several (one to many) calculation programs
+  are combined to a process group that can be started and stopped
+  by the user activating a push button. Data can also be read from
+  and saved to files.
+
+\input{diagrams/operator_description}
+\input{diagrams/op_element_declaration}
+\index{OPERATOR@\OPERATOR}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                               Process                                 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\newpage
+\subsubsection{Process}
+\label{sec:opprocess}
+Each external program has to be declared as \PROCESS{} to be included in one or more \PROCESSGROUP s.
+
+\input{diagrams/op_process_declaration_list}
+\index{PROCESS@\PROCESS}
+
+%% \includegraphics[width=\linewidth]{xfig/sntx_op_process}
+%% \vspace{1cm}
+
+A calculation process must have a type and a unique name (identifier).
+\vspace{0.5cm}
+
+\index{FIFO!batch process}
+\index{BATCH@\BATCH!operator process}
+\index{DAEMON@\DAEMON!operator process}
+\index{MATLAB@\MATLAB!batch process}
+\begin{tabularx}{\textwidth}{l|X}
+PROCESS types      & description \\
+\hline
+\verb+string+      & The external program and its arguments.\\
+\verb+FIFO+        & identifier of named pipe. \\
+\BATCH             & This is a executable batch program that reads from standard input
+                     and writes to standard output. The string defines the
+                     (preferably complete) path name.\\
+\DAEMON            & Starts the executable batch program described in string. User must care about
+                      ending/closing of daemon-process. No datatransfer through streams are possible. \\
+\MATLAB            & This is a {\bfseries Matlab}-function that is included in a Matlab file. The
+                     process name is identical to the function name.\\
+\end{tabularx}
+
+\vspace{0.5cm}
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \PROCESS
+     mech_proc : \BATCH \{
+        "/tracomo/OSF1-V4.0-alpha/cmech"
+       ," ", "1"
+       ," ", mechres
+       ," ", mechdyn
+       ," ", "/home/tar/intens/tracomo/tp/who"
+       \}
+ ;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            Process Group                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Process Group}
+\label{sec:opprocessgroup}
+
+\input{diagrams/op_processgroup_declaration_list}
+\index{PROCESSGROUP@\PROCESSGROUP}
+
+A calculation \PROCESS{} must be included in a \PROCESSGROUP{} which may contain any number of processes.
+The input and output formats of each process is defined by previously declared streams
+(or plot groups of type \UNIPLOT).
+Unless explicitly specified, the IO channels used are standard input, standard output and standard error.
+\index{UNIPLOT@\UNIPLOT!processgroup io format}
+\index{standard input!processgroup}
+\index{standard output!processgroup}
+\index{standard error!processgroup}
+
+\label{sntxdiagram:processgroupoptions}
+\input{diagrams/op_processgroup_option_list}
+\index{FORM@\FORM!processgroup option}
+\index{NONE@\NONE!processgroup option FORM=NONE}
+%%(not implemented in intens4) \index{HELPTEXT@\HELPTEXT!processgroup option}
+\index{NO\_LOG@\NOLOG!processgroup option}
+\index{SILENT@\SILENT!processgroup option}
+\index{HIDDEN@\HIDDEN!processgroup option}
+\index{UI\_UPDATE@\UIUPDATE!processgroup option}
+\index{NO\_DEPENDENCIES@\NODEPENDENCIES!processgroup option}
+\index{AUTOCLEAR\_DEPENDENCIES@\AUTOCLEARDEPENDENCIES!processgroup option}
+
+\begin{tabularx}{\textwidth}{l|X}
+process group options & description\\
+\hline
+\verb+string+         & defines the label of the push button, that starts the \PROCESSGROUP.
+                        The default value is the name (\verb+identifier+) of the process group.\\
+\FORM                 & creates the push button in the button bar of the form \verb+identifier+.
+                        The push button is created in the main window if this option is missing.\\
+\FORM = \NONE         & This \PROCESSGROUP{} will NOT have an associated button.\\
+%%(not implemented in intens4) \HELPTEXT             & defines a text that is shown when the cursor is resting on the corresponding field.
+%%(not implemented in intens4)                         (if menu 'options', menuitem 'helptext messages' is checked) \\
+\UIUPDATE (n)         & Updates the user interface after n lines received while processing
+                        a previously defined process. \\
+\NOLOG                & Does not print log-messages (i.E. ABORT : PROCESSGROUP) to the \LOGWINDOW{}. \\
+\SILENT               & The busy cursor is shown instead of the Process Dialog. \\
+\HIDDEN               & \PROCESSGROUP{} is not added to the process-menu. \\
+\NODEPENDENCIES       & No dependencies between input and output are added.
+                        (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}) \\
+\AUTOCLEARDEPENDENCIES  & Dependencies are cleared without user confirmation.
+                        (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}) \\
+\end{tabularx}
+
+\input{diagrams/op_process_statement}
+
+\begin{tabularx}{\textwidth}{l|X}
+process statement & description\\
+\hline
+\verb+ID_PROCESS+ & Must be a previously declared {\bfseries process-identifier}
+                                (section \nameref{sec:opprocess} page \pageref{sec:opprocess}).\\
+\end{tabularx}
+
+\input{diagrams/op_input_stream}
+\input{diagrams/op_output_stream_list}
+\input{diagrams/op_output_stream}
+\input{diagrams/op_output_stream_option}
+
+\label{opprocessgroupoutputstreamoption}
+\index{DISPLAY@\DISPLAY!processgroup option}
+\index{STD\_WINDOW@\STDWINDOW!processgroup option}
+\index{NONE@\NONE!processgroup option DISPLAY=NONE}
+\begin{tabularx}{\textwidth}{l|X}
+output stream options  & description \\
+\hline
+\DISPLAY          & Output that is read by \INTENS{} from  the
+                         calculation process can be directed to a user defined text window
+                         (default is \STDWINDOW). \\
+\DISPLAY=\NONE    & The output can be suppressed by setting \DISPLAY{} to \NONE.\\
+\FORMAT           & TODO \newline
+                    \ASCII{} TODO \newline
+                    \BINARY{} TODO\\
+
+\end{tabularx}
+
+\input{diagrams/op_stream_parameter}
+\index{  @Signs / Characters!\texttt{"!} (exclamation mark)!streamer validation check}
+\index{  @Signs / Characters!\# (hash)!streamer index repesent.}
+\index{  @Signs / Characters!: (colon)!streamer skip width}
+\index{MATRIX@\MATRIX!streamer format command}
+\index{Scale factors!streamer}
+\index{DATASET\_TEXT@\DATASETTEXT!streamer format command}
+\index{SET@\SET!dataset\_text streamer format command}
+\index{STRING\_DATE@\STRINGDATE!streamer format command}
+\index{STRING\_TIME@\STRINGTIME!streamer format command}
+\index{STRING\_DATETIME@\STRINGDATETIME!streamer format command}
+\index{STRING\_VALUE@\STRINGVALUE!streamer format command}
+\index{EOLN@\EOLN!streamer format command}
+
+Instead of declaring a \STREAM{} in the \STREAMER{} section and using it, a stream
+can be defined here (without an identifier, it cannot be used elsewhere). The options
+are described in section \nameref{fig:st_format_command} on page \pageref{fig:st_format_command}.
+\vspace{1cm}
+
+\index{FIFO!process stream}
+The FIFO (named pipe) can be specified either as identifier or string:\\[2ex]
+\begin{tabularx}{\textwidth}{l|X}
+fifo name         & description \\
+\hline
+\verb+identifier+ & The fifo name is generated by appending the current process number
+                    to the identifier. The fifo is created in the directory \verb+/tmp+
+                    (and deleted after exiting \INTENS{}). Each \INTENS{} application has thus
+                    unique fifos. The same identifier can be used as argument for the batch process.\\
+\verb+string+     & The string defines the fifo name that \INTENS{} will create at startup
+                    and delete after exiting.\\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \PROCESSGROUP
+     inmo_prog \{"Inmo"\} (
+        jobinfo_stream \{\DISPLAY=\NONE\} =
+           seq_proc( dummy_in_stream );
+
+        plot_result_stream \{\DISPLAY=\NONE\} =
+           mech_inmo_proc( mech_in_stream );
+
+        dummy_out_stream \{\DISPLAY=Listing_Inmo\},
+        res_inmo_stream[inmores] =
+           inmo_proc( inmo_in_stream );
+     )
+ ;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            Reportstream                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Reportstreams}
+%           ---------
+\label{sec:reportstreams}
+Report streams are used to send streams to the script ReportConv.py, which
+transform the contents to the requested format (Postscript, PDF, etc.)
+\label{sec:opreportstreams}
+\input{diagrams/op_reportstream_declaration_list}
+\index{REPORTSTREAM@\REPORTSTREAM}
+
+\begin{tabularx}{\textwidth}{l|X}
+reportstream      & description \\
+\hline
+\verb+identifier+ & Identifies the Reportstream. \\
+\verb+stream id+  & References the stream defined in section STREAMER
+                                      (\nameref{sec:streamer} page \pageref{sec:streamer}). \\
+\end{tabularx}
+
+\input{diagrams/op_reportstream_option}
+
+\index{LATEX@\LATEX!reportstream option}
+\index{FILTER@\FILTER!reportstream option}
+\index{XML@\XML!reportstream option}
+\index{STYLESHEET@\STYLESHEET!reportstream option}
+\index{TEMPLATE@\TEMPLATE!reportstream option}
+\index{DIRNAME@\DIRNAME!reportstream option}
+\begin{tabularx}{\textwidth}{l|X}
+reportstream options & description \\ \hline
+\verb+label string+  & defines the label of the push button that opens the printer selection box\\
+\LATEX               & The stream contains \LaTeX  commands.
+                      (See \nameref{sec:oplatexreport} on page \pageref{sec:oplatexreport}.) \\
+\FILTER              & The stream is piped to a unix-process. (Works similar to filestream-option
+                              \PROCESS{}, see page \pageref{sec:opfilestreams}.) \\
+\XML                 & TODO \\
+\STYLESHEET          & TODO \\
+\TEMPLATE            & TODO \\
+\DIRNAME             & TODO \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \REPORTSTREAM
+      print_motor_16 = motor_stream_16 \{
+         "Motor V1.6"
+        ,\LATEX
+        \}
+ ;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            Latexreport                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Latexreports}
+Latexreports are used to create a pdf file using latex. Data as defined in a stream,
+possibly processed by the program provided with the option \FILTER{}, is written to
+a temporary .tex file. LaTeX then creates a pdf file from that .tex file.
+
+\label{sec:oplatexreport}
+\input{diagrams/op_latexreport_declaration_list}
+\index{LATEXREPORT@\LATEXREPORT}
+
+\begin{tabularx}{\textwidth}{l|X}
+latexreport       & description \\
+\hline
+\verb+identifier+ & Identifies the Latexreport. \\
+\verb+stream id+  & References the stream defined in section STREAMER
+                                      (\nameref{sec:streamer} page \pageref{sec:streamer}). \\
+\end{tabularx}
+
+\input{diagrams/op_latexreport_option}
+
+\index{FILTER@\FILTER!latexreport option}
+\begin{tabularx}{\textwidth}{l|X}
+latexreport options & description \\ \hline
+\verb+string+      & Defines the label of the push button that opens the printer selection box. \\
+\FILTER             & The stream data is piped to a batch process. (Works similar to filestream-option
+                      \PROCESS{} on page \pageref{sec:opfilestreams}.) \\
+\HIDDEN             & Don't add the \LATEXREPORT{} to the {\bfseries File Print} menu. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \LATEXREPORT
+      print_motor_16 = motor_stream_16 \{
+         "Motor V1.6"
+        \}
+ ;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Filestream                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Filestreams}
+File streams are used for loading and saving streams to and from files. \\
+\label{sec:opfilestreams}
+
+\input{diagrams/op_filestream_declaration_list}
+\index{FILESTREAM@\FILESTREAM!operator filestream}
+
+\begin{tabularx}{\textwidth}{l|X}
+filestream         & description \\
+\hline
+\verb+identifier+  & Identifies the filestream \\
+\verb+stream id+   & References the stream defined in section STREAMER
+                                (\nameref{sec:streamer} page \pageref{sec:streamer}) \\
+\end{tabularx}
+
+\input{diagrams/op_filestream_option}
+
+\index{standard input!filestream}
+\index{standard output!filestream}
+\index{FILTER@\FILTER!filestream option}
+\index{PROCESS@\PROCESS!filestream option}
+\index{READONLY@\READONLY!filestream option}
+\index{WRITEONLY@\WRITEONLY!filestream option}
+\index{RESET@\RESET!filestream option}
+\index{NO\_LOG@\NOLOG!filestream option}
+\begin{tabularx}{\textwidth}{l|X}
+filestream options & Bedeutung \\
+\hline
+\verb+string+     & defines the label of the push button that opens the file selection dialog\\
+\FILTER            & defines the file filter in the file selection dialog (default is \verb+*+)\\
+\PROCESS           & defines the executable batch program that is called for a reading or writing
+                     operation. The program must read from standard input
+                     and write to standard output. This program can be used for format conversions.\\
+\READONLY          & The stream is used for reading files only.
+                     It is not added to the {\bfseries File Save} menu. \\
+\WRITEONLY         & The stream is used for writing files only.
+                     It is not added to the {\bfseries File Open} menu. \\
+\RESET             & A read operation resets the modify status of the datapool items and
+                                          deletes the associated results.\\
+\NOLOG             & Does not print log-messages to the \LOGWINDOW. \\
+\EXTENSION         & Defines extension text, which will be automaticly added to the filename. \\
+\HIDDEN            & Don't add the \FILESTREAM{} to the {\bfseries File Open} and {\bfseries File Save} menus. \\
+\DIRNAME           & Defines the default directory for this filestream. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \FILESTREAM
+      get_motor_16 = open_motor_stream_16 \{
+         "Motor V1.6"
+        ,\PROCESS="/home/tar/intens/tracomo/tp/inmo/pmotor"
+        ,\READONLY, \RESET, \FILTER="*.inm"
+        \}
+ ;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                Packages                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                Tasks                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Tasks}
+\label{sec:optasks}
+Tasks provide a process control feature:
+the execution of user defined process groups can be programmed using
+a C-like syntax
+(see section \nameref{sec:functions} on page \pageref{sec:functions}).
+
+\input{diagrams/job_task_list}
+\index{TASK@\TASK}
+
+\begin{tabularx}{\textwidth}{l|X}
+task              & description\\
+\hline
+\verb+identifier+ & Name of the task\\
+\verb+statement+  & Task statements have the same syntax as function statements.
+                        (see section \nameref{sec:functions} on page \pageref{sec:functions})\\
+\end{tabularx}
+
+\input{diagrams/job_task_options}
+
+\index{FORM@\FORM!task option}
+\index{NONE@\NONE!task option FORM=NONE}
+%%(not implemented in intens4) \index{HELPTEXT@\HELPTEXT!task option}
+\index{HIDDEN@\HIDDEN!task option}
+\index{NO\_LOG@\NOLOG!task option}
+\index{SILENT@\SILENT!task option}
+\begin{tabularx}{\textwidth}{l|X}
+task options & description\\
+\hline
+\verb+string+         & defines the label of the push button, that starts the TASK.
+                        The default value is the name (\verb+identifier+) of the task.\\
+\FORM                 & creates the push button in the button bar of the form \verb+identifier+.
+                        The push button is created in the main window if this option is missing.\\
+\FORM=\NONE           & If the identifier is \NONE{} no button will be created at all.\\
+\HIDDEN               & Does not create a menu-entry in process-menu. \\
+\NOLOG                & Does not print log-messages (i.E. BEGIN : TASK, END : TASK, ABORT : TASK)
+                        to the  \LOGWINDOW{}
+                        (except \PRINT{}, \SETERROR{} and \ABORT{} messages). \\
+\SILENT               & The busy cursor is shown instead of the Process Dialog. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\OPERATOR
+ \TASK
+    task_identifier \{"button label"\}(
+      \RUN processgroup_id_1;
+      \RUN processgroup_id_2;
+   )
+  ;
+END \OPERATOR ;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                Menu                                   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Menu}
+\label{sec:opmenu}
+\index{MENU@\MENU!OPERATOR}
+\input{diagrams/op_menu_list}
+\input{diagrams/op_menu_button_list}
+
+The menu buttons for the declared process groups and tasks
+can be explicitly created and appended in different menus using the
+\MENU{} declaration.
+\vspace{0.5cm}
+
+\index{MENU@\MENU!OPERATOR!PROCESSGROUP}
+\index{MENU@\MENU!OPERATOR!TASK}
+\index{PROCESS@\PROCESS!operator menu}
+\index{SEPARATOR@\SEPARATOR!operator menu}
+\begin{tabularx}{\textwidth}{l|X}
+MENU Syntax     & description \\
+\hline
+\MENU           & creates a submenu.\\
+\PROCESS        & creates a menu button within that submenu containing the
+                  name of the process group or task to be started with this button.\\
+\SEPARATOR      & creates a separator line\\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\OPERATOR
+ \MENU
+    Process \{\FORM = Form_1, "Calculations" \}(
+      \PROCESS Process_1,
+      \PROCESS Process_2,
+      \SEPARATOR,
+      \MENU "more Processes" (
+         \PROCESS Process_3
+      )
+   )
+  ;
+END \OPERATOR ;
+\end{alltt}
+\end{boxedminipage}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Thermo {
+  GuiElement base = 1;
+  string label = 2;
+  double scale = 3;
+  message ColorEntry {
+    double value = 1;
+    string color = 2;
+  }
+  repeated ColorEntry color_list = 4;
+}

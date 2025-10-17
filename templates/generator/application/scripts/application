@@ -1,0 +1,159 @@
+#!/usr/bin/env sh
+#
+#  Purpose: Start script for ${applicationShortName}
+# (initially generated from template)
+#  ARGS:
+#    -a  don't start api-gateway
+#    -i  don't start intens
+#    -d  debug output
+#    -t  test function
+#
+debug=0
+while [ $# -gt 0 ]; do
+  case $1 in
+      -i|--no-intens)
+      APIGW_LOG=/dev/stderr
+      shift # past value
+      ;;
+    -a|--no-api-gateway)
+      export API_GATEWAY_HOST="localhost"
+      shift # past value
+      ;;
+    -d|--debug)
+      debug=1
+      shift # past argument
+      ;;
+    -t|--test)
+        TEST_FUNCTION="$1 $2 --dbautologon"
+        shift
+        shift
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      # ignore
+      shift # past argument
+      ;;
+  esac
+done
+
+# installed or develop
+bindir=$(basename "$(dirname "$(realpath -s "$0")")")
+if [ "$bindir" = "bin" ]; then
+    installed=true
+else  # development environment
+    installed=false
+fi
+
+# paths (APPHOME, TOP_DIR, ...)
+APPHOME=$(realpath "$(dirname "$(dirname "$(realpath -s "$0")")")")
+export APPHOME
+
+if [ "$installed" = true ]; then
+    TOP_DIR=$APPHOME
+else
+    TOP_DIR=$(realpath "$(dirname "$(dirname "$(dirname "$(realpath -s "$0")")")")")
+fi
+export TOP_DIR
+
+# redirect output
+if [ "$OSTYPE" = linux-gnu ]; then
+    stdout=/dev/stdout
+    stderr=/dev/stderr
+else
+    stdout="@@{APPHOME}/${application}.out"
+    stderr="@@{APPHOME}/${application}.err"
+fi
+startup="@@{APPHOME}/${application}.startup"
+if [ $debug = 1 ]; then
+    echo "Starting ${applicationShortName}" > @@{startup}
+    echo "bindir=$bindir" >> @@{startup}
+    echo "installed=$installed" >> @@{startup}
+    echo "APPHOME=$APPHOME" >> @@{startup}
+    echo "TOP_DIR=$TOP_DIR" >> @@{startup}
+fi
+
+PATH="@@{APPHOME}/@@{bindir}:@@{TOP_DIR}/@@{bindir}:@@{TOP_DIR}/api-gateway:@@{PATH}"
+if [ $debug = 1 ]; then
+    echo "PATH=$PATH" >> @@{startup}
+fi
+[ -r "$APPHOME/${application}.cfg" ] && source "$APPHOME/${application}.cfg"
+
+# ZMQ interface for python
+API_GATEWAY_LOGGER_PORT=@@{API_GATEWAY_LOGGER_PORT:-15574}
+API_GATEWAY_PORT=@@{API_GATEWAY_PORT:-15558}
+#API_GATEWAY_HOST=@@{API_GATEWAY_HOST:-localhost}
+export API_GATEWAY_LOGGER_PORT
+export API_GATEWAY_PORT
+INTENS_REPLY_PORT=@@{INTENS_REPLY_PORT:-0}
+
+DB_HOST=@@{DB_HOST:-localhost}
+DB_PORT=@@{DB_PORT:-8080}
+REST_SERVICE_BASE=@@{REST_SERVICE_BASE:-"http://@@{DB_HOST}:@@{DB_PORT}/workbook"}
+export REST_SERVICE_BASE
+
+# Do we need to start api gateway?
+if [ -z "$API_GATEWAY_HOST" ]; then
+    APIGW="python"
+    APIGW_FILENAME="@@{TOP_DIR}/api-gateway/api-gateway.py"
+    export API_GATEWAY_HOST="localhost"
+
+    if [ -n "$conda_env" ]; then
+        CONDADIR=$(echo /@@{minicondadir} | tr -s '\\' '/' | tr -s ':' '/')
+        export CONDADIR
+        [ ! -d "$CONDADIR" ] && messagebox "CONDADIR" "CONDADIR is not valid (@@{minicondadir})" && exit 1
+        [ ! -d "$CONDADIR/envs/$conda_env" ] && messagebox "conda_env" "CONDA Enviroment is not valid (@@{conda_env})" && exit 1
+        PATH="$CONDADIR/envs/$conda_env:$CONDADIR/envs/$conda_env/Library/bin:$PATH"
+    elif [ -f "@@{TOP_DIR}/api-gateway/api-gateway.exe" ]; then
+        PATH=$PATH:"@@{TOP_DIR}/api-gateway"
+        APIGW=api-gateway.exe
+    fi
+    if [ -z "$APIGW_LOG" ]; then
+      APIGW_LOG="@@{APPHOME}/api-gateway.log"
+      @@{APIGW} "$APIGW_FILENAME" $convertpath -z > @@{APIGW_LOG} 2>&1 &
+
+      API_PID=$!
+      echo "api-gateway started: PID=$API_PID, HOST=$API_GATEWAY_HOST, PORT=$API_GATEWAY_PORT" >> @@{startup}
+      trap "kill @@{API_PID} && echo 'api-gateway terminated; PID=$API_PID' >> @@{startup}" TERM INT EXIT
+    else
+        @@{APIGW} "$APIGW_FILENAME" $convertpath -z $DEBUG
+        exit
+    fi
+fi
+
+BITMAP_BASE_PATH=@@{TOP_DIR}/bitmaps
+BITMAP_PATH="@@{BITMAP_BASE_PATH}:@@{BITMAP_BASE_PATH}/icons:@@{BITMAP_BASE_PATH}/icons/status"
+export BITMAP_PATH
+if [ $debug = 1 ]; then
+    echo "BITMAP_BASE_PATH=$BITMAP_BASE_PATH" >> @@{startup}
+    echo "BITMAP_PATH=$BITMAP_PATH" >> @@{startup}
+fi
+
+STYLE="Fusion"
+
+# language
+if [ "$OSTYPE" = linux-gnu ]; then
+    export LC_MESSAGES="en_US.utf8"
+    if [ $debug = 1 ]; then
+        echo "LC_MESSAGES=$LC_MESSAGES" >> @@{startup}
+    fi
+else
+    export LANG="en_US.utf8"
+    if [ $debug = 1 ]; then
+        echo "LANG=$LANG" >> @@{startup}
+    fi
+fi
+
+intens ${"\\"}
+  --rightIcon semafor ${"\\"}
+  --undo ${"\\"}
+  --notitle ${"\\"}
+  --replyPort "@@{INTENS_REPLY_PORT}" ${"\\"}
+  --helpmsg ${"\\"}
+  --maxlines 10000 ${"\\"}
+  --qtGuiStyle @@{STYLE} ${"\\"}
+  --startupImage "@@{TOP_DIR}/bitmaps/startup" ${"\\"}
+  --resfile "@@{APPHOME}/etc/${application}.ini" ${"\\"}
+  "@@{APPHOME}/etc/${application}.des" > @@{stdout} 2> @@{stderr}

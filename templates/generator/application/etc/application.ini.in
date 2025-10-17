@@ -1,0 +1,238 @@
+[Intens]
+apptitle.text=${applicationName}
+appsubtitle.text=Version _VERSION_
+Stylesheet=${application}
+
+ApplicationIcon=semafor_icon
+
+Authorization=jwt
+
+Copyright.text="
+
+${applicationName}
+
+"
+
+[Colors]
+#helpBackground=#ffc800
+#helpForeground=#000000
+helpForeground=#285ac8
+# turn info messages invisible
+#infoBackground=#e0e0e0
+#infoForeground=#e0e0e0
+
+color1Background=#5ac828
+color1Foreground=#000000
+color2Background=#c82828
+color2Foreground=#000000
+color3Background=#285ac8
+color3Foreground=#000000
+color4Background=#ffc800
+color4Foreground=#000000
+color5Background=#fea9a9
+color5Foreground=#000000
+
+#readonly and locked background color is shown 13% darker than defined here
+readonlyBackground=#d8dadd
+readonlyForeground=#000000
+#lockedBackground=#ffc800
+lockedBackground=#e0e0e0
+lockedForeground=#000000
+
+#editableLBackground=#
+#editableLForeground=#
+#readonlyLBackground=#
+#readonlyLForeground=#
+#optionalLBackground=#
+#optionalLForeground=#
+optionalBackground=#858700
+optionalForeground=black
+
+[DefaultColors]
+background=#e6e7e8
+foreground=#000000
+
+base=#ffffff
+text=#000000
+
+button=#e0e0e0
+buttonText=#000000
+
+##highlight=#0a206a
+##highlightedText=#ffffff
+
+brightText=yellow
+
+link=orange
+linkVisited=brown
+
+[fonts]
+# Application Title
+appTitle.Family=_FONT_
+appTitle.PointSize=14
+appTitle.Weight=Bold
+
+# Application Subtitle
+subTitle.Family=_FONT_
+subTitle.PointSize=12
+subTitle.Weight=Bold
+
+# Copyright
+copyright.Family=_FONT_
+copyright.PointSize=9
+copyright.Weight=Bold
+
+# Combobox
+combobox.Family=Courier
+combobox.PointSize=10
+combobox.Weight=Normal
+
+# Button
+button.Family=_FONT_
+button.PointSize=9
+button.Weight=Normal
+
+charset1.Family=_FONT_
+charset1.PointSize=112
+charset1.Weight=Bold
+charset2.Family=_FONT_
+charset2.PointSize=9
+charset2.Weight=Normal
+
+# Index
+index.Family=_FONT_
+index.PointSize=9
+index.Weight=Normal
+
+# Label, Table index
+label.Family=_FONT_
+label.PointSize=9
+label.Weight=Normal
+
+# Bold
+bold.Family=_FONT_
+bold.PointSize=9
+bold.Weight=Bold
+
+# Small
+small.Family=_FONT_
+small.PointSize=6
+small.Weight=Normal
+
+# Large
+large.Family=_FONT_
+large.PointSize=12
+large.Weight=Bold
+
+# Message Line
+messageLine.Family=_FONT_
+messageLine.PointSize=9
+messageLine.Weight=Normal
+
+#List and Table entries
+list.Family=Courier
+list.PointSize=10
+list.Weight=Normal
+
+#List title
+listTitle.Family=Courier
+listTitle.PointSize=10
+listTitle.Weight=Normal
+
+# Main Menu Item
+menu.Family=_FONT_
+menu.PointSize=9
+menu.Weight=Bold
+
+
+# Submenu Item
+pulldown.Family=_FONT_
+pulldown.PointSize=9
+pulldown.Weight=Normal
+
+# Popument Item
+popup.Family=_FONT_
+popup.PointSize=9
+popup.Weight=Normal
+
+# Symbol
+symbol.Family=Symbol
+symbol.PointSize=10
+symbol.Weight=Normal
+
+# Symbol
+Symbol.Family=Symbol
+Symbol.PointSize=10
+Symbol.Weight=Normal
+
+# Symfont
+symfont.Family=Symbol
+symfont.PointSize=9
+symfont.Weight=Normal
+
+# Tabs
+folderTab.Family=_FONT_
+folderTab.PointSize=9
+folderTab.Weight=Normal
+
+# Fieldgroup Title
+groupboxTitle.Family=_FONT_
+groupboxTitle.PointSize=12
+groupboxTitle.Weight=Bold
+
+# Text
+text.Family=Courier
+text.PointSize=10
+text.Weight=Normal
+
+# Title
+title.Family=_FONT_
+title.PointSize=12
+title.Weight=Bold
+
+#Plot
+plotAxisTitle.Family=_FONT_
+plotAxisTitle.PointSize=9
+plotAxisTitle.Weight=Normal
+
+plotTitle.Family=_FONT_
+plotTitle.PointSize=9
+plotTitle.Weight=Bold
+
+plotMarker.Family=_FONT_
+plotMarker.PointSize=9
+plotMarker.Weight=Normal
+
+plotLegend.Family=_FONT_
+plotLegend.PointSize=9
+plotLegend.Weight=Normal
+
+plotAxis.Family=Courier
+plotAxis.PointSize=9
+plotAxis.Weight=Normal
+
+thermoScale.Family=_FONT_
+thermoScale.PointSize=9
+thermoScale.Weight=Normal
+
+thermoUnits.Family=_FONT_
+thermoUnits.PointSize=9
+thermoUnits.Weight=Normal
+
+thermoLabel.Family=_FONT_
+thermoLabel.PointSize=9
+thermoLabel.Weight=Bold
+
+
+[Navigator]
+variant.iconPixmap=variant
+
+[IconView]
+
+[Diagram]
+
+[Dialog]
+project_overview_form.visible=ignore
+logbook_entry_form.visible=ignore
+modifications_form.visible=ignore
+used_in_projects_form.visible=ignore

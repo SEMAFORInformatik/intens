@@ -1,0 +1,31 @@
+syntax = "proto3";
+import "GuiElement.proto";
+import "Datafield.proto";
+import "IndexMenu.proto";
+package in_proto;
+
+message List {
+  GuiElement base = 1;
+  string title = 2;
+  GuiElement.Alignment title_alignment = 3;
+  uint32 row_count = 4;
+  repeated uint32 selected = 5;
+  bool multi_selection = 6;
+  string action = 7;
+  repeated string bgcolor = 8;
+  repeated string fgcolor = 9;
+
+  message ListElement {
+    repeated string values = 1;
+    string label = 2;
+    GuiElement.Alignment alignment = 3;
+    bool optional = 4;
+    uint32 width = 5;
+    ValueInfo value = 6;
+    string full_name = 7;
+    repeated string bgColors = 8;
+    repeated string fgColors = 9;
+  }
+  repeated ListElement entries = 10;
+  PopupMenu popup_base_menu = 11;
+}

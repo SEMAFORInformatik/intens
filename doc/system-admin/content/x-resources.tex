@@ -1,0 +1,469 @@
+\newpage
+\section{X Resources}
+%        ===========
+\label{sec:x-resources}
+The graphical objects in Motif applications are organized as a hierarchy,
+\index{Motif}
+referred to as the widget tree. Every widget has a name and belongs
+to a class. The application class name is the name of the
+interpreter program with a capital first letter (eg. Intens).
+
+The following diagrams show the widget tree of an \INTENS{}
+application. (For more information refer to the bibliography).
+\subsection{The Main Window}
+
+\includegraphics[width=\linewidth]{xfig/main_widgettree}
+
+\subsection{The Form Window}
+\vspace{2cm}
+
+\includegraphics[width=\linewidth]{xfig/form_widgettree}
+\newpage
+\subsection{Specification Example}
+The following example is part of the \INTENS{} distribution:
+\index{x-resource file}
+\index{resource file}
+{\small
+\begin{verbatim}
+! ============================================================================== !
+!                   X11 resource file for Intens V3.0 (Standard)                 !
+! ============================================================================== !
+!
+Intens.*.startup_label.background:  yellow
+Intens.*.startup_label.foreground:  black
+!
+! ------------------------------------------------------------------------------ !
+! Application Header                                                             !
+! ------------------------------------------------------------------------------ !
+!Intens.*.appTitle.labelString:    INTENS - Engineering Manager\nVersion 3.0
+!Intens.*.appTitle.fontList:       -*-helvetica-*-r-*-*-18-*-*-*-*-*-iso8859-*
+!Intens.*.subTitle.labelString:    (Standard Resourcefile)
+!Intens.*.subTitle.foreground:     #BE826F
+!Intens.*.subTitle.fontList:       -*-helvetica-*-r-*-*-10-*-*-*-*-*-iso8859-*
+!
+! ------------------------------------------------------------------------------ !
+! globals                                                                        !
+! ------------------------------------------------------------------------------ !
+Intens.*.shadowThickness:         1
+Intens.*.highlightThickness:      1
+Intens.*.borderWidth:             0
+Intens.*.togglebutton.shadowThickness:    0
+Intens.*.togglebutton.marginHeight:       0
+Intens.*.togglebutton.marginWidth:        0
+Intens.*.togglebutton.fillOnSelect:       True
+Intens.*.togglebutton.selectColor:        green
+Intens.*.togglebutton.indicatorSize:      12
+!
+! ------------------------------------------------------------------------------ !
+! Intens Colors                                                                  !
+! ------------------------------------------------------------------------------ !
+Intens.*.background:                       grey
+Intens.*.foreground:                       black
+Intens.*.highlightColor:                   black
+Intens.*.editableBackground:               ivory
+Intens.*.editableForeground:               black
+Intens.*.editableLBackground:              ivory
+Intens.*.editableLForeground:              black
+Intens.*.optionalBackground:               LightSeaGreen
+Intens.*.optionalForeground:               black
+Intens.*.optionalLBackground:              LightSeaGreen
+Intens.*.optionalLForeground:              black
+Intens.*.readonlyBackground:               LightGrey
+Intens.*.readonlyForeground:               black
+Intens.*.readonlyLBackground:              LightGrey
+Intens.*.readonlyLForeground:              black
+Intens.*.lockedBackground:                 indianred
+Intens.*.lockedForeground:                 white
+Intens.*.errorBackground:                  red
+Intens.*.errorForeground:                  white
+Intens.*.indexBackground:                  grey
+Intens.*.indexForeground:                  black
+Intens.*.curator_view.background:          LightSeaGreen
+Intens.*.curator_view.foreground:          black
+Intens.*.curator_text.background:          ivory
+Intens.*.curator_text.foreground:          black
+Intens.*.viewplane.background:             LightSeaGreen
+Intens.*.viewplane.foreground:             black
+!
+! ------------------------------------------------------------------------------ !
+! Container                                                                      !
+! ------------------------------------------------------------------------------ !
+!Intens.*.verticalContainer.shadowThickness:  2
+Intens.*.verticalContainer.spacing:          1
+!
+! ------------------------------------------------------------------------------ !
+! Borders                                                                        !
+! ------------------------------------------------------------------------------ !
+Intens.*.borderColor:                    orange
+Intens.*.horizontalForm.borderColor:     blue
+Intens.*.horizontalForm.borderWidth:     0
+Intens.*.horizontalForm.marginHeight:    0
+Intens.*.verticalForm.borderColor:       red
+Intens.*.verticalForm.borderWidth:       0
+Intens.*.verticalForm.marginWidth:       0
+Intens.*.fieldgroupForm.borderColor:     pink
+Intens.*.fieldgroupForm.borderWidth:     0
+Intens.*.optionfield.borderColor:        pink
+Intens.*.optionfield.borderWidth:        0
+!
+! ------------------------------------------------------------------------------ !
+! Fonts                                                                          !
+! ------------------------------------------------------------------------------ !
+Intens.*.fontList:			-*-helvetica-*-r-*-*-10-*-*-*-*-*-iso8859-*=defaultfont,\
+					-*-courier-medium-r-normal-*-12-*-*-*-*-*-iso8859-*=textfont,\
+                                        -*-courier-medium-r-normal-*-10-*-*-*-*-*-iso8859-*=listfont,\
+					-*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*=titlefont,\
+                                        -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*=largefont,\
+                                        -*-helvetica-bold-r-normal-*-18-*-*-*-*-*-iso8859-*=hugefont,\
+					-*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*=tabfont,\
+					-*-helvetica-medium-r-normal-*-12-*-*-*-*-*-iso8859-*=labelfont,\
+					-*-helvetica-bold-r-*-*-10-*-*-*-*-*-iso8859-*=indexfont,\
+                                        -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*=menufont,\
+					-*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*=buttonfont,\
+                                        -*-helvetica-medium-r-normal-*-12-*-*-*-*-*-iso8859-*=pulldownfont,\
+                                        -*-helvetica-medium-r-normal-*-12-*-*-*-*-*-iso8859-*=bannerfont,\
+                                        -*-symbol-*-*-*-*-10-*-*-*-*-*-iso8859-*=symfont
+Intens.*.copyright*fontList:            -*-helvetica-bold-r-*-*-14-*-*-*-*-*-iso8859-*=charset1,\
+	                                -*-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-*=charset2
+Intens.*.XmSelectionBox*fontList:       -*-courier-medium-r-normal-*-16-*-*-*-*-*-iso8859-*
+Intens.*.XmList*fontList:               -*-courier-medium-r-normal-*-10-*-*-*-*-*-iso8859-*
+Intens.*.selectionlist*fontList:        -*-courier-medium-r-normal-*-10-*-*-*-*-*-iso8859-*
+Intens.*.XmTextField.fontList:          -*-courier-medium-r-normal-*-12-*-*-*-*-*-iso8859-*
+Intens.*.XmText.fontList:               -*-courier-medium-r-normal-*-12-*-*-*-*-*-iso8859-*
+Intens.*.xrtlist.xrtTblFontListSeries:  (ALL ALL -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*)
+Intens.*.xrttable.xrtTblFontListSeries: (ALL ALL -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*)
+!
+! ------------------------------------------------------------------------------ !
+! Menubar                                                                        !
+! ------------------------------------------------------------------------------ !
+Intens.*.menuCursor:  hand1
+Intens.*.menubar.*.background:                        SlateGrey
+Intens.*.menubar.*.foreground:                        White
+Intens.*.menubar.*.XmToggleButton.fillOnSelect:       True
+Intens.*.menubar.*.XmToggleButton.selectColor:        green
+Intens.*.menubar.*.XmToggleButton.indicatorSize:      12
+Intens.*.menubar.XmCascadeButton.marginWidth:         6
+!
+! ------------------------------------------------------------------------------ !
+! PopupMenu                                                                      !
+! ------------------------------------------------------------------------------ !
+Intens.*.popupmenu.*.background:                      SlateGrey
+Intens.*.popupmenu.*.foreground:                      White
+Intens.*.popupmenu.*.XmToggleButton.fillOnSelect:     True
+Intens.*.popupmenu.*.XmToggleButton.selectColor:      red
+Intens.*.popupmenu.*.XmToggleButton.indicatorSize:    12
+!
+! ------------------------------------------------------------------------------ !
+! PulldownMenu                                                                   !
+! ------------------------------------------------------------------------------ !
+Intens.*.pulldownmenu.*.background:                   SlateGrey
+Intens.*.pulldownmenu.*.foreground:                   White
+Intens.*.pulldownmenu.*.XmToggleButton.fillOnSelect:  True
+Intens.*.pulldownmenu.*.XmToggleButton.selectColor:   blue
+Intens.*.pulldownmenu.*.XmToggleButton.indicatorSize: 12
+!
+! ------------------------------------------------------------------------------ !
+! Buttonbar                                                                      !
+! ------------------------------------------------------------------------------ !
+Intens.*.buttonbar.spacing:                           0
+Intens.*.buttonbar.marginHeight:                      0
+Intens.*.buttonbar.marginWidth:                       0
+Intens.*.buttonbar.*.XmPushButton.background:         SlateGrey
+Intens.*.buttonbar.*.XmPushButton.foreground:         White
+!
+! ------------------------------------------------------------------------------ !
+! Messagebar/Statusbar                                                           !
+! ------------------------------------------------------------------------------ !
+Intens.*.message.background:       grey
+Intens.*.message.foreground:       black
+Intens.*.message.fontList:         -*-helvetica-*-r-*-*-12-*-*-*-*-*-iso8859-*
+Intens.*.message.alignment:        ALIGNMENT_BEGINNING
+!
+! ------------------------------------------------------------------------------ !
+! HelpBanner                                                                     !
+! ------------------------------------------------------------------------------ !
+Intens.*.buttonbanner.banner.background:     ivory
+Intens.*.buttonbanner.banner.foreground:     black
+Intens.*.buttonbanner.banner.fontlist:       -*-helvetica-bold-r-*-*-12-*-*-*-*-*-iso8859-*
+Intens.*.buttonbanner.banner.alignment:      ALIGNMENT_BEGINNING
+!
+! ------------------------------------------------------------------------------ !
+! Fieldgroup                                                                     !
+! ------------------------------------------------------------------------------ !
+Intens.*.fieldgroupForm.marginWidth:             2
+Intens.*.fieldgroupForm.marginHeight:            2
+Intens.*.textfieldSW.spacing:                    0
+!
+! ------------------------------------------------------------------------------ !
+! Textfield                                                                      !
+! ------------------------------------------------------------------------------ !
+Intens.*.XmTextField.marginWidth:                2
+Intens.*.XmTextField.marginHeight:               3
+!
+! ------------------------------------------------------------------------------ !
+! Folder                                                                         !
+! ------------------------------------------------------------------------------ !
+Intens.*.tabmanager.highlightThickness:          2
+Intens.*.tabmanager.xrtGearShadowThickness:      2
+Intens.*.tabmanager.borderWidth:                 0
+Intens.*.tabmanager.tabpage.shadowThickness:     0
+Intens.*.tabmanager.tabbutton.background:        SlateGrey
+Intens.*.tabmanager.tabbutton.foreground:        White
+!
+! ------------------------------------------------------------------------------ !
+! XrtNavigator                                                                   !
+! ------------------------------------------------------------------------------ !
+Intens.*.XmXrtOutliner.XmXrtColumn*fontList   : -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*
+Intens.*.XmXrtOutliner*fontList               : -*-courier-medium-r-normal-*-12-*-*-*-*-*-iso8859-*
+Intens.*.XmXrtOutliner*xrtGearBorderType      : BORDER_IN
+Intens.*.XmXrtOutliner*xrtGearShadowThickness : 1
+Intens.*.XmXrtOutliner*xrtGearLabelAlignment  : ALIGN_END
+!Intens.*.XmXrtOutliner*xrtGearNodeAlignment   : ALIGN_END
+!
+! ------------------------------------------------------------------------------ !
+! Table                                                                          !
+! ------------------------------------------------------------------------------ !
+Intens.*.xrtTblSpace:                            1
+!
+! ------------------------------------------------------------------------------ !
+! GuiXrtList xrtlist                                                             !
+! ------------------------------------------------------------------------------ !
+Intens.*.xrtlist.xrtTblRepeatBackgroundColors	:grey, LightGrey
+Intens.*.xrtlist.xrtTblRepeatForegroundColors	:black, black
+Intens.*.xrtlist.xrtTblBackgroundSeries		:(label all SlateGrey)\
+						 (allcells allcells repeat_row)
+Intens.*.xrtlist.xrtTblForegroundSeries		:(label all black)\
+						 (allcells allcells repeat_row)
+Intens.*.xrtlist.xrtTblBorderSidesSeries	:(label all borderside_all) \
+						 (allcells allcells borderside_none)
+Intens.*.xrtlist.xrtTblBorderTypeSeries		:(label all border_out)
+Intens.*.xrtlist.xrtTblSelectedBackground	:black
+Intens.*.xrtlist.xrtTblSelectedForeground	:white
+Intens.*.horizontalForm.xrtlist.xrtTblFontListSeries: (allcells allcells -*-courier-*-r-*-*-10-*-*-*-*-*-iso8859-*)\
+         					      (label all -*-courier-*-r-*-*-10-*-*-*-*-*-iso8859-*)
+Intens.*.xrtlist.xrtTblAlignmentSeries		:(label all ALIGNMENT_MIDDLEBEGIN)\
+						 (allcells allcells ALIGNMENT_MIDDLEBEGIN)
+Intens.*.xrtlist.xrtTblColumnLabelOffset	:3
+!
+! ------------------------------------------------------------------------------ !
+! Xrt3d Plot                                                                     !
+! ------------------------------------------------------------------------------ !
+Intens.*.xrt3dType:			TypeSurface
+
+Intens.*.xrt3dDrawMesh:			True
+Intens.*.xrt3dDrawShaded:		True
+Intens.*.xrt3dDrawZones:		True
+Intens.*.xrt3dDrawContours:		True
+Intens.*.xrt3dDrawHiddenLines:		False
+
+Intens.*.xrt3dMeshTopColor:		black
+Intens.*.xrt3dMeshBottomColor:		black
+Intens.*.xrt3dXMeshFilter:              0
+Intens.*.xrt3dYMeshFilter:              0
+
+Intens.*.xrt3dSolidSurface:		False
+Intens.*.xrt3dSurfaceBottomColor:       SlateGrey
+Intens.*.xrt3dSurfaceTopColor:		grey
+
+Intens.*.xrt3dXGridLines:		XYPlane + XZPlane
+Intens.*.xrt3dYGridLines:		XYPlane + YZPlane
+Intens.*.xrt3dZGridLines:		XZPlane + YZPlane
+
+Intens.*.xrt3dXScale:			1
+Intens.*.xrt3dYScale:			1
+Intens.*.xrt3dZScale:			1
+
+Intens.*.xrt3dBackgroundColor:          grey
+Intens.*.xrt3dForegroundColor:          black
+Intens.*.xrt3dGraphBackgroundColor:     grey
+Intens.*.xrt3dGraphForegroundColor:     black
+Intens.*.xrt3dDataAreaBackgroundColor:  ivory
+Intens.*.xrt3dDataAreaForegroundColor:  black
+
+Intens.*.xrt3dHeaderAdjust:		AdjustCenter
+Intens.*.xrt3dHeaderBorder:		BorderPlain
+Intens.*.xrt3dHeaderFont:		-*-helvetica-bold-r-*-*-12-*-*-*-*-*-iso8859-*
+Intens.*.xrt3dHeaderBackgroundColor:    grey
+Intens.*.xrt3dHeaderForegroundColor:    black
+
+Intens.*.xrt3dFooterAdjust:             AdjustCenter
+Intens.*.xrt3dFooterBorder:             BorderPlain
+Intens.*.xrt3dFooterFont:		-*-helvetica-bold-r-*-*-12-*-*-*-*-*-iso8859-*
+Intens.*.xrt3dFooterBackgroundColor:    grey
+Intens.*.xrt3dFooterForegroundColor:    black
+
+Intens.*.xrt3dLegendOrientation:	AlignVertical
+Intens.*.xrt3dLegendStyle:		LegendStyleContinuous
+Intens.*.xrt3dLegendBorder:		BorderEtchedIn
+Intens.*.xrt3dLegendAnchor:             AnchorEast
+Intens.*.xrt3dLegendShow:		True
+Intens.*.xrt3dLegendFont:               -*-helvetica-bold-r-normal-*-10-*-*-*-*-*-iso8859-*
+Intens.*.xrt3dLegendBackgroundColor:    LightGrey
+Intens.*.xrt3dLegendForegroundColor:    black
+
+Intens.*.xrt3dTextAdjust:               AdjustCenter
+Intens.*.xrt3dTextBackgroundColor:      grey
+Intens.*.xrt3dTextForegroundColor:      black
+Intens.*.xrt3dTextLineShow:             True
+Intens.*.xrt3dTextPlane:		XZPlane
+Intens.*.xrt3dTextStrokeSize:		30
+!
+! ------------------------------------------------------------------------------ !
+! XrtGraph Plot                                                                  !
+! ------------------------------------------------------------------------------ !
+Intens.*.xrtBorder:                      BorderNone
+Intens.*.xrtBackgroundColor:             grey
+Intens.*.xrtForegroundColor:             black
+
+Intens.*.xrtGraphBorder:                 Border3dIn
+Intens.*.xrtGraphBackgroundColor:        ivory
+Intens.*.xrtGraphForegroundColor:        black
+Intens.*.xrtDataAreaBackgroundColor:     lightgrey
+Intens.*.xrtDataAreaForegroundColor:     black
+!
+! Data Style Resources
+!
+! ( [line pattern] [fill pattern] [color] [line width]
+!   [point style] [point color] [point size] )
+!
+Intens.*.xrtDataStyles: (\
+  (LpatSolid FpatSolid "red" 1 PointNone "red" 5)\
+  (LpatSolid FpatSolid "blue" 1 PointNone "blue" 5)\
+  (LpatSolid FpatSolid "green" 1 PointNone "green" 5)\
+  (LpatSolid FpatSolid "navy" 1 PointNone "navy" 5)\
+  (LpatSolid FpatSolid "gold" 1 PointNone "gold" 5)\
+  (LpatSolid FpatSolid "pink" 1 PointNone "pink" 5)\
+  (LpatSolid FpatSolid "magenta" 1 PointNone "magenta" 5)\
+  (LpatSolid FpatSolid "cyan" 1 PointNone "cyan" 5)\
+)
+Intens.*.xrtDataStyles2: (\
+  (LpatShortDash FpatSolid "red" 1 PointNone "red" 5)\
+  (LpatShortDash FpatSolid "blue" 1 PointNone "blue" 5)\
+  (LpatShortDash FpatSolid "green" 1 PointNone "green" 5)\
+  (LpatShortDash FpatSolid "navy" 1 PointNone "navy" 5)\
+  (LpatShortDash FpatSolid "gold" 1 PointNone "gold" 5)\
+  (LpatShortDash FpatSolid "pink" 1 PointNone "pink" 5)\
+  (LpatShortDash FpatSolid "magenta" 1 PointNone "magenta" 5)\
+  (LpatShortDash FpatSolid "cyan" 1 PointNone "cyan" 5)\
+)
+
+Intens.*.xrtAxisFont:       -*-helvetica-bold-r-normal-*-10-*-*-*-*-*-iso8859-*
+Intens.*.xrtXGrid:          5.000000
+Intens.*.xrtXGridDataStyle: (LpatDotted FpatSolid black 1 PointNone black 7)
+Intens.*.xrtYGrid:          10.000000
+Intens.*.xrtYGridDataStyle: (LpatDotted FpatSolid black 1 PointNone black 7)
+
+Intens.*.xrtHeaderAdjust:             AdjustCenter
+Intens.*.xrtHeaderBorder:             BorderNone
+Intens.*.xrtHeaderBackgroundColor:    grey
+Intens.*.xrtHeaderForegroundColor:    black
+Intens.*.xrtHeaderFont:               -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*
+
+Intens.*.xrtFooterAdjust:             AdjustCenter
+Intens.*.xrtFooterBorder:             BorderNone
+Intens.*.xrtFooterBackgroundColor:    grey
+Intens.*.xrtFooterForegroundColor:    black
+Intens.*.xrtFooterFont:               -*-helvetica-bold-r-normal-*-12-*-*-*-*-*-iso8859-*
+
+Intens.*.xrtLegendShow:               True
+Intens.*.xrtLegendBorder:             BorderEtchedIn
+Intens.*.xrtLegendBackgroundColor:    LightGrey
+Intens.*.xrtLegendForegroundColor:    black
+Intens.*.xrtLegendFont:               -*-helvetica-bold-r-normal-*-10-*-*-*-*-*-iso8859-*
+Intens.*.xrtLegendOrientation:        AlignHorizontal
+Intens.*.xrtLegendAnchor:             AnchorSouth
+!
+! ------------------------------------------------------------------------------ !
+! Listplot & Uniplot                                                             !
+! ------------------------------------------------------------------------------ !
+Intens.*.paned_window.*.frame.XmDrawingArea.background:   ivory
+Intens.*.paned_window.*.frame.XmDrawingArea.foreground:   black
+!
+! ------------------------------------------------------------------------------ !
+! Uniplot                                                                        !
+! ------------------------------------------------------------------------------ !
+Intens.*.canvas.foreground: black
+Intens.*.canvas.background: ivory
+!
+! ------------------------------------------------------------------------------ !
+! FileSelection                                                                  !
+! ------------------------------------------------------------------------------ !
+Intens.*.FileSelection.*.XmList.foreground:                    black
+Intens.*.FileSelection.*.XmList.background:                    LightSeaGreen
+Intens.*.FileSelection.*.XmTextField.background:               ivory
+Intens.*.FileSelection.*.XmTextField.foreground:               black
+Intens.*.FileSelection.*.listVisibleItemCount:                 15
+\end{verbatim}
+}
+%
+%\newpage
+\subsection{Command-line options}
+\label{sec:cl-options}
+\INTENS{} expects the filename of a configuration file as a command line argument.
+It reads from standard input, if the filename is missing.
+
+The valid command line options are:\\[1.5ex]
+\index{command line options}
+\begin{tabular}{l|p{8cm}}
+Argument & Description \\ \hline
+ \verb+-display DISPLAYNAME+             & the X Server's display name
+                                           \index{display@\verb+-display+}\\
+ \verb|-geometry WIDTHxHEIGHT+XOFF+YOFF| & size and location of the window\\
+ \verb+-background COLORNAME+            & window background color\\
+ \verb+-bordercolor COLORNAME+           & window border color\\
+ \verb+-borderwidth NUMBER+              & window border width in pixels\\
+ \verb+-foreground COLORNAME+            & the color to use for text\\
+ \verb+-font FONTNAME+                   & the font to use for displaying text\\
+ \verb+-iconic+                          & the window is initially iconified\\
+% \verb+-reverse+                         & simulate reverse video (only used on monochrome displays)\\
+% \verb+-xrm RESOURCESTRING+              & resource name and value to override the defaults\\
+% \verb+-debug+                           & print debug output on stderr\\
+ \verb+-logfile FILENAME+                & write log output to a file
+                                           \index{logfile@\verb+-logfile+}\\
+ \verb+-init FILENAME+                   & read initialization from file
+                                           \index{init@\verb+-init+}\\
+ \verb+-fontname FONTNAME1,FONTNAME2+    & set font for PostScript plots\\
+ \verb+-xfontlist XFONT1,XFONT2+         & set X fonts for plots\\
+ \verb+-notitle+                         & do not create a title bar
+                                           \index{notitle@\verb+-notitle+}\\
+  \verb+-detailGrid+                     & displays the listplot graphs with fine grid
+                                           \index{detailGrid@\verb+-detailGrid+}\\
+  \verb+-resfile FILENAME+               & loads additional x-resources
+                                           \index{resfile@\verb+-resfile+}\\
+  \verb+-maxlines NUMBER+                & limits the number of lines in the log window (default 500) \index{maxlines@\verb+-maxlines+}\\
+  \verb+-maxoptions NUMBER+              & limits the number of option buttons being displayed in the same
+                                           menu pane (default 10)
+                                           \index{maxoptions@\verb+-maxoptions+}\\
+  \verb+-rolefile FILENAME+              & includes role definitions for db operations (one per line) with optional passwords (default is \verb+$INTENS_HOME/dbrole+)
+                                           \index{rolefile@\verb+-rolefile+}\\
+  \verb+-printerConfig FILENAME+         & filename that contains the printer configuration (default is \verb+$INTENS_HOME/../printers.conf+)
+                                           \index{printerConfig@\verb+-printerConfig+}\\
+  \verb+-psPreviewer CMDSTRING+         & Command string of the program to preview postscript (default is \verb+/usr/local/bin/gv -antialias+)
+                                           \index{pspreviewer@\verb+-psPreviewer+} \\
+  \verb+-helpmsg+                       & Toggles helpmessages on (default is helpmessages off)
+                                           \index{helpmsg@\verb+-helpmsg+} \\
+  \verb+-leftIcon+                      & Displays specified bitmap at left of titlebar
+                                           \index{lefticon@\verb+-leftIcon+} \\
+  \verb+-rightIcon+                     & Displays specified bitmap at right of titlebar
+                                           \index{righticon@\verb+-rightIcon+} \\
+  \verb+-startupImage+                  & Displays specified bitmap while starting up the INTENS application
+                                           \index{startupimage@\verb+-startupImage+} \\
+  \verb+-includePath PATH+             & Specifies the directory where to search includefiles which are specified
+                                          by the INCLUDE statement in the description file
+                                           \index{includepath@\verb+-includePath+} \\
+\verb+-persistfile FILENAME+   & prints the persistent items to a file and stops processing
+                                           \index{persistfile@\verb+-persistfile+} \\
+\end{tabular}
+\vspace {1cm}
+
+
+
+Example:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+intens -display hbaxx:0 -fontname Helvetica,Helvetica-Bold \
+       -xfontlist '*-helvetica-medium-r-*,*-helvetica-bold-r-*' \
+       /usr/users/me/config_example.des
+\end{verbatim}
+\end{boxedminipage}

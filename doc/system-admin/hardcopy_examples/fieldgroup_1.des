@@ -1,0 +1,31 @@
+// SEMAFOR Informatik & Energie AG
+// Basel, Switzerland
+//
+DESCRIPTION "Example 1";
+DATAPOOL
+  SET
+     Colors ("red" = 1,"green" = 2,"blue" = 3)
+    ;
+  INTEGER {EDITABLE}
+     speed ,height ,length ,weight
+    ,color {SET = Colors}
+    ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP
+    Group_1
+      ( "Speed"    speed   "km/h"
+      , "Height"   height  "mm"   "Length"   length  "mm"
+      , "Weight"   weight  "kg"
+      , VOID       VOID    VOID    "Color"    color
+      )
+   ;
+  FORM
+    Form_1
+      ( ( Group_1 )
+      )
+   ;
+END UI_MANAGER;
+END.
+

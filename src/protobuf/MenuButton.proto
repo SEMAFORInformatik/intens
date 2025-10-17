@@ -1,0 +1,10 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message MenuButton {
+  GuiElement base = 1;
+  string map_action = 2;
+  string label = 3;
+  string action = 4;
+}

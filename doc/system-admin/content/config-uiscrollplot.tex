@@ -1,0 +1,58 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              SCROLLPLOT                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Scrollplot}
+\label{sec:uiscrollplot}
+The plot type
+\SCROLLPLOT{} provides a very flexible means to display
+a user selectable number of datapool list values
+in a 2-dimensional diagram. The list of these items
+has to be defined in the description file. At run time one or more values from
+this list can be selected by pressing the {\bfseries Load}-button.
+\index{Plot!Scrollplot}
+
+There are two stretch bars, a horizontal one at the lower edge of the diagram and
+a vertical one at the right edge, which allow to stretch and move the curves 
+horizontally and vertically.
+
+A region can be zoomed by selecting it with the left mouse button and then
+pressing the {\bfseries Zoom} button.
+\begin{figure}\label{fig:scrollplot}
+   \begin{center}
+      \includegraphics[width=\linewidth]{grab_scrollplot}
+   \end{center}
+\caption{example of \SCROLLPLOT}
+\end{figure}
+\vspace{1cm}
+
+\includegraphics[width=\linewidth]{xfig/sntx_ui_scrollplot}
+\index{SCROLLPLOT@\SCROLLPLOT}
+\index{XAXIS@\XAXIS}
+\index{YAXIS@\YAXIS}
+\vspace{1cm}
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DESCRIPTION "Example SCROLLPLOT";
+  ...
+\UIMANAGER
+  \SCROLLPLOT
+    scroll_plot\{ "Scroll Plot" \} (
+      \XAXIS (
+        xA = "Data A",
+        xB = "Data B",
+        xC = "Data C"
+      );
+      \YAXIS (
+        yA = "Data A",
+        yB = "Data B",
+        yC = "Data C"
+      );
+    );
+\END \UIMANAGER;
+  ...
+\END.
+\end{alltt}
+\end{boxedminipage}
+

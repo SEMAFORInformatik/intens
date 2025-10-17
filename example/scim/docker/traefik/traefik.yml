@@ -1,0 +1,7 @@
+# Docker configuration backend
+providers:
+  docker: {}
+
+logs:
+  filePath: "logs/traefik.log"
+  level: "DEBUG"

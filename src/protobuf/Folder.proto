@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "GuiElement.proto";
+import "Container.proto";
+package in_proto;
+
+message Folder {
+  GuiElement base = 1;
+  bool buttons = 2;
+  message Page {
+    uint32 page_id = 1;
+    string label = 2;
+    bool active = 3;
+    Container container = 4;
+  }
+  repeated Page pages = 3;
+  uint32 active = 4;
+  GuiElement.Alignment button_alignment = 5;
+  uint32 width = 6;
+}

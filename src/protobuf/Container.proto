@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Container {
+  GuiElement base = 1;
+  GuiElement.Orientation orientation = 2;
+
+  bool scrollbars = 3;
+  bool paned_window = 4;
+  bool frame = 5;
+  string title = 6;
+  repeated ElementRef elements = 7;
+}
+

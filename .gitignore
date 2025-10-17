@@ -1,0 +1,65 @@
+po/*/intens.gmo
+po/intens.pot
+
+# by Walter
+build
+build_windows
+IntensBugFile
+doc/gettingstarted/*.aux
+doc/gettingstarted/*.log
+doc/gettingstarted/*.out
+doc/gettingstarted/*.pdf
+doc/gettingstarted/*.toc
+doc/gettingstarted/*.fdb_latexmk
+doc/gettingstarted/*.fls
+doc/gettingstarted/*.xdv
+doc/gettingstarted/generated
+
+# Created by https://www.toptal.com/developers/gitignore/api/cmake
+# Edit at https://www.toptal.com/developers/gitignore?templates=cmake
+
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
+
+# End of https://www.toptal.com/developers/gitignore/api/cmake
+
+
+# CLion
+.idea/
+cmake-build-*/
+out/
+
+# Emacs
+*~
+\#*\#
+
+# behave testing
+reality
+
+# python cache
+__pycache__
+
+# generated doc/sysadmin files
+doc/system-admin/*.aux
+doc/system-admin/diagramme/Ebnf2ps/*.eps
+doc/system-admin/diagramme/Ebnf2ps/*.tex
+
+# generated
+etc/lsp/src/tree_sitter
+etc/lsp/src/grammar.json
+etc/lsp/src/node-types.json
+etc/lsp/src/parser.c
+.qt

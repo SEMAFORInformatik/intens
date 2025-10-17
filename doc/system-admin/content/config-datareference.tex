@@ -1,0 +1,47 @@
+\newpage
+\subsubsection{Data Reference}
+%              --------------
+\label{sec:tempdatareference}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                          Temp Data Reference                          %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Temp Data Reference references a data item declared in the datapool 
+(section \nameref{sec:dpitem} page \pageref{sec:dpitem}): \\
+
+\input{diagrams/temp_data_reference}
+
+\index{Temp Data Reference}
+\index{  @Signs / Characters!. (dot)!structure item separator}
+\begin{tabularx}{\textwidth}{l|X}
+option            & Description \\
+\hline
+\verb+ui field indizes+ & optional indizes (see page \pageref{uifieldindizes}). \\
+\verb+.+          & structure item separator \\
+                  & Structures are explained in section \nameref{sec:dpstruct}
+                  page \pageref{sec:dpstruct}\\
+\verb+identifier+ & references a data item declared in datapool (section 
+              \nameref{sec:dpitem} page \pageref{sec:dpitem}). For options like
+              \LABEL{} and \UNIT{} use data items without indexes. \\
+\end{tabularx}
+
+\vspace{3cm}
+
+\label{sec:rangedatareference}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                          Range Data Reference                          %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Range Data Reference references a data item declared in the datapool
+(section \nameref{sec:dpitem} page \pageref{sec:dpitem}): \\
+
+\input{diagrams/range_data_reference}
+
+\index{Range Data Reference}
+\index{Scale factors!Range Data Reference}
+\begin{tabularx}{\textwidth}{l|X}
+option            & Description \\
+\hline
+\verb+scale factor+      & a scale factor (see section \nameref{sec:scale} page \pageref{sec:scale}). \\
+\verb+st data reference+ & references a data item declared in datapool
+                    (section \nameref{sec:stvariables} on page
+                     \pageref{fig:st_data_reference}). \\
+\end{tabularx}

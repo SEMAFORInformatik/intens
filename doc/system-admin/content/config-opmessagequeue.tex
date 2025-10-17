@@ -1,0 +1,128 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            MESSAGEQUEUE                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Message Queue}
+\label{sec:opmessagequeue}
+Message Queues are used to communicate with other programs using ZeroMQ.
+Each message can have multiple parts. The first part (\HEADER)
+is used to identify the message.
+
+The communication is done over TCP / IP.
+
+Two patterns are implemented:
+\begin{itemize}
+\item \PUBLISH{} - \SUBSCRIBE{} \\
+Asynchronous pattern. One process publishes. Subscribed processes receive the messages.
+See \nameref{sec:opexamples:messagequeue:publishsubscribe}
+on page \pageref{sec:opexamples:messagequeue:publishsubscribe}. \\[2ex]
+
+\item \REQUEST{} - \REPLY{}\\
+Synchronous pattern. One process sends a request to one other process.
+Depending on the \HEADER, the request data is written to the \DATAPOOL{} using the given
+\STREAM(s). \\
+An optional function is called (if given). \\
+The response (the given \RESPONSE{} \STREAM(s)) are then sent back. \\[2ex]
+\end{itemize}
+
+Message Queues can also be used to communicate with \PLUGIN s
+(see section \nameref{sec:uiplugin} on page \pageref{sec:uiplugin}).
+Requests can be sent to plugins and published messages can be subscribed to.
+This is done using function statements.
+See \nameref{dia:messagequeuestatement} on page \pageref{dia:messagequeuestatement}.
+
+\PUBLISH{} and \REQUEST{} message queues are used by the \PUBLISH{} and \REQUEST{} function statements.
+See \nameref{dia:messagequeuestatement} on page \pageref{dia:messagequeuestatement}.
+
+\SUBSCRIBE{} message queues listen for messages on a \PORT{} on a \HOST{}.
+They subscribe to one or more headers from a publisher (those they want to receive).
+The message (data after the header) is written to the given \STREAM(s).
+When a \FUNC tion is defined, it is called.
+Every \HEADER{} has its own \STREAM (s) and \FUNC tion.
+
+\REPLY{} message queues listen for requests on a local \PORT.
+They reply to one or more headers.
+The message (data after the header) is written to the given \REQUEST{} stream(s).
+When a \FUNC tion is defined, it is called.
+Finally, a response is sent (empty or defined by \RESPONSE{}).
+Every \HEADER{} has its own \REQUEST (s), \FUNC tion and \RESPONSE (es).
+
+\SUBSCRIBE{} and \REPLY: When a \FUNC tion is given, it is called after a message has arrived and its data is written
+to the \DATAPOOL.
+
+Note: Only one \FUNC tion runs at a time. When a message arrives (and a \FUNC tion is given), an already running function
+delays the writing to the \DATAPOOL{} and the running of the \FUNC tion.
+
+When a \PLUGIN{} is given, the received message is also forwarded to it.
+
+The \HEADER s and the corresponding options are given in the
+\nameref{dia:opmessagequeueheaderoption} on page \pageref{dia:opmessagequeueheaderoption}:
+
+\input{diagrams/op_message_queue_declaration_list}
+\index{MESSAGE\_QUEUE@\MESSAGEQUEUE}
+
+\begin{tabularx}{\textwidth}{l|X}
+message queue & description \\
+\hline
+\verb+identifier+ & Identifies the Message Queue. \\
+\end{tabularx}
+
+\input{diagrams/op_message_queue_option}
+\index{PUBLISH@\PUBLISH!message queue option}
+\index{SUBSCRIBE@\SUBSCRIBE!message queue option}
+\index{REQUEST@\REQUEST!message queue option}
+\index{REPLY@\REPLY!message queue option}
+\index{PORT@\PORT!message queue option}
+\index{PORT\_REQUEST@\PORTREQUEST!message queue option}
+\index{HOST@\HOST!message queue option}
+\index{TIMEOUT@\TIMEOUT!message queue option}
+
+\begin{tabularx}{\textwidth}{l|X}
+message queue options & description \\
+\hline
+\PUBLISH              & Create a publish message queue to publish messages on a \PORT. \\
+\SUBSCRIBE            & Subscribe to messages published by another programm.
+                        \PORT{} must be given. \\
+\REQUEST              & Create a request message queue to send requests to another program.
+                        \PORT{} must be given. \\
+\REPLY                & Create a reply message queue to listen for requests on a \PORT. \\
+\hline
+\PORT                 & TCP port used for the communication. \\
+%\PORTREQUEST          & TCP port used for requests. Will soon be obsolete and \PORT{} is used in all cases. \\
+\HOST                 & \SUBSCRIBE{} or \REQUEST: Hostname where the other program listens. \newline
+                        Defaults is ``localhost''. \newline
+                        \SUBSCRIBE: Set \HOST{} to "" if it is not known yet or to delay subscribing.
+                        Use \SETMQHOST{} to set the \HOST{} later
+                        (see \nameref{dia:messagequeueaction} on page \pageref{dia:messagequeueaction}). \\
+\TIMEOUT              & \REQUEST: Timeout in seconds used with \REQUEST{}
+                        when the \REQUEST{} itself does not define a \TIMEOUT. \newline
+                        Number of seconds to wait for a connection to the receiver and its \RESPONSE. \newline
+                        Default is 10 seconds. \newline
+                        Set \TIMEOUT{} to 0 to have no \TIMEOUT. \\
+\hline
+\FUNC                 & \REPLY: Function used when the received header is unknown. \\
+\REQUEST              & \REPLY: Request stream(s) used when the received header is unknown. \\
+\RESPONSE             & \REPLY: Response stream(s) used when the received header is unknown. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+\input{diagrams/op_message_queue_header_option}
+\index{HEADER@\HEADER!message queue header option}
+\index{REQUEST@\REQUEST!message queue header option}
+\index{RESPONSE@\RESPONSE!message queue header option}
+\index{STREAM@\STREAM!message queue header option}
+\index{FUNC@\FUNC!message queue header option}
+\index{PLUGIN@\PLUGIN!message queue header option}
+
+\begin{tabularx}{\textwidth}{l|X}
+mq header options & description \\
+\hline
+\HEADER           & String that identifies the message. \\
+\REQUEST          & \REPLY: The received message(s) is/are written to this/these stream(s). \\
+\RESPONSE         & \REPLY: Stream(s) define the response message(s). \\
+\STREAM           & \SUBSCRIBE: The received message is written to this/these stream(s). \\
+\FUNC             & Function to call after receiving the message(s). \\
+\PLUGIN           & Forward the received message to the plugin. \\
+\end{tabularx}
+
+
+%% TODO: examples!!

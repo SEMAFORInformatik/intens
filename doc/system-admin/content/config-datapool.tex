@@ -1,0 +1,597 @@
+\newpage
+\subsection{DATAPOOL}
+%           --------
+\label{sec:datapool}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Description                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Description}
+\label{sec:dpdescription}
+\index{DATAPOOL@\DATAPOOL}
+All {\bfseries Data Items} used in an \INTENS{}-application are defined in the \DATAPOOL{} section.\\
+One of the most important functions of the datapool is the dynamic allocation of memory for these data items.\\
+\vspace{0.5cm}
+To define {\bfseries STRUCTURES} you have to give an identifier, which will
+be used as a data type to define data items later.
+(see section \nameref{sec:dpstruct} on page \pageref{sec:dpstruct}).\\
+\vspace{0.5cm}
+You can define \SET s, which are used by the \UIMANAGER{}
+to show values of data items in a Combobox or Option menu.
+(see section \nameref{sec:dpset} on page \pageref{sec:dpset}).\\
+\vspace{0.5cm}
+You can also define \COLOR s, which are used by the \UIMANAGER{}
+to show items with different colors corresponding to their values.
+(see section \nameref{sec:dpcolorset} on page \pageref{sec:dpcolorset}).\\
+
+\input{diagrams/datapool_description}
+\index{DATAPOOL@\DATAPOOL!description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Data Item                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Data Item}
+\label{sec:dpitem}
+\index{DATAPOOL@\DATAPOOL!data types}
+Since the \DATAPOOL{} allocates memory dynamically, it is
+not necessary to declare the dimension of the data items (unsigned integers
+between braces).
+Nevertheless the declaration is recommended, if
+the dimension is known and if it will not change during the calculation
+process. Their index range always begins at 0.
+See \hyperref[dia:datadimension]{data\_dimension} on page \pageref{dia:datadimension} for the syntax. \\
+
+\input{diagrams/data_item_declaration}
+\input{diagrams/data_variable_declaration}
+\index{data item!declaration}
+\index{INTEGER@\INTEGER!datapool data type}
+\index{INT@\INT!datapool data type (see INTEGER)}
+\index{REAL@\REAL!datapool data type}
+\index{COMPLEX@\COMPLEX!datapool data type}
+\index{CDATA@\CDATA!datapool data type}
+\index{STRING@\STRING!datapool data type}
+
+\begin{tabularx}{\textwidth}{l|X}
+data item           & Description \\
+\hline
+\verb+identifier+  & data item identifier. It is needed for referencing this data item. \\
+\REAL               & defines data items for storing real number values. \\
+\INTEGER            & defines data items for storing integer number values. \\
+\STRING             & defines data items for storing characters. \\
+\COMPLEX            & defines data items for storing {\bfseries complex} quantities. \\
+\CDATA              & defines data items for storing character or binary data.
+                      (database: mapped to BLOB, no length restrictions while
+                       strings are limited to 255 characters) \\
+{\bfseries ID\_DATASTRUCTURE} & defines data items for storing structured data. \\
+                    & must be a previously defined structure
+                      (section \nameref{sec:dpstruct} on page \pageref{sec:dpstruct}) \\
+\end{tabularx}
+\vspace{0.5cm}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DATAPOOL
+  \REAL
+    data\_item\_identifier\_A[10],        // 1 dimension
+    data\_item\_identifier\_B[3,20],      // 2 dimensions
+    data\_item\_identifier\_C[2,4,10];    // 3 dimensions
+
+\END \DATAPOOL;
+\end{alltt}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+\input{diagrams/data_dimension}
+\index{data dimension!declaration}
+\vspace{0.5cm}
+
+Declare the dimension of the data item. See first paragraph in
+section \nameref{sec:dpitem} on page \pageref{sec:dpitem} for more information.
+
+\vspace{0.5cm}
+
+\index{DATAPOOL@\DATAPOOL!predefined data items}
+The following data items are {\bfseries predefined} by the system at startup
+       and must not be redefined: \\
+\vspace{0.5cm}
+\index{data item!predefined}
+\index{DATE@\DATE!predefined datapool item}
+\index{USER@\USER!predefined datapool item}
+\index{HOST@\HOST!predefined datapool item}
+\index{IPADDR@\IPADDR!predefined datapool item}
+\index{INTENS\_VERSION@\INTENSVERSION!predefined datapool item}
+\index{INTENS\_VERSION\_MAJOR@\INTENSVERSIONMAJOR!predefined datapool item}
+\index{INTENS\_VERSION\_MINOR@\INTENSVERSIONMINOR!predefined datapool item}
+\index{INTENS\_VERSION\_PATCH@\INTENSVERSIONPATCH!predefined datapool item}
+\index{INTENS\_REVISION@\INTENSREVISION!predefined datapool item}
+\index{RESTUSERNAME@\RESTUSERNAME!predefined datapool item}
+\index{RESTUSERNAMELIST@\RESTUSERNAMELIST!predefined datapool item}
+\index{RESTBASE@\RESTBASE!predefined datapool item}
+\index{REST\_SERVICE.APP\_VERSION\_MAJOR@\RESTSERVICEAPPVERSIONMAJOR!predefined datapool item}
+\index{REST\_SERVICE.APP\_VERSION\_MINOR@\RESTSERVICEAPPVERSIONMINOR!predefined datapool item}
+\index{REST\_SERVICE.APP\_VERSION\_PATCH@\RESTSERVICEAPPVERSIONPATCH!predefined datapool item}
+\index{REST\_SERVICE.DB\_VERSION\_MAJOR@\RESTSERVICEDBVERSIONMAJOR!predefined datapool item}
+\index{REST\_SERVICE.DB\_VERSION\_MINOR@\RESTSERVICEDBVERSIONMINOR!predefined datapool item}
+\index{REST\_SERVICE.DB\_VERSION\_PATCH@\RESTSERVICEDBVERSIONPATCH!predefined datapool item}
+\index{REST\_SERVICE.DB\_VERSION\_IGNORE@\RESTSERVICEDBVERSIONIGNORE!predefined datapool item}
+\index{PLOT2D\_UIMODE@\PLOTTWODUIMODE!predefined datapool item}
+\index{PLOT2D\_SYMBOLSIZE@\PLOTTWODSYMBOLSIZE!predefined datapool item}
+\index{Global\_Point@\GlobalPoint!predefined datapool item}
+\index{Global\_Rect@\GlobalRect!predefined datapool item}
+\label{dataitempredefined}
+\begin{tabularx}{\textwidth}{l|X}
+Itemname    & Description \\
+\hline
+\DATE       & contains the current date (yyyy-mm-dd, \STRING) \\
+\USER       & contains the user name (\STRING) \\
+\HOST       & hostname of the working machine (use VAR(``HOST'') to access it, \STRING) \\
+\IPADDR     & ip address of the working machine (\STRING) \\
+\INTENSVERSION & \INTENS{} version (i.E. 5.3.1/5.3.2dev, \STRING) \\
+\INTENSVERSIONMAJOR & \INTENS{} MAJOR version (i.E. 5, \INTEGER) \\
+\INTENSVERSIONMINOR & \INTENS{} MINOR version (i.E. 3, \INTEGER) \\
+\INTENSVERSIONPATCH & \INTENS{} PATCH version (i.E. 1/2dev, \STRING) \\
+\INTENSREVISION & \INTENS{} revision (i.E. -/67-g0df41633, \STRING) \\
+\RESTUSERNAME  & username used to login to the RESTful web service (\STRING) \\
+\RESTUSERNAMELIST  & list of usernames to show in login dialog for RESTful web service (\STRING) \\
+\RESTBASE   & base url of the RESTful web service (\STRING) \\
+\RESTSERVICEAPPVERSIONMAJOR & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\RESTSERVICEAPPVERSIONMINOR & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\RESTSERVICEAPPVERSIONPATCH & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\RESTSERVICEDBVERSIONMAJOR & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\RESTSERVICEDBVERSIONMINOR & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\RESTSERVICEDBVERSIONPATCH & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\RESTSERVICEDBVERSIONIGNORE & see paragraph \nameref{par:restServiceVersionControl}
+              on page \pageref{par:restServiceVersionControl} (\INTEGER) \\
+\PLOTTWODUIMODE  & see paragraph \nameref{par:uiplot2duimode} in section \nameref{sec:uiplot2d}
+              on page \pageref{par:uiplot2duimode} (\STRING) \\
+\PLOTTWODSYMBOLSIZE  & see paragraph \nameref{par:uiplot2symbolsize} in section \nameref{sec:uiplot2d}
+              on page \pageref{par:uiplot2symbolsize} (\INTEGER) \\
+\GlobalPoint & structure object with data items X, Y and Y2 \newline
+              Used in UI Mode ``Select Point''.
+              See paragraph \nameref{par:uiplot2duimode} in section \nameref{sec:uiplot2d}
+              on page \pageref{par:uiplot2duimode} \\
+\GlobalRect & structure object with data items X1, Y1, X2 and Y2 \newline
+              Used in UI Mode ``Select Rectangle''.
+              See paragraph \nameref{par:uiplot2duimode} in section \nameref{sec:uiplot2d}
+              on page \pageref{par:uiplot2duimode} \\
+%% \ProgressDialog & structure object with data items MainTitle, MainPercent, SubTitle, SubPercent, ErrorString \newline
+%%               TODO \\
+%% \ProgressDialogAbortCommand & TODO (\STRING) \\
+%% \ProgressDialogLoopTitle & TODO (\STRING) \\
+\end{tabularx}
+
+\input{diagrams/data_variable_attributes}
+\index{DATAPOOL@\DATAPOOL!data item attributes}
+
+\index{EDITABLE@\EDITABLE!datapool attributes}
+\index{OPTIONAL@\OPTIONAL!datapool attributes}
+\index{LOCKABLE@\LOCKABLE!datapool attributes}
+\index{SCALAR@\SCALAR!datapool attributes}
+\index{MATRIX@\MATRIX!datapool attributes}
+\index{CELL@\CELL!datapool attribute}
+\index{GLOBAL@\GLOBAL!datapool attribute}
+\index{OMIT\_TTRAIL@\OMITTTRAIL!datapool attribute}
+\index{NO\_DEPENDENCIES@\NODEPENDENCIES!datapool attribute}
+\index{CLASSNAME@\CLASSNAME!datapool attributes}
+\label{dataitemattributes}
+\begin{tabularx}{\textwidth}{l|X}
+Attributes       & Description \\ \hline
+\EDITABLE        & The value can be changed (edited) by the user
+                   (see also section
+                   \nameref{sec:uimanager} on page \pageref{sec:uimanager})\\
+\OPTIONAL        & Same as \EDITABLE. The corresponding text fields
+                   may be given different %%X resources
+                   foreground/background color, font etc. \\
+                   %%(see section \nameref{sec:x-resources} on page
+                   %%\pageref{sec:x-resources})\\
+\LOCKABLE        & The data item can be protected against being overwritten
+                   by stream operations.
+                   (see also section
+                   \nameref{sec:uimanager} on page \pageref{sec:uimanager})\\
+\SCALAR          & Data items with this attribute are transferred as scalars
+                   instead of matrices to any Matlab function
+                   (or instread of vectors to and from the database).
+                   They are not written as a list in a \JSON{} \STREAM.\\
+\MATRIX          & Data items with this attribute are transferred as matrices
+                     to and from the database instead of vectors.\\
+\CELL            & The data item is transferred to the Matlab workspace as cell instead of array. \\
+\GLOBAL          & The data item is not changed by cycle operations. \\
+\OMITTTRAIL      & The data item is not handled by transactions (ABORT, UNDO, ...). \\
+\NODEPENDENCIES  & No dependencies between this input and its outputs (results) are added.
+                   (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}) \\
+\CLASSNAME       & Data items having a classname are transferred as
+                   objects to any Matlab function. \newline
+                   The \CLASSNAME{} can also be used in \FUNCTIONS: \CLASSNAME(item). \\
+\end{tabularx}
+
+\index{data item!options}
+\input{diagrams/data_item_options}
+\index{DATAPOOL@\DATAPOOL!data item options}
+\index{SET@\SET!datapool item option}
+\index{INDEXED\_SET@\INDEXEDSET!datapool item option}
+\index{COLOR@\COLOR!datapool item option}
+\index{NO\_COLORBIT@\NOCOLORBIT!datapool item option}
+\index{FUNC@\FUNC!datapool item option}
+\index{LABEL@\LABEL!datapool item option}
+\index{UNIT@\UNIT!datapool item option}
+\index{UNITS (see UNIT)}
+\index{PATTERN@\PATTERN!datapool item option}
+\index{HELPTEXT@\HELPTEXT!datapool item option}
+\index{BUTTON@\BUTTON!datapool item option}
+\index{SLIDER@\SLIDER!datapool item option}
+\index{RANGE@\RANGE!datapool item option}
+\index{STEP@\STEP!datapool item option}
+\index{TOGGLE@\TOGGLE!datapool item option}
+\index{RADIO@\RADIO!datapool item option}
+\index{CLASSNAME@\CLASSNAME!datapool item option}
+\index{SCALAR@\SCALAR!datapool item option}
+\index{MATRIX@\MATRIX!datapool item option}
+\index{CELL@\CELL!datapool item option}
+\index{HIDDEN@\HIDDEN!datapool item option}
+\index{PLACEHOLDER@\PLACEHOLDER!datapool item option}
+
+\input{diagrams/data_item_more_option}
+\index{PERSISTENT@\PERSISTENT!datapool item option}
+\index{TRANSIENT@\TRANSIENT!datapool item option}
+\index{DBATTR@\DBATTR!datapool item option}
+\index{DBUNIT@\DBUNIT!datapool item option}
+\index{TAG@\TAG!datapool item option}
+\index{FOLDER@\FOLDER!datapool item option}
+\index{NONE@\NONE!datapool item option}
+\index{STRING\_DATE@\STRINGDATE!datapool item option}
+\index{STRING\_TIME@\STRINGTIME!datapool item option}
+\index{STRING\_DATETIME@\STRINGDATETIME!datapool item option}
+\index{PASSWORD@\PASSWORD!datapool item option}
+\index{WHEEL\_EVENT@\WHEELEVENT!datapool item option}
+
+\begin{tabularx}{\textwidth}{l|X}
+Options          & Description \\ \hline
+\SET             & The items values are part of a \SET. A set is a limited number of values of the same type.
+                   The item is displayed as Combobox on the user interface.
+                   \verb+ID_DATASET+ must be previously defined (see section \nameref{sec:dpset} page \pageref{sec:dpset})\\
+\INDEXEDSET      & Like \SET. When the data item is used as a vector, each element can have a different
+                   list of values to select from. \\
+\COLOR{} = ...   & The field is shown in the colors that corresponds to its items value.
+                   \verb+ID_COLORSET+ must be previously defined (see section \nameref{sec:dpcolorset} page \pageref{sec:dpcolorset})\\
+\COLOR           & String data item to define a color.
+                   The item is displayed as a color picker: a button that shows the color.
+                   Pressing the button opens a color dialog to choose a color.
+                   The chosen color is stored as the value of the variable. \\
+\NOCOLORBIT      & The eight available color bits (see section \nameref{fu:set:statement} page \pageref{fu:set:statement}) are interpreted as a
+                   8-bit number. This gives the possibility to use up to 255 different colors. \\
+\FUNC            & Defines the function that will be called after an interactive modification
+                   of the items value.
+                   (see also section \nameref{sec:functions} on page \pageref{sec:functions})\\
+\LABEL{} = ...   & The item has a label which can be used by the \UIMANAGER{} and \STREAMER.
+                   (see also section \nameref{sec:uifieldgroup} on page \pageref{sec:uifieldgroup}) \\
+\UNIT            & The item has a unit which can be used by the \UIMANAGER{} and \STREAMER.
+                   (see also section \nameref{sec:uifieldgroup} on page \pageref{sec:uifieldgroup})\\
+\PATTERN         & A regular expression that defines the possible input values. \\
+\HELPTEXT        & For each item a helptext may be defined.
+                    This text appears as soon as the mouse-pointer crosses the field,
+                   which contains the data-item.\\
+\BUTTON          & The item is displayed as button on the user interface.
+                    Activating the button executes the associated function
+                   (see above \FUNC).\\
+\SLIDER          & The item is displayed as a slider. \\
+\RANGE           & Minimal and maximal values for a \SLIDER. \\
+\STEP            & Difference between the labels of \SLIDER. \\
+\TOGGLE          & The item is displayed as Toggle on the user interface.
+                   Activating the toggle changes the value from 0 to 1.\\
+\RADIO           & The item is displayed as ragio button on the user interface.
+                   Activating the radio button changes the value from 0 to 1.\\
+\LABEL           & The item is displayed as a label (not editable).\\
+\CLASSNAME       & Data items having a classname are transferred as objects to the Matlab workspace. \newline
+                   The \CLASSNAME{} can also be used in \FUNCTIONS: \CLASSNAME(item) \\
+\SCALAR          & Data items with this attribute are transferred as scalars
+                      instead of matrices to the Matlab workspace
+                      (or instread of vectors to and from the database).
+                      They are not written as a list in a \JSON{} \STREAM.\\
+\MATRIX          & Data items with this attribute are transferred as matrices
+                     to and from the database instead of vectors.\\
+\CELL            & The data item is transferred to Matlab workspace as cell instead of array. \\
+\HIDDEN          & The data item is not transferred to Matlab.
+                   It is, by default, not written in \JSON{} \STREAM{}s (see \nameref{dia:stjsonoptions} on page \pageref{dia:stjsonoptions}).
+                   It is however sent to the rest service (see \nameref{dia:restServicestatement} on page \pageref{dia:restServicestatement}).\\
+\PLACEHOLDER     & For each item a placeholder text may be defined.
+                   This text appears in the field which contains the data-item when it is \INVALID.\\
+\PERSISTENT      & This data item can be stored to and retrieved from the database.\\
+\TRANSIENT       & This data item is not stored to and retrieved from the database.
+                   It is useful in a \PERSISTENT{} \STRUCT.\\
+\DBATTR          & defines the corresponding db attribute name.\\
+\DBUNIT          & defines the corresponding db attribute unit.\\
+\TAG             & The TAG-identifier is referenced by the navigators COL-definition.
+                   (see section \nameref{sec:uinavigatoroptions} on page \pageref{sec:uinavigatoroptions})\\
+%%\FOLDER{} = \NONE  & verhindert, dass die Struktur im Navigator als Folder dargestellt wird.\\
+\STRINGDATE      & String data item to show and enter a date (popup calendar may be used).\\
+\STRINGTIME      & String data item to show and enter a time.\\
+\STRINGDATETIME  & String data item to show and enter a date and time.\\
+\PASSWORD        & String data item is displayed in password mode.\\
+\WHEELEVENT      & The mouse wheel can be used to increment and decrement the value,
+                   just as the up and down keys can be used for every numeric data item. \newline
+                   This does not work when commandline option \texttt{--}withoutArrowKeys is given. \newline
+                   This option enables the mouse wheel event for one numeric data item,
+                   whereas the commandline option \texttt{--}withWheelEvent enables it for every numeric data item. \\
+\end{tabularx}
+
+\begin{multicols}{2}
+\input{diagrams/data_tags}
+\input{diagrams/data_tag}
+\end{multicols}
+
+\begin{tabularx}{\textwidth}{l|X}
+tag          & Description \\ \hline
+{\bfseries IDENTIFIER} & Defines a new tag. \\
+{\bfseries ID\_TAG} & References an existing tag. \\
+\end{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Data Set                                 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Data Set}
+\label{sec:dpset}
+\index{DATAPOOL@\DATAPOOL!data set}
+Data sets are used for assigning labels to data items. Data sets may be assigned
+to data items using the option SET=data-set\_identifier of a previously declared
+data set. (section \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}) \\
+By editing such a data item the associated label-strings are shown, while the corresponding
+values are transferred to the external process.\\
+
+\input{diagrams/set_declaration}
+\input{diagrams/data_set_attr}
+\input{diagrams/data_set_item}
+\index{SET@\SET}
+\index{SET@\SET!datapool data set}
+
+\index{GLOBAL@\GLOBAL!data set option}
+\index{INVALID@\INVALID!data set option INVALID=NONE}
+\index{NONE@\NONE!data set option INVALID=NONE}
+\begin{tabularx}{\textwidth}{l|X}
+Option           & Description \\ \hline
+\GLOBAL          & The data set is not changed by cycle operations. \\
+\INVALID=\NONE   & No empty (invalid) entry is created. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+The label-strings of a set define the option menu labels. The value types
+can be \REAL, \INTEGER{} or \STRING.
+The values correspond to the text of the label.
+If the values are missing, \INTENS{} assumes increasing integer numbers
+starting at 0 for real and integer items. String items contain the string itself.
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DATAPOOL
+  \SET
+    set\_identifier ( "circle" = 0, "triangle" = 1, "square"= 2 );
+
+  \INTEGER \{\EDITABLE\}
+    data\_item\_identifier \{\SET = set\_identifier\};
+
+\END \DATAPOOL;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Dynamic Combobox                         %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Dynamic Combobox}
+\index{STRING@\STRING!dynamic combobox}
+\label{stringdynamiccombobox}
+Sometimes it is not possible to use a \SET{} to build a combobox. Then, a \STRING{}
+item can be changed to a combobox by assigning a special value to it: \newline
+\verb+{"value": "a", "input":["A","B","C",null], "output":["a","b","c",null]}+ \newline
+It must be a JSON object with the members:
+\begin{itemize}
+  \item \Slanted{value}: the selected value. One of the values of \Slanted{output}.
+  \item \Slanted{input}: list of strings. The elements presented to the user in a combobox.
+  \item \Slanted{output}: list of values (normally strings). The values corresponding to the \Slanted{input} values.
+\end{itemize}
+When the first element of \Slanted{input} is selected, \Slanted{value} is set to the first element of \Slanted{output}. \\
+To extract the \Slanted{value} from the total string in a function, use \STRINGVALUE{}(item).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Data ColorSet                             %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Data ColorSet}
+\label{sec:dpcolorset}
+\index{DATAPOOL@\DATAPOOL!data colorset}
+Data colorsets are used for assigning colors to values. Data colorsets may be assigned
+to data items using the option COLOR=data-colorset\_identifier of a previously declared
+data colorset. (section \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}) \\
+The field of such a data item will change to the associated colors that correspond to its value.\\
+
+\input{diagrams/color_declaration}
+\input{diagrams/data_colorset_item}
+\index{COLOR@\COLOR}
+\index{COLOR@\COLOR!datapool data set}
+
+\begin{tabularx}{\textwidth}{l|X}
+value                       & Description \\
+\hline
+\INVALID                    & invalid value. \\
+\verb+data colorset value+  & less than, more than or exaclty one specific value
+                              (see paragraph \nameref{par:dpcolorsetvaluerange} on page \pageref{par:dpcolorsetvaluerange}).\\
+\verb+data colorset range+  & data range (see paragraph \nameref{par:dpcolorsetvaluerange} on page \pageref{par:dpcolorsetvaluerange}).\\
+\ELSE                       & all other values (not matched by any other colorset item values). \\
+\end{tabularx}
+\vspace{0.5cm}
+
+The pair of bg\_color\_string and fg\_color\_string of a colorset define the
+background and foreground color used for value defined on the left. \\
+The color-string may be in one of these formats:
+\begin{itemize}
+  \item \#RGB (each of R, G and B is a single hex digit)
+  \item \#RRGGBB
+  \item A name from the list of colors defined in the list of
+  \href{http://www.w3.org/TR/SVG/types.html#ColorKeywords}{SVG color keyword names}
+  provided by the World Wide Web Consortium;
+  for example, "steelblue" or "gainsboro". These color names work on
+  all platforms.
+\end{itemize}
+
+Instead of providing static color-strings, the colors can also be a data reference. If the data item has
+a valid color string value, that value is used. This can be used i.E. to change the color of plot curves
+(see section \nameref{sec:uiplot2d} on page \pageref{sec:uiplot2d}).
+
+\newpage
+\paragraph{Data ColorSet Value and Range}
+\label{par:dpcolorsetvaluerange}
+~\\[0.5cm]
+
+\input{diagrams/data_colorset_value}
+\input{diagrams/data_colorset_range}
+
+\begin{tabularx}{\textwidth}{l|X}
+value                    & Description \\
+\hline
+\verb+real or int value+ & any value or mathematical 'combination' as shown in the example
+                           in section \nameref{sec:scale} on page \pageref{sec:scale}. \\
+\verb+string+            & any string constant or 'combination'.
+                           (see section \nameref{sec:string} on page
+                           \pageref{sec:string}) \\
+\verb+range data reference+ & references a data item declared in the datapool
+                             (section \nameref{sec:rangedatareference} on page
+                              \pageref{sec:rangedatareference}). \\
+\end{tabularx}
+\vspace{0.5cm}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DATAPOOL
+  \COLOR
+    red\_green\_blue\_color (
+      INVALID = ( "red", "black" )
+    , < 0     = ( "#fff", "#f00" )
+    , RANGE ( 0, <2 ) = ( "#ffffff", "#00ff00" )
+    , 2 = ( "#ffffff", "#0000ff" )
+    , ELSE = ( "#ffffff", "#0000ff" )
+    )
+  ;
+
+  \INTEGER \{\EDITABLE\}
+    data\_item\_identifier \{\COLOR = red\_green\_blue\_color\};
+
+\END \DATAPOOL;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                     Structured Data Items                             %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Structure definition}
+\label{sec:dpstruct}
+\index{DATAPOOL@\DATAPOOL!data structure}
+\index{DATAPOOL@\DATAPOOL!struct}
+Data items may be grouped in structures. This enhances the possibilities
+of storing and transmitting data. \\
+A structure holds several data items of any valid data type described in
+section \nameref{sec:dpitem} on page \pageref{sec:dpitem}.
+
+\input{diagrams/structure_declaration}
+\index{STRUCT@\STRUCT}
+\index{STRUCT@\STRUCT!inheritance}
+\index{  @Signs / Characters!: (colon)!structure inheritance}
+
+\begin{tabularx}{\textwidth}{l|X}
+Structure definition            & Description \\
+\hline
+{\bfseries ID\_DATASTRUCTURE}   & identifier of previously defined structure. \\
+                                & inherit definition of this struct. \\
+\verb+data item declaration+ & see section \nameref{sec:dpitem} on page \pageref{sec:dpitem}. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DATAPOOL
+  \STRUCT structure\_def
+  \{
+     \INTEGER \{\EDITABLE\}
+        data\_item\_identifier_1,
+        data\_item\_identifier_2;
+     \REAL \{\OPTIONAL\}
+        data\_item\_identifier_3;
+  \};
+
+  structure\_def
+    structure\_identifier_1,
+    structure\_identifier_2;
+
+\END \DATAPOOL;
+\end{alltt}
+\end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Examples                                 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Examples}
+\label{sec:dpexamples}
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DESCRIPTION "Example of data defining and referring"
+
+\DATAPOOL
+  \SET shape_set ( "circle" = 0, "triangle" = 1, "square"= 2 );
+
+  \STRUCT Object \{
+     \INTEGER \{\EDITABLE\}
+        shape \{\SET = shape_set,\COMBOBOX
+              ,\LABEL = "The Shape"\};
+     \REAL \{\OPTIONAL\}
+        size  \{\LABEL = "The Size", \UNIT = "cm"\};
+  \};
+
+  Object obj[20];
+
+  \STRING \{\EDITABLE\}
+     text;
+
+\END \DATAPOOL;
+
+\UIMANAGER
+  \FIELDGROUP
+    fieldgroup\_identifier
+    (
+      "Select first shape:" obj[0].shape,
+      "Enter first size:"   obj[0].size,
+
+      "Select last shape:"  obj[20].shape,
+      "Enter last size:"    obj[20].size,
+
+      "Enter a remark:"     text
+    )
+  ;
+
+  \FORM
+    form_identifier \{MAIN\}
+    (
+      (fieldgroup_identifier)
+    )
+  ;
+
+\END \UIMANAGER;
+
+\end{alltt}
+\end{boxedminipage}

@@ -1,0 +1,16 @@
+#INTENS
+.Uebersicht
+   Intens ist ein konfigurierbares Softwarewerkzeug zur Einbindung von Berechnungsprogrammen in eine relationale Darenbankumgebung. Mittels einer einfachen Script-Sprache koennen vorhandene Berechnungsprogramme meist ohne Sourcecode-Aenderungen mit einem Datenbankanschluss und einer Benutzeroberflaeche versehen werden.
+.Der Parser
+   Der Parser liest als erstes die Konfigurationsdaten und gibt die fuer das Erstellen der Applikation notwendigen Informationen an die entsprechenden Objekte weiter.
+.Der Datapool
+   Der Datapool verwaltet eine beliebige Anzahl von Variablen fuer eine beliebige Anzahl von Berechnungsvarianten. Begrenzend ist lediglich die Groesse des virtuellen Speichers. Die Variablen im Datapool haben keine feste Dimension. Sie koennen als Listen oder Vektoren variabler Laenge angesprochen werden. Im Verlaufe der Berechnungen werden die Vektoren, je nach Dimension der Ergebnisse, erweitert oder verkuerzt.
+.Der UI-Manager
+   Der UI-Manager verwaltet die graphische Benutzeroberflaeche. Sie bietet demBenutzer eine Oberflaeche mit einheitlichem Verhalten und Aussehen. Daten werden in beschrifteten Textfeldern und Tabellen angezeigt und koennen, soweit es sich um editierbare Daten handelt, ueber die Tastatur geaendert werden. Eine Applikation kann aus beliebig vielen Masken bestehen. Zum Aufrufen der Berechnungsprogramme stehen Druckknoepfe und Submenus zur Verfuegung. Zur Auswahl von Datensaetzen ab einer Datenbank oder von Dateien stehen spezielle Dialogfenster zur verfuegung. In sogenannten Plotfenstern werden Variablen zweidimensional logarithmisch oder linear dargestellt. Diese Graphiken koennen sowohl als Postscript- oder HP/GL-Datei ausgedruckt oder gespeichert werden.
+.Der Streamer   
+   Der Streamer regelt den Datenaustausch zwischen Operator, DB-Manager und Datapool. Ein Datenstrom (stream) wird durch eine Sequenz von Textkonstanten und Variablen mit optionaler Feldbreite beschrieben. Dadurch koennen Daten in Textdateien abgespeichert oder ausgedruckt und aus formatierten Dateien eingelesen werden.  Der Streamer ist auch fuer die Konsistenz der Daten zustaendig. Alle Resultatwerte, die in einem Output-Stream enthalten sind, werden ungueltig, sobald ein Wert des zugehoerigen Input-Streams geaendert worden ist.
+.Der Operator
+   Der Operator ist fuer die Kommunikation mit dem Betriebssystem und fuer den Aufruf der externen Berechnungsprogramme zustaendig. Mehrere Berechnungsprogramme sind in einer Sequenz zusammengefasst und koennen ueber einen Druckknopf vom Berechner gestartet und gestoppt werden Jeder Prozess ist durch seinen Typ (Mathematica oder Batch), einen Pfad- resp. Funktionsnamen, je mindestens einen Eingabe- und Ausgabestrom (stream) gekennzeichnet. Daten koennen aus Dateien eingelesen und abgespeichert werden.
+.Der DB-Manager
+   Der DB-Manager bildet die Schnittstelle zur Datenbank. Eine beliebige Anzahl von Berechnungsgroessen koennen aus einer Liste ausgewaehlt, eingelesen, abgespeichert und modifiziert werden. Bei einer Modifikation von bereits bestehenden Daten wird vom Berechner ein Aenderungskommentar verlangt. Dieser wird mit Name, Zeit und Datumangabe mitabgespeichert.
+

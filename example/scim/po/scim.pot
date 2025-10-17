@@ -1,0 +1,692 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR COPYRIGHT HOLDER
+# This file is distributed under the same license as the scim package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: scim 1.0.0-snapshot\n"
+"Report-Msgid-Bugs-To: bugs@example.com\n"
+"POT-Creation-Date: 2025-05-13 10:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: etc/approval_report/approval_report.inc:9
+#: etc/approval_report/approval_report.inc:10
+msgid "Approver"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:13
+#: etc/approval_report/approval_report.inc:14
+msgid "Organization"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:17
+#: etc/approval_report/approval_report.inc:18
+#: etc/modifications/modifications_datapool.inc:7
+msgid "Date"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:21
+#: etc/approval_report/approval_report.inc:22
+#: etc/project/project_datapool.inc:218
+msgid "Status"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:40
+msgid "Print"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:41
+msgid "Print this history"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:46
+msgid "Save to file"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:47
+msgid "Save an image of this history"
+msgstr ""
+
+#: etc/approval_report/approval_report.inc:81
+msgid "Approval history"
+msgstr ""
+
+#: etc/common/common_datapool.inc:5 etc/variant/variant_datapool.inc:226
+msgid "Experimental"
+msgstr ""
+
+#: etc/common/common_datapool.inc:6 etc/variant/variant_datapool.inc:230
+msgid "In Preparation"
+msgstr ""
+
+#: etc/common/common_datapool.inc:7 etc/variant/variant_datapool.inc:234
+msgid "Shared"
+msgstr ""
+
+#: etc/common/common_datapool.inc:8 etc/variant/variant_datapool.inc:238
+msgid "Approved"
+msgstr ""
+
+#: etc/common/common_datapool.inc:9 etc/variant/variant_datapool.inc:242
+msgid "Tested"
+msgstr ""
+
+#: etc/common/common_datapool.inc:10
+msgid "Tendered"
+msgstr ""
+
+#: etc/common/common_datapool.inc:11 etc/project/project_datapool.inc:9
+#: etc/project/project_datapool.inc:182 etc/variant/variant_datapool.inc:246
+msgid "Obsolete"
+msgstr ""
+
+#: etc/common/common_datapool.inc:24
+msgid "Draft"
+msgstr ""
+
+#: etc/common/common_datapool.inc:25
+msgid "Restricted"
+msgstr ""
+
+#: etc/common/common_datapool.inc:26
+msgid "Free"
+msgstr ""
+
+#: etc/common/common_datapool.inc:27
+msgid "Preferred"
+msgstr ""
+
+#: etc/common/common_datapool.inc:28
+msgid "Outdated"
+msgstr ""
+
+#: etc/component/component_datapool.inc:10 etc/project/project_datapool.inc:156
+#: etc/project/project_datapool.inc:216 etc/project/project_datapool.inc:270
+#: etc/used_in_projects/used_in_projects_datapool.inc:22
+#: etc/variant/variant_datapool.inc:216
+msgid "Name"
+msgstr ""
+
+#: etc/component/component_datapool.inc:14 etc/project/project_datapool.inc:160
+#: etc/project/project_datapool.inc:274 etc/variant/variant_datapool.inc:220
+msgid "Description"
+msgstr ""
+
+#: etc/component/component_datapool.inc:19
+msgid "Ver."
+msgstr ""
+
+#: etc/component/component_datapool.inc:22
+#: etc/used_in_projects/used_in_projects_datapool.inc:21
+msgid "Rev."
+msgstr ""
+
+#: etc/component/component_datapool.inc:28
+msgid "Applicab State"
+msgstr ""
+
+#: etc/component/component_datapool.inc:31
+msgid "Approval State"
+msgstr ""
+
+#: etc/component/component_datapool.inc:33
+msgid "Approval state"
+msgstr ""
+
+#: etc/component/component_datapool.inc:37 etc/project/project_datapool.inc:217
+#: etc/used_in_projects/used_in_projects_datapool.inc:25
+msgid "Created"
+msgstr ""
+
+#: etc/component/component_datapool.inc:38
+msgid "OwnerId"
+msgstr ""
+
+#: etc/component/component_datapool.inc:39 etc/project/project_datapool.inc:220
+#: etc/project/project_datapool.inc:275
+#: etc/used_in_projects/used_in_projects_datapool.inc:24
+msgid "Owner"
+msgstr ""
+
+#: etc/component/component_datapool.inc:40 etc/project/project_datapool.inc:221
+#: etc/project/project_datapool.inc:277
+#: etc/used_in_projects/used_in_projects_datapool.inc:26
+msgid "Group"
+msgstr ""
+
+#: etc/component/component_datapool.inc:41
+msgid "Comp Type"
+msgstr ""
+
+#: etc/component/component_datapool.inc:42
+msgid "Last Changed"
+msgstr ""
+
+#: etc/component/component_datapool.inc:43
+msgid "Modification Comment"
+msgstr ""
+
+#: etc/component/component_datapool.inc:44
+msgid "ChangedId"
+msgstr ""
+
+#: etc/component/component_datapool.inc:45
+msgid "Changed by"
+msgstr ""
+
+#: etc/element_rename/element_rename_datapool.inc:13
+msgid "Old name"
+msgstr ""
+
+#: etc/element_rename/element_rename_datapool.inc:22
+msgid "New name"
+msgstr ""
+
+#: etc/element_rename/element_rename_functions.inc:38
+msgid "Unexpected error::"
+msgstr ""
+
+#: etc/element_rename/element_rename_functions.inc:40
+msgid "called with invalid element_rename.id"
+msgstr ""
+
+#: etc/element_rename/element_rename_functions.inc:51
+msgid "Rename action ignored (same or invalid name)."
+msgstr ""
+
+#: etc/element_rename/element_rename_operator.inc:5
+#: etc/element_rename/element_rename_uiManager.inc:15
+msgid "Rename"
+msgstr ""
+
+#: etc/logbook/logbook_datapool.inc:36
+msgid "Entry #"
+msgstr ""
+
+#: etc/logbook/logbook_operator.inc:6 etc/menu/menu.inc:23
+#: etc/project/project_datapool.inc:240
+msgid "Save"
+msgstr ""
+
+#: etc/logbook/logbook_operator.inc:15 etc/project/project_functions.inc:251
+msgid "Cancel"
+msgstr ""
+
+#: etc/logbook/logbook_uiManager.inc:19
+msgid "Logbook Entry"
+msgstr ""
+
+#: etc/main_window/main_window_uiManager.inc:36
+msgid "General"
+msgstr ""
+
+#: etc/main_window/main_window_uiManager.inc:39
+msgid "Logbook"
+msgstr ""
+
+#: etc/main_window/main_window_uiManager.inc:56
+msgid "Standard output"
+msgstr ""
+
+#: etc/main_window/main_window_uiManager.inc:57
+msgid "Session log"
+msgstr ""
+
+#: etc/main_window/main_window_uiManager.inc:58
+#: etc/python_logger/python_logger_uiManager.inc:32
+#: etc/python_logger/python_logger_uiManager.inc:33
+#: etc/python_logger/python_logger_uiManager.inc:34
+#: etc/python_logger/python_logger_uiManager.inc:35
+#: etc/python_logger/python_logger_uiManager.inc:36
+#: etc/python_logger/python_logger_uiManager.inc:37
+msgid "Python log"
+msgstr ""
+
+#: etc/main_window/main_window_uiManager.inc:64
+msgid "Standard output, Session log"
+msgstr ""
+
+#: etc/menu/menu.inc:17
+msgid "Open"
+msgstr ""
+
+#: etc/menu/menu.inc:29
+msgid "DB Users..."
+msgstr ""
+
+#: etc/modifications/modifications_datapool.inc:10
+msgid "User"
+msgstr ""
+
+#: etc/modifications/modifications_datapool.inc:13
+msgid "Reason"
+msgstr ""
+
+#: etc/modifications/modifications_datapool.inc:21
+msgid "Mod.Id"
+msgstr ""
+
+#: etc/modifications/modifications_uiManager.inc:13
+msgid "Page"
+msgstr ""
+
+#: etc/modifications/modifications_uiManager.inc:14
+msgid "Size"
+msgstr ""
+
+#: etc/project/project_datapool.inc:5 etc/project/project_datapool.inc:166
+msgid "Local"
+msgstr ""
+
+#: etc/project/project_datapool.inc:6 etc/project/project_datapool.inc:170
+msgid "Division"
+msgstr ""
+
+#: etc/project/project_datapool.inc:7 etc/project/project_datapool.inc:174
+msgid "Global"
+msgstr ""
+
+#: etc/project/project_datapool.inc:8 etc/project/project_datapool.inc:178
+msgid "Delivered"
+msgstr ""
+
+#: etc/project/project_datapool.inc:80 etc/project/project_datapool.inc:83
+#: etc/project/project_datapool.inc:116 etc/project/project_uiManager.inc:53
+#: etc/project/project_uiManager.inc:105 etc/project/project_uiManager.inc:112
+msgid "Workbook"
+msgstr ""
+
+#: etc/project/project_datapool.inc:106
+msgid "Import Variant from workbook."
+msgstr ""
+
+#: etc/project/project_datapool.inc:111
+msgid "Create a new variant."
+msgstr ""
+
+#: etc/project/project_datapool.inc:117
+msgid "Open window for managing workbook overview and entries."
+msgstr ""
+
+#: etc/project/project_datapool.inc:150 etc/project/project_datapool.inc:227
+#: etc/project/project_datapool.inc:236 etc/variant/variant_datapool.inc:210
+msgid "Id"
+msgstr ""
+
+#: etc/project/project_datapool.inc:186
+msgid "My workbooks"
+msgstr ""
+
+#: etc/project/project_datapool.inc:187
+msgid "Only my workbooks"
+msgstr ""
+
+#: etc/project/project_datapool.inc:219
+#: etc/used_in_projects/used_in_projects_datapool.inc:23
+msgid "Approval"
+msgstr ""
+
+#: etc/project/project_datapool.inc:222
+msgid "FeType"
+msgstr ""
+
+#: etc/project/project_datapool.inc:223 etc/project/project_datapool.inc:278
+msgid "Result"
+msgstr ""
+
+#: etc/project/project_datapool.inc:228
+msgid "Rev"
+msgstr ""
+
+#: etc/project/project_datapool.inc:249
+msgid "Yes"
+msgstr ""
+
+#: etc/project/project_datapool.inc:265
+msgid "Modify comment:"
+msgstr ""
+
+#: etc/project/project_datapool.inc:271 etc/project/project_datapool.inc:272
+msgid "State"
+msgstr ""
+
+#: etc/project/project_datapool.inc:273
+#: etc/used_in_projects/used_in_projects_datapool.inc:19
+msgid "Type"
+msgstr ""
+
+#: etc/project/project_datapool.inc:276 etc/user/user_datapool.inc:9
+msgid "Username"
+msgstr ""
+
+#: etc/project/project_functions.inc:22
+msgid "Workbook name has changed!"
+msgstr ""
+
+#: etc/project/project_functions.inc:23
+msgid "Create new Workbook"
+msgstr ""
+
+#: etc/project/project_functions.inc:24
+msgid "Rename Workbook"
+msgstr ""
+
+#: etc/project/project_functions.inc:49
+msgid "This workbook cannot be renamed because it has not been saved."
+msgstr ""
+
+#: etc/project/project_functions.inc:259
+msgid "There are <b>%1</b> other workbook(s) with the name %2"
+msgstr ""
+
+#: etc/project/project_functions.inc:260 etc/project/project_functions.inc:264
+msgid "The workbook has unsaved modifications:"
+msgstr ""
+
+#: etc/project/project_functions.inc:261
+msgid "Do you want to save a NEW workbook?"
+msgstr ""
+
+#: etc/project/project_functions.inc:265
+msgid "Do you want to save the workbook?"
+msgstr ""
+
+#: etc/project/project_functions.inc:266
+msgid "No"
+msgstr ""
+
+#: etc/project/project_functions.inc:287
+msgid "Do not exit"
+msgstr ""
+
+#: etc/project/project_functions.inc:288
+msgid "Exit without saving"
+msgstr ""
+
+#: etc/project/project_functions.inc:534
+msgid "Component created."
+msgstr ""
+
+#: etc/project/project_uiManager.inc:27 etc/variant/variant_uiManager.inc:31
+msgid "Show status"
+msgstr ""
+
+#: etc/project/project_uiManager.inc:42 etc/variant/variant_uiManager.inc:49
+msgid "Search flags"
+msgstr ""
+
+#: etc/project/project_uiManager.inc:69
+msgid "Import Variant"
+msgstr ""
+
+#: etc/project/project_uiManager.inc:109
+msgid "Workbook Overview"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:2
+msgid "Debug"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:3
+msgid "Info"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:4
+msgid "Warn"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:5
+msgid "Error"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:6
+msgid "Critical"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:7
+msgid "All"
+msgstr ""
+
+#: etc/python_logger/python_logger_datapool.inc:14
+msgid "Log Level"
+msgstr ""
+
+#: etc/used_in_projects/used_in_projects_datapool.inc:20
+msgid "Var Comp."
+msgstr ""
+
+#: etc/used_in_projects/used_in_projects_uiManager.inc:5
+msgid "Component:"
+msgstr ""
+
+#: etc/used_in_projects/used_in_projects_uiManager.inc:11
+msgid "Workbooks:"
+msgstr ""
+
+#: etc/used_in_projects/used_in_projects_uiManager.inc:25
+msgid "Used In Workbooks"
+msgstr ""
+
+#: etc/user/user_datapool.inc:10
+msgid "First Name"
+msgstr ""
+
+#: etc/user/user_datapool.inc:11
+msgid "Last Name"
+msgstr ""
+
+#: etc/user/user_datapool.inc:16
+msgid "New password"
+msgstr ""
+
+#: etc/user/user_datapool.inc:21
+msgid "repeat new password"
+msgstr ""
+
+#: etc/user/user_datapool.inc:28
+msgid "Update password"
+msgstr ""
+
+#: etc/user/user_datapool.inc:33
+msgid "Enabled"
+msgstr ""
+
+#: etc/user/user_datapool.inc:35
+msgid "Active Group"
+msgstr ""
+
+#: etc/user/user_datapool.inc:36
+msgid "Groups"
+msgstr ""
+
+#: etc/user/user_datapool.inc:37
+msgid "Roles"
+msgstr ""
+
+#: etc/user/user_uiManager.inc:5
+msgid "Connection"
+msgstr ""
+
+#: etc/user/user_uiManager.inc:12
+msgid "Change Password"
+msgstr ""
+
+#: etc/user/user_uiManager.inc:28
+msgid "Database Connection"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:51
+msgid "Number of samples"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:55
+msgid "Stator voltage"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:56
+msgid "stator maximum voltage"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:60
+msgid "Stator flux"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:61
+msgid "stator maximum flux"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:65
+msgid "Load Torque"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:66
+msgid "load torque at begin of short circuit"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:70
+msgid "Shaft Speed"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:71
+msgid "shaft speed at load torque"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:75
+msgid "T short"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:76
+msgid "Start time of short circuit"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:80
+msgid "T end"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:81
+msgid "End time of calculation period"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:179 etc/variant/variant_datapool.inc:183
+msgid "Variant"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:250
+msgid "My variants"
+msgstr ""
+
+#: etc/variant/variant_datapool.inc:251
+msgid "Only my variants"
+msgstr ""
+
+#: etc/variant/variant_functions.inc:136
+msgid "This variant cannot be renamed because it has not been saved."
+msgstr ""
+
+#: etc/variant/variant_functions.inc:191
+msgid "Create new Variant"
+msgstr ""
+
+#: etc/variant/variant_functions.inc:192
+msgid "Rename Variant"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:7
+msgid "Pole pairs"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:8
+msgid "Number of pole pairs"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:14
+msgid "Nom. Flux"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:15
+msgid "Stator Type flux"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:19
+msgid "Stator Resistance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:20
+msgid "Stator Resistance at 20 deg Celsius"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:24
+msgid "Rotor Resistance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:25
+msgid "Rotor Resistance at 20 deg Celsius"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:29
+msgid "Stator Leakage"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:30
+msgid "Stator leakage inductance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:35
+msgid "Magnetizing Inductance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:36
+msgid "Magnetizing inductance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:41
+msgid "Rotor Leakage"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:42
+msgid "Rotor leakage inductance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:47
+msgid "Iron Resistance"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:48
+msgid "Resistance representing Iron Losses"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:52
+msgid "Moment of Inertia"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:53
+msgid "Moment of Inertia of rotor"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:61
+msgid "Motor"
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:70
+msgid "Open a Motor."
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:75
+msgid "Create a new Motor."
+msgstr ""
+
+#: etc/motor/motor_datapool.inc:80
+msgid "Store the Motor."
+msgstr ""
+
+#: etc/motor/motor_uiManager.inc:40
+msgid "Motor properties"
+msgstr ""

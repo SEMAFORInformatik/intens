@@ -1,0 +1,176 @@
+#
+# Copyright (C) 2007 by SEMAFOR Informatik & Energie AG.
+# All Rights Reserved.
+#
+
+[Intens]
+apptitle.text=INTENS
+appsubtitle.text=4.0
+#ApplicationIcon=semafor_icon
+Copyright.text=""
+
+[DefaultColors]
+background=#efefef
+#background=#d4d0c8
+foreground=#000000
+
+base=#ffffff
+text=#000000
+
+button=#efefef
+buttonText=#000000
+
+##highlight=#0a206a
+##highlightedText=#ffffff
+
+brightText=yellow
+
+link=orange
+linkVisited=brown
+
+[Colors]
+# wirkungslos
+helpBackground=#00008c
+helpForeground=#00008c
+
+# wirkungslos
+infoBackground=#8c0000
+infoForeground=#8c0000
+
+# Color1-8 (COLOR, COLORBIT)
+color1Background=#000000
+color1Foreground=#ffff00
+color2Background=#8b0000
+color2Foreground=#ff0000
+color3Background=#8b0000
+color3Foreground=#000000
+color4Background=#00008b
+color4Foreground=#0000ff
+color5Background=#008b8b
+color5Foreground=#00ffff
+color6Background=#8b008b
+color6Foreground=#ff00ff
+color7Background=#ffffff
+color7Foreground=#ffff00
+color8Background=#e8e8e8
+color8Foreground=#000000
+
+#readonly and locked background color is shown 13% darker than defined here
+readonlyBackground=#e8e8e8
+readonlyForeground=#000000
+lockedBackground=#efefef
+lockedForeground=#000000
+
+#editableLBackground=#
+#editableLForeground=#
+#readonlyLBackground=#
+#readonlyLForeground=#
+#optionalLBackground=#
+#optionalLForeground=#
+
+[fonts]
+# Application Title
+appTitle.Family=Sans Serif
+appTitle.PointSize=12
+appTitle.Weight=Bold
+
+# Application Subtitle
+subTitle.Family=Sans Serif
+subTitle.PointSize=10
+subTitle.Weight=Bold
+
+# Copyright
+copyright.Family=Sans Serif
+copyright.PointSize=9
+copyright.Weight=Normal
+
+# Combobox
+combobox.Family=Courier
+combobox.PointSize=10
+combobox.Weight=Normal
+
+# Button
+button.Family=Sans Serif
+button.PointSize=9
+button.Weight=Normal
+
+# Index
+index.Family=Sans Serif
+index.PointSize=9
+index.Weight=Normal
+
+# Label
+label.Family=Sans Serif
+label.PointSize=9
+label.Weight=Normal
+
+# Message Line
+messageLine.Family=Sans Serif
+messageLine.PointSize=9
+messageLine.Weight=Normal
+
+# List
+list.Family=Courier
+list.PointSize=10
+list.Weight=Normal
+
+# List title ????????????
+listTitle.Family=Courier
+listTitle.PointSize=10
+listTitle.Weight=Bold
+
+# Main Menu Item
+menu.Family=Sans Serif
+menu.PointSize=9
+menu.Weight=Normal
+
+# Submenu Item
+pulldown.Family=Sans Serif
+pulldown.PointSize=9
+pulldown.Weight=Normal
+
+# Popument Item
+popup.Family=Sans Serif
+popup.PointSize=9
+popup.Weight=Normal
+
+# Tabs 
+folderTab.Family=Sans Serif
+folderTab.PointSize=9
+folderTab.Weight=Normal
+
+# Fieldgroup Title
+groupboxTitle.Family=Sans Serif
+groupboxTitle.PointSize=10
+groupboxTitle.Weight=Bold
+
+# Text (Input field, stdwin, logwin)
+plotTitle.Family=Sans Serif
+plotTitle.PointSize=9
+plotTitle.Weight=Bold
+
+# Plot
+plotMarker.Family=Sans Serif
+plotMarker.PointSize=9
+plotMarker.Weight=Normal
+
+plotLegend.Family=Sans Serif
+plotLegend.PointSize=9
+plotLegend.Weight=Normal
+
+plotAxis.Family=Sans Serif
+plotAxis.PointSize=9
+plotAxis.Weight=Normal
+
+# Thermo
+thermoScale.Family=Sans Serif
+thermoScale.PointSize=9
+thermoScale.Weight=Normal
+
+thermoUnits.Family=Sans Serif
+thermoUnits.PointSize=9
+thermoUnits.Weight=Normal
+
+thermoLabel.Family=Sans Serif
+thermoLabel.PointSize=9
+thermoLabel.Weight=Bold

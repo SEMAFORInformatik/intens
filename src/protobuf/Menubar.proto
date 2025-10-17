@@ -1,0 +1,17 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Menubar {
+  GuiElement base = 1;
+  repeated ElementRef elements = 2;
+}
+
+message PulldownMenu {
+  GuiElement base = 1;
+  repeated ElementRef elements = 2;
+  string label = 3;
+  string mnemonic = 4;
+  bool radio = 5;
+  bool tearOff = 6;
+}

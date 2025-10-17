@@ -1,0 +1,223 @@
+DESCRIPTION "JSON Stream mit GuiIndex";
+
+DATAPOOL
+  SET approval_set (
+    _("Experimental") = "experimental"
+  , _("In Preparation") = "inPreparation"
+  , _("Shared") = "shared"
+  , _("Approved") = "approved"
+  , _("Tested") = "tested"
+  , _("Tendered") = "tendered"
+  , _("Obsolete") = "obsolete"
+  );
+  COLOR approval_color (
+    "experimental" = ("#FFCC99", "#000000")
+  , "inPreparation" = ("#FF6666", "#FFFFFF")
+  , "shared" = ("#FF3333", "#FFFFFF")
+  , "approved" = ("#FDC500", "#000000")
+  , "tested" = ("#3E8925", "#FFFFFF")
+  , "tendered" = ("#006089", "#FFFFFF")
+  , "obsolete" = ("#000000", "#FFFFFF")
+  );
+
+  STRUCT Component {
+    INTEGER {SCALAR}
+      id
+    ;
+    STRING {EDITABLE, SCALAR, NO_DEPENDENCIES}
+      name {
+        LABEL=_("Name")
+      , HELPTEXT="Component name"
+      , PATTERN=".{0,255}"
+      }
+    , desc {
+        LABEL=_("Description")
+      , TAG=(desc_tag)
+      , HELPTEXT="Component description"
+      , PATTERN=".{0,255}"
+      }
+    ;
+    INTEGER {SCALAR}
+      version {
+        LABEL=_("Ver.")
+      , HELPTEXT="Version"
+      }
+    , current_version {
+        TRANSIENT
+      }
+    , detached {
+        TRANSIENT
+      }
+    ;
+    INTEGER {SCALAR}
+      rev {
+        LABEL=_("Rev."), TAG=(rev_tag)
+      , HELPTEXT="Component revision"
+      }
+    ;
+
+    STRING {EDITABLE, SCALAR, NO_DEPENDENCIES}
+      approval {
+        LABEL=_("Approval State")
+      , SET=approval_set
+      , HELPTEXT=_("Approval state")
+      , TAG=(approval_tag)
+      , COLOR=approval_color
+      }
+    ;
+
+    STRING {SCALAR}
+      created {LABEL=_("Created"), STRING_DATETIME, TAG=created_tag}
+    , owner {LABEL=_("OwnerId")}
+    , ownername {LABEL=_("Owner"), TRANSIENT}
+    , group {LABEL=_("Group")}
+    , type {LABEL=_("Comp Type")}
+    , changed {LABEL=_("Last Changed"), TRANSIENT, STRING_DATETIME}
+    , modcomment {LABEL=_("Modification Comment"), TRANSIENT, HIDDEN}
+    , changer {LABEL=_("ChangedId"),TRANSIENT, HIDDEN}
+    , changername {LABEL=_("Changed by"),TRANSIENT}
+    , tooltip {TAG=(tooltip_tag), TRANSIENT, HIDDEN}
+    , approverTooltip {TRANSIENT, HIDDEN}
+    , reason
+    ;
+
+    STRING {SCALAR}
+      modification {TRANSIENT, HIDDEN}
+    , modification_type {TRANSIENT, HIDDEN} // trivial, nontrivial
+    , modification_approval {TRANSIENT, HIDDEN} // new approval state
+    ;
+  };
+
+  STRUCT Motor : Component {
+    INTEGER {EDITABLE, SCALAR}
+      p {
+        LABEL=_("Pole pairs")
+      , HELPTEXT=_("Number of pole pairs")
+      , DBUNIT="1"
+      }
+    ;
+    REAL {EDITABLE, SCALAR}
+      psityp {
+        LABEL=_("Nom. Flux")
+      , HELPTEXT=_("Stator Type flux")
+      , UNIT="Vs"
+      }
+    , rs_Tref {
+        LABEL=_("Stator Resistance")
+      , HELPTEXT=_("Stator Resistance at 20 deg Celsius")
+      , UNIT="Ohm"
+      }
+    , rr_Tref {
+        LABEL=_("Rotor Resistance")
+      , HELPTEXT=_("Rotor Resistance at 20 deg Celsius")
+      , UNIT="Ohm"
+      }
+    , Lls {
+        LABEL=_("Stator Leakage")
+      , HELPTEXT=_("Stator leakage inductance")
+      , UNIT="mH"
+      , DBUNIT="H"
+      }
+    , Lh {
+        LABEL=_("Magnetizing Inductance")
+      , HELPTEXT=_("Magnetizing inductance")
+      , UNIT="mH"
+      , DBUNIT="H"
+      }
+    , Llr {
+        LABEL=_("Rotor Leakage")
+      , HELPTEXT=_("Rotor leakage inductance")
+      , UNIT="mH"
+      , DBUNIT="H"
+      }
+    , rh {
+        LABEL=_("Iron Resistance")
+      , HELPTEXT=_("Resistance representing Iron Losses")
+      , UNIT="Ohm"
+      }
+    , Iin {
+        LABEL=_("Moment of Inertia")
+      , HELPTEXT=_("Moment of Inertia of rotor")
+      , UNIT="kg m²"
+      }
+    ;
+  };
+
+  Motor
+    motor {
+      LABEL=_("Motor")
+    }
+  ;
+
+  INTEGER index;
+END DATAPOOL;
+
+UI_MANAGER
+  INDEX navIndex_motor;
+  FIELDGROUP motor_topSection_fg (
+    navIndex_motor,
+
+    LABEL(motor.name)
+    LABEL(motor.desc)
+    LABEL(motor.rev)
+    LABEL(motor.approval)
+
+  , motor[navIndex_motor].name:15
+    motor[navIndex_motor].desc:40
+    motor[navIndex_motor].rev:4
+    motor[navIndex_motor].approval:12
+
+  , SEPARATOR
+
+  , VOID(0,5)
+  );
+
+  FIELDGROUP motor_properties_fg (
+    LABEL(motor.p) motor[navIndex_motor].p UNIT(motor.p)
+  , LABEL(motor.psityp) motor[navIndex_motor].psityp UNIT(motor.psityp)
+  , LABEL(motor.rs_Tref) motor[navIndex_motor].rs_Tref UNIT(motor.rs_Tref)
+  , LABEL(motor.rr_Tref) motor[navIndex_motor].rr_Tref UNIT(motor.rr_Tref)
+  , LABEL(motor.Lls) motor[navIndex_motor].Lls*1e3 UNIT(motor.Lls)
+  , LABEL(motor.Lh) motor[navIndex_motor].Lh*1e3 UNIT(motor.Lh)
+  , LABEL(motor.rh) motor[navIndex_motor].rh UNIT(motor.rh)
+  , LABEL(motor.Llr) motor[navIndex_motor].Llr*1e3 UNIT(motor.Llr)
+  , LABEL(motor.Iin) motor[navIndex_motor].Iin UNIT(motor.Iin)
+  );
+
+  FORM main_form {MAIN} (motor_topSection_fg, motor_properties_fg);
+
+  // hide STD_WINDOW (Standard output) from main form
+  FORM stdwin_form {
+    _("Standard output")
+  } (
+    STD_WINDOW { SIZE=24*80 }
+  );
+END UI_MANAGER;
+
+STREAMER
+  motor_stream {
+    JSON
+  } (
+    motor[navIndex_motor]
+  );
+END STREAMER;
+
+OPERATOR
+  FILESTREAM motor_fs = motor_stream {
+    "MOTOR Data (JSON)", FILTER="JSON (*.json)"
+  };
+
+  TASK open_motor_task {
+    "open motor"
+  } {
+    OPEN(motor_fs);
+  };
+END OPERATOR;
+
+FUNCTIONS
+  FUNC set_navIndex_motor_func {
+    navIndex_motor = index;
+  };
+END FUNCTIONS;
+
+END.

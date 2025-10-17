@@ -1,0 +1,117 @@
+DESCRIPTION "Write JSON: Sparse Array";
+
+DATAPOOL
+  STRING stem, filename;
+
+  STRUCT Data {
+    INTEGER {EDITABLE}
+      i {
+        TOGGLE
+      , FUNC=i_func
+      }
+    ;
+  };
+
+  Data {SCALAR} data;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP i_fg {
+    TABLESIZE = 5
+  , RANGE(0, 5)
+  } (
+    LABEL(data.i) data.i[*]
+  );
+
+  FORM main_form {MAIN} (i_fg);
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC i_func {
+    IF(INPUT == 0) {
+      INPUT = INVALID;
+    }
+    PRINT("data: ", data, EOLN);
+  };
+END FUNCTIONS;
+
+// automatic test
+STREAMER
+  data_i_stream {JSON} (data.i);
+  data_i_indent_stream {JSON, INDENT=4} (data.i);
+  data_stream {JSON} (data);
+  data_indent_stream {JSON, INDENT=4} (data);
+END STREAMER;
+
+OPERATOR
+  FILESTREAM
+    data_i_fs = data_i_stream {"data.i"}
+  , data_i_indent_fs = data_i_indent_stream {"data.i indented"}
+  , data_fs = data_stream {"data"}
+  , data_indent_fs = data_indent_stream {"data indented"}
+  ;
+END OPERATOR;
+FUNCTIONS
+  FUNC test_func {
+    CLEAR(data.i[*]);
+    stem = "new";
+    RUN(save_func);
+
+    data.i[0] = 1;
+    stem = "one";
+    RUN(save_func);
+
+    CLEAR(data);
+    data.i[0] = 1;
+    data.i[0] = INVALID;
+    stem = "invalid";
+    RUN(save_func);
+
+    CLEAR(data);
+    data.i[0] = 1;
+    data.i[2] = 1;
+    stem = "one_new_one";
+    RUN(save_func);
+
+    CLEAR(data);
+    data.i[0] = 1;
+    data.i[1] = 1;
+    data.i[2] = 1;
+    stem = "one_one_one";
+    RUN(save_func);
+
+    CLEAR(data);
+    data.i[0] = 1;
+    data.i[1] = 1;
+    data.i[1] = INVALID;
+    data.i[2] = 1;
+    stem = "one_invalid_one";
+    RUN(save_func);
+
+    CLEAR(data);
+    data.i[4] = 1;
+    stem = "new_new_new_new_one";
+    RUN(save_func);
+  };
+
+  FUNC save_func {
+    // save data and data.i normal and indented
+    IF(!VALID(stem)) {
+      RETURN;
+    }
+
+    filename = "./reality/i/" + stem + ".json";
+    SAVE(data_i_fs, filename);
+
+    filename = "./reality/i-indented/" + stem + ".json";
+    SAVE(data_i_indent_fs, filename);
+
+    filename = "./reality/data/" + stem + ".json";
+    SAVE(data_fs, filename);
+
+    filename = "./reality/data-indented/" + stem + ".json";
+    SAVE(data_indent_fs, filename);
+  };
+END FUNCTIONS;
+
+END.

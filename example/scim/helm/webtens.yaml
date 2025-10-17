@@ -1,0 +1,8 @@
+appName: SCIM
+appType: scim-intens
+baseUrl: http://scim.k8s.semafor.ch
+
+imageCredentials:
+  registry: hub.semafor.ch
+  username: gitlab+deploy-token-23
+  password: Q6snATyLSDMcGV8u_mVX

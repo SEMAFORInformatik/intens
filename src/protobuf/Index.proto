@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "GuiElement.proto";
+import "Datafield.proto";
+package in_proto;
+
+message Index {
+  GuiElement base = 1;
+  bool enabled = 2;
+  DataField.Range range = 3;
+  uint32 index = 4;
+  uint32 new_index = 5;
+  GuiElement.Orientation orientation = 6;
+  bool visible = 7;
+  string full_name = 8;
+  string action = 9;
+}

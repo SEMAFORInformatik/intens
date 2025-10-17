@@ -1,0 +1,29 @@
+// SEMAFOR Informatik & Energie AG
+// Basel, Switzerland
+//
+DESCRIPTION "Multifont Example";
+DATAPOOL
+REAL{EDITABLE}
+   speed;
+END DATAPOOL;
+
+UI_MANAGER
+   FIELDGROUP 
+      g1( 
+	"@textfont@This is a example of a multifont string",
+	"@textfont@=======================================",
+	"@textfont@textfont @hugefont@hugefont @largefont@largefont",
+	"@titelfont@titelfont @tabfont@tabfont @labelfont@labelfont",
+	"@indexfont@indexfont @menufont@menufont @buttonfont@buttonfont",
+	"@pulldownfont@pulldownfont @bannerfont@bannerfont @Title@Title",
+	"@symfont@symfont@P@(symfont) @charset1@charset1 @charset2@charset2"
+        );
+   FORM
+      f1{MAIN}( (g1) ),
+      f2 (
+        (STD_WINDOW),(LOG_WINDOW)
+      );
+END UI_MANAGER;
+
+END.
+

@@ -1,0 +1,189 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                               XRTGRAPH                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{XrtGraph}
+\label{sec:uixrtgraph}
+Plots of type \XRTGRAPH{} can be used to produce 2-dimensional graphs
+of datapool values.
+\index{Plot!XrtGraph}
+
+\input{diagrams/ui_xrtgraph_list}
+\index{XRTGRAPH@\XRTGRAPH}
+
+Pressing the right mouse button within such a diagram pops up a menu which
+provides additional configuration functions.
+
+\label{uixrtgraphoptions}
+\input{diagrams/ui_xrtgraph_option}
+
+\index{CAPTION@\CAPTION!xrtgraph option}
+\index{PRINTSTYLE@\PRINTSTYLE!xrtgraph option}
+\index{TRUE@\TRUE!xrtgraph option printstyle}
+\index{XRTGRAPH@\XRTGRAPH!CAPTION}
+\begin{tabularx}{\textwidth}{l|X}
+options          & description \\ 
+\hline
+string           & Print-menu label \\
+\CAPTION         & Titel displayed at the bottom of the graphics-form. \\
+                 & Using special-characters such as space, you need to use string-representation. \\
+\PRINTSTYLE      & = TRUE use extra resources for printing (fonts, line styles, background etc.). \\
+\MINMAX          & show(TRUE, default) or hide (FALSE) min and max of a selected curve. \\
+\RMS             & show(TRUE, default) or hide (FALSE) rms of a selected curve. \\
+\AVG             & show(TRUE, default) or hide (FALSE) avg and max of a selected curve. \\
+
+\end{tabularx}
+\newpage
+
+\input{diagrams/ui_xrtgraph_graph}
+\input{diagrams/ui_xrtgraph_graph_option}
+\input{diagrams/ui_xrtgraph_graph_axis_item}
+
+\index{XAXIS@\XAXIS!xrtgraph graph option}
+\index{YAXIS1@\YAXISONE!xrtgraph graph option}
+\index{YAXIS2@\YAXISTWO!xrtgraph graph option}
+\index{AXES\_ORIGIN\_X@\AXESORIGINX!xrtgraph graph option}
+\index{AXES\_ORIGIN\_Y@\AXESORIGINY!xrtgraph graph option}
+\index{LOG\_X@\LOGX!xrtgraph graph option}
+\index{LOG\_Y@\LOGY!xrtgraph graph option}
+\index{XANNOTATION@\XANNOTATION!xrtgraph graph option}
+\begin{tabularx}{\textwidth}{l|X}
+graph options      & description \\
+\hline
+\verb+string+      & defines the xrt graph title that will be printed at the top
+                     of the plot.\\
+\verb+identifier+  & defines the xrt3d graph title that will be printed at the top
+                     of the plot. The identifier must be a previously declared stream.
+                     (see section \nameref{sec:streamer} on page \pageref{sec:streamer})\\
+\XAXIS             & defines the x-coordinates\\
+\YAXISONE          & defines coordinates of first Y-Axis\\
+\YAXISTWO          & defines coordinates of second Y-Axis\\
+\AXESORIGINX       & defines the origin for the x axis\\
+\AXESORIGINY       & defines the origin for all y axes\\
+\LOGX              & the x-axis is scaled logarithmically\\
+\LOGY              & the y-axis is scaled logarithmically\\
+\COMBOBOX          & displays the item names as a combobox when the config menu
+                          is opened pressing the right mouse button over the plot. \\
+\STYLE             & style of all curves. \\
+\YONESTYLE         & style of y1 curves. \\
+\YTWOSTYLE         & style of y2 curves. \\
+\ALLCYCLES         & Shows data of each cylcle in same graph. \\
+\SCROLLBARS        & Shows scroll-bars in 'zoomed zone' mode. \\
+\XANNOTATION       & Shows x-axis as defined in x-graph-item option XANNOTATION on page
+                        \pageref{uixrtgraphitemoptions}. \\
+\end{tabularx}
+
+\input{diagrams/ui_xrtgraph_xaxis_label}
+\input{diagrams/ui_xrtgraph_yaxis1_label}
+
+\begin{tabularx}{\textwidth}{l|X}
+axis-options & description \\
+\hline
+\LABEL       & Text to display for describing the axis. \\
+\end{tabularx}
+
+\input{diagrams/ui_xrtgraph_style}
+
+\begin{tabularx}{\textwidth}{l|X}
+plot styles        & description \\
+\hline
+\BAR               & see hardcopy example on page \pageref{hc:plot2d_style_bar} \\
+\AREA              & see hardcopy example on page \pageref{hc:plot2d_style_area} \\
+\PLOT              & see hardcopy example on page \pageref{hc:plot2d_style_plot} \\
+\POLAR             & see hardcopy example on page \pageref{hc:plot2d_style_polar} \\
+\STACKINGBAR       & see hardcopy example on page \pageref{hc:plot2d_style_stacking_bar} \\
+\STEP              & see hardcopy example on page \pageref{hc:plot2d_style_step} \\
+\end{tabularx}
+
+\input{diagrams/ui_xrtgraph_item}
+
+\index{scale}
+\begin{tabularx}{\textwidth}{l|X}
+2d item list & description \\
+\hline
+\verb+scale+ & see section \nameref{sec:scale} page \pageref{sec:scale}. \\
+\end{tabularx}
+
+\input{diagrams/ui_xrtgraph_item_option}
+\label{uixrtgraphitemoptions}
+\index{LABEL@\LABEL!xrtgraph item option}
+\index{UNIT@\UNIT!xrtgraph item option}
+\index{YAXIS1@\YAXISONE!xrtgraph item option}
+\index{YAXIS2@\YAXISTWO!xrtgraph item option}
+\index{XAXIS@\XAXIS!xrtgraph item option}
+\index{HIDDEN@\HIDDEN!xrtgraph item option}
+\index{XANNOTATION@\XANNOTATION!xrtgraph item option}
+\index{LINESTYLE@\LINESTYLE!xrtgraph item option}
+\index{LINEAR@\LINEAR!xrtgraph item option}
+\index{STEP@\STEP!xrtgraph item option}
+
+
+\begin{tabularx}{\textwidth}{l|X}
+graph item options & description \\ 
+\hline
+\LABEL        & defines the item name which will be printed at the top of the axis\\
+\UNIT         & defines the unit description which will be printed at the top of the axis\\
+\YAXISONE     & defines the y-coordinates of the left y axis\\
+\YAXISTWO     & defines the y-coordinates of the right y axis\\
+\XAXIS        & defines the coordinates of the x axis\\
+\HIDDEN       & does not print any description at the top of the axis\\
+\XANNOTATION  & defines extra labels for x axis\\
+\LINESTYLE    & defines the line style \\
+\LINEAR       & TODO \\
+\STEP         & TODO \\
+\end{tabularx}
+
+\input{diagrams/ui_xrtgraph_item_anno}
+\input{diagrams/ui_xrtgraph_item_anno_title}
+\input{diagrams/ui_xrtgraph_item_anno_values}
+\input{diagrams/ui_xrtgraph_item_anno_labels}
+\input{diagrams/ui_xrtgraph_item_anno_angle}
+\label{uixrtgraphitemoptionsxannotation}
+
+\index{LABEL@\LABEL!xrtgraph option!xannotation}
+\index{XANNOTATION@\XANNOTATION!xrtgraph x graph option}
+\index{Scale factors!xrtgraph xannotation}
+\begin{tabularx}{\textwidth}{l|X}
+graph item options & description \\ 
+\hline
+\LABEL             & title which will be printed at the bottom of graphics \\
+\verb+anno values+ & {\bfseries data item}: position on the x axis, where labels will be displayed.\\
+\verb+scale+       & scale factor (see section \nameref{sec:scale} page \pageref{sec:scale}). \\
+\verb+anno labels+ & {\bfseries string data item}: labels to be displayed at display position.\\
+\verb+anno angle+  & angle (in degrees) to print the labels. Default is 90 (vertical). 0 is horizontal. \\
+\end{tabularx}
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DESCRIPTION "Example XRTGRAPH";
+\DATAPOOL
+  \REAL \{\EDITABLE\}
+    xValues
+   ,y1Values
+   ,y2Values
+   ;
+\END \DATAPOOL;
+
+\UIMANAGER
+  \XRTGRAPH
+    graph_plot
+      \{ \CAPTION = streamCaption \}
+      ( plot
+           \{ streamTitel
+           , \XAXIS = xValues \{ \LABEL = "X-Axis" \}
+           \}
+         (
+           xValues,
+           y1Values \{\YAXISONE\},
+           y2Values \{\YAXISTWO\}
+         )
+      );
+  \FORM
+    Form_XrtGraph \{"Graph Plot", \HIDECYCLE\}
+      ( ( graph_plot )
+      );
+\END \UIMANAGER;
+\END.
+\end{alltt}
+\end{boxedminipage}
+

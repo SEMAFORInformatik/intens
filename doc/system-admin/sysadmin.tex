@@ -1,0 +1,146 @@
+% TODO:
+% gettext
+% unit manager
+% command line options
+%
+\documentclass[a4paper,DIV=12,11pt,parskip=half]{scrartcl}
+\input{config/packages}
+%
+\graphicspath{{images}}
+%---------------------------------------------------------------------------%
+% Page Heading & Footing                                                    %
+%---------------------------------------------------------------------------%
+\pagestyle{fancy}
+\newbox{\logobox}
+\sbox{\logobox}{
+  \includegraphics[width=1cm]{smallogo}
+%  \includegraphics[width=1cm]{smallogo}
+%  \includegraphics[width=1cm]{/usr/local/share/texmf.local/tex/SEmacros/smallogo}
+}
+\def\doc@version{Version 5.3.1}
+\def\pub@date{June 2025}
+%
+\fancyhead{} % clear all fields
+\fancyhead[L]{\upshape \leftmark \hspace{1cm} \rightmark}
+\fancyhead[R]{\upshape \thepage}
+\fancyfoot[L]{\usebox{\logobox}{\ \small \sffamily SEMAFOR}}
+\fancyfoot[R]{\doc@version}
+\fancyfoot[C]{}
+%%
+\begin{document}
+\renewcommand{\arraystretch}{1.5}
+\begin{titlepage}
+\begin{center}
+\vspace*{1.5cm}
+
+{\bfseries \Huge INTENS / Engineering Manager\\[3ex]}
+{\LARGE System Administration Manual\\[3ex]}
+\pub@date \\
+\doc@version \\
+
+\end{center}
+\vspace{8cm}
+SEMAFOR Informatik \& Energie AG\\
+Sperrstrasse 104b\\
+4057 Basel\\
+Switzerland\\[2ex]
+Tel: +41 61 690 98 88\\
+Fax: +41 61 690 98 80\\
+Email: info@semafor.ch\\
+WWW: http://www.semafor.ch
+\end{titlepage}
+%-------------------------------------------------------------------------
+%%\setcounter{page}{0}
+\thispagestyle{empty}
+\vspace{2cm}
+
+The information in this document is subject to change without notice and
+should not be construed as a commitment by SEMAFOR AG. SEMAFOR AG
+assumes no responsibility for any errors that may appear in this document.
+
+The software described in this document is furnished under a license and
+may be used or copied only in accordance with the terms of such license.
+
+Copyright \copyright 1994-2025 by SEMAFOR AG\\[2ex]
+All Rights reserved. No part of this document covered by copyright
+hereon may be reproduced in any form or by any means without written permission
+from the copyright owner.\\[4ex]
+
+INTENS is a registered trademark of Semafor Informatik \& Energie AG\\
+All other products or company names are used for identification
+purposes only, and may be trademarks of their respective owners.\\[5ex]
+This document was prepared using \LaTeX.
+%-------------------------------------------------------------------------
+\newpage
+\pdfbookmark[1]{\contentsname}{toc}
+\tableofcontents
+%
+%-------------------------------------------------------------------------
+\include{content/release-notes}
+\include{content/introduction}
+\include{content/architecture}
+   \include{content/config-conventions}
+     \include{content/config-identifiers}
+     \include{content/config-scale}
+     \include{content/config-strings}
+     \include{content/config-numbers}
+     \include{content/config-multifont}
+     \include{content/config-locale}
+     \include{content/config-wildcards}
+   \include{content/config-description}
+   \include{content/config-helpfile}
+   \include{content/config-datapool}
+   \include{content/config-datareference}
+   \include{content/config-streamer}
+   \include{content/config-uimanager}
+      \include{content/config-uidataitem}
+      \include{content/config-uifieldgroup}
+      \include{content/config-uitable}
+      \include{content/config-uilist}
+      \include{content/config-uiindex}
+      \include{content/config-uilistplot}
+      \include{content/config-uiuniplot}
+      \include{content/config-uiplot3d}
+%      \include{content/config-uixrtgraph}
+      \include{content/config-uiplot2d}
+      \include{content/config-uinavigator}
+      \include{content/config-uitextwindow}
+      \include{content/config-uifolder}
+      \include{content/config-uiform}
+      \include{content/config-uimenu}
+      \include{content/config-uipsplot}
+      \include{content/config-uiimage}
+      \include{content/config-uilineplot}
+      \include{content/config-uithermo}
+      \include{content/config-uitimetable}
+      \include{content/config-uiplugin}
+   \include{content/config-operator}
+      \include{content/config-opsocket}
+      \include{content/config-optimer}
+      \include{content/config-opmessagequeue}
+      \include{content/config-opexamples}
+   \include{content/config-functions}
+%%%%   \include{content/config-dbmanager}
+%\Include{Content/x-resources}
+\include{content/unitmanager}
+\include{content/commandline-options}
+
+%%\include{content/des-overview}
+
+%
+%\begin{thebibliography}{99}
+%\bibitem{1} Donald Lewine {\em POSIX Programmer's Guide} O'Reilly \& Ass.
+%\bibitem{2} {\em OSF/Motif Programmer's Reference}, Prentice-Hall,
+%  Englewood Cliffs, New Jersey
+%\bibitem{3} Dan Heller {\em Motif Programming Manual}, O'Reilly \& Ass.
+%\bibitem{4} V, Quercia, T. O'Reilly {\em X Window System Users's Guide}, O'Reilly \& Ass.
+%\bibitem{5} Douglas A. Young {\em Object-Oriented Programming with C++
+%        and OSF/Motif}, Prentice-Hall, Englewood Cliffs.
+%\end{thebibliography}
+%
+%\include{content/appendix}
+
+\newpage
+\printindex
+
+\end{document}

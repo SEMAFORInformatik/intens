@@ -1,0 +1,46 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: scim
+build:
+  artifacts:
+    - image: hub.semafor.ch/semafor/scim
+      context: .
+      docker:
+        dockerfile: docker/Dockerfile
+    - image: hub.semafor.ch/semafor/scim/api-gateway
+      context: api-gateway
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: config-controller
+        remoteChart: semafor/config-controller
+        valuesFiles:
+          - helm/config-controller.yaml
+        version: 2.2.0
+
+      - name: scim-intens
+        chartPath: helm/intens-app
+        valuesFiles:
+          - helm/intens-app/values.yaml
+        version: 0.1.0
+
+      - name: scim-webtens
+        remoteChart: semafor/webtens
+        valuesFiles:
+          - helm/webtens.yaml
+        version: 1.3.2
+
+      - name: ingress
+        chartPath: helm/ingress
+        version: 0.1.0
+
+      - name: workbook
+        chartPath: helm/workbook
+        valuesFiles:
+          - helm/workbook/values.yaml
+        setValues:
+          image.pullPolicy: "IfNotPresent"
+        version: 0.1.0

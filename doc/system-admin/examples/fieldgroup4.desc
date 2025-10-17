@@ -1,0 +1,36 @@
+DESCRIPTION "Example 4";
+
+//LANGUAGE
+//DEFAULT_LANG = "en";
+//END LANGUAGE;
+
+DATAPOOL
+  Colors = SET OF ("red" = 1,"green" = 2,"blue" = 3);
+ 
+  speed, height, length, weight :REAL {EDITABLE};
+  color :INTEGER {EDITABLE,SET = Colors};
+END DATAPOOL;
+
+UI_MANAGER
+
+  FIELDGROUP
+    Group_4 { "Group Four"
+	    , TABLESIZE = 5 STEP 4
+            , TABLE ORIENTATION = VERTICAL
+            , TABLE NAVIGATION  = VERTICAL
+            }
+      ( "Speed"    speed       
+      , "Height"   height:5:1  
+      , "Length"   length:4    
+      , "Weight"   weight:6:2  
+      , "Color"    color
+      )
+   ;
+  FORM
+    Form_4
+      ( ( Group_4 )
+      )
+   ;
+END UI_MANAGER;
+
+END.

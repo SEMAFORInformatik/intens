@@ -1,0 +1,34 @@
+stages:
+  - build
+  - publish
+
+org-export-html:
+  stage: build
+  image: ghcr.io/semaforinformatik/docker-org-export:0.1
+  script:
+    - mkdir doc/gettingstarted/public
+    - cp -r doc/gettingstarted/styles doc/gettingstarted/images doc/gettingstarted/public
+    - emacs doc/gettingstarted/getting-started.org --batch -l publish.el -f org-html-export-to-html
+  artifacts:
+    paths:
+      - doc/gettingstarted/public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+publish-html:
+  stage: publish
+  image: alpine:latest
+  before_script:
+    - apk update && apk add openssh-client rsync
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan semafor2.colo.bsa.oriented.ch > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - rsync -avz -e "ssh -p 22111" doc/gettingstarted/public/ docsync@semafor2.colo.bsa.oriented.ch:docs.semafor.ch/getting-started/
+  rules:
+    - exists:
+      - doc/gettingstarted/public/index.html

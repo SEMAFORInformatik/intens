@@ -1,0 +1,698 @@
+\newpage
+\subsection{STREAMER}
+%           ---------
+\label{sec:streamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Description                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Description}
+\label{sec:stdescription}
+The Streamer manages all input and output formats. A stream consists
+of a sequence of data items and string constants.
+
+\paragraph{Dependency}
+\label{par:stdependency}
+Together with the
+datapool and the operator, the streamer controls the dependencies
+between input and output variables (datapool items).
+In order to keep the data consistent,
+all data items that belong to an output stream are set invalid
+when one of the items of a corresponding input stream is modified.
+
+Dependencies between input and output \STREAM{}s are defined through
+\PROCESSGROUP{}s and \MESSAGEQUEUE{} \REQUEST{}s. They are activated
+when the \PROCESSGROUP{} or the \MESSAGEQUEUE{} \REQUEST{} is run.
+
+The user is asked for confirmation before dependencies are cleared
+- unless the option \AUTOCLEARDEPENDENCIES{} is used.
+
+\STREAM{}s can be excluded from dependencies using the option \NODEPENDENCIES{}
+(see \nameref{dia:jobmessagequeueoption} on page \pageref{dia:jobmessagequeueoption} or
+\nameref{dia:jobpluginoption} on page \pageref{dia:jobpluginoption}) or by not giving
+a dependency option and using the \INTENS command line argument
+\texttt{--}defaultMessageQueueDependencies false.
+
+\input{diagrams/streamer_description}
+\index{STREAMER@\STREAMER}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              IO Stream                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{IO Stream}
+\label{sec:ststream}
+\input{diagrams/st_declaration}
+\vspace{1cm}
+
+\index{XML@\XML!streamer format command}
+\index{JSON@\JSON!streamer format command}
+
+A stream is used to read or write to or from data items, referencing them by their identifier. \\
+\vspace{1cm}
+
+A stream is a sequence of format commands that has a unique identifier.
+An identifier within a format command references a data item.
+If an identifier is preceeded by an exclamation mark it will be checked
+to have a valid value before the corresponding calculation program
+is called. Item values that are not valid will not be transferred.
+
+The streamer adds one blank character (see \DELIMITER{} on page \pageref{dia:stoptionlist}) after data items to separate them.
+This blank character is added only after data items and indices without
+a fixed width
+ (see {\bfseries field conversion} on page \pageref{par:fieldconversion}
+  and {\bfseries field length} on page \pageref{par:stfieldlength}).
+\index{  @Signs / Characters!: (colon)!streamer dataitem-format width}
+\index{width}
+
+The line containing the \XML{} token defines an xml stream
+(see section \nameref{sec:stxmlcommand} on page \pageref{sec:stxmlcommand}).
+
+The line containing the \JSON{} token defines an json stream
+(see section \nameref{sec:stjsoncommand} on page \pageref{sec:stjsoncommand}).
+
+Stream identifiers are registered datapool items and contain the filename
+(if any) of their last read or write operation.
+
+\input{diagrams/st_option_list}
+\index{LATEX@\LATEX!stream option}
+\index{URL@\URL!stream option}
+\index{DELIMITER@\DELIMITER!stream delimiter}
+\index{LOCALE@\LOCALE!stream option}
+\index{PROCESS@\PROCESS!stream filter process}
+\index{APPEND@\APPEND!stream option}
+\index{NO\_GZ@\NOGZ!stream option}
+\index{FILE@\FILE!stream option}
+
+\begin{tabularx}{\textwidth}{l|X}
+option                   & Description \\
+\hline
+\LATEX                   & \LaTeX{} special characters
+                           (i.E. \textbackslash{} \textasciicircum{} \textbar{} or \{)
+                           are replaced with their \LaTeX{} command. \\
+\URL                     & reserved characters are percent-encoded and no \DELIMITER{}s are added. \\
+\DELIMITER               & defines the character used to separete stream items.
+                           default is the blank character. \\
+\LOCALE                  & stream uses locale decimal separator. \\
+\PROCESS                 & defines a filter process.
+                           The streams data is processed by the filter process. \\
+\APPEND                  & append received data to the \CDATA{} element of the \STREAM. \\
+\NOGZ                    & Stream content is not gunzipped when reading a file stream,
+                           although the filename ends in '.gz'. \\
+\FILE                    & write to or read from a temporary file instead of the \DATAPOOL. \newline
+                           This reduces memory needed by \INTENS{}, but values are not in the \DATAPOOL. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Not all combinations are allowed:
+\begin{itemize}
+
+\item \LATEX{} or \URL{} \\
+      you can only choose one filter
+
+\item \URL{} : no \DELIMITER{} \\
+      No \DELIMITER{}s are added with \URL{} option
+
+\end{itemize}
+
+\input{diagrams/st_format_command}
+\label{fig:st_format_command}
+\index{  @Signs / Characters!\texttt{"!} (exclamation mark)!streamer validation check}
+\index{  @Signs / Characters!\# (hash)!streamer index repesent.}
+\index{  @Signs / Characters!: (colon)!streamer skip width}
+\index{MATRIX@\MATRIX!streamer format command}
+\index{Scale factors!streamer}
+\index{DATASET\_TEXT@\DATASETTEXT!streamer format command}
+\index{SET@\SET!dataset\_text streamer format command}
+\index{STRING\_DATE@\STRINGDATE!streamer format command}
+\index{STRING\_TIME@\STRINGTIME!streamer format command}
+\index{STRING\_DATETIME@\STRINGDATETIME!streamer format command}
+\index{STRING\_VALUE@\STRINGVALUE!streamer format command}
+\index{PLOTGROUP@\PLOTGROUP!streamer format command}
+%%\index{XMLGROUP@\XMLGROUP!streamer format command}
+\index{SKIP@\SKIP!streamer format command}
+\index{EOLN@\EOLN!streamer format command}
+
+\input{diagrams/st_plotgroup_option}
+\label{fig:st_plotgroup_option}
+\index{RANGE@\RANGE!streamer plotgroup option}
+\index{TRANSPARENT@\TRANSPARENT!streamer plotgroup option}
+
+\begin{tabularx}{\textwidth}{l|X}
+format command        & description \\
+\hline
+{\bfseries !}         & perform a validation check \\
+\verb+data reference+ & the possibly indexed data item
+                        (see section \nameref{sec:stvariables} page \pageref{fig:st_data_reference}) \\
+\MATRIX               & The data item will be transferred as a matrix (see section
+                         \nameref{sec:stmatrix} page \pageref{sec:stmatrix}) \\
+\verb+scale factor+   & see section \nameref{sec:scale} page
+                      \pageref{sec:scale}. \\
+                      & The value of the data item is multiplied by the scale factor on
+an output operation and divided by the scale factor on an input operation. \\
+\verb+field conversion+ & see page \pageref{par:fieldconversion}. \\
+\DATASETTEXT          & includes the string of the \SET{} associated with the item (can only be
+                        used if the item has a \SET) \\
+\STRINGDATE           & prints the date in the local format (i.E. 24.01.08 instead of 2008-01-24)
+                    ( see section \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions} ) \\
+\STRINGTIME           & prints the time in the local format (i.E. 15:08:00:000 instead of 15:08:00)
+                    ( see section \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions} ) \\
+\STRINGDATETIME       & prints the date-time in the local format (i.E. 24.01.08 15:08 instead of 2008-01-24T15:08:00)
+                    ( see section \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions} ) \\
+\STRINGVALUE          & extracts the value of a dynamic \COMBOBOX{}
+                    ( see section \nameref{stringdynamiccombobox} on page \pageref{stringdynamiccombobox} ) \\
+\verb+#+              & represents the explicit index of {\bfseries pre-indexed} arrays. \\
+                      & On input-operations data will not be filled into the array in
+                        order of incoming from the stream, but exactly to the position where
+                         this value points to. \\
+                      & On output-operations it represents the index value  of
+                        the data-item in the array. \\
+\verb+# IDENTIFIER+   & \verb+#+ may be followed by any number or letter sign. \\
+                      & This is used as an identifier when having more than one array-index. \\
+                      &  (section \nameref{sec:stvariables}
+                           page \pageref{fig:st_data_reference}), each array may have its own index. \\
+\verb+string+         & a string constant (section \nameref{sec:string} page \pageref{sec:string}) \\
+\verb+st field length+ & see page \pageref{par:stfieldlength}. \\
+\PLOTGROUP            & the following identifier specifies a plot group which will be included as
+                         PostSript file (Should only be used with \LaTeX) \\
+%%\XMLGROUP             & the following identifier specifies a plugin which will be included as
+%%                         PostScript file (Should only be used with \LaTeX) \\
+\MAIN{} {\bfseries ID\_FORM} & \XML{} tree of {\bfseries MAINFORM} or {\bfseries ID\_FORM}. \\
+\SKIP{}\verb+:n+      & ignore the following \verb+n+ characters \\
+\EOLN                 & a new line \\
+( )                   & Format commands within a second pair of parentheses
+                        build a repetition group. Each repetition group must
+                        have at least one array item. \\ \hline
+\RANGE{} (X-val1, X-val2)& Shows plot beginning at x-axis position X-val1 through X-val2 \\
+\TRANSPARENT          & Shows the plot with (\TRUE, default) or without (\FALSE) a transparent background. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+STREAMER
+  streamer_identifier_1 (data_item_identifier_1);
+  streamer_identifier_2 (#, data_item_identifier_2[#]);
+  streamer_identifier_3 (#1, (#2, data_id_1[#1], data_id_2[#2]));
+END STREAMER;
+\end{alltt}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+
+\input{diagrams/field_conversion}
+\label{par:fieldconversion}
+\vspace{0.5cm}
+
+Field conversion is optional. \\
+The first : is followed by {\bfseries width},
+the second by {\bfseries precision} and
+the third by {\bfseries \TSEP}.\\
+
+\index{  @Signs / Characters!- (hyphen)!left alignment}
+\index{  @Signs / Characters!: (colon)!streamer dataitem-format width}
+\index{  @Signs / Characters!: (colon)!streamer dataitem-format precision}
+\index{  @Signs / Characters!: (colon)!streamer dataitem-format tsep}
+\index{width}
+\index{precision}
+\index{TSEP@\TSEP!streamer dataitem-format}
+\begin{tabularx}{\textwidth}{l|X}
+field conversion   & description \\
+\hline
+{\verb+-+}         & Alignment: alignes the data item to the left (default is right) \\
+{\verb+width+}     & defines the length of the field \\
+{\verb+precision+} & a) defines the number of digits after the decimal point for \REAL{} items, \newline
+                     b) has no meaning for \INTEGER{} and \STRING{} items\\
+\TSEP              & a) Thousand separator (12{\bfseries '}345.67) for \REAL{} items, \newline
+                     b) has no meaning for \INTEGER{} and \STRING{} items\\ \\
+\end{tabularx}
+\vspace{0.5cm}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+STREAMER
+  frequency_stream (frequency:10:2:TSEP);
+END STREAMER;
+\end{alltt}
+\end{boxedminipage}
+
+gives the following stream:\\[2ex]
+
+123'456.78
+\vspace{0.5cm}
+
+\input{diagrams/st_field_length}
+\label{par:stfieldlength}
+
+\index{  @Signs / Characters!- (hyphen)!left alignment}
+\index{  @Signs / Characters!: (colon)!streamer dataitem-format width}
+\index{width}
+\begin{tabularx}{\textwidth}{l|X}
+field length       & description \\
+\hline
+{\verb+-+}         & Alignment: alignes the data item to the left (default is right) \\
+{\verb+width+}     & defines the length of the field \\
+\end{tabularx}
+
+\subsubsection{XML format command}
+\label{sec:stxmlcommand}
+
+The \XML{} token is used to export datapool variables to xml-files or import values from such files into datapool variables. \\
+\vspace{0.5cm}
+
+\label{fig:sntx_st_xml_command}
+\input{diagrams/st_xml_format_command}
+
+\index{DATAPOOL@\DATAPOOL!xml format command (streamer)}
+\index{CYCLE@\CYCLE!xml format command (streamer)}
+\begin{tabularx}{\textwidth}{l|X}
+xml format command & description \\
+\hline
+\verb+st data reference+ & see section \nameref{sec:stvariables} on page \pageref{fig:st_data_reference} \\
+\DATAPOOL          & all data items defined in datapool are in- or exported by filestream actions.\\
+\CYCLE             & all data items defined in cycle are in- or exported by filestream actions.\\
+\end{tabularx}
+
+\input{diagrams/st_xml_options}
+
+\index{ATTRS@\ATTRS!xml format option (streamer)}
+\index{UNIT@\UNIT!xml format option (streamer)}
+\index{LABEL@\LABEL!xml format option (streamer)}
+\index{HELPTEXT@\HELPTEXT!xml format option (streamer)}
+\index{SCHEMA@\SCHEMA!xml format option (streamer)}
+\index{NAMESPACE@\NAMESPACE!xml format option (streamer)}
+\index{VERSION@\VERSION!xml format option (streamer)}
+\index{STYLESHEET@\STYLESHEET!xml format option (streamer)}
+\begin{tabularx}{\textwidth}{l|X}
+xml format option & description \\
+\hline
+\UNIT             & include unit attribute (see chapter \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}). \\
+\LABEL            & include label attribute (see chapter \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}). \\
+\HELPTEXT         & include helptext attribute (see chapter \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}). \\
+\SCHEMA           & set the xml schema.\\
+\NAMESPACE        & set the xml namespace.\\
+\VERSION          & add a version attribute to the xml-file.\\
+\STYLESHEET       & set the xml stylesheet.\\
+\end{tabularx}
+\vspace{0.5cm}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\STREAMER
+  xml_stream_1 \{\XML \{ \ATTRS ( \UNIT ) \} \} (data_item_identifier);
+  xml_stream_2 \{\XML\} (\DATAPOOL);
+\END \STREAMER;
+
+\OPERATOR
+  \FILESTREAM
+    FStream_1 = xml_stream_1;
+    FStream_2 = xml_stream_2;
+\END \OPERATOR;
+\end{alltt}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+
+\subsubsection{JSON format command}
+\label{sec:stjsoncommand}
+
+The \JSON{} token is used to export datapool variables to json-files or import values from such files into datapool variables. \\
+\vspace{0.5cm}
+
+\label{fig:sntx_st_json_command}
+\input{diagrams/st_json_format_command}
+
+\index{DATAPOOL@\DATAPOOL!json format command (streamer)}
+\index{CYCLE@\CYCLE!json format command (streamer)}
+\begin{tabularx}{\textwidth}{l|X}
+json format command & description \\
+\hline
+\verb+st data reference+ & see section \nameref{sec:stvariables} on page \pageref{fig:st_data_reference} \\
+\DATAPOOL           & all data items defined in datapool are in- or exported by filestream actions.\\
+\CYCLE              & all data items defined in cycle are in- or exported by filestream actions.\\
+\end{tabularx}
+
+\input{diagrams/st_json_options}
+
+\index{PROCESS@\PROCESS!stream filter process}
+\index{INDENT@\INDENT!json stream option}
+\index{HIDDEN@\HIDDEN!json stream option}
+\index{TRANSIENT@\TRANSIENT!json stream option}
+
+\begin{tabularx}{\textwidth}{l|X}
+json format option & description \\
+\PROCESS   & defines a filter process.
+             The streams data is processed by the filter process. \\
+\INDENT    & defines the indent level of a \JSON{} \STREAM{} (pretty print). \newline
+             0 (default): no indentation. \\
+
+\HIDDEN    & write values of hidden variables (see \nameref{dia:dataitemoptions} on page \pageref{dia:dataitemoptions}) \\
+{\bfseries !} \HIDDEN  & don't write values of hidden variables (default) \\
+\TRANSIENT & write values of transient variables (default, see \nameref{dia:dataitemmoreoption} on page \pageref{dia:dataitemmoreoption}) \\
+{\bfseries !} \TRANSIENT & don't write values of transient variables \\
+\end{tabularx}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\STREAMER
+  json_stream \{
+    \JSON
+  , \INDENT = 4
+  , \HIDDEN
+  , !\TRANSIENT
+  \} (data_item_identifier);
+\END \STREAMER;
+
+\end{alltt}
+\end{boxedminipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                  Referencing Data Variables                           %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Referencing data variables (Data item)}
+\label{sec:stvariables}
+\label{sec:refvars}
+Data items are declared in section \nameref{sec:datapool} on page \pageref{sec:datapool}. \\
+A stream is used to read or write to or from data items, referencing them by their identifier. \\
+\vspace{1cm}
+%%\label{fig:sntx_st_dataitem}
+
+\input{diagrams/st_advanced_data_reference}
+\label{fig:st_advanced_data_reference}
+\index{data item!streamer}
+
+\input{diagrams/st_data_reference}
+\label{fig:st_data_reference}
+
+\index{  @Signs / Characters!. (dot)!streamer structure-item}
+\index{VAR@\VAR!streamer}
+\begin{tabularx}{\textwidth}{l|X}
+data item         & description \\
+\hline
+{\bfseries ID\_DATAVARIABLE} & data item identifier previously defined in section \nameref{sec:dpitem} page \pageref{sec:dpitem}\\
+{\bfseries ID\_DATASET}      & data set identifier previously defined in section \nameref{sec:dpset} page \pageref{sec:dpset}\\
+\verb+identifier+ & data item identifier previously defined in section \nameref{sec:dpitem} page \pageref{sec:dpitem}\\
+\verb+st field indizes+ & index (list) (see page \pageref{par:st_field_indizes}) \\
+\VAR(string-item) & String dataitem contains the identifier of a data item.
+                         By changing the contents of string-item at runtime, specified datapool item is referenced. \\
+\verb+.+          & structure item separator \\
+                  & Structures are explained in section \nameref{sec:dpstruct}
+                  page \pageref{sec:dpstruct}\\
+\end{tabularx}
+
+\input{diagrams/st_field_indizes}
+\label{par:st_field_indizes}
+
+\begin{tabularx}{\textwidth}{l|X}
+index             & description \\
+\hline
+{\bfseries INT\_CONSTANT} & a constant index \\
+\verb+#+ (or empty) & the index of the array items (this is called pre-indexed) \\
+\verb+#aZ9+       & \verb+#+ may be followed by any number or letter sign. \\
+                  & This is used as an identifier when having more then one array-index. \\
+                  & Must be previously declared in stream-declaration format-command (section \nameref{fig:st_format_command} page \pageref{fig:st_format_command}). \\
+{\bfseries ID\_INDEX} & an index identifier (see section \nameref{sec:uiindex} on page \pageref{sec:uiindex} \\
+\end{tabularx}
+\vspace{0.5cm}
+
+If a repetition group has no index as token
+(is not pre-indexed), the column index of the matrix items
+is assumed to be continuous and is beginning with 0.
+
+Pre-indexed repetition groups ignore newline characters on input.
+Their index must be the first element in the group.
+\index{newline}
+
+On input operations a string constant within the stream description is
+considered as a search token.
+
+
+\vspace{1cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                Examples                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Examples}
+\label{sec:stexamples}
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+STREAMER
+  file_in(
+    asm_type:-20,asm_descriptor:-35,doc_id:-12, \n,
+    pz, rS, rR, lSigmaS*1e3, lSigmaR*1e3, lh*1e3, \n, \n,
+    (psiMag[], iMag[], \n), \n, un, fn, \n,    klSamples
+  );
+
+  in(
+    klSamples, un, fn, pz, rS, rR, lSigmaS, lSigmaR, lh, \n
+  );
+
+  out(
+     ( speed[], i1[], i2[], torque[], cos[], \n )
+  );
+
+  report_out(
+    \n, DATE, \n,
+    \n, "Induction Motor Calculation Report", \n,
+        "----------------------------------", \n,
+    \n, "Machine Parameters:", \n,
+    "N/(1/min): ", (speed[]), \n  );
+END STREAMER;
+\end{verbatim}
+\end{boxedminipage}
+
+
+Files structured like the following example can be read
+with the above declared stream \verb+file_in+
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+1LA5 163-2CA        3000 1/min, 380V/50Hz              CHAX12345
+ 4 0.094 0.0847  1.05 0.78 28.4
+
+       348.     18.17
+       435.     22.71
+       522.     27.35
+      1305.    179.28
+      1392.    215.73
+      1479.    249.70
+      1566.    292.42
+      1653.    333.05
+      1740.    372.93
+      1827.    410.90
+
+380 50
+10
+\end{verbatim}
+\end{boxedminipage}
+
+
+A repetition group within an input stream to Mathematica is realized as
+a list. It is not necessary to define repetition groups within an output
+stream from Mathematica, as for \INTENS{} every data item is stored
+as a list.
+%(see the example in appendix \nameref{sec:appendix})
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             MATRIX                                    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Matrix}
+\label{sec:stmatrix}
+\index{MATRIX@\MATRIX!example}
+\index{MATLAB@\MATLAB!streamer matrix}
+
+The \MATRIX{} token is used mainly with MATLAB
+interfaces as shown in the following example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+  matlab_out
+    ( Luser,ueuser
+    , MATRIX Lin
+    , Linmin ,Linmax
+    , MATRIX ue[1,101]
+    , U2effmax ,U2effnenn ,U2effmin
+    );
+\end{verbatim}
+\end{boxedminipage}
+
+
+The matrix is a multi-dimensional structure who's values are transferred in row-major order:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+<dimension> <dim1> <dim2> <dim3> ...
+<M001> <M002> <M003> ... <M010> <M011> <M012> ... <M020> <M021> ...
+\end{verbatim}
+\end{boxedminipage}
+
+
+The first value indicate the number of dimensions followed by the number of items in each dimension.
+
+Example of a 3x3 matrix:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+2 3 3
+0 1 2 1 0 1 2 2 0
+\end{verbatim}
+\end{boxedminipage}
+
+
+gives the following matrix:\\[2ex]
+
+
+
+\begin{tabular}{ccc}
+0 & 1 & 2 \\
+1 & 0 & 1 \\
+2 & 2 & 0 \\
+\end{tabular}
+
+\input{diagrams/st_matrix_option}
+
+\index{DELIMITER@\DELIMITER!matrix option (streamer)}
+\begin{tabularx}{\textwidth}{l|X}
+matrix option & description \\
+\hline
+\DELIMITER    & character used to separate strings. (Default: '\textbackslash0')
+                    (can only be used if the item is a string). \\
+\end{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                 How to send data through a stream                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{How to send data through a stream}
+\label{sec:sthowto}
+\index{standard input!streamer}
+\index{standard output!streamer}
+\index{Streamer!how to}
+First you need to define a process which generates data. This may be a unix-command like cat that
+reads from standard input and writes to standard output channel
+(see section \nameref{sec:opprocess} page \pageref{sec:opprocess}). \\
+Each stream may be declared as input or as output by the processgroup definition
+(section \nameref{sec:opprocessgroup} page \pageref{sec:opprocessgroup}).
+\begin{itemize}
+\item Input-stream \\
+Read from datapool (data-item) write to standard output. \\
+\item Processgroup \\
+Pipe standard output to standard input of process. \\
+\item Process \\
+Execute process (eg. cat MyFile.dat). \\
+\item Processgroup \\
+Pipe standard output of process to standard input. \\
+\item Output-stream \\
+Read from standard input write to datapool (data-item). \\
+\end{itemize}
+
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+DATAPOOL
+  STRING
+    data_item_output[15]
+  ;
+END DATAPOOL;
+
+STREAMER
+  streamer_id_out (#, data_item_output[#], EOLN) ;
+END STREAMER;
+
+OPERATOR
+  PROCESS
+    myfile_p : BATCH {
+      "cat MyFile.dat"
+    }
+  ;
+  PROCESSGROUP
+    load_myfile { "Load" } (
+      streamer_id_out = myfile_p (  );
+    )
+  ;
+END OPERATOR;
+\end{verbatim}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+
+The unix-command "cat MyFile.dat" reads the file MyFile.dat
+and sends its contents to standard output.
+
+Contents of "MyFile.dat":
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+0 Each
+1 word
+2 of
+3 this
+4 file
+5 will
+6 be
+7 stored
+8 in
+9 data_item_output
+10 after
+11 the
+12 processgroup
+13 is
+14 executed
+\end{alltt}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+
+Executing the process group load\_myfile by pressing the button
+"Load" sets the values as follows:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+data_item_output[0]  <-- "Each"
+data_item_output[1]  <-- "word"
+data_item_output[2]  <-- "of"
+data_item_output[3]  <-- "this"
+data_item_output[4]  <-- "file"
+data_item_output[5]  <-- "will"
+data_item_output[6]  <-- "be"
+data_item_output[7]  <-- "stored"
+data_item_output[8]  <-- "in"
+data_item_output[9]  <-- "data_item_output"
+data_item_output[10] <-- "after"
+data_item_output[11] <-- "the"
+data_item_output[12] <-- "processgroup"
+data_item_output[13] <-- "is"
+data_item_output[14] <-- "executed"
+\end{verbatim}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+
+This is one possibility of displaying data\_items:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+UI_MANAGER
+  FIELDGROUP
+    fieldgroup_identifier (
+      "The first word in MyFile.dat is:" data_item_output[0],
+      "The last word in MyFile.dat is:" data_item_output[14]
+    )
+  ;
+  FORM
+    form_identifier {MAIN} (
+      (fieldgroup_identifier)
+    )
+  ;
+END UI_MANAGER;
+\end{verbatim}
+\end{boxedminipage}

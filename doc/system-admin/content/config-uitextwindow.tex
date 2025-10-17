@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Text Window                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Text-Window}
+\label{sec:uitextwindow}
+All output that is created by external programs is displayed
+in scrolled text windows. Unless otherwise specified the 'standard output'
+is printed in the text window called \STDWINDOW{} while the 'standard error'
+\index{standard output!ui\_manager text window}
+\index{standard error!ui\_manager text window}
+\index{STD\_WINDOW@\STDWINDOW!ui\_manager text window}
+\index{LOG\_WINDOW@\LOGWINDOW!ui\_manager text window}
+is linked to the \LOGWINDOW. These two windows are usually placed in the
+main window. They can easily be moved to any other form, as described in: \\
+example folder on page \pageref{example:uimanagerfolder},
+section form on page \pageref{dia:uiformcontainerelement}. \\
+\vspace{0.5cm}
+
+Additional text windows can be created by using the \TEXTWINDOW{} declaration. \\
+To print out data in such a window,
+you have to refer to the text window identifier in the processgroup-option
+\DISPLAY{} explained in section OPERATOR on page \pageref{opprocessgroupoutputstreamoption}.\\
+
+\input{diagrams/ui_text_window_list}
+\input{diagrams/ui_text_window_option_list}
+\index{TEXT\_WINDOW@\TEXTWINDOW}
+
+\index{WRAP@\WRAP!text window option}
+\index{SIZE@\SIZE!text window option}
+\index{FORTRAN@\FORTRAN!text window option}
+\index{FILTER@\FILTER!text window option}
+\index{  @Signs / Characters!* (asterisk)!textwindow size}
+\begin{tabularx}{\textwidth}{l|X}
+option        & description \\
+\hline
+identifier    & Window identifier (appears in the save-menu also) \\
+\WRAP         & wrap the words, if the line is too long\\
+\SIZE         & defines the displayed \verb+height+ and \verb+width+ of the text window as number
+                of characters. The text window itself will always be sized according
+                to the other fieldgroups within the same form.\\
+\FORTRAN      & The text-window expects data in Fortran printfile-format.\\
+\FILTER       & The option declares an external program (string), which preprocesses the text
+                before sending it to the printer (usually an ASCII-to-PostScript converter,
+                default is a2ps) \\
+\end{tabularx}
+\vspace{1cm}
+
+Example:
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \TEXTWINDOW Listing_Tcmo \{
+    \SIZE=36*148
+   ,\FORTRAN
+   ,\FILTER="/usr/local/bin/a2ps -nP -ns -nL -nH -1 -l -8 -F6.8"
+  \};
+\end{alltt}
+\end{boxedminipage}
+\vspace{1cm}
+
+\paragraph{\STDWINDOW{} and \LOGWINDOW{} options}
+\label{sec:uistdlogwindow}
+~\\[0.5cm]
+
+\input{diagrams/ui_std_window_options}
+
+\begin{tabularx}{\textwidth}{l|X}
+option        & description \\
+\hline
+\MENU         & Show the window in the print menu. (Default is \FALSE). \\
+              & If the window is shown, the menu label can be renamed as shown in : \\
+              & example of ui\_manager menu on page \pageref{example:uimanagermenu} \\
+\end{tabularx}
+\vspace{1cm}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \STDWINDOW \{ \MENU=\TRUE \};
+\end{alltt}
+\end{boxedminipage}

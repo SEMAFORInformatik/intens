@@ -1,0 +1,56 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message DataField {
+  GuiElement base = 1;
+  bool type_label = 2;
+  bool editable = 3;
+  uint32 length = 4;
+  int32 precision = 5;
+  double scale = 6;
+  bool checked = 7;
+  message Range {
+    double min = 1;
+    double max = 2;
+    double step = 3;
+  }
+  Range range = 8;
+  string full_name = 9;
+  string action = 10;
+  string icon = 11;
+  bool visible = 12;
+  string label = 13;
+  string helptext = 14;
+  string placeholder = 15;
+  ValueInfo value = 16;
+  string bgColor = 17;
+  string fgColor = 18;
+}
+
+message ValueInfo {
+  string string_value = 1;
+  double double_value = 2;
+  int32 int_value = 3;
+  string pattern_value = 4;
+  string formatted_value = 5;
+  double min_value = 6;
+  double max_value = 7;
+  double precision = 8;
+  enum DataType {
+    Unknown = 0;
+    Integer = 1;
+    Double = 2;
+    StringDate = 3;
+    StringTime = 4;
+    StringDateTime = 5;
+    StringValue = 6;
+    StringPassword = 7;
+    String = 8;
+    CDATA = 9;
+    Complex = 10;
+  }
+  DataType datatype = 9;
+  string filename = 10;
+  string mimetype = 11;
+}

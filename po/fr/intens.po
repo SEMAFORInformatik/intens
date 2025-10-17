@@ -1,0 +1,3326 @@
+# French translations for intens package.
+# Copyright (C) 2014 SEMAFOR Informatik & Energie AG, Switzerland
+# This file is distributed under the same license as the intens package.
+# Simon Bader <bader@semafor.ch>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: intens 4.4.16-snapshot\n"
+"Report-Msgid-Bugs-To: bugs@semafor.ch\n"
+"POT-Creation-Date: 2023-09-26 11:08+0200\n"
+"PO-Revision-Date: 2023-09-26 11:18+0200\n"
+"Last-Translator: Simon Bader <bader@semafor.ch>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#: etc/MessageQueueReply.inc:260
+#, fuzzy
+msgid "Do you really want to leave this application?"
+msgstr "Voulez vous vraiment quitter %1 ?"
+
+#: intens/app/App.cc:316 intens/app/AppData.cc:1147
+msgid "This is %1 version %2"
+msgstr "Cela est %1 version %2"
+
+#: intens/app/App.cc:317 intens/app/AppData.cc:1149
+#: intens/app/UiManager.cc:1137
+msgid "Revision: %1"
+msgstr "Révision: %1"
+
+#: intens/app/App.cc:318 intens/app/AppData.cc:1151
+#: intens/app/UiManager.cc:1138
+msgid "Date: %1"
+msgstr "Date: %1"
+
+#: intens/app/App.cc:325
+msgid "(unknown)"
+msgstr "(inconnu)"
+
+#: intens/app/App.cc:620 intens/app/App.cc:621 intens/app/AppData.cc:1155
+msgid "No valid license found."
+msgstr ""
+
+#: intens/app/App.cc:628 intens/app/App.cc:630 intens/app/App.cc:638
+#: intens/app/App.cc:640
+#, fuzzy
+msgid "Invalid License"
+msgstr "Date invalide."
+
+#: intens/app/App.cc:632
+msgid "New Organization"
+msgstr ""
+
+#: intens/app/App.cc:642
+msgid "New License Key"
+msgstr ""
+
+#: intens/app/App.cc:649
+msgid ""
+"Permission denied, \n"
+"cannot write License File\n"
+"'%1'."
+msgstr ""
+
+#: intens/app/App.cc:748
+msgid "No valid gt intens license found."
+msgstr ""
+
+#: intens/app/AppData.cc:1096
+msgid "Commandline-option '%1' ignored."
+msgstr "L'option de ligne de commande '%1' ignorée."
+
+#: intens/app/AppData.cc:1125
+msgid "This is %1 version %2 %3"
+msgstr "Cela est %1 version %2 %3"
+
+#: intens/app/AppData.cc:1128
+msgid "Commandline options:"
+msgstr "Les options de ligne de commande:"
+
+#: intens/app/AppData.cc:1157
+msgid "Invalid LicenseKey: %1"
+msgstr ""
+
+#: intens/app/AppData.cc:1160
+msgid "LicenseKey: %1"
+msgstr ""
+
+#: intens/app/AppData.cc:1183
+msgid "Available Qt Styles:"
+msgstr ""
+
+#: intens/app/curator.cc:102 intens/componentbuilder/HWConnect.cc:204
+#: intens/componentbuilder/HWConnect.cc:281
+#: intens/componentbuilder/HWConnect.cc:649 intens/db/base/DbGroup.cc:324
+#: intens/db/base/DbGroup.cc:612 intens/job/JobCodeOthers.cc:323
+#: intens/job/JobCodeOthers.cc:413 intens/job/JobCodeOthers.cc:1201
+#: intens/job/JobCodeOthers.cc:1221 intens/job/JobCodeOthers.cc:1241
+#: intens/operator/FileStream.cc:668 intens/operator/FileStream.cc:1199
+#: intens/operator/MathematicaProcess.cc:167
+#: intens/operator/MathematicaProcess.cc:180
+#: intens/operator/MatlabInitProcess.cc:150 intens/operator/Process.cc:354
+#: intens/operator/ProcessWrapper.cc:422 intens/railnet/TopologyBuilder.cc:210
+msgid "Error"
+msgstr "Erreur"
+
+#: intens/app/curator.cc:102
+msgid "Comment text is mandatory."
+msgstr "Texte de commentaire est obligatoire."
+
+#: intens/app/curator.cc:276
+msgid "Modify data:"
+msgstr "Modifier les données:"
+
+#: intens/app/curator.cc:289 intens/db/base/DbGroup.cc:510
+#: intens/gui/qt/GuiQtCycleDialog.cc:452 intens/operator/RestService.cc:1108
+#: intens/operator/RestService.cc:1129
+msgid "Modify comment:"
+msgstr "Commentaire modifié:"
+
+#: intens/app/curator.cc:302 intens/operator/RestService.cc:1123
+msgid "Modify"
+msgstr "Modifier"
+
+#: intens/app/curator.cc:305 intens/app/HelpText.cc:96
+#: intens/app/SfilterPart.cc:123 intens/gui/qt/GuiQtCycleDialog.cc:474
+#: intens/gui/qt/GuiQtFactory.cc:531 intens/gui/qt/QtDialogInputExt.cc:66
+#: intens/gui/qt/QtDialogInputExt.h:41
+#: intens/gui/qt/QtDialogUserPassword.cc:262 intens/gui/qt/QtInputDialog.cc:73
+#: intens/operator/RestService.cc:1018 intens/operator/RestService.cc:1036
+#: intens/operator/RestService.cc:1125 intens/operator/RestService.cc:1209
+#: intens/operator/RestService.cc:1222 intens/plugin/PluginDialog.h:123
+msgid "Cancel"
+msgstr "Annuler"
+
+#: intens/app/DataPoolIntens.cc:336 intens/gui/qt/GuiMFMSettings.cc:217
+msgid "Automatic"
+msgstr "Automatique"
+
+#: intens/app/DataPoolIntens.cc:337
+msgid "User Defined"
+msgstr "Défini par l'utilisateur"
+
+#: intens/app/DataPoolIntens.cc:448
+msgid "Base"
+msgstr "Base"
+
+#: intens/app/DataPoolIntens.cc:1011
+msgid "a target from input stream named '%1' is valid"
+msgstr ""
+
+#: intens/app/DialogSfilter.cc:366 intens/gui/GuiDataField.cc:298
+#: intens/job/JobStackData.cc:233 intens/job/JobStackData.cc:248
+#: intens/operator/FileStream.cc:834 intens/operator/FileStream.cc:917
+msgid ""
+"The results are not consistent anymore.\n"
+"Do you want to delete them?"
+msgstr ""
+"Les résultats ne sont plus cohérent.\n"
+"Voulez vous les effacer?"
+
+#: intens/app/HelpFile.cc:99 intens/app/HelpText.cc:467
+#, c-format
+msgid "Help title '%s' already specified."
+msgstr "Le titre d'aide '%s' déjà spécifié."
+
+#: intens/app/HelpManager.cc:227 intens/app/HelpManager.cc:256
+#: intens/app/HelpManager.cc:278
+#, c-format
+msgid "Helpfile '%s' is already installed"
+msgstr "Fichier d'aide '%s' est déjà installé"
+
+#: intens/app/HelpText.cc:88 intens/app/HelpText.cc:176
+msgid "Next"
+msgstr "Suivant"
+
+#: intens/app/HelpText.cc:92 intens/app/HelpText.cc:178
+msgid "Previous"
+msgstr "Précécdent"
+
+#: intens/app/HelpText.cc:180 intens/gui/qt/GuiQtCycleDialog.cc:235
+#: intens/gui/qt/GuiQtForm.cc:1139 intens/gui/qt/GuiQtList.cc:335
+#: intens/gui/qt/QtDialogCompare.cc:731 intens/plot/CyclesDialog.cc:118
+#: intens/plot/qt/QtListPlot.cc:728 intens/plot/qt/QtPlot2dConfigDialog.cc:638
+#: intens/plot/ScaleDialog.cc:178
+msgid "Close"
+msgstr "Fermer"
+
+#: intens/app/HelpText.cc:324
+#, c-format
+msgid "Internal Error while reading '%s'"
+msgstr "erreur interne lors de la lecture '%s?"
+
+#: intens/app/HelpText.cc:359 intens/app/HelpText.cc:428
+msgid "<untitled>"
+msgstr "<sans titre>"
+
+#: intens/app/HelpText.cc:411
+#, c-format
+msgid "Helpfile '%s' is empty"
+msgstr "Fichier d'aide '%s' est vide"
+
+#: intens/app/HelpText.cc:421
+#, c-format
+msgid "No title specified in Helpfile '%s'"
+msgstr "Pas de titre specifié dans le fichier d'aide '%s'"
+
+#: intens/app/HelpText.cc:472
+#, c-format
+msgid "Helpfile '%s' installed\n"
+msgstr "Fichier d'aide '%s' installé\n"
+
+#: intens/app/QuitApplication.cc:78
+msgid "Abort MessageQueue Connection"
+msgstr "Annuller le lien de la file d'attente des messages"
+
+#: intens/app/QuitApplication.cc:79
+msgid ""
+"A Message Queue Connection is still open.\n"
+"\n"
+"Do you want to close the Message Queue Connection?"
+msgstr ""
+"Une file d'attente de messages est toujours ouverte.\n"
+"\n"
+"Voulez vous rompre le lien de la file d'attente des messages?"
+
+#: intens/app/QuitApplication.cc:167
+msgid "Exit"
+msgstr "Issue"
+
+#: intens/app/QuitApplication.cc:168
+msgid "Do you really want to leave %1 ?"
+msgstr "Voulez vous vraiment quitter %1 ?"
+
+#: intens/app/QuitApplication.cc:211
+msgid "Exit function failed"
+msgstr "La fonction de sortie a échoué"
+
+#: intens/app/QuitApplication.cc:212
+msgid "Do you want to leave %1 anyway?"
+msgstr "Voulez vous quitter %1 par n'importe quel moyen?"
+
+#: intens/app/ReportGen.cc:255
+msgid "Stylesheet not found."
+msgstr "Feuille de style introuvable."
+
+#: intens/app/ReportGen.cc:264
+msgid "XML Process failed ( see log window )."
+msgstr "Processus XML échoué ( voir Fenêtre Protocole )."
+
+#: intens/app/ReportGen.cc:297 intens/app/ReportGen.cc:379
+#: intens/app/ReportGen.cc:397
+msgid "Printing aborted."
+msgstr "L'mpression interrompue"
+
+#: intens/app/ReportGen.cc:363
+msgid "Printing canceled."
+msgstr "L'mpression annulée"
+
+#: intens/app/ReportGen.cc:371
+msgid "Printing done."
+msgstr "L'impression faite."
+
+#: intens/app/ReportGen.cc:404
+msgid "Printing started."
+msgstr "L'impression démarrée."
+
+#: intens/app/ReportGen.cc:421
+msgid "Save file aborted."
+msgstr "Sauvegarder le fichier interrompu"
+
+#: intens/app/ReportGen.cc:428
+msgid "Save file."
+msgstr "Enregistrez le fichier."
+
+#: intens/app/ReportGen.cc:548
+msgid "Preview aborted."
+msgstr "Aperçu interrompu."
+
+#: intens/app/ReportGen.cc:589 intens/app/ReportGen.cc:954
+#: intens/app/ReportGen.cc:978
+msgid "Preview of selected file format is not supported."
+msgstr "Aperçu du format du fichier sélectionné n'est pas soutenu."
+
+#: intens/app/ReportGen.cc:592
+msgid "Preview started."
+msgstr "Aperçus démarré."
+
+#: intens/app/ReportGen.cc:782
+msgid "No such conversion available."
+msgstr "Cette conversion n'est pas disponible."
+
+#: intens/app/ReportGen.cc:786
+msgid "Empty document."
+msgstr "Document vide."
+
+#: intens/app/ReportGen.cc:791 intens/app/ReportGen.cc:974
+msgid "Selected file format is not supported."
+msgstr "Le format du fichier sélectionné n'est pas soutenu."
+
+#: intens/app/ReportGen.cc:964
+msgid "Printing of selected file format is not supported"
+msgstr "L'impression du fichier sélectionné n'est pas soutenu"
+
+#: intens/app/SfilterPart.cc:114
+msgid "Filter"
+msgstr "Filtre"
+
+#: intens/app/SfilterPart.cc:119 intens/gui/qt/GuiQtCycleDialog.cc:227
+#: intens/gui/qt/GuiQtScrolledText.cc:623
+msgid "Clear"
+msgstr "Vider"
+
+#: intens/app/UiManager.cc:183
+msgid "&File"
+msgstr "&Fichier"
+
+#: intens/app/UiManager.cc:188 intens/gui/qt/QtDialogConfirmation.cc:144
+#: intens/gui/qt/QtMessageBoxExt.cc:175
+msgid "&Open"
+msgstr "&Ouvrir"
+
+#: intens/app/UiManager.cc:194 intens/gui/qt/QtDialogConfirmation.cc:124
+#: intens/gui/qt/QtMessageBoxExt.cc:119
+msgid "&Save"
+msgstr "&Enregistrer"
+
+#: intens/app/UiManager.cc:201
+msgid "&Print"
+msgstr "&Imprimer"
+
+#: intens/app/UiManager.cc:208
+msgid "&Preview"
+msgstr "&Aperçus"
+
+#: intens/app/UiManager.cc:224
+msgid "&Edit"
+msgstr "&Editer"
+
+#: intens/app/UiManager.cc:233
+msgid "Undo"
+msgstr "Annuler"
+
+#: intens/app/UiManager.cc:239
+msgid "Redo"
+msgstr "Refaire"
+
+#: intens/app/UiManager.cc:258
+msgid "For&ms"
+msgstr "For&ms"
+
+#: intens/app/UiManager.cc:270
+msgid "&Process"
+msgstr "&Processus"
+
+#: intens/app/UiManager.cc:284
+msgid "&Database"
+msgstr "&Base de données"
+
+#: intens/app/UiManager.cc:297
+msgid "&Options"
+msgstr "&Options"
+
+#: intens/app/UiManager.cc:310
+msgid "&Help"
+msgstr "&Aide"
+
+#: intens/app/UiManager.cc:811
+msgid "Copyright"
+msgstr "Copyright"
+
+#: intens/app/UiManager.cc:830 intens/gui/qt/GuiQWTPlot.cc:3991
+#: intens/plot/CyclesDialog.cc:60
+msgid "Case"
+msgstr ""
+
+#: intens/app/UiManager.cc:836
+msgid "Titlebar"
+msgstr "Barre de légende"
+
+#: intens/app/UiManager.cc:854
+msgid "Write Script file"
+msgstr ""
+
+#: intens/app/UiManager.cc:859
+msgid "Write Python Script file"
+msgstr ""
+
+#: intens/app/UiManager.cc:865
+msgid "Help messages"
+msgstr "Message d'aide"
+
+#: intens/app/UiManager.cc:871
+msgid "Statusbar Help messages"
+msgstr "Barre du status des messages d'aide"
+
+#: intens/app/UiManager.cc:876
+msgid "Tooltip Help messages"
+msgstr "Infobulle pour messages d'aide"
+
+#: intens/app/UiManager.cc:881
+msgid "Disable Help messages"
+msgstr "Désactiver messages d'aide"
+
+#: intens/app/UiManager.cc:1058
+msgid "Style"
+msgstr "Style"
+
+#: intens/app/UiManager.cc:1083
+msgid "StyleSheet"
+msgstr "Feuille de style"
+
+#: intens/app/UiManager.cc:1452
+msgid "Quit"
+msgstr "Quitter"
+
+#: intens/app/UiManager.cc:1568
+#, fuzzy
+msgid "Description file"
+msgstr "Tableau d'intermédiaires"
+
+#: intens/app/UiManager.cc:1570
+#, fuzzy
+msgid "New function name:"
+msgstr "Nécessite un paramètre de fonction."
+
+#: intens/componentbuilder/ComponentList.cc:415
+#: intens/componentbuilder/ComponentList.cc:436
+msgid "Query for Composite Component"
+msgstr "Question pour un composant"
+
+#: intens/componentbuilder/HWConnect.cc:202
+#: intens/railnet/TopologyBuilder.cc:207
+msgid "Cannot start Matlab"
+msgstr "Ne peu démarrer Matlab"
+
+#: intens/componentbuilder/HWConnect.cc:277
+msgid ""
+"Matlab error (Classname: %1):\n"
+"%2\n"
+"(For details see log window)"
+msgstr ""
+"Erreur de Matlab (nom de propriétés class: %1):\n"
+"%2\n"
+" (pour des details regarder le Fenêtre Protocole)"
+
+#: intens/componentbuilder/HWConnect.cc:645
+msgid ""
+"Matlab error (Classname: %1):\n"
+"Invalid port type(s) [%2]"
+msgstr ""
+"Erreur Matlab (nom ce class: %1):\n"
+" type(s) de porte non valable [%2]"
+
+#: intens/componentbuilder/test/compbuild.des:106
+msgid "Components"
+msgstr "Composant"
+
+#: intens/componentbuilder/test/compbuild.des:131
+msgid "Load Components"
+msgstr "Charger les composants"
+
+#: intens/componentbuilder/test/compbuild.des:134
+msgid "Save Components"
+msgstr "Enregistre Composants"
+
+#: intens/datapool/DataComplexElement.cc:278
+#: intens/datapool/DataComplexElement.cc:293
+#: intens/datapool/DataComplexElement.cc:311
+msgid "WARNING Cannot convert string '%1' to complex number."
+msgstr "AVERTISSEMENT ne peu convertir la chaîne '%1' au nombre complexe"
+
+#: intens/datapool/DataIntegerElement.cc:196
+msgid "WARNING Cannot convert string '%1' to natural number."
+msgstr "AVERTISSEMENT ne peu convertir la chaîne '%1' au nombre naturel"
+
+#: intens/datapool/DataRealElement.cc:238
+msgid "WARNING Cannot convert string '%1' to double."
+msgstr "AVERTISSEMENT ne peu convertir la chaîne '%1' de valeur double"
+
+#: intens/db/base/DbDepot.cc:659
+msgid "Too few result indexes: '%1' should be '%2' or '%3'\n"
+msgstr "Trop peu d'indices de résultat: '%1' devrait être '%2' ou '%3'\n"
+
+#: intens/db/base/DbDepot.cc:661
+msgid "To few result indexes."
+msgstr "Trop peu d'indices de résultat."
+
+#: intens/db/base/DbDepot.cc:664
+msgid "Too many result indexes: '%1' should be '%2' or '%3'\n"
+msgstr "Trop d'indices de résultat: '%1' devrait être '%2' ou '%3'\n"
+
+#: intens/db/base/DbDepot.cc:666
+msgid "To many result indexes."
+msgstr "Trop d'indices de résultat."
+
+#: intens/db/base/DbDepot.cc:681
+msgid "Unresolved indexes:\n"
+msgstr "Indices non résolus:\n"
+
+#: intens/db/base/DbDepot.cc:685
+msgid "Unresolved indexes."
+msgstr "Indices non résolus."
+
+#: intens/db/base/DbGroup.cc:325 intens/db/base/DbGroup.cc:613
+msgid "DB-Error: see Log-Window!"
+msgstr "Erreur DB: voir Fenêtre Protocole!"
+
+#: intens/db/base/DbGroup.cc:474
+msgid "No modified Items available."
+msgstr "Aucun élément modifié disponible."
+
+#: intens/db/base/DbGroup.cc:600
+msgid "<no error message found>"
+msgstr "<pas de message d'erreur trouvé>"
+
+#: intens/db/base/DbGroup.cc:606
+msgid "Execution of Database Transaction failed (see LogWindow)."
+msgstr ""
+"L'exécution de transaction de base de données échoué (voir Fenêtre "
+"Protocole)."
+
+#: intens/db/base/DbManager.cc:367
+msgid "DB-Test-Function"
+msgstr "Fonction de test DB"
+
+#: intens/db/base/DbManager.cc:487
+msgid "DB Module '%1' not found!\n"
+msgstr "Module DB '%1' pas trouvé!\n"
+
+#: intens/db/base/DbManager.cc:498
+msgid "%1 connected to %2"
+msgstr "%1 connecté à %2"
+
+#: intens/db/base/DbManager.cc:547
+msgid ""
+"%1: Cannot connect to '%2' as user '%3' \n"
+"%4"
+msgstr ""
+"%1: ne peut être connecté à '%2' comme usager '%3' \n"
+"%4"
+
+#: intens/db/base/DbManager.cc:568
+msgid "<Could not create db-connection (m_dbconn)>"
+msgstr "<Ne peut connecter lien-db (m_dbconn)>"
+
+#: intens/db/base/DbManager.cc:585
+msgid "Logon"
+msgstr "Connecter"
+
+#: intens/db/base/DbManager.cc:605 intens/db/base/DbManager.cc:672
+msgid "Logoff"
+msgstr "Déconnecter"
+
+#: intens/db/base/DbManager.cc:673
+msgid "Do you really want to disconnect from database ?"
+msgstr "Voulez vous vraiment vous déconnecter de la base de données ?"
+
+#: intens/db/base/DbManager.cc:683
+msgid "%1: disconnected\n"
+msgstr "%1: déconnecté\n"
+
+#: intens/db/base/DbTable.cc:179 intens/db/base/DbTable.cc:1205
+msgid "Too few bind variables in a row."
+msgstr "Pas assez de variables liées dans une ligne."
+
+#: intens/db/base/DbTable.cc:1208
+msgid "Empty bind row."
+msgstr "Ligne liée vide."
+
+#: intens/gui/DataProcessing.h:59 intens/gui/qt/GuiMFMSettings.cc:197
+msgid "Raw"
+msgstr "Non assimilé"
+
+#: intens/gui/DataProcessing.h:86 intens/gui/qt/GuiMFMSettings.cc:198
+msgid "Average"
+msgstr "Moyenne"
+
+#: intens/gui/DataProcessing.h:157 intens/gui/qt/GuiMFMSettings.cc:199
+msgid "Line Fit"
+msgstr "L'ajustement de la ligne"
+
+#: intens/gui/DataProcessing.h:182 intens/gui/qt/GuiMFMSettings.cc:200
+msgid "Plane Fit"
+msgstr "L'ajustement du plan"
+
+#: intens/gui/DialogProgressBar.cc:49
+msgid "Dialog ProgressBar"
+msgstr ""
+
+#: intens/gui/Gui3dPlot.cc:114
+msgid "3dPlot: Only single title line is supported."
+msgstr ""
+
+#: intens/gui/GuiComboBox.cc:370 intens/gui/qt/ArrowKeyLineEdit.cc:168
+#: intens/gui/qt/ArrowKeyLineEdit.cc:314 intens/gui/qt/ArrowKeyLineEdit.cc:323
+#: intens/gui/qt/ArrowKeyLineEdit.cc:383 intens/gui/qt/GuiQtDataField.cc:407
+#: intens/gui/qt/GuiQtDataField.cc:432 intens/gui/qt/GuiQtIndex.cc:511
+#: intens/gui/qt/GuiQtTableDataItem.cc:418
+#: intens/gui/qt/GuiQtTableViewBase.cc:413 intens/gui/qt/GuiQtText.cc:602
+#: intens/gui/qt/GuiQtTextfield.cc:984 intens/gui/qt/GuiQwtSlider.cc:171
+msgid "Conversion error."
+msgstr "Erreur de conversion"
+
+#: intens/gui/GuiDataField.cc:303 intens/gui/qt/GuiQtCycleDialog.cc:219
+#: intens/gui/qt/GuiQtCycleDialog.cc:470 intens/gui/qt/QtDialogCopyright.cc:146
+#: intens/gui/qt/QtDialogInputExt.h:40
+#: intens/gui/qt/QtDialogUserPassword.cc:261
+#: intens/gui/qt/QtDialogWarning.cc:83 intens/gui/qt/QtInputDialog.cc:72
+#: intens/gui/qt/QtMessageBox.cc:72 intens/job/JobStackData.cc:247
+#: intens/operator/FileStream.cc:833 intens/operator/FileStream.cc:916
+#: intens/plugin/PluginDialog.h:115
+msgid "OK"
+msgstr "D'accord"
+
+#: intens/gui/GuiIndex.cc:251
+msgid "Error in function execution."
+msgstr "Erreur dans l'exécution de la fonction."
+
+#: intens/gui/GuiIndexMenu.cc:52 intens/gui/GuiTable.cc:1276
+msgid "Insert empty column"
+msgstr "Insérer une colonne vide"
+
+#: intens/gui/GuiIndexMenu.cc:56 intens/gui/GuiTable.cc:1280
+msgid "Delete column"
+msgstr "Effacer la colonne"
+
+#: intens/gui/GuiIndexMenu.cc:60 intens/gui/GuiTable.cc:1284
+msgid "Duplicate column"
+msgstr "Doublé la colonne"
+
+#: intens/gui/GuiIndexMenu.cc:64 intens/gui/GuiTable.cc:1288
+msgid "Clear column"
+msgstr "Effacer le contenu de la colonne"
+
+#: intens/gui/GuiIndexMenu.cc:68 intens/gui/GuiTable.cc:1294
+#, fuzzy
+msgid "Pack all columns"
+msgstr "Effacer les lignes vides"
+
+#: intens/gui/GuiIndexMenu.cc:73 intens/gui/GuiTable.cc:1222
+msgid "Insert empty row"
+msgstr "Insérer une ligne vide"
+
+#: intens/gui/GuiIndexMenu.cc:77 intens/gui/GuiTable.cc:1226
+msgid "Delete row"
+msgstr "Effacer la ligne"
+
+#: intens/gui/GuiIndexMenu.cc:81 intens/gui/GuiTable.cc:1230
+msgid "Duplicate row"
+msgstr "Doublé la ligne"
+
+#: intens/gui/GuiIndexMenu.cc:85 intens/gui/GuiTable.cc:1234
+msgid "Clear row"
+msgstr "Effacer le contenu de la ligne"
+
+#: intens/gui/GuiIndexMenu.cc:89 intens/gui/GuiTable.cc:1240
+msgid "Pack all rows"
+msgstr "Effacer les lignes vides"
+
+#: intens/gui/GuiScrolledlist.cc:74 intens/gui/qt/GuiQtCycleDialog.cc:206
+#: intens/gui/qt/GuiQtScrolledlist.cc:116
+msgid "Cases"
+msgstr ""
+
+#: intens/gui/GuiTable.cc:1203
+msgid "Row "
+msgstr "Ligne"
+
+#: intens/gui/GuiTable.cc:1209
+msgid "RowMenu"
+msgstr "Menu de la ligne"
+
+#: intens/gui/GuiTable.cc:1244
+msgid "Delete selected rows"
+msgstr "Effacer la ligne"
+
+#: intens/gui/GuiTable.cc:1257
+msgid "Column "
+msgstr "Colonne"
+
+#: intens/gui/GuiTable.cc:1263
+msgid "ColumnMenu"
+msgstr "Menu de la colonne"
+
+#: intens/gui/GuiTable.cc:1298
+msgid "Delete selected column"
+msgstr "Effacer la colonne"
+
+#: intens/gui/qt/ArrowKeyLineEdit.cc:216
+msgid "Ignore Arrow Key at Exponential View."
+msgstr "Ignorer la flèche dans un exposé exponentiel."
+
+#: intens/gui/qt/ArrowKeyLineEdit.cc:222
+msgid "Ignore Arrow Key at Thousand Separator View."
+msgstr "Ignorer la flèche dans un exposé Thousand Separator."
+
+#: intens/gui/qt/ArrowKeyLineEdit.cc:251
+msgid "Ignore Arrow Key at Thousand Separator Char."
+msgstr "Ignorer la flèche dans un travail Thousand Separator."
+
+#: intens/gui/qt/ArrowKeyLineEdit.cc:259
+msgid "Ignore Arrow Key at Decimal Point."
+msgstr "Ignorer la flèche au point décimal."
+
+#: intens/gui/qt/ArrowKeyLineEdit.cc:280
+msgid "Restricted support for Arrow Keys if data format is not fix."
+msgstr ""
+"Soutien limité pour les flêches si le format de données n'est pas fixe."
+
+#: intens/gui/qt/ArrowKeyLineEdit.cc:289
+msgid "Restricted support for Arrow Keys if data format is fix."
+msgstr "Soutien limité pour les flêches si le format de données est fixe."
+
+#: intens/gui/qt/DateValidator.cc:121 intens/gui/qt/DateValidator.cc:129
+msgid "Convertion Error"
+msgstr "Erreur de conversion"
+
+#: intens/gui/qt/DateValidator.cc:121 intens/gui/qt/DateValidator.cc:129
+msgid "Invalid Date."
+msgstr "Date invalide."
+
+#: intens/gui/qt/DateValidator.cc:140
+msgid "Date Format is '%1'."
+msgstr "Format de date est '%1'."
+
+#: intens/gui/qt/GuiMFMSettings.cc:206
+msgid "Processing:"
+msgstr "Traitement:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:217 intens/gui/qt/GuiMFMSettings.cc:441
+msgid "Manual"
+msgstr "Manuellement"
+
+#: intens/gui/qt/GuiMFMSettings.cc:217
+msgid "Standard Deviation"
+msgstr "Ecart type"
+
+#: intens/gui/qt/GuiMFMSettings.cc:223
+msgid "Mapping:"
+msgstr "Cartographie:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:274
+msgid "Channel:"
+msgstr "Canal:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:321
+msgid "Direction:"
+msgstr "Direction:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:330
+msgid "View Settings"
+msgstr "Affichage des paramètres"
+
+#: intens/gui/qt/GuiMFMSettings.cc:350
+msgid "Settings"
+msgstr "Affichages"
+
+#: intens/gui/qt/GuiMFMSettings.cc:361
+msgid "Mapping Parameters"
+msgstr "Paramètres de cartographie"
+
+#: intens/gui/qt/GuiMFMSettings.cc:365 intens/gui/qt/GuiMFMSettings.cc:416
+msgid "Maximum:"
+msgstr "Maximum:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:375 intens/gui/qt/GuiMFMSettings.cc:425
+msgid "Minimum:"
+msgstr "Minimum:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:385
+msgid "Weight:"
+msgstr "Poids:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:395
+msgid "Current Values"
+msgstr "Valeurs actuelles"
+
+#: intens/gui/qt/GuiMFMSettings.cc:398
+msgid "Average:"
+msgstr "Moyenne:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:407
+msgid "Std. Dev.:"
+msgstr "Ecart type:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:435
+msgid "Image Scaling"
+msgstr "Echelle de l'image"
+
+#: intens/gui/qt/GuiMFMSettings.cc:444
+msgid "Scale X:"
+msgstr "L'échelle X:"
+
+#: intens/gui/qt/GuiMFMSettings.cc:459
+msgid "Scale Y:"
+msgstr "L'échelle Y:"
+
+#: intens/gui/qt/GuiQtCycleButton.cc:100 intens/gui/qt/GuiQtCycleDialog.cc:223
+#: intens/operator/RestService.cc:1011 intens/operator/RestService.cc:1124
+#: intens/plugin/PluginDialog.h:131
+msgid "New"
+msgstr "Nouveau"
+
+#: intens/gui/qt/GuiQtCycleButton.cc:222
+#, fuzzy
+msgid "No previous case available !"
+msgstr "Pas de cycle précédent disponible !"
+
+#: intens/gui/qt/GuiQtCycleButton.cc:257
+#, fuzzy
+msgid "No next case available !"
+msgstr "Pas de prochain cycle disponible !"
+
+#: intens/gui/qt/GuiQtCycleDialog.cc:199 intens/gui/qt/GuiQWTPlot.cc:3979
+#, fuzzy
+msgid "CaseDialog"
+msgstr "Cycle"
+
+#: intens/gui/qt/GuiQtCycleDialog.cc:231
+msgid "Delete"
+msgstr "Effacer"
+
+#: intens/gui/qt/GuiQtDiagram.cc:174 intens/gui/qt/GuiQWTPlot.cc:3126
+#: intens/plugin/PluginDialog.h:139
+msgid "Copy"
+msgstr "Copie"
+
+#: intens/gui/qt/GuiQtDiagram.cc:175
+msgid "Zoom In@Ctrl<Key>I@Ctrl+I"
+msgstr "Agrandir@Ctrl<Key>I@Ctrl+I"
+
+#: intens/gui/qt/GuiQtDiagram.cc:176
+msgid "Zoom Out@Ctrl<Key>O@Ctrl+O"
+msgstr "Rétrécir@Ctrl<Key>O@Ctrl+O"
+
+#: intens/gui/qt/GuiQtDiagram.cc:177
+msgid "Delete selected Element/Connection@Del@Del"
+msgstr "Supprimer l'élément/lien sélectionné/e@Del@Del"
+
+#: intens/gui/qt/GuiQtElement.cc:621 intens/gui/qt/GuiQtScrolledText.cc:413
+#: intens/gui/qt/GuiQtText.cc:744 intens/operator/FileStream.cc:448
+#: intens/operator/ReportStream.cc:168 intens/operator/RestService.cc:1127
+#: intens/plot/ListPlot.cc:51
+msgid "Save %1"
+msgstr "Enregistrez %1"
+
+#: intens/gui/qt/GuiQtElement.cc:743
+msgid "title"
+msgstr "Titre"
+
+#: intens/gui/qt/GuiQtElement.cc:744
+msgid ""
+"no convert command tool installed.\n"
+"\n"
+"(see at http://www.imagemagick.org)"
+msgstr ""
+"Aucun outil de commande modifié est installé.\n"
+"\n"
+"(voir http://www.imagemagick.org)"
+
+#: intens/gui/qt/GuiQtElement.cc:775
+msgid "File '%1' not yet created!"
+msgstr "Fichier '%1' n'est pas encore créé!"
+
+#: intens/gui/qt/GuiQtElement.cc:776
+msgid "Please create GuiElement '%1' first."
+msgstr "S'il vous plaît créez un élément GUI en premier."
+
+#: intens/gui/qt/GuiQtElement.cc:944
+msgid "GuiElement "
+msgstr "Elément GUI"
+
+#: intens/gui/qt/GuiQtFactory.cc:530 intens/gui/qt/QtDialogInputExt.cc:60
+msgid "Yes"
+msgstr "Oui"
+
+#: intens/gui/qt/GuiQtFactory.cc:532
+msgid "Apply"
+msgstr "Appliquer"
+
+#: intens/gui/qt/GuiQtForm.cc:275
+msgid "Do you really want to close dialog '%1'?"
+msgstr "Voulez vous vraiment fermer le dialogue '%1'?"
+
+#: intens/gui/qt/GuiQtForm.cc:276 intens/gui/qt/GuiQtManager.cc:1665
+#: intens/gui/qt/QtDialogConfirmation.cc:119
+#: intens/gui/qt/QtMessageBoxExt.cc:105 intens/operator/FileStream.cc:840
+msgid "&Yes"
+msgstr "&Oui"
+
+#: intens/gui/qt/GuiQtForm.cc:276 intens/gui/qt/GuiQtManager.cc:1665
+#: intens/gui/qt/QtDialogConfirmation.cc:129
+#: intens/gui/qt/QtMessageBoxExt.cc:133 intens/operator/FileStream.cc:841
+msgid "&No"
+msgstr "&Non"
+
+#: intens/gui/qt/GuiQtForm.cc:292 intens/gui/qt/QtDialogWorkClock.cc:200
+#: intens/gui/qt/QtMessageBoxExt.cc:407
+msgid "Unable to close dialog from title bar."
+msgstr "Incapable de fermer le dialogue de la barre de légende."
+
+#: intens/gui/qt/GuiQtForm.cc:468
+msgid "Help"
+msgstr "Aide"
+
+#: intens/gui/qt/GuiQtImage.cc:671 intens/gui/qt/GuiQtImage.cc:930
+msgid "Save image"
+msgstr "Enregistrez l'image"
+
+#: intens/gui/qt/GuiQtImage.cc:917 intens/gui/qt/GuiQtLinePlot.cc:551
+msgid "View settings"
+msgstr "Affichage des paramètres"
+
+#: intens/gui/qt/GuiQtImage.cc:921
+msgid "Move tip"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:922
+msgid "Move center"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:923
+msgid "Rotate to fast axis"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:924
+msgid "Rotate to slow axis"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:925
+#, fuzzy
+msgid "Select area"
+msgstr "Style domaine"
+
+#: intens/gui/qt/GuiQtImage.cc:926
+#, fuzzy
+msgid "Reset selection"
+msgstr "Réinitialiser la rotation"
+
+#: intens/gui/qt/GuiQtImage.cc:927
+#, fuzzy
+msgid "Select line"
+msgstr "Sélectionner Point"
+
+#: intens/gui/qt/GuiQtImage.cc:928
+msgid "Set master"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:929
+msgid "Get master"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:934
+msgid "Add points"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:935
+msgid "Show points"
+msgstr ""
+
+#: intens/gui/qt/GuiQtImage.cc:938
+#, fuzzy
+msgid "Delete points"
+msgstr "Sélectionner Point"
+
+#: intens/gui/qt/GuiQtIndex.cc:340
+msgid "Index '%1' is not possible."
+msgstr "Indexe '%1' n'est pas possible."
+
+#: intens/gui/qt/GuiQtIndex.cc:524 intens/gui/qt/GuiQtIndex.cc:530
+#: intens/gui/qt/GuiQtIndex.cc:536
+msgid "Skip is not possible !"
+msgstr "Feuilleter n'est pas possible !"
+
+#: intens/gui/qt/GuiQtIndex.cc:558 intens/gui/qt/GuiQtIndex.cc:570
+msgid "Skip to the left is not possible !"
+msgstr "Feuilleter à gauche n'est pas possible !"
+
+#: intens/gui/qt/GuiQtIndex.cc:561 intens/gui/qt/GuiQtIndex.cc:573
+msgid "Cannot scroll up anymore"
+msgstr "Ne peut plus être roulé vers le haut"
+
+#: intens/gui/qt/GuiQtIndex.cc:622 intens/gui/qt/GuiQtIndex.cc:639
+msgid "Skip to the right is not possible !"
+msgstr "Ne peut plus être roulé vers la droite !"
+
+#: intens/gui/qt/GuiQtIndex.cc:625 intens/gui/qt/GuiQtIndex.cc:642
+msgid "Cannot scroll down anymore"
+msgstr "Ne peut plus être roulé vers le bas"
+
+#: intens/gui/qt/GuiQtList.cc:289
+#, fuzzy
+msgid "ColumnConfiguration"
+msgstr "Configuration"
+
+#: intens/gui/qt/GuiQtList.cc:299 intens/plot/CyclesDialog.cc:63
+msgid "Name"
+msgstr "Nom"
+
+#: intens/gui/qt/GuiQtList.cc:302
+msgid "Visible"
+msgstr ""
+
+#: intens/gui/qt/GuiQtList.cc:329
+msgid "Accept"
+msgstr ""
+
+#: intens/gui/qt/GuiQtList.cc:371
+msgid "Minimum one column should be selected. "
+msgstr ""
+
+#: intens/gui/qt/GuiQtList.cc:628 intens/gui/qt/GuiQtList.cc:629
+msgid "ListMenu"
+msgstr ""
+
+#: intens/gui/qt/GuiQtList.cc:632
+#, fuzzy
+msgid "Column Configuration"
+msgstr "Configuration"
+
+#: intens/gui/qt/GuiQtManager.cc:1462
+msgid "WARNING: Resource file '%1' is empty."
+msgstr "AVERTISSEMENT! fichier de ressources '%1' est vide."
+
+#: intens/gui/qt/GuiQtManager.cc:1655
+msgid "Writing resource file....[%1]"
+msgstr "Fichier de ressource d'écriture....[%1]"
+
+#: intens/gui/qt/GuiQtManager.cc:1662
+msgid "Overwrite File? --  Create new Resource File"
+msgstr "Fichier de surécriture? -- Créez un nouveau fichier de ressource"
+
+#: intens/gui/qt/GuiQtManager.cc:1663
+msgid ""
+"Creating new resource file.\n"
+"\n"
+"File '%1' already exists.\n"
+"Do you want to overwrite it?"
+msgstr ""
+"Créer un nouveau fichier de ressource.\n"
+"\n"
+"fichier '%1' existe déjà.\n"
+"Voulez vous écrire par-dessus?"
+
+#: intens/gui/qt/GuiQtManager.cc:1673
+msgid ""
+"save file dialog\n"
+"Choose a filename to save resources"
+msgstr ""
+"Enregistrer le fichier du dialogue\n"
+"choisir le nom du fichier pour économiser les ressources"
+
+#: intens/gui/qt/GuiQtManager.cc:1676
+msgid "No new resource file written!"
+msgstr "Nouveau fichier de resource écrite!"
+
+#: intens/gui/qt/GuiQtManager.cc:1704
+msgid "WARNING  Registry Entry is already existing!"
+msgstr "AVERTISSEMENT Entrée de registre existe déjà!"
+
+#: intens/gui/qt/GuiQtManager.cc:1798
+msgid "Named color '%1' not found. Setting it to '#000000' (black)."
+msgstr "Le nommée couleur '%1' introuvable. Placez la dans '#000000' (noir)."
+
+#: intens/gui/qt/GuiQtNavigator.cc:779
+msgid "Compare Mode Menu"
+msgstr ""
+
+#: intens/gui/qt/GuiQtNavigator.cc:785
+msgid "&Equality"
+msgstr ""
+
+#: intens/gui/qt/GuiQtNavigator.cc:791
+msgid "&Inequality"
+msgstr ""
+
+#: intens/gui/qt/GuiQtNavigator.cc:797
+#, fuzzy
+msgid "&Complete"
+msgstr "Composant"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:128
+msgid "Intens Print Dialog"
+msgstr "Dialogue d'impression Intens"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:133
+#: intens/gui/qt/GuiQtPrinterDialog.cc:134
+msgid "Export"
+msgstr "Exportation"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:142
+msgid "Graphic Format:"
+msgstr "Format graphique"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:151
+#: intens/gui/qt/GuiQtPrinterDialog.cc:152
+#: intens/gui/qt/GuiQtScrolledText.cc:619
+msgid "Preview"
+msgstr "Aperçu"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:168
+msgid "Only used for file export or preview"
+msgstr "Utilisé uniquement pour l'exportation de fichiers ou d'aperçus"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:250
+msgid "Postscript"
+msgstr "Postscript"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:252
+msgid "HPGL"
+msgstr "HPGL"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:254
+msgid "PDF"
+msgstr "PDF"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:256
+msgid "JPEG"
+msgstr "JPEG"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:258
+msgid "PNG"
+msgstr "PNG"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:260
+msgid "GIF"
+msgstr "GIF"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:262
+msgid "BMP"
+msgstr "BMP"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:264
+msgid "SVG"
+msgstr "SVG"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:266
+msgid "PPM"
+msgstr "PPM"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:268
+msgid "TIF"
+msgstr "TIF"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:270
+msgid "XBM"
+msgstr "XBM"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:272
+msgid "XPM"
+msgstr "XPM"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:278
+msgid "ASCII"
+msgstr "ASCII"
+
+#: intens/gui/qt/GuiQtPrinterDialog.cc:520
+msgid "Print Type not supported."
+msgstr "Type d'impression pas soutenu."
+
+#: intens/gui/qt/GuiQtScrolledlist.cc:115
+msgid "#"
+msgstr ""
+
+#: intens/gui/qt/GuiQtScrolledText.cc:608 intens/gui/qt/GuiQtSvgView.cc:175
+#: intens/gui/qt/GuiQtText.cc:884 intens/gui/qt/GuiQtText.cc:936
+#: intens/gui/qt/GuiQtText.cc:988 intens/operator/RestService.cc:1016
+#: intens/operator/RestService.cc:1034
+msgid "Save"
+msgstr "Enregistrer"
+
+#: intens/gui/qt/GuiQtScrolledText.cc:613 intens/gui/qt/GuiQtSvgView.cc:180
+#: intens/gui/qt/GuiQtText.cc:890 intens/gui/qt/GuiQtText.cc:942
+#: intens/gui/qt/GuiQwt3dPlot.cc:464 intens/gui/qt/GuiQWTPlot.cc:3101
+#: intens/plot/qt/QtListPlot.cc:653 intens/plot/qt/QtSimpel.cc:1300
+msgid "Print"
+msgstr "Imprimer"
+
+#: intens/gui/qt/GuiQtScrolledText.cc:678
+#: intens/parser/InterpreterConfigurator.cc:3715
+msgid "Standard Window"
+msgstr "Fenêtre Standard"
+
+#: intens/gui/qt/GuiQtScrolledText.cc:680
+#: intens/parser/InterpreterConfigurator.cc:3729
+msgid "Log Window"
+msgstr "Fenêtre Protocole"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:1988
+msgid "TableMenu"
+msgstr "Menu du tableau"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:1993
+msgid "Copy All"
+msgstr "Copier Tous"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:1997
+msgid "Copy Selected"
+msgstr "Copier Sélectionnées"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:2004
+msgid "Reset Sorting"
+msgstr "Réinitialiser le triage"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:2012
+msgid "Paste"
+msgstr "Coller"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:2018
+msgid "Clear Selected"
+msgstr "Vider Sélectionnées"
+
+#: intens/gui/qt/GuiQtTableViewBase.cc:2024
+msgid "Clear All"
+msgstr "Vider Tous"
+
+#: intens/gui/qt/GuiQtTimetable.cc:252
+msgid "Appointment text: %1"
+msgstr "Texte attaché: %1"
+
+#: intens/gui/qt/GuiQtTimetable.cc:264
+msgid ""
+"Start Date [%1]\n"
+"  End Date [%2]"
+msgstr ""
+"Texte d'ouverture [%1]\n"
+" Texte de fermeture [%2]"
+
+#: intens/gui/qt/GuiQtTimetable.cc:267
+msgid "Appointment Information"
+msgstr "Information attachée"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:458 intens/gui/qt/GuiQWTPlot.cc:3088
+#: intens/plot/qt/QtListPlot.cc:646
+msgid "Redraw"
+msgstr "Actualiser"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:470
+msgid "Reset size"
+msgstr "Réinitialiser la taille"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:475
+msgid "Reset rotation"
+msgstr "Réinitialiser la rotation"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:480 intens/gui/qt/GuiQWTPlot.cc:3266
+msgid "Style bar"
+msgstr "Style colonne"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:485
+msgid "Style surface"
+msgstr "Style surface"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:490
+msgid "Style contour"
+msgstr "Style contour"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:495
+msgid "Draw hidden lines"
+msgstr "Tracer des lignes cachées"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:500
+msgid "Perspective"
+msgstr "Perspective"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:505
+msgid "Delete Text Objects"
+msgstr "Effacer les objets de texte"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:510
+msgid "Show Text Objects"
+msgstr "Montrer les objets de texte"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:519 intens/gui/qt/GuiQWTPlot.cc:3113
+msgid "Configuration"
+msgstr "Configuration"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:542
+msgid "Detail options"
+msgstr "Option de détail"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:550
+msgid "Draw mesh"
+msgstr "Tracer le bord"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:555
+msgid "Draw shaded"
+msgstr "Tracer en couleur"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:561
+msgid "Draw contours"
+msgstr "Tracer les contours"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:566
+msgid "Draw interpolated"
+msgstr "Dessiner interpolée"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:587
+msgid "ConfigDialog"
+msgstr "ConfigDialogue"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:599
+msgid "Distribution Levels"
+msgstr "Nombre d'intermédiaires"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:622
+msgid "Customizing the Distribution Table"
+msgstr "Personaliser le tableau d'intermédiaires"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:639
+msgid "Distribution Table"
+msgstr "Tableau d'intermédiaires"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:654
+msgid "Entries"
+msgstr "Entrées"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:980
+msgid "%1: Selected file format is not supported."
+msgstr "%1: Format de fichier sélectionné n'est pas soutenu."
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:1075
+msgid "unsuportted format"
+msgstr "Format n'est pas soutenu"
+
+#: intens/gui/qt/GuiQwt3dPlot.cc:1075
+msgid "unsuportted file format"
+msgstr "Format de fichier n'est pas soutenu"
+
+#: intens/gui/qt/GuiQWTPlot.cc:568 intens/plot/ListGraph.cc:1348
+msgid "Item name"
+msgstr "Nom de l'élément"
+
+#: intens/gui/qt/GuiQWTPlot.cc:569
+msgid "Y-Axis 1"
+msgstr "Y-Axe 1"
+
+#: intens/gui/qt/GuiQWTPlot.cc:570
+msgid "Y-Axis 2"
+msgstr "Y-Axe 2"
+
+#: intens/gui/qt/GuiQWTPlot.cc:571
+msgid "X-Axis"
+msgstr "X-Axe"
+
+#: intens/gui/qt/GuiQWTPlot.cc:572
+#, fuzzy
+msgid "Line"
+msgstr "L'ajustement de la ligne"
+
+#: intens/gui/qt/GuiQWTPlot.cc:573
+msgid "Symbol"
+msgstr ""
+
+#: intens/gui/qt/GuiQWTPlot.cc:574
+#, fuzzy
+msgid "LineStyle"
+msgstr "Style"
+
+#: intens/gui/qt/GuiQWTPlot.cc:575
+#, fuzzy
+msgid "SymbolStyle"
+msgstr "Style"
+
+#: intens/gui/qt/GuiQWTPlot.cc:576
+#, fuzzy
+msgid "SymbolSize"
+msgstr "Style"
+
+#: intens/gui/qt/GuiQWTPlot.cc:2819 intens/gui/qt/GuiQWTPlot.cc:2957
+msgid "%1: Selected file format is not supported"
+msgstr "X%1: Format de fichier sélectionné n'est pas soutenu"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3084
+msgid "Zoom Out"
+msgstr "Zoomer en dehors (rétrécir)"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3093
+msgid "Show X-Annotation-Labels"
+msgstr "Montrer la légende de l'axe X"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3109
+msgid "Scale"
+msgstr "Echelle"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3117
+#, fuzzy
+msgid "Select cases"
+msgstr "Sélectionnez les cycles"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3133 intens/gui/qt/GuiQWTPlot.cc:3372
+#: intens/gui/qt/GuiQWTPlot.cc:3402
+msgid "Fullscreen"
+msgstr "Plein écran"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3139
+msgid "Property"
+msgstr "Propriétées"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3157
+msgid "Logarithmic"
+msgstr "Logarithmique"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3183
+msgid "UI Mode"
+msgstr "UI Mode"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3193
+msgid "Zoom"
+msgstr "Zoomer"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3201
+msgid "Select Point"
+msgstr "Sélectionner Point"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3210
+msgid "Select Rectangle"
+msgstr "Sélectionner Rectangle"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3225
+msgid "Style Y1"
+msgstr "Style Y1"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3229
+msgid "Style Y2"
+msgstr "Style Y2"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3260
+msgid "Style plot"
+msgstr "Style ligne"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3272
+msgid "Style stacked bar"
+msgstr "Style colonnes empilées"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3278
+msgid "Style area"
+msgstr "Style domaine"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3284
+msgid "Style polar"
+msgstr "Style polaire"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3290
+msgid "Style step"
+msgstr "Style escalier"
+
+#: intens/gui/qt/GuiQWTPlot.cc:3296
+msgid "Style dots"
+msgstr "Style point"
+
+#: intens/gui/qt/GuiQwtPlotPicker.cc:502 intens/gui/qt/GuiQwtPlotZoomer.cc:151
+msgid "X:"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPlotPicker.cc:510 intens/gui/qt/GuiQwtPlotZoomer.cc:159
+msgid "  Y2:"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:54
+msgid "Plot2D Properties"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:68
+msgid "Legend Position"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:73
+msgid "Max. Major Ticks (xAxis)"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:81
+msgid "Max. Minor Ticks (xAxis)"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:89
+msgid "Annotation Angle (xAxis)"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:96
+msgid "BarChart"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:102
+msgid "Horizontal"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:103
+msgid "Vertical"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:112
+msgid "AutoAdjustSamples"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:113
+msgid "ScaleSamplesToAxes"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:114
+msgid "ScaleSampleToCanvas"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:115
+msgid "FixedSampleSize"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:136
+msgid "Invisible"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:137
+msgid "Top"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:138
+msgid "Center"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:139
+msgid "Bottom"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:140
+#, fuzzy
+msgid "TopRight"
+msgstr "Copyright"
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:141
+#, fuzzy
+msgid "CenterRight"
+msgstr "Copyright"
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:142
+msgid "BottomRight"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:143
+msgid "TopLeft"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:144
+msgid "CenterLeft"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:145
+msgid "BottomLeft"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:146
+msgid "Alignment"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:152
+msgid "Point"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:153
+msgid "Horizontal Line"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:154
+msgid "Vertical Line"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:155
+msgid "Cross Line"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:156
+#, fuzzy
+msgid "Line Style"
+msgstr "Style"
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:162
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:176
+msgid "Transparent"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:163
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:178
+msgid "White"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:164
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:179
+msgid "Blue"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:165
+msgid "Cyan"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:166
+msgid "Green"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:167
+msgid "Yellow"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:168
+msgid "Magenta"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:169
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:180
+#, fuzzy
+msgid "Red"
+msgstr "Refaire"
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:170
+msgid "Background Color"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:177
+msgid "Black"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtPropertyDialog.cc:181
+msgid "Border Color"
+msgstr ""
+
+#: intens/gui/qt/GuiQwtSlider.cc:156
+msgid "a function is aktiv"
+msgstr "Une fonction est active"
+
+#: intens/gui/qt/GuiQwtThermo.cc:68
+#, fuzzy
+msgid "ScaleMenu"
+msgstr "Menu du tableau"
+
+#: intens/gui/qt/QtDialogCompare.cc:299
+#, fuzzy
+msgid "item '%1' has no different data"
+msgstr "L'élément '%1' n'est pas déclaré."
+
+#: intens/gui/qt/QtDialogCompare.cc:414
+msgid "Information"
+msgstr "Information"
+
+#: intens/gui/qt/QtDialogCompare.cc:910
+msgid "Percent [%]"
+msgstr ""
+
+#: intens/gui/qt/QtDialogCompare.cc:937 intens/gui/qt/QtDialogCompare.cc:1095
+#, fuzzy
+msgid "XAxis Undeclared identifier.\n"
+msgstr "Identificateur non déclaré."
+
+#: intens/gui/qt/QtDialogCompare.cc:939 intens/gui/qt/QtDialogCompare.cc:971
+#: intens/gui/qt/QtDialogCompare.cc:1112
+#, fuzzy
+msgid "Too many WILDCARDS.\n"
+msgstr "Trop de WILDCARDS."
+
+#: intens/gui/qt/QtDialogCompare.cc:945 intens/gui/qt/QtDialogCompare.cc:968
+#: intens/gui/qt/QtDialogCompare.cc:974 intens/gui/qt/QtDialogCompare.cc:1109
+#: intens/gui/qt/QtDialogCompare.cc:1115
+#, fuzzy
+msgid "Undeclared identifier.\n"
+msgstr "Identificateur non déclaré."
+
+#: intens/gui/qt/QtDialogCompare.cc:1187
+msgid "No items selected."
+msgstr ""
+
+#: intens/gui/qt/QtDialogCompare.cc:1188
+msgid ""
+"Cannot handle items with more than 3 dimensions (and with no dimensions)."
+msgstr ""
+
+#: intens/gui/qt/QtDialogConfirmation.cc:134
+#: intens/gui/qt/QtMessageBoxExt.cc:147
+msgid "&Discard"
+msgstr "&Rejeter"
+
+#: intens/gui/qt/QtDialogConfirmation.cc:139
+#: intens/gui/qt/QtMessageBoxExt.cc:161
+msgid "&Apply"
+msgstr "&Appliquer"
+
+#: intens/gui/qt/QtDialogConfirmation.cc:150
+#: intens/gui/qt/QtDialogWorkClock.cc:67 intens/gui/qt/QtDialogWorkClock.cc:147
+#: intens/gui/qt/QtMessageBoxExt.cc:189
+msgid "&Cancel"
+msgstr "&Annuler"
+
+#: intens/gui/qt/QtDialogConfirmation.cc:155
+#: intens/gui/qt/QtMessageBoxExt.cc:203
+msgid "&Abort"
+msgstr "&Annuler"
+
+#: intens/gui/qt/QtDialogCopyright.cc:48
+msgid ""
+"Copyright (C) 1994-%1<br/>SEMAFOR Informatik & Energie AG<br/>Sperrstrasse "
+"104b<br/>CH-4057 Basel<br/><a href='mailto:info@semafor.ch'>info@semafor.ch</"
+"a>"
+msgstr ""
+"Copyright (C) 1994-%1<br/>SEMAFOR Informatik & Energie AG<br/>Sperrstrasse "
+"104b<br/>CH-4057 Basel<br/><a href='mailto:info@semafor.ch'>info@semafor.ch</"
+"a>"
+
+#: intens/gui/qt/QtDialogCopyright.cc:118
+msgid "<p>Licensed for: <h2>%1</h2></p>"
+msgstr "<p>Licensed for: <h2>%1</h2></p>"
+
+#: intens/gui/qt/QtDialogCopyright.cc:124
+msgid "<p>Key: %1</p>"
+msgstr "<p>Key: %1</p>"
+
+#: intens/gui/qt/QtDialogInputExt.cc:73
+#, fuzzy
+msgid "new"
+msgstr "Nouveau"
+
+#: intens/gui/qt/QtDialogInputExt.cc:73
+msgid "save"
+msgstr ""
+
+#: intens/gui/qt/QtDialogInputExt.cc:78
+msgid "&More"
+msgstr ""
+
+#: intens/gui/qt/QtDialogProgressBar.cc:147
+#: intens/gui/qt/QtDialogProgressBar.cc:353
+#, fuzzy
+msgid "Details"
+msgstr "Option de détail"
+
+#: intens/gui/qt/QtDialogProgressBar.cc:150
+#, fuzzy
+msgid "Abort"
+msgstr "&Annuler"
+
+#: intens/gui/qt/QtDialogProgressBar.cc:353
+msgid "Collapse Details"
+msgstr ""
+
+#: intens/gui/qt/QtDialogProgressBar.cc:477
+#: intens/gui/qt/QtDialogProgressBar.cc:478
+#: intens/gui/qt/QtDialogProgressBar.cc:480
+msgid "Elapsed Time: "
+msgstr ""
+
+#: intens/gui/qt/QtDialogUserPassword.cc:188
+msgid "Cannot connect to database '%1' as user '%2'\n"
+msgstr "Ne peut être connecté au bases de données '%1' comme usager '%2'\n"
+
+#: intens/gui/qt/QtDialogUserPassword.cc:209
+msgid "Login"
+msgstr "Connection"
+
+#: intens/gui/qt/QtDialogUserPassword.cc:213
+msgid "Database"
+msgstr "Base de données"
+
+#: intens/gui/qt/QtDialogUserPassword.cc:214
+msgid "Username"
+msgstr "Nom de l'utilisateur"
+
+#: intens/gui/qt/QtDialogUserPassword.cc:215
+msgid "Password"
+msgstr "Mot de passe"
+
+#: intens/gui/qt/QtDialogWorkClock.cc:62
+msgid "Progress Dialog"
+msgstr "Dialogue en progrès"
+
+#: intens/gui/qt/QtDialogWorkClock.cc:69
+msgid "Close at the end"
+msgstr "Fermer à la fin"
+
+#: intens/gui/qt/QtDialogWorkClock.cc:145
+msgid "Working, please wait..."
+msgstr "Entrain de travailler, attendez s'il vous plaît..."
+
+#: intens/gui/qt/QtDialogWorkClock.cc:155
+msgid "Work finished."
+msgstr "Travail terminé."
+
+#: intens/gui/qt/QtDialogWorkClock.cc:160
+msgid "&Close"
+msgstr "&Fermez"
+
+#: intens/gui/qt/QtMessageBoxExt.cc:91
+msgid "&OK"
+msgstr "D'&accord"
+
+#: intens/gui/qt/QtMultiFontString.cc:454
+msgid "Following fonts are available on your system:"
+msgstr "Les caractères suivants sont disponibles sur votre système:"
+
+#: intens/job/JobCodeOthers.cc:323
+msgid "Empty file name"
+msgstr ""
+
+#: intens/job/JobCodeOthers.cc:414
+msgid "Unknown element named '%1'"
+msgstr "Elément inconnue nommée '%1'."
+
+#: intens/job/JobCodeOthers.cc:467
+msgid ": MAP: negative tab index %1 is ignored (nothing is mapped)."
+msgstr ""
+
+#: intens/job/JobCodeOthers.cc:496
+msgid ": MAP: not existing tab index %1 is ignored (nothing is mapped)."
+msgstr ""
+
+#: intens/job/JobStackData.cc:234
+msgid "Consistency Query"
+msgstr ""
+
+#: intens/operator/Channel.cc:141 intens/operator/Channel.cc:486
+msgid "Read error."
+msgstr "Erreur de lecture."
+
+#: intens/operator/Channel.cc:370 intens/operator/Channel.cc:536
+msgid "Warning"
+msgstr "Avertissement"
+
+#: intens/operator/Channel.cc:371
+#, fuzzy
+msgid ""
+"Write Error in input channel.\n"
+"Runtime error in Stream Process.\n"
+"\n"
+"(For details see log window)"
+msgstr ""
+"Erreur d'exécution: %1\n"
+"(pour des détails voir Fenêtre Protocole)"
+
+#: intens/operator/Channel.cc:537
+#, fuzzy
+msgid ""
+"Read Error in output channel.\n"
+"Runtime error in Stream Process.\n"
+"\n"
+"(For details see log window)"
+msgstr ""
+"Erreur d'exécution: %1\n"
+"(pour des détails voir Fenêtre Protocole)"
+
+#: intens/operator/Channel.cc:715 intens/operator/Channel.cc:755
+#: intens/operator/Channel.cc:756
+msgid "Cannot open '%1.'."
+msgstr "Ne peut ouvrire '%1.'."
+
+#: intens/operator/Channel.cc:768 intens/operator/Channel.cc:769
+msgid "Cannot determine file status of '%1.'."
+msgstr "Ne peut déterminer le status du fichier de '%1.'."
+
+#: intens/operator/ClientSocket.cc:62 intens/operator/Process.cc:211
+msgid ""
+"\n"
+"Incomplete input for the following items \n"
+"in stream '%1':\n"
+msgstr ""
+"\n"
+"Saisie incomplète pour les élément suivants \n"
+"au fleuve '%1':\n"
+
+#: intens/operator/FileStream.cc:669
+msgid ""
+"Input error.\n"
+"(See Log Window)"
+msgstr ""
+"Erreur de saisie.\n"
+"(voir Fenêtre Protocole)"
+
+#: intens/operator/FileStream.cc:714
+msgid "Open %1"
+msgstr "ouvrire %1"
+
+#: intens/operator/FileStream.cc:1200
+#, fuzzy
+msgid "Unknown file format. (See Log Window)"
+msgstr ""
+"Erreur de saisie.\n"
+"(voir Fenêtre Protocole)"
+
+#: intens/operator/IntensServerSocket.cc:155
+msgid "tcp server at port '%1' has received unknown data header '%2'.\n"
+msgstr "tpc server au port '%1' a reçu des données d'en-tête inconnues '%2'.\n"
+
+#: intens/operator/IntensServerSocket.cc:156
+#, fuzzy
+msgid "tcp server at port '%1' has received unknown data header '%2'."
+msgstr "tpc server au port '%1' a reçu des données d'en-tête inconnues '%2'.\n"
+
+#: intens/operator/IntensServerSocket.cc:165
+msgid ""
+"tcp server at port '%1' has received unexpected data ('%3') for header "
+"'%2'.\n"
+msgstr ""
+"tpc server au port '%1' a reçu des données inattendues ('%3') pour l'en-tête "
+"'%2'.\n"
+
+#: intens/operator/IntensServerSocket.cc:167
+#, fuzzy
+msgid ""
+"tcp server at port '%1' has received unexpected data ('%3') for header '%2'."
+msgstr ""
+"tpc server au port '%1' a reçu des données inattendues ('%3') pour l'en-tête "
+"'%2'.\n"
+
+#: intens/operator/IntensServerSocket.cc:174
+msgid ""
+"tcp server at port '%1' has not received expected data for header '%2'.\n"
+msgstr ""
+"tpc server au port '%1' n'a pas reçu des données attendues pour l'en-tête "
+"'%2'.\n"
+
+#: intens/operator/IntensServerSocket.cc:176
+#, fuzzy
+msgid "tcp server at port '%1' has not received expected data for header '%2'."
+msgstr ""
+"tpc server au port '%1' n'a pas reçu des données attendues pour l'en-tête "
+"'%2'.\n"
+
+#: intens/operator/MathematicaProcess.cc:168
+msgid ""
+"Cannot start Mathematica.\n"
+"%1"
+msgstr ""
+"Ne peut démarrer Mathematica.\n"
+"%1"
+
+#: intens/operator/MathematicaProcess.cc:181
+msgid "Open of Mathematica failed."
+msgstr "Ouverture de Mathematica a échoué."
+
+#: intens/operator/MatlabInitProcess.cc:151
+msgid ""
+"Cannot start Matlab.\n"
+"%1"
+msgstr ""
+"Ne peut démarrer Matlab.\n"
+"%1"
+
+#: intens/operator/MatlabProcess.cc:270
+msgid "%1: Cannot evaluate matlab command '%2' [%3]\n"
+msgstr "%1: Ne peut évaluer commandement matlab '%2' [%3]\n"
+
+#: intens/operator/MatlabProcess.cc:390
+msgid "WARNING: MatlabProcess::open() cannot open multiple Matlab Connections!"
+msgstr ""
+"AVERTISSEMENT: Processus Matlab::ouvert () ne peut ouvrir multiples liens au "
+"Matlab!"
+
+#: intens/operator/MatlabProcess.cc:396 intens/operator/MatlabProcess.cc:397
+msgid "MatlabProcess::open() cannot start engine\n"
+msgstr "Processus Matlab::ouvert () ne peut démarré la machine\n"
+
+#: intens/operator/MatlabProcess.cc:417
+msgid "%1: Matlab %2 started\n"
+msgstr "%1: Matlab %2 démarré\n"
+
+#: intens/operator/MessageQueuePublisher.cc:117
+#: intens/operator/MessageQueueReply.cc:126
+msgid "Cannot establish a connection"
+msgstr "Ne peut établir un lien"
+
+#: intens/operator/MessageQueuePublisher.cc:118
+#: intens/operator/MessageQueueReply.cc:127
+msgid "Abort this Function?"
+msgstr "Annuler cette fonction?"
+
+#: intens/operator/MessageQueuePublisher.cc:220
+#: intens/operator/MessageQueueReply.cc:239
+#: intens/operator/MessageQueueRequest.cc:236
+#: intens/operator/MessageQueueSubscriber.cc:153
+msgid "MessageQueue Error: %1\n"
+msgstr "Erreur dans la file d'attente de message: %1\n"
+
+#: intens/operator/MessageQueuePublisher.cc:222
+msgid "MessageQueue Publish Error"
+msgstr "Erreur dans la publication de la file d'attente de message"
+
+#: intens/operator/MessageQueuePublisher.cc:223
+#: intens/operator/MessageQueueReply.cc:242
+msgid ""
+"%1\n"
+"\n"
+"(For details see log window)"
+msgstr ""
+"%1\n"
+"\n"
+"(pour des details voir Fenêtre Protocole)"
+
+#: intens/operator/MessageQueueReply.cc:241
+#, fuzzy
+msgid "MessageQueue Reply Error"
+msgstr "Erreur demandée dans la file d'attente de message"
+
+#: intens/operator/MessageQueueRequest.cc:238
+#: intens/operator/MessageQueueSubscriber.cc:156
+msgid "MessageQueue Request Error"
+msgstr "Erreur demandée dans la file d'attente de message"
+
+#: intens/operator/MessageQueueRequest.cc:239
+#: intens/operator/MessageQueueSubscriber.cc:157
+#, fuzzy
+msgid ""
+"%1\n"
+"\n"
+"%2\n"
+"\n"
+"(For details see log window)"
+msgstr ""
+"%1\n"
+"\n"
+"(pour des details voir Fenêtre Protocole)"
+
+#: intens/operator/Process.cc:355
+#, fuzzy
+msgid ""
+"Runtime error in '%2': %1\n"
+"(For details see log window)"
+msgstr ""
+"Erreur d'exécution: %1\n"
+"(pour des détails voir Fenêtre Protocole)"
+
+#: intens/operator/ProcessGroup.cc:145
+msgid "stop_processgroup %1"
+msgstr "Stop groupe du processus %1"
+
+#: intens/operator/ProcessGroup.cc:346
+msgid "Close Matlab Connection"
+msgstr "Fermer lien au Matlab"
+
+#: intens/operator/ProcessWrapper.cc:398
+msgid "Process failed to start: '%1'"
+msgstr "Le processus n'a pa pu être démarré: '%1'"
+
+#: intens/operator/ProcessWrapper.cc:402
+msgid "Process exited unsuccessfully: '%1'"
+msgstr "Le processus s'est planté: '%1'"
+
+#: intens/operator/ProcessWrapper.cc:405
+msgid "Process Timed out: '%1'"
+msgstr "Processus expiré: '%1'"
+
+#: intens/operator/ProcessWrapper.cc:409
+msgid "Process WriteError: '%1'"
+msgstr "Erreur d'écriture du processus: '%1'"
+
+#: intens/operator/ProcessWrapper.cc:413
+msgid "Process ReadError: '%1'"
+msgstr "Erreur de lecture du processus: '%1'"
+
+#: intens/operator/ProcessWrapper.cc:416
+msgid "Unknown Process Error: '%1'"
+msgstr "Erreur inconnue du processus: '%1'"
+
+#: intens/operator/ProcessWrapper.cc:459
+msgid "Process '%1' started."
+msgstr "Processus '%1' a démarré."
+
+#: intens/operator/QtClientSocket.cc:181
+msgid "ERROR : ClientSocket - "
+msgstr "ERREUR : ClientSocket -"
+
+#: intens/operator/QtClientSocket.cc:184
+msgid "RemoteHostClosedError : "
+msgstr "RemoteHostClosedError : "
+
+#: intens/operator/QtClientSocket.cc:187
+msgid "Connection Refused : "
+msgstr "Lien rejeté :"
+
+#: intens/operator/QtClientSocket.cc:190
+msgid "Host not found : "
+msgstr "Hôte introuvable "
+
+#: intens/operator/QtClientSocket.cc:193
+msgid "Socket Access failed : "
+msgstr "L'accès au Socket  a échoué :"
+
+#: intens/operator/QtServerSocket.cc:132
+msgid "Address already in use. (Port %1)"
+msgstr "Adresse déjà utilisée. (Port %1)"
+
+#: intens/operator/QtServerSocket.cc:134
+msgid "Please fix the problem and restart the application."
+msgstr "Veuillez résoudre le problème et redémarrer l'application."
+
+#: intens/operator/QtServerSocket.cc:238
+msgid "ERROR : ServerSocket - "
+msgstr "ERREUR : ServerSocket -"
+
+#: intens/operator/RestService.cc:246
+msgid "Login canceled."
+msgstr "Connection annulée."
+
+#: intens/operator/RestService.cc:535
+msgid "%1/%2"
+msgstr ""
+
+#: intens/operator/RestService.cc:778
+#, fuzzy
+msgid "Cannot connect to Database(s)"
+msgstr "Ne peut être connecté au bases de données '%1' comme usager '%2'\n"
+
+#: intens/operator/RestService.cc:867
+#, fuzzy
+msgid "Error from CURL: %1"
+msgstr "Erreur du CURL: %1"
+
+#: intens/operator/RestService.cc:920
+msgid "Bad credentials"
+msgstr "Mauvaises informations d'identification"
+
+#: intens/operator/RestService.cc:977
+msgid "HTTP response code: %1"
+msgstr "Code de réponse HTTP: %1"
+
+#: intens/operator/RestService.cc:998
+msgid "recevied Conflict with unexpected data."
+msgstr "Conflit reçu avec des données inattendues."
+
+#: intens/operator/RestService.cc:1014 intens/operator/RestService.cc:1030
+#: intens/operator/RestService.cc:1205
+msgid "Do you want to create this %1?"
+msgstr "Voulez vous créer ceci %1?"
+
+#: intens/operator/RestService.cc:1017 intens/operator/RestService.cc:1035
+msgid "Discard"
+msgstr "Rejeter"
+
+#: intens/operator/RestService.cc:1059
+msgid "Approval State"
+msgstr "Etat d'approbation"
+
+#: intens/operator/RestService.cc:1074
+msgid "<h3>Modified %1</h3>"
+msgstr "<h3>Modifié %1</h3>"
+
+#: intens/operator/RestService.cc:1090
+msgid "modified"
+msgstr "modifé"
+
+#: intens/operator/RestService.cc:1110
+msgid "Modify %1"
+msgstr "Modifier %1"
+
+#: intens/operator/RestService.cc:1165
+msgid ""
+"While trying to save <center>%1</center><br/>an up-to-date conflict occurred."
+msgstr ""
+"En essayant de sauvegarder <center>%1</center><br/> un conflit de mise à "
+"jour s'est produit."
+
+#: intens/operator/RestService.cc:1170
+msgid "Possible reasons:"
+msgstr "Raisons possibles"
+
+#: intens/operator/RestService.cc:1173
+msgid "Attempt to create a new %1 with an existing name."
+msgstr "Tenter de créer un nouvel élément (%1) avec un nom existant."
+
+#: intens/operator/RestService.cc:1176
+msgid ""
+"Attempt to update %1 that has been updated by someone else since you loaded "
+"it."
+msgstr ""
+"Tenter de mettre à jour %1 qui a été mis à jour par quelqu'un d'autre depuis "
+"que vous l'avez téléchargé."
+
+#: intens/operator/RestService.cc:1183
+msgid "Latest changes"
+msgstr "Derniers changements"
+
+#: intens/operator/RestService.cc:1183
+msgid " at "
+msgstr "à"
+
+#: intens/operator/RestService.cc:1187
+msgid "You have the following options:"
+msgstr "Vous avez les options suivantes:"
+
+#: intens/operator/RestService.cc:1190
+msgid "<b>Overwrite</b> the %1 with your data."
+msgstr "<b>Remplacer</b> %1 avec vos données."
+
+#: intens/operator/RestService.cc:1193
+msgid "<b>Load</b> the latest changes."
+msgstr "<b>Charger</b> les dernières modifications."
+
+#: intens/operator/RestService.cc:1194
+msgid "WARNING: Your changes will be lost."
+msgstr "AVERTISSEMENT: Vos modifications seront perdues."
+
+#: intens/operator/RestService.cc:1197
+msgid "<b>Cancel</b> the save operation."
+msgstr "<b>Annuler</b> l'opération de sauvegarde."
+
+#: intens/operator/RestService.cc:1198
+msgid "Maybe you want to save it with a different name."
+msgstr "Peut-être que vous souhaitez sauvegarder avec un autre nom."
+
+#: intens/operator/RestService.cc:1207 intens/operator/RestService.cc:1220
+msgid "Overwrite"
+msgstr "Ecrire par dessus"
+
+#: intens/operator/RestService.cc:1208 intens/operator/RestService.cc:1221
+msgid "Load"
+msgstr "Chargez"
+
+#: intens/operator/RestService.cc:1212 intens/operator/RestService.cc:1224
+msgid ": Up-to-date conflict"
+msgstr ": Conflit à jour"
+
+#: intens/operator/RestService.cc:1302
+msgid "Element created."
+msgstr "Élément créé."
+
+#: intens/operator/RestService.cc:1313
+msgid "Cancel button pressed."
+msgstr "Bouton d'annuler pressé."
+
+#: intens/operator/RestService.cc:1317
+msgid "Unexpected button pressed."
+msgstr "Touche inattendue pressé."
+
+#: intens/operator/RestService.cc:1886
+msgid "Database-Version is missing"
+msgstr ""
+
+#: intens/operator/RestService.cc:1888 intens/operator/RestService.cc:1902
+msgid "required at least %1"
+msgstr ""
+
+#: intens/operator/RestService.cc:1890 intens/operator/RestService.cc:1903
+#: intens/operator/RestService.cc:1917 intens/operator/RestService.cc:1930
+msgid "Connect to a different database or press 'Cancel'."
+msgstr ""
+
+#: intens/operator/RestService.cc:1901
+msgid "Application-Version is missing"
+msgstr ""
+
+#: intens/operator/RestService.cc:1914
+msgid "Application-Version is older than required"
+msgstr ""
+
+#: intens/operator/RestService.cc:1915
+msgid "Application-Version is %1; required at least %2"
+msgstr ""
+
+#: intens/operator/RestService.cc:1927
+msgid "Database-Version is older than required"
+msgstr ""
+
+#: intens/operator/RestService.cc:1928
+msgid "Database-Version is %1; required at least %2"
+msgstr ""
+
+#: intens/parser/errorhandler.cc:101
+msgid ":%1: at \"%2\": "
+msgstr ":%1: at \"%2\": "
+
+#: intens/parser/errorhandler.cc:141
+msgid "Parser error."
+msgstr "Faute d'analyse."
+
+#: intens/parser/InterpreterConfigPython.cc:53
+#: intens/parser/InterpreterConfigurator.cc:854
+#: intens/parser/InterpreterConfigurator.cc:1726
+#: intens/parser/InterpreterConfigurator.cc:2866
+#: intens/parser/InterpreterConfigurator.cc:3250
+#: intens/parser/InterpreterConfigurator.cc:3391
+#: intens/parser/InterpreterConfigurator.cc:3437
+#: intens/parser/InterpreterConfigurator.cc:3805
+#: intens/parser/InterpreterConfigurator.cc:3990
+#: intens/parser/InterpreterConfigurator.cc:4008
+#: intens/parser/InterpreterConfigurator.cc:4031
+#: intens/parser/InterpreterConfigurator.cc:4046
+#: intens/parser/InterpreterConfigurator.cc:4060
+#: intens/parser/InterpreterConfigurator.cc:4108
+#: intens/parser/InterpreterConfigurator.cc:4282
+#: intens/parser/InterpreterConfigurator.cc:4510
+#: intens/parser/InterpreterConfigurator.cc:4845
+#: intens/parser/InterpreterConfigurator.cc:4973
+#: intens/parser/InterpreterConfigurator.cc:5099
+#: intens/parser/InterpreterConfigurator.cc:5157
+#: intens/parser/InterpreterConfigurator.cc:5298
+#: intens/parser/InterpreterConfigurator.cc:5384
+#: intens/parser/InterpreterConfigurator.cc:5664
+#: intens/parser/InterpreterConfigurator.cc:5700
+#: intens/parser/InterpreterConfigurator.cc:5962
+#: intens/parser/InterpreterConfigurator.cc:6577
+#: intens/parser/InterpreterConfigurator.cc:6685
+#: intens/parser/InterpreterConfigurator.cc:6764
+#: intens/parser/InterpreterConfigurator.cc:6779
+#: intens/parser/InterpreterConfigurator.cc:6798
+#: intens/parser/InterpreterConfigurator.cc:6809
+#: intens/parser/InterpreterConfigurator.cc:6837
+#: intens/parser/InterpreterConfigurator.cc:7106
+#: intens/parser/InterpreterConfigurator.cc:7221
+#: intens/parser/InterpreterConfigurator.cc:7322
+#: intens/parser/InterpreterConfigurator.cc:7605
+#: intens/parser/InterpreterConfigurator.cc:9584
+#: intens/parser/InterpreterConfigurator.cc:9617
+msgid "Identifier '%1' is already declared."
+msgstr "Identifiateur '%1' est déjà déclaré."
+
+#: intens/parser/InterpreterConfigPython.cc:66
+#, fuzzy
+msgid "Pythonmodule '%1' not available."
+msgstr "Touche d'aide %1 n'est pas disponible."
+
+#: intens/parser/InterpreterConfigPython.cc:70
+msgid "Pythonfunction '%1.%2' is not available."
+msgstr ""
+
+#: intens/parser/InterpreterConfigPython.cc:73
+#, fuzzy
+msgid "Pythonfunction '%1' is already configured."
+msgstr "Identifiateur '%1' est déjà déclaré."
+
+#: intens/parser/InterpreterConfigPython.cc:76
+#, fuzzy
+msgid "Function-alias '%1' is already declared."
+msgstr "Identifiateur '%1' est déjà déclaré."
+
+#: intens/parser/InterpreterConfigPython.cc:94
+#, fuzzy
+msgid "Unknown function-alias '%1'."
+msgstr "Ne peut ajouter la fonction '%1'."
+
+#: intens/parser/InterpreterConfigPython.cc:99
+#, fuzzy
+msgid "Python is not available"
+msgstr "Rest Service non disponible"
+
+#: intens/parser/InterpreterConfigPython.cc:144
+msgid "Parameter missmatch in Python-function '%1'."
+msgstr ""
+
+#: intens/parser/InterpreterConfigurator.cc:1001
+#: intens/parser/InterpreterConfigurator.cc:1025
+#: intens/parser/InterpreterConfigurator.cc:1040
+#: intens/parser/InterpreterConfigurator.cc:1055
+#: intens/parser/InterpreterConfigurator.cc:1068
+#: intens/parser/InterpreterConfigurator.cc:1320
+#: intens/parser/InterpreterConfigurator.cc:1650
+#: intens/parser/InterpreterConfigurator.cc:1679
+#: intens/parser/InterpreterConfigurator.cc:1858
+#: intens/parser/InterpreterConfigurator.cc:1860
+#: intens/parser/InterpreterConfigurator.cc:2870
+#: intens/parser/InterpreterConfigurator.cc:3254
+#: intens/parser/InterpreterConfigurator.cc:3395
+#: intens/parser/InterpreterConfigurator.cc:3441
+#: intens/parser/InterpreterConfigurator.cc:3494
+#: intens/parser/InterpreterConfigurator.cc:3809
+#: intens/parser/InterpreterConfigurator.cc:3994
+#: intens/parser/InterpreterConfigurator.cc:4012
+#: intens/parser/InterpreterConfigurator.cc:4016
+#: intens/parser/InterpreterConfigurator.cc:4035
+#: intens/parser/InterpreterConfigurator.cc:4050
+#: intens/parser/InterpreterConfigurator.cc:4064
+#: intens/parser/InterpreterConfigurator.cc:4112
+#: intens/parser/InterpreterConfigurator.cc:4286
+#: intens/parser/InterpreterConfigurator.cc:4515
+#: intens/parser/InterpreterConfigurator.cc:4521
+#: intens/parser/InterpreterConfigurator.cc:4849
+#: intens/parser/InterpreterConfigurator.cc:4979
+#: intens/parser/InterpreterConfigurator.cc:5103
+#: intens/parser/InterpreterConfigurator.cc:5164
+#: intens/parser/InterpreterConfigurator.cc:5283
+#: intens/parser/InterpreterConfigurator.cc:5335
+#: intens/parser/InterpreterConfigurator.cc:5388
+msgid "Item '%1' is already declared."
+msgstr "Elément '%1' a déjà été déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:1020
+msgid "This dataset item is automatically enumerated."
+msgstr "Cette base de donnée est automatiquement énuméré."
+
+#: intens/parser/InterpreterConfigurator.cc:1036
+#: intens/parser/InterpreterConfigurator.cc:1051
+msgid "Value of dataset item '%1' missing."
+msgstr "Valeur de l'élément du jeu de données '%1' est manquant."
+
+#: intens/parser/InterpreterConfigurator.cc:1159
+msgid "GLOBAL is not allowed inside a struct definition."
+msgstr "GLOBAL est interdite dans une définition de STRUCT."
+
+#: intens/parser/InterpreterConfigurator.cc:1375
+#, fuzzy
+msgid "Undeclared SET '%1'."
+msgstr "Jeu de données pas déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:1380
+msgid "The dataset has items of type string."
+msgstr "La base de données comporte des éléments de type chaîne."
+
+#: intens/parser/InterpreterConfigurator.cc:1402
+#, fuzzy
+msgid "The color picker item must be of type string."
+msgstr "La base de données comporte des éléments de la chaîne de type."
+
+#: intens/parser/InterpreterConfigurator.cc:1478
+msgid "Type of toggle item is string. (Should be REAL or INTEGER)"
+msgstr ""
+"Le type de lélément bouchon et la chaîne. (devrait être REAL ou INTEGER)"
+
+#: intens/parser/InterpreterConfigurator.cc:1489
+msgid "Type of radio item is string. (Should be REAL or INTEGER)"
+msgstr ""
+"Le type de l'élément radio est la chaîne. (devrait être REALou INTEGER)"
+
+#: intens/parser/InterpreterConfigurator.cc:1625
+#: intens/parser/InterpreterConfigurator.cc:1692
+#, fuzzy
+msgid "Undeclared STRUCT '%1'."
+msgstr "STRUCT non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:1629
+#: intens/parser/InterpreterConfigurator.cc:1696
+msgid "Type of '%1' is not structure definition."
+msgstr "Type de '%1' n'est pas la définition de la structure."
+
+#: intens/parser/InterpreterConfigurator.cc:1700
+msgid "%1: copy of structure definition failed."
+msgstr "%1: la copie de la définition de la structure a échoué."
+
+#: intens/parser/InterpreterConfigurator.cc:1871
+msgid "LaTeX filter and URL filter cannot be combined."
+msgstr "Filtre LaTeX et filtre URL ne peuvent pas être combinés."
+
+#: intens/parser/InterpreterConfigurator.cc:1874
+msgid "DELIMITER is not used in URL stream."
+msgstr "DELIMITER n'est pas utilisé dans le fleuve."
+
+#: intens/parser/InterpreterConfigurator.cc:1877
+msgid "DELIMITER is not used in JSON stream."
+msgstr "DELIMITER n'est pas utilisé dans le fleuve JSON."
+
+#: intens/parser/InterpreterConfigurator.cc:1880
+msgid "LaTeX filter is not used in JSON stream."
+msgstr "Filtre LaTeX n'est pas utilisé dans le fleuve JSON."
+
+#: intens/parser/InterpreterConfigurator.cc:1883
+msgid "URL filter is not used in JSON stream."
+msgstr "Filtre URL n'est pas utilisé dans le fleuve JSON."
+
+#: intens/parser/InterpreterConfigurator.cc:1952
+#, fuzzy
+msgid "URL Encoding not available"
+msgstr "Rest Service non disponible"
+
+#: intens/parser/InterpreterConfigurator.cc:2051
+#: intens/parser/InterpreterConfigurator.cc:2158
+#: intens/parser/InterpreterConfigurator.cc:2321
+#: intens/parser/InterpreterConfigurator.cc:2426
+#: intens/parser/InterpreterConfigurator.cc:2610
+#: intens/parser/InterpreterConfigurator.cc:2739
+#: intens/parser/InterpreterConfigurator.cc:2752
+#: intens/parser/InterpreterConfigurator.cc:2765
+#: intens/parser/InterpreterConfigurator.cc:2778
+#: intens/parser/InterpreterConfigurator.cc:2791
+#: intens/parser/InterpreterConfigurator.cc:2846
+#: intens/parser/InterpreterConfigurator.cc:2933
+#: intens/parser/InterpreterConfigurator.cc:2941
+#: intens/parser/InterpreterConfigurator.cc:3142
+#: intens/parser/InterpreterConfigurator.cc:3195
+#: intens/parser/InterpreterConfigurator.cc:3222
+#: intens/parser/InterpreterConfigurator.cc:3268
+#: intens/parser/InterpreterConfigurator.cc:3693
+#: intens/parser/InterpreterConfigurator.cc:4406
+#: intens/parser/InterpreterConfigurator.cc:4414
+#: intens/parser/InterpreterConfigurator.cc:4581
+#: intens/parser/InterpreterConfigurator.cc:4589
+#: intens/parser/InterpreterConfigurator.cc:5174
+#: intens/parser/InterpreterConfigurator.cc:5177
+#: intens/parser/InterpreterConfigurator.cc:5352
+#: intens/parser/InterpreterConfigurator.cc:5397
+#: intens/parser/InterpreterConfigurator.cc:5421
+#: intens/parser/InterpreterConfigurator.cc:5811
+#: intens/parser/InterpreterConfigurator.cc:5856
+#: intens/parser/InterpreterConfigurator.cc:5884
+#: intens/parser/InterpreterConfigurator.cc:5905
+#: intens/parser/InterpreterConfigurator.cc:6976
+#: intens/parser/InterpreterConfigurator.cc:6991
+#: intens/parser/InterpreterConfigurator.cc:7002
+#: intens/parser/InterpreterConfigurator.cc:7795
+#: intens/parser/InterpreterConfigurator.cc:7814
+#: intens/parser/InterpreterConfigurator.cc:8897
+#: intens/parser/InterpreterConfigurator.cc:8926
+#: intens/parser/InterpreterConfigurator.cc:8943
+#: intens/parser/InterpreterConfigurator.cc:9053
+#, fuzzy
+msgid "Undeclared identifier '%1'."
+msgstr "Identificateur non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:2115
+#: intens/parser/InterpreterConfigurator.cc:2619
+#: intens/parser/InterpreterConfigurator.cc:7870
+msgid "Undeclared structure field '%1'"
+msgstr "Champ de structure non déclaré '%1'"
+
+#: intens/parser/InterpreterConfigurator.cc:2161
+#: intens/parser/InterpreterConfigurator.cc:2849
+msgid "'%1' is not of type index."
+msgstr "'%1' n'est pas un type indice."
+
+#: intens/parser/InterpreterConfigurator.cc:2178
+msgid "Validation check with VAR() is not supported."
+msgstr "Le contrôle de validation avec VAR() n'est pas pris en charge."
+
+#: intens/parser/InterpreterConfigurator.cc:2200
+#: intens/parser/InterpreterConfigurator.cc:2313
+#: intens/parser/InterpreterConfigurator.cc:6473
+#: intens/parser/InterpreterConfigurator.cc:6534
+#: intens/parser/InterpreterConfigurator.cc:6542
+#: intens/parser/InterpreterConfigurator.cc:6550
+#: intens/parser/InterpreterConfigurator.cc:6558
+#: intens/parser/InterpreterConfigurator.cc:6566
+#: intens/parser/InterpreterConfigurator.cc:7407
+#: intens/parser/InterpreterConfigurator.cc:8293
+#: intens/parser/InterpreterConfigurator.cc:8310
+#: intens/parser/InterpreterConfigurator.cc:8411
+msgid "'%1' is not of type STRING."
+msgstr "'%1' n'est pas un type de CHAÎNE."
+
+#: intens/parser/InterpreterConfigurator.cc:2332
+msgid "Cannot add DATASET_TEXT from item that has no DATASET."
+msgstr ""
+"Ne peut ajouter un texte d'une base de dates d'un élément qui n'a pas de "
+"base de dates."
+
+#: intens/parser/InterpreterConfigurator.cc:2351
+#: intens/parser/InterpreterConfigurator.cc:2404
+msgid "Cannot add plotgroup."
+msgstr "Ne peut ajouter un groupe de diagrammes."
+
+#: intens/parser/InterpreterConfigurator.cc:2362
+#: intens/parser/InterpreterConfigurator.cc:2374
+#: intens/parser/InterpreterConfigurator.cc:2390
+msgid "'%1' is not a PLOTGROUP."
+msgstr "'%1'  n'est pas un groupe de diagrammes."
+
+#: intens/parser/InterpreterConfigurator.cc:2386
+#: intens/parser/InterpreterConfigurator.cc:2497
+#: intens/parser/InterpreterConfigurator.cc:2516
+msgid "DataReference is not numeric."
+msgstr "Les données de référence ne sont pas numériques."
+
+#: intens/parser/InterpreterConfigurator.cc:2400
+#: intens/parser/InterpreterConfigurator.cc:6267
+#: intens/parser/InterpreterConfigurator.cc:8251
+msgid "'%1' is not a PLUGIN."
+msgstr "'%1' n'est pas un fichier."
+
+#: intens/parser/InterpreterConfigurator.cc:2417
+msgid "Cannot allocate token."
+msgstr "Ne peut pas allouer un signe."
+
+#: intens/parser/InterpreterConfigurator.cc:2804
+msgid "FILESTREAM '%1' not found."
+msgstr "Bulletin '%1' introuvable."
+
+#: intens/parser/InterpreterConfigurator.cc:3005
+msgid "Table step is bigger than tablesize. (Step: %1, Size: %2)"
+msgstr ""
+"Etape du tableau est plus grand que la taille du tableau. (étape: %1, taille "
+"%2)"
+
+#: intens/parser/InterpreterConfigurator.cc:3038
+msgid "Invalid Table-Index-Range."
+msgstr "Gamme d'index du tableau non valide."
+
+#: intens/parser/InterpreterConfigurator.cc:3048
+msgid "Invalid Fieldgroup Margins."
+msgstr "Marge de groupe de champs non valide."
+
+#: intens/parser/InterpreterConfigurator.cc:3078
+msgid "Only allowed in tables. (Fieldgroup must have TABLESIZE set)"
+msgstr ""
+"Seulement admis dans des tableaux. (groupe de champ doit avoir la taille de "
+"l'ensemble du tableau)"
+
+#: intens/parser/InterpreterConfigurator.cc:3156
+#: intens/parser/InterpreterConfigurator.cc:3175
+msgid "Cannot assign structure '%1' to gui field."
+msgstr "Ne peut attribuer une structure '%1' qui correspond à un domaine GUI."
+
+#: intens/parser/InterpreterConfigurator.cc:3198
+msgid "'%1' is not a fieldgroup"
+msgstr "'%1' n'est pas un groupe de champ"
+
+#: intens/parser/InterpreterConfigurator.cc:3205
+msgid "Fieldgroup '%1' is already installed."
+msgstr "Le groupe de champ '%1' est déjà installé."
+
+#: intens/parser/InterpreterConfigurator.cc:3225
+msgid "'%1' is not a thermo"
+msgstr "'%1' n'est pas un thermo"
+
+#: intens/parser/InterpreterConfigurator.cc:3232
+msgid "Thermo '%1' is already installed."
+msgstr "Thermo '%1' est déjà installé."
+
+#: intens/parser/InterpreterConfigurator.cc:3258
+#: intens/parser/InterpreterConfigurator.cc:5382
+msgid "%1: No licence found to use tables."
+msgstr "%1: aucune licence a été trouvé pour utiliser des tableaux."
+
+#: intens/parser/InterpreterConfigurator.cc:3271
+#: intens/parser/InterpreterConfigurator.cc:5400
+msgid "'%1' is not a list"
+msgstr "'%1' n'est pas une liste"
+
+#: intens/parser/InterpreterConfigurator.cc:3278
+#: intens/parser/InterpreterConfigurator.cc:5407
+#: intens/parser/InterpreterConfigurator.cc:5431
+msgid "List '%1' is already installed."
+msgstr "Liste '%1' est déjà installée."
+
+#: intens/parser/InterpreterConfigurator.cc:3334
+msgid "Column '%1': WILDCARD missing."
+msgstr "Colonne '%1': WILDCARD est manquante."
+
+#: intens/parser/InterpreterConfigurator.cc:3347
+msgid "Column: WILDCARD missing."
+msgstr "Colonne: WILDCARD est manquante"
+
+#: intens/parser/InterpreterConfigurator.cc:3367
+msgid "Column TOOL_TIP: WILDCARD missing."
+msgstr "Colonne INFO-BULLE: WILDCARD est manquante."
+
+#: intens/parser/InterpreterConfigurator.cc:3377
+msgid "Column COLOR: WILDCARD missing."
+msgstr "Colonne COULEUR: WILDCARD est manquante."
+
+#: intens/parser/InterpreterConfigurator.cc:3569
+msgid "Helpkey %1 not available"
+msgstr "Touche d'aide %1 n'est pas disponible."
+
+#: intens/parser/InterpreterConfigurator.cc:3700
+#: intens/parser/InterpreterConfigurator.cc:3715
+#: intens/parser/InterpreterConfigurator.cc:3729
+#: intens/parser/InterpreterConfigurator.cc:5359
+msgid "Form '%1' is already installed."
+msgstr "Formule '%1' est déjà installée."
+
+#: intens/parser/InterpreterConfigurator.cc:3839
+msgid "Graph '%1': LOG_X without XAXIS"
+msgstr "Graphique'%1': LOG_X sans XAXIS"
+
+#: intens/parser/InterpreterConfigurator.cc:3847
+#: intens/parser/InterpreterConfigurator.cc:3893
+#: intens/parser/InterpreterConfigurator.cc:4087
+#: intens/parser/InterpreterConfigurator.cc:4436
+#: intens/parser/InterpreterConfigurator.cc:4444
+#: intens/parser/InterpreterConfigurator.cc:4474
+#: intens/parser/InterpreterConfigurator.cc:4605
+#: intens/parser/InterpreterConfigurator.cc:4755
+#: intens/parser/InterpreterConfigurator.cc:4787
+#: intens/parser/InterpreterConfigurator.cc:4791
+#: intens/parser/InterpreterConfigurator.cc:4926
+#: intens/parser/InterpreterConfigurator.cc:4933
+#: intens/parser/InterpreterConfigurator.cc:4945
+#: intens/parser/InterpreterConfigurator.cc:4951
+msgid "Undeclared identifier."
+msgstr "Identificateur non déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:3921
+msgid "Number of WILDCARDS of plot axis label does not make sense."
+msgstr ""
+"Nombre de WILDCARDS de caractère de d'axes de parcelles n'a pas de sens."
+
+#: intens/parser/InterpreterConfigurator.cc:4029
+msgid "%1: No licence found to use 3d-Plot."
+msgstr "%1: pas de licence trouvée pour se servir de 3d-Plot."
+
+#: intens/parser/InterpreterConfigurator.cc:4306
+#: intens/parser/InterpreterConfigurator.cc:4316
+msgid "Wrong type of dataitem '%1' => Please use a STRING_DATETIME dataitem."
+msgstr ""
+"Mauvais type d'élément de dates '%1?=>Servez vous s'il vous plaît d'un "
+"STRING_DATETIME d'élément de dates"
+
+#: intens/parser/InterpreterConfigurator.cc:4326
+msgid "Wrong type of dataitem '%1' => Please use a STRING_TIME dataitem."
+msgstr ""
+"Mauvais type d'élément '%1?=> S'il vous plaît servez vous d'un STRING_TIME "
+"d'élément de dates"
+
+#: intens/parser/InterpreterConfigurator.cc:4336
+msgid "Wrong type of dataitem '%1' => Please use a STRING dataitem."
+msgstr ""
+"Mauvais type d'élément '%1?=> S'il vous plaît servez vous d'un STRING_TIME "
+"d'élément de dates"
+
+#: intens/parser/InterpreterConfigurator.cc:4362
+#: intens/parser/InterpreterConfigurator.cc:4370
+#: intens/parser/InterpreterConfigurator.cc:4563
+#: intens/parser/InterpreterConfigurator.cc:4572
+#: intens/parser/InterpreterConfigurator.cc:6111
+#: intens/parser/InterpreterConfigurator.cc:6119
+#: intens/parser/InterpreterConfigurator.cc:6132
+#: intens/parser/InterpreterConfigurator.cc:6481
+#: intens/parser/InterpreterConfigurator.cc:6493
+#: intens/parser/InterpreterConfigurator.cc:6505
+#: intens/parser/InterpreterConfigurator.cc:6517
+#: intens/parser/InterpreterConfigurator.cc:6962
+#: intens/parser/InterpreterConfigurator.cc:7014
+#: intens/parser/InterpreterConfigurator.cc:7028
+#: intens/parser/InterpreterConfigurator.cc:7069
+#: intens/parser/InterpreterConfigurator.cc:7092
+#: intens/parser/InterpreterConfigurator.cc:7109
+#: intens/parser/InterpreterConfigurator.cc:7224
+#: intens/parser/InterpreterConfigurator.cc:7450
+#: intens/parser/InterpreterConfigurator.cc:7457
+#: intens/parser/InterpreterConfigurator.cc:8834
+msgid "Undeclared format '%1'."
+msgstr "Format non déclaré '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:4454
+#: intens/parser/InterpreterConfigurator.cc:4464
+#: intens/parser/InterpreterConfigurator.cc:4744
+#: intens/parser/InterpreterConfigurator.cc:4929
+#: intens/parser/InterpreterConfigurator.cc:4948
+msgid "Too many WILDCARDS."
+msgstr "Trop de WILDCARDS."
+
+#: intens/parser/InterpreterConfigurator.cc:4508
+#: intens/parser/InterpreterConfigurator.cc:4843
+msgid "'%1': No licence found to use PLOT2D."
+msgstr "'%1': Pas de licence trouvéé pour se servir de PLOT2D"
+
+#: intens/parser/InterpreterConfigurator.cc:4701
+msgid "Too few WILDCARDS."
+msgstr "Pas assez de WILDCARDS."
+
+#: intens/parser/InterpreterConfigurator.cc:4789
+msgid "Number of WILDCARDS is not 1."
+msgstr "Le nombre de WILDCARDS n'est pas 1."
+
+#: intens/parser/InterpreterConfigurator.cc:5154
+msgid "No licence found to use folders"
+msgstr "Pas de licence trouvée pour se servir de dossiers"
+
+#: intens/parser/InterpreterConfigurator.cc:5184
+msgid "Folder '%1' is already installed."
+msgstr "Dossier '%1' est déjà installé."
+
+#: intens/parser/InterpreterConfigurator.cc:5197
+#, fuzzy
+msgid "A Folder must have one member"
+msgstr "Un dossier doit avoir plus qu'un membre"
+
+#: intens/parser/InterpreterConfigurator.cc:5281
+msgid "Page '%1' is already declared."
+msgstr "Page '%1' a déjà été déclarée."
+
+#: intens/parser/InterpreterConfigurator.cc:5307
+msgid "%1: Only one tab of the same tab-group is allowed"
+msgstr "%1: Seulement un tabulateur du mème group de tabulateur est autorisé"
+
+#: intens/parser/InterpreterConfigurator.cc:5327
+msgid "Identifier '%1' is not declared."
+msgstr "L'intitulé '%1' n'a pas été déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:5331
+msgid "Item '%1' cannot be found."
+msgstr "L'élément '%1' ne peut être trouvé."
+
+#: intens/parser/InterpreterConfigurator.cc:5424
+msgid "'%1' is not a plot2d"
+msgstr "'%1' n'est pas un plot2d"
+
+#: intens/parser/InterpreterConfigurator.cc:5527
+msgid "Only the Options TOP or BOTTOM are allowed here"
+msgstr "Seulement les options TOP ou BOTTOM sont autorisées ici"
+
+#: intens/parser/InterpreterConfigurator.cc:5535
+msgid "Only the Options LEFT or RIGHT are allowed here"
+msgstr "Seulement LEFTou RIGHT sont autorisés ici"
+
+#: intens/parser/InterpreterConfigurator.cc:5543
+msgid "The TABLE is already specified"
+msgstr "Le TABLEAU est déjà spécifié"
+
+#: intens/parser/InterpreterConfigurator.cc:5551
+#: intens/parser/InterpreterConfigurator.cc:5569
+#: intens/parser/InterpreterConfigurator.cc:5593
+#: intens/parser/InterpreterConfigurator.cc:5602
+#: intens/parser/InterpreterConfigurator.cc:5612
+#: intens/parser/InterpreterConfigurator.cc:5622
+#: intens/parser/InterpreterConfigurator.cc:5632
+#: intens/parser/InterpreterConfigurator.cc:5636
+msgid "Unknown error."
+msgstr "Erreur inconnue."
+
+#: intens/parser/InterpreterConfigurator.cc:5560
+msgid "tableline type mismatch."
+msgstr "type de ligne du tableau incongru."
+
+#: intens/parser/InterpreterConfigurator.cc:5572
+msgid "Number of WILDCARDS is > 1."
+msgstr "Nombre de WILDCARD est > 1."
+
+#: intens/parser/InterpreterConfigurator.cc:5639
+msgid "Number of WILDCARDS is not 2."
+msgstr "Nombre de WILDCARS n'est pas 2."
+
+#: intens/parser/InterpreterConfigurator.cc:5759
+#: intens/parser/InterpreterConfigurator.cc:8542
+#: intens/parser/InterpreterConfigurator.cc:8588
+#: intens/parser/InterpreterConfigurator.cc:8632
+#: intens/parser/InterpreterConfigurator.cc:8665
+#, fuzzy
+msgid "Undeclared form '%1'."
+msgstr "Format non déclaré '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:5768
+#: intens/parser/InterpreterConfigurator.cc:5777
+msgid "Undeclared function '%1'."
+msgstr "Function non déclarée '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:5872
+msgid "not yet implemented menu feature for GuiElement: '%1'."
+msgstr ""
+
+#: intens/parser/InterpreterConfigurator.cc:5888
+#: intens/parser/InterpreterConfigurator.cc:5909
+msgid "'%1' is not of type STRUCT."
+msgstr "'%1' n'est pas du type STRUCT."
+
+#: intens/parser/InterpreterConfigurator.cc:5926
+msgid "The menu '%1' already exists."
+msgstr "Le menue '%1' est déjà existant."
+
+#: intens/parser/InterpreterConfigurator.cc:5939
+msgid "Entry '%1' is not valid."
+msgstr "L'entrée '%1' n'est pas valable."
+
+#: intens/parser/InterpreterConfigurator.cc:5959
+msgid "Feature MessageQueue not included"
+msgstr "Caratèristique de la file d'attente non inclus"
+
+#: intens/parser/InterpreterConfigurator.cc:5965
+msgid "No message queue type defined."
+msgstr "Aucun type de file d'attente défini."
+
+#: intens/parser/InterpreterConfigurator.cc:5972
+msgid "No port and port_request defined"
+msgstr "Aucun port et demande de port défini"
+
+#: intens/parser/InterpreterConfigurator.cc:5976
+msgid "No subscriber header(s) defined."
+msgstr "Aucun en-tête défini."
+
+#: intens/parser/InterpreterConfigurator.cc:5983
+msgid "No publisher port defined"
+msgstr "Aucun port éditeur défini"
+
+#: intens/parser/InterpreterConfigurator.cc:5987
+msgid "No port request defined"
+msgstr "Aucune demande de port défini"
+
+#: intens/parser/InterpreterConfigurator.cc:5991
+msgid "No publisher header(s) defined. (or no default response stream)"
+msgstr "Aucun en-tête d'éditeur défini. (ou aucun flux de réponse standard)"
+
+#: intens/parser/InterpreterConfigurator.cc:5995
+msgid "No request port set. (but header(s) or default response stream)"
+msgstr "Aucun Port demandé fixé. (mais des en-têtes ou des réponses standards)"
+
+#: intens/parser/InterpreterConfigurator.cc:6166
+#: intens/parser/InterpreterConfigurator.cc:6344
+msgid "Cannot find a plugin '%1'."
+msgstr "Ne peut trouver un plugin '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6175
+#: intens/parser/InterpreterConfigurator.cc:6629
+#: intens/parser/InterpreterConfigurator.cc:6637
+#: intens/parser/InterpreterConfigurator.cc:6645
+#: intens/parser/InterpreterConfigurator.cc:7327
+#: intens/parser/InterpreterConfigurator.cc:7591
+msgid "Cannot add function '%1'."
+msgstr "Ne peut ajouter la fonction '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6191
+msgid "Cannot find a message queue '%1'."
+msgstr "Ne peut trouver une file d'attente de message '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6234
+#: intens/parser/InterpreterConfigurator.cc:7477
+msgid "Undeclared response format '%1'."
+msgstr "Format de réponse non déclaré '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6251
+#: intens/parser/InterpreterConfigurator.cc:6295
+#: intens/parser/InterpreterConfigurator.cc:6313
+#: intens/parser/InterpreterConfigurator.cc:7485
+msgid "Undeclared request format '%1'."
+msgstr "Format de demande non déclaré '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6279
+#: intens/parser/InterpreterConfigurator.cc:7493
+msgid "Cannot add request function '%1'."
+msgstr "Ne peut ajouter la fonction de demande '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6356
+msgid "No PATH defined"
+msgstr "Pas de PATH défini"
+
+#: intens/parser/InterpreterConfigurator.cc:6362
+#: intens/parser/InterpreterConfigurator.cc:6378
+#: intens/parser/InterpreterConfigurator.cc:6394
+#: intens/parser/InterpreterConfigurator.cc:6411
+#: intens/parser/InterpreterConfigurator.cc:6429
+#: intens/parser/InterpreterConfigurator.cc:6445
+#: intens/parser/InterpreterConfigurator.cc:6460
+msgid "Rest Service not available"
+msgstr "Rest Service non disponible"
+
+#: intens/parser/InterpreterConfigurator.cc:6585
+#: intens/parser/InterpreterConfigurator.cc:7402
+msgid "No port defined"
+msgstr "Aucun port défini"
+
+#: intens/parser/InterpreterConfigurator.cc:6589
+msgid "MFMSocket needs a dataitem"
+msgstr "MFMSocket nécéssite un élément de données"
+
+#: intens/parser/InterpreterConfigurator.cc:6603
+msgid "Only MFMSocket supports dataitem"
+msgstr "Seulement MFMSocket soutien un élément de données"
+
+#: intens/parser/InterpreterConfigurator.cc:6606
+msgid "Only MFMSocket supports onEos"
+msgstr "Seulement MFMSocket soutien onEos"
+
+#: intens/parser/InterpreterConfigurator.cc:6609
+msgid "Only MFMSocket supports Thumbnail"
+msgstr "Seulement MFMSocket soutien Thumbnail"
+
+#: intens/parser/InterpreterConfigurator.cc:6653
+msgid "Socket dataitem needs three wildcards"
+msgstr "Élément de données nécessite trois wildcards"
+
+#: intens/parser/InterpreterConfigurator.cc:6661
+msgid "Socket thumbnail needs three wildcards"
+msgstr "Socket thumbnail nécessite trois wildcards"
+
+#: intens/parser/InterpreterConfigurator.cc:6664
+msgid "Socket thumbnail width must be between 1 and 1000"
+msgstr "La largeur de Socket thumbnail doit être entre 1 et 1000"
+
+#: intens/parser/InterpreterConfigurator.cc:6667
+msgid "Socket thumbnail height must be between 1 and 1000"
+msgstr "La hauteur de Socket thumbnail doit être entre 1 et 1000"
+
+#: intens/parser/InterpreterConfigurator.cc:6688
+msgid "Need Function Parameter."
+msgstr "Nécessite un paramètre de fonction."
+
+#: intens/parser/InterpreterConfigurator.cc:6702
+msgid "Cannot set timer function '%1'."
+msgstr "Ne peut fixer une function de minuterie '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6767
+#: intens/parser/InterpreterConfigurator.cc:6786
+#: intens/parser/InterpreterConfigurator.cc:6801
+#: intens/parser/InterpreterConfigurator.cc:6812
+msgid "Cannot change process type."
+msgstr "Ne peut changer le type de processus."
+
+#: intens/parser/InterpreterConfigurator.cc:6770
+#: intens/parser/InterpreterConfigurator.cc:6789
+msgid "Cannot set process."
+msgstr "Ne peut fixer le processus."
+
+#: intens/parser/InterpreterConfigurator.cc:6840
+msgid "Cannot add processgroup '%1'."
+msgstr "Ne peut ajouter le groupe de processus '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:6926
+msgid "Undeclared process."
+msgstr "Processus non déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:6979
+msgid "GuiElement is not streamable, identifier: '%1'."
+msgstr "Elément GUI ne peut être fluidifier, indentificateur: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:7031
+msgid "FIFO '%1' already exists."
+msgstr "FIFO '%1' existe déjà."
+
+#: intens/parser/InterpreterConfigurator.cc:7080
+#: intens/parser/InterpreterConfigurator.cc:7119
+#, fuzzy
+msgid "Duplicate FILESTREAM '%1' found."
+msgstr "Bulletin '%1' introuvable."
+
+#: intens/parser/InterpreterConfigurator.cc:7127
+msgid "Duplicate reportstream '%1' found."
+msgstr "Double déroulement '%1' trouvé."
+
+#: intens/parser/InterpreterConfigurator.cc:7144
+msgid "Cannot set dirname '%1'."
+msgstr "Ne peut fixer dirname '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:7155
+msgid "Cannot set filter '%1'."
+msgstr "Ne peut fixer un filtre '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:7164
+#: intens/parser/InterpreterConfigurator.cc:7166
+msgid "Cannot set stream label."
+msgstr "Ne peut fixer caractère de flux."
+
+#: intens/parser/InterpreterConfigurator.cc:7293
+#: intens/parser/InterpreterConfigurator.cc:7302
+#: intens/parser/InterpreterConfigurator.cc:8229
+msgid "Undeclared processgroup '%1'."
+msgstr "Groupe de processus '%1' non déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:7386
+#: intens/parser/InterpreterConfigurator.cc:8219
+msgid "Parameter is not of type STRING"
+msgstr "Paramètre n'est pas du type STRING"
+
+#: intens/parser/InterpreterConfigurator.cc:7398
+msgid "'%1' is not of type INTEGER."
+msgstr "'%1' n'est pas de type INTEGER."
+
+#: intens/parser/InterpreterConfigurator.cc:7504
+msgid "No MessageQueue or Plugin defined"
+msgstr "Aucune file d'attente de message ou de Plugin définie."
+
+#: intens/parser/InterpreterConfigurator.cc:7535
+msgid "No MessageQueue defined"
+msgstr "Aucune file d'attente de message définie."
+
+#: intens/parser/InterpreterConfigurator.cc:7538
+msgid "No Publish Stream defined"
+msgstr "Aucun Publish Stream défini"
+
+#: intens/parser/InterpreterConfigurator.cc:7553
+msgid "No Plugin defined"
+msgstr "Aucun Plugin défini"
+
+#: intens/parser/InterpreterConfigurator.cc:7557
+msgid "No Subscribe Header and Stream defined"
+msgstr "Aucun en-tête et flux défini"
+
+#: intens/parser/InterpreterConfigurator.cc:7609
+#: intens/parser/parseryacc.yy:7312
+msgid "Task '%1' already declared."
+msgstr "Tâche '%1' déjà déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:7882
+msgid "Multipled VAR's not supported"
+msgstr "Multiple VAR n'est pas soutenu"
+
+#: intens/parser/InterpreterConfigurator.cc:7913
+#: intens/parser/InterpreterConfigurator.cc:8915
+msgid "WILDCARDS not allowed here."
+msgstr "WILCARDS ne sont pas autorisées ici."
+
+#: intens/parser/InterpreterConfigurator.cc:8077
+msgid "COMPOSE is not allowed inside COMPOSE."
+msgstr ""
+
+#: intens/parser/InterpreterConfigurator.cc:8086
+msgid "COMPOSE: The maximal number of values is 15."
+msgstr ""
+
+#: intens/parser/InterpreterConfigurator.cc:8125
+msgid "It makes no sense to replace Fieldgoup '%1' by same fieldgoup '%2'."
+msgstr ""
+"Cela n'a aucun sens de remplacer Fieldgroup '%1' par le même fieldgroup '%2'."
+
+#: intens/parser/InterpreterConfigurator.cc:8241
+msgid "Undeclared Database Filter or Transacion '%1'."
+msgstr "Filtre base de données ou transaction '%1' non déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:8275
+#: intens/parser/InterpreterConfigurator.cc:8330
+#: intens/parser/InterpreterConfigurator.cc:8449
+#, fuzzy
+msgid "Undeclared FILESTREAM '%1'."
+msgstr "Jeu de données pas déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8279
+#, fuzzy
+msgid "FILESTREAM '%1' is writeonly."
+msgstr "Bulletin '%1' introuvable."
+
+#: intens/parser/InterpreterConfigurator.cc:8335
+#, fuzzy
+msgid "FILESTREAM '%1' is readonly."
+msgstr "Bulletin '%1' introuvable."
+
+#: intens/parser/InterpreterConfigurator.cc:8354
+#: intens/parser/InterpreterConfigurator.cc:8373
+#: intens/parser/InterpreterConfigurator.cc:8394
+#, fuzzy
+msgid "Undeclared FILESTREAM '%1' for %2."
+msgstr "Jeu de données pas déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8468
+#, fuzzy
+msgid "Undeclared report '%1'."
+msgstr "Bulletin non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8505
+#, fuzzy
+msgid "Undeclared Form or GuiElement '%1'."
+msgstr "Forme ou Elément GUI non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8551
+#: intens/parser/InterpreterConfigurator.cc:8598
+#: intens/parser/InterpreterConfigurator.cc:8617
+#: intens/parser/InterpreterConfigurator.cc:8650
+#: intens/parser/InterpreterConfigurator.cc:8794
+msgid "Undeclared GuiElement '%1'."
+msgstr "Elément GUI non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8561
+#, fuzzy
+msgid "Undeclared serialize format type"
+msgstr "Format de demande non déclaré '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8608
+#: intens/parser/InterpreterConfigurator.cc:8641
+#: intens/parser/InterpreterConfigurator.cc:8674
+msgid "Undeclared Foldergroup '%1'."
+msgstr "Group de dossiers non déclarés: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8866
+#: intens/parser/InterpreterConfigurator.cc:8887
+msgid "Undeclared Stream '%1'."
+msgstr "Flux non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8884
+msgid "Undeclared Table or List '%1'."
+msgstr "Tableau non déclaré: '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:8902
+#: intens/parser/InterpreterConfigurator.cc:8950
+#, fuzzy
+msgid "'%1' is not of type list, table or navigator."
+msgstr "'%1' n'est pas du type LIST ou NAVIGATOR."
+
+#: intens/parser/InterpreterConfigurator.cc:8912
+msgid "Exactly one WILDCARD is needed."
+msgstr "Exactement un WILDCARD est nécessaire."
+
+#: intens/parser/InterpreterConfigurator.cc:8932
+#, fuzzy
+msgid "'%1' is not of type LIST, TABLE, NAVIGATOR or PLOT2D."
+msgstr "'%1' n'est pas de type INTEGER."
+
+#: intens/parser/InterpreterConfigurator.cc:9056
+#, fuzzy
+msgid "'%1' is not of type LIST."
+msgstr "'%1' n'est pas un type de CHAÎNE."
+
+#: intens/parser/InterpreterConfigurator.cc:9589
+#: intens/parser/InterpreterConfigurator.cc:9622
+msgid "Cannot add DBGroup."
+msgstr "Ne peut ajouter groupe DB."
+
+#: intens/parser/InterpreterConfigurator.cc:9643
+msgid "FILTER without query."
+msgstr "FILTRE sans interrogation."
+
+#: intens/parser/InterpreterConfigurator.cc:9708
+#, fuzzy
+msgid "Index is not allowed here: '%1'."
+msgstr "L'index n'est pas autorisé ici '%1'."
+
+#: intens/parser/InterpreterConfigurator.cc:9745
+msgid "The item '%1' is not declared."
+msgstr "L'élément '%1' n'est pas déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:9770
+msgid "No filter-formats defined in this output-item-row."
+msgstr "Aucun format de filtre défini pour cette ligne d'élément produite."
+
+#: intens/parser/InterpreterConfigurator.cc:9806
+msgid "Cannot create depot."
+msgstr "Ne peut créer un dépot."
+
+#: intens/parser/InterpreterConfigurator.cc:9857
+msgid "Only one output-item-group is allowed here."
+msgstr "Seulement un groupe d'élément produit est autorisé ici."
+
+#: intens/parser/InterpreterConfigurator.cc:9862
+msgid "The number of output- and input-item-groups differ."
+msgstr "Le nombre de production de groupes d'élément varie"
+
+#: intens/parser/InterpreterConfigurator.cc:9887
+msgid "Undeclared Database Filter or Transaction '%1'."
+msgstr "Filtre base de données ou transaction '%1' non déclaré."
+
+#: intens/parser/InterpreterConfigurator.cc:9896
+msgid "DB-LOGON '%1'"
+msgstr "Connecter DB '%1'"
+
+#: intens/parser/InterpreterConfigurator.cc:9904
+msgid "DB-LOGOFF '%1'"
+msgstr "Déconnecter DB '%1'"
+
+#: intens/parser/parseryacc.yy:815
+msgid "Invalid real value"
+msgstr "Valeur réelle non valable"
+
+#: intens/plot/ListGraph.cc:1350
+msgid "Unit"
+msgstr "Unité"
+
+#: intens/plot/ListGraph.cc:1352 intens/plot/ScaleDialog.cc:71
+msgid "Min. Scale"
+msgstr "Echelle minimale"
+
+#: intens/plot/ListGraph.cc:1354 intens/plot/ScaleDialog.cc:73
+msgid "Max. Scale"
+msgstr "Echelle maximale"
+
+#: intens/plot/ListGraph.cc:1356
+msgid "Scaling Type"
+msgstr "Type de calibrage"
+
+#: intens/plot/ListGraph.cc:1378
+msgid " (X)"
+msgstr " (X)"
+
+#: intens/plot/qt/QtListPlot.cc:660
+#, fuzzy
+msgid "All cases"
+msgstr "Tous les cyles"
+
+#: intens/plot/qt/QtListPlot.cc:666
+msgid "Detail grid"
+msgstr "Détail de la grille"
+
+#: intens/plot/qt/QtListPlot.cc:672
+msgid "Same Y-Range"
+msgstr "La même gamme Y"
+
+#: intens/plot/qt/QtListPlot.cc:678
+msgid "Scale Y-Range"
+msgstr "Echelle de la gamme Y"
+
+#: intens/plot/qt/QtListPlot.cc:723 intens/plot/qt/QtPlot2dConfigDialog.cc:634
+#: intens/plot/ScaleDialog.cc:174
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: intens/plot/qt/QtSimpel.cc:1289
+msgid "Next page"
+msgstr "page suivante"
+
+#: intens/plot/qt/QtSimpel.cc:1294
+msgid "Previous page"
+msgstr "Page précédente"
+
+#: intens/plot/ScaleDialog.cc:75
+msgid "Enable"
+msgstr "Autoriser"
+
+#: intens/plot/ScaleDialog.cc:77
+#, fuzzy
+msgid "Aspect Ratio"
+msgstr "Réinitialiser la rotation"
+
+#: intens/plot/ScaleDialog.cc:94
+msgid "Aspect Ratio Type"
+msgstr ""
+
+#: intens/plugin/qt/QtDiagrammer.cc:573
+msgid "Empty Diagrammer (XML Document is empty)."
+msgstr "Diagramme vide (document XLM est vide)"
+
+#: intens/plugin/qt/techlab/view.cpp:223
+msgid "Untitled"
+msgstr "Sans titre"
+
+#: intens/streamer/BasicStream.cc:356
+#, fuzzy
+msgid ""
+"Runtime error in '%1' stream process : \n"
+"\n"
+"%2\n"
+"\n"
+"(For details see log window)"
+msgstr ""
+"Erreur d'exécution: %1\n"
+"(pour des détails voir Fenêtre Protocole)"
+
+#: intens/streamer/PlotGroupStreamParameter.cc:208
+#, fuzzy
+msgid "no GuiElement named %1 found"
+msgstr "Elément inconnue nommée '%1'."
+
+#: intens/streamer/Stream.cc:709
+#, fuzzy
+msgid "<%1> Error"
+msgstr "Erreur"
+
+#: intens/streamer/Stream.cc:718
+msgid "Stream has been successfully read, but warnings occured."
+msgstr ""
+
+#: intens/streamer/Stream.cc:722
+#, fuzzy
+msgid "<%1> Information"
+msgstr "Information"
+
+#: intens/xml/XMLDocumentHandler.cc:95
+msgid "WARNING QT-Bug, cannot process pending events"
+msgstr "AVERTISSEMENT Erreur QT, ne peut traiter les événements en attente"

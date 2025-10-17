@@ -1,0 +1,9 @@
+apiVersion: v2
+name: scim-intens
+description: Short Circuit Calculation of Induction Motors
+
+type: application
+
+version: 0.1.0
+
+appVersion: "latest"

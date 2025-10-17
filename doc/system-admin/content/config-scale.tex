@@ -1,0 +1,69 @@
+\newpage
+\subsubsection{Scale Factors}
+%              -------------
+\label{sec:scale}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                               Scale                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\index{Scale factors}
+Scale factors are used in conjunction with datapool items to display their
+value divided or multiplied by a factor.
+
+The default value of a scale factor is NaN (not a number).
+It is used when a datapool item is declared to be the scale factor, and that
+item has no value.
+
+You can change the default value of all scale factors to be 1.0 by starting
+Intens with the commandline option \texttt{--}defaultScaleFactor1. Invalid scale factors then
+behave as if they were not declared. \\
+
+NOTE: starting with Rel 5.3.2 a unit manager can be used as an alternative
+(see section \nameref{sec:unitmanager} page \pageref{sec:unitmanager}).
+
+\input{diagrams/scale_factor}
+
+\index{  @Signs / Characters!* (asterisk)!scale factor}
+\index{  @Signs / Characters!/ (slash)!scale factor}
+\index{  @Signs / Characters!- (hyphen)!scale factor}
+\begin{tabularx}{\textwidth}{l|X}
+scale                       & Description \\
+\hline
+\verb+real or int value+   & any numeric value or expression as shown in the example below. \\
+\verb+temp data reference+ & references a numeric data item declared in the datapool
+                             (section \nameref{sec:tempdatareference} page \pageref{sec:tempdatareference}). \\
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Examples                                 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\subsubsection{Examples}
+Example:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\DATAPOOL
+  \REAL data, factor;
+\END \DATAPOOL;
+
+\UIMANAGER
+  \FIELDGROUP fg_identifier (
+    "@title@This fieldgroup shows following values:",
+    " 40: " data * 2,
+    " 10: " data / 2,
+    "-40: " data * -2,
+    " -1: " data / -(2/2),
+    "-40: " data / -(((2+2)-2)/2*1.0),
+
+    " 40: " data * factor,
+    " 10: " data / factor
+  );
+\END \UIMANAGER
+
+\FUNCTIONS
+  \FUNC INIT {
+    data = 20; factor = 2;
+  };
+\END \FUNCTIONS;
+
+\end{alltt}
+\end{boxedminipage}

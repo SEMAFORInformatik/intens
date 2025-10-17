@@ -1,0 +1,32 @@
+DESCRIPTION "Example 2";
+DATAPOOL
+  SET
+    color_set ("red" = 1, "green" = 2, "blue" = 3 )
+  ;
+  REAL {EDITABLE}
+    speed { LABEL="Speed:",   UNIT="km/h" }
+  , height { LABEL="Height:", UNIT="m" }
+  , length { LABEL="Length:", UNIT="m" }
+  , weight { LABEL="Weight:", UNIT="t" }
+  ;
+  INTEGER {EDITABLE}
+    color { LABEL="Color:", SET=color_set }
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP
+    Group_2 {"Group Two", JUSTRIGHT} (
+      LABEL(speed)>   speed*3.6>        UNIT(speed)<  VOID            VOID      VOID
+    , LABEL(height)>  height:5:1>       UNIT(height)< LABEL(length)>  length:4> UNIT(length)<
+    , LABEL(weight)>  weight*1e-3:6:2>  UNIT(weight)< VOID            VOID      VOID
+    , VOID            VOID              VOID          LABEL(color)>   color:5>  VOID
+    )
+  ;
+  FORM
+    Form_2
+      ( ( Group_2 )
+      )
+   ;
+END UI_MANAGER;
+END.

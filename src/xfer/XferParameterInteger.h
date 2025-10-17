@@ -1,0 +1,58 @@
+
+#if !defined(XFER_PARAMETER_INTEGER_INCLUDED_H)
+#define XFER_PARAMETER_INTEGER_INCLUDED_H
+
+#include "xfer/XferDataParameter.h"
+#include "xfer/XferConverter.h"
+
+class XferParameterInteger : public XferDataParameter
+{
+/*=============================================================================*/
+/* Constructor / Destructor                                                    */
+/*=============================================================================*/
+public:
+  XferParameterInteger( DataReference *dref, int width, Scale *scale
+			, char delimiter=' ');
+  XferParameterInteger( XferParameterInteger &param );
+  virtual ~XferParameterInteger(){}
+
+/*=============================================================================*/
+/* public member functions                                                     */
+/*=============================================================================*/
+public:
+  virtual XferDataParameter *clone();
+  virtual bool read( std::istream &is );
+  virtual bool write( std::ostream &os );
+  virtual void getFormattedValue( std::string & );
+  virtual bool setFormattedValue( const std::string & );
+  virtual InputStatus checkFormat( const std::string & );
+  virtual bool convertValue( const std::string &text );
+  virtual bool setLength( int len );
+  virtual int getLength(){ return m_conv.getWidth(); }
+  virtual bool setScalefactor( Scale *scale );
+  virtual Scale* getScalefactor();
+  virtual DATAAttributeMask getAttributes( TransactionNumber t );
+  bool read( std::istream &istr, int &i ); // used for gui index
+
+  virtual void registerIndex( GuiIndexListener *listener );
+  virtual void unregisterIndex( GuiIndexListener *listener );
+  virtual bool acceptIndex( const std::string &, int );
+  virtual bool setIndex( const std::string &, int );
+
+/*=============================================================================*/
+/* private member functions                                                    */
+/*=============================================================================*/
+private:
+  virtual bool isConverterUpdated( TransactionNumber trans, bool gui = false ){
+    return m_conv.isUpdated( trans, gui );
+  }
+
+/*=============================================================================*/
+/* private Data                                                                */
+/*=============================================================================*/
+private:
+  IntConverter m_conv;
+  char          m_delimiter;
+};
+
+#endif

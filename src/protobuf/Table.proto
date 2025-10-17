@@ -1,0 +1,51 @@
+syntax = "proto3";
+import "GuiElement.proto";
+import "ComboBox.proto";
+import "IndexMenu.proto";
+package in_proto;
+
+message Table {
+  GuiElement base = 1;
+  PopupMenu popup_base_menu = 2;
+  PopupMenu popup_header_menu = 3;
+  PopupMenu popup_header_menu_col = 4;
+  string title = 5;
+  string title_horizontal = 6;
+  string title_vertical = 7;
+  GuiElement.Alignment title_alignment = 8;
+  GuiElement.Alignment placement_horizontal = 9;
+  GuiElement.Alignment placement_vertical = 10;
+  repeated string row_header = 11;
+  bool row_header_hidden = 12;
+  uint32 row_header_max_length = 13;
+  uint32 row_header_length = 14;
+  uint32 row_offset = 15;
+  repeated string column_header = 16;
+  bool column_header_hidden = 17;
+  uint32 column_header_max_length = 18;
+  repeated uint32 column_length = 19;
+  uint32 column_offset = 20;
+
+  GuiElement.Orientation orientation = 21;
+  GuiElement.Orientation navigation = 22;
+  bool is_matrix = 23;
+
+  uint32 num_rows = 24;
+  uint32 num_columns = 25;
+  uint32 num_rows_visible = 26;
+  uint32 num_columns_visible = 27;
+  uint32 num_frozen_rows = 28;
+  uint32 num_frozen_columns = 29;
+  uint32 num_rows_fixed = 30;
+  uint32 num_columns_fixed = 31;
+
+  message MatrixEntry {
+    repeated ElementEntry a = 1;
+    message ElementEntry {
+      ComboBox element = 1;
+      GuiElement.Type type = 2;
+      string bgcolor = 3;
+    }
+  }
+  repeated MatrixEntry matrix = 32;
+}

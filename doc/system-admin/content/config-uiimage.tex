@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                 Image                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Image}
+\label{sec:uiimage}
+An image shows scanning probe data sent to \INTENS{} trough an MFM socket
+ (see section \nameref{sec:opsocket} on page \pageref{sec:opsocket}).
+
+\input{diagrams/ui_image_list}
+
+\index{IMAGE@\IMAGE!ui\_manager image declaration}
+\begin{tabularx}{\textwidth}{l|X}
+IMAGE Syntax     & description \\
+\hline
+\verb+IDENTIFIER+ & Image identifier (name). \\
+\end{tabularx}
+
+\input{diagrams/ui_image_option}
+\label{sec:uiimageoption}
+
+\index{SIZE@\SIZE!image option}
+\index{SOCKET@\SOCKET!image option}
+\index{SETTINGS@\SETTINGS!image option}
+\begin{tabularx}{\textwidth}{l|X}
+image option & description \\ 
+\hline
+\SIZE          & Width and height of the image. \\
+\SOCKET        & The image will show data aquired trough this socket.
+                 (see page \nameref{sec:opsocket} on page \pageref{sec:opsocket}). Several images
+                 normally use the same socket. \\
+\SETTINGS      & store image settings in ui\_xfer. \\
+\verb+ui xfer+ & Data item (see section \nameref{dia:uixfer} on page \pageref{dia:uixfer}). \\
+\end{tabularx}
+\vspace{1cm}
+
+The \SETTINGS{} structure contains the following variables :
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\STRUCT IMAGE_SETTINGS_STRUCT {
+  INTEGER 
+    channel     // references MFM_channel
+  , direction   // 0: forward, 1: backward
+  , processing  // 0: raw, 1: avg, 2: line fit, 3: plane fit
+  , mapping     // 0: automatic, 1: manual, 2: std dev
+  , scaling     // 0: automatic, 1: manual
+  ;
+  REAL
+    max         // maximum value 
+  , min         // minimum value 
+  , weight      // std dev parameter
+  , x           // x scaling factor
+  , y           // y scaling factor
+  ;
+};
+\end{alltt}
+\end{boxedminipage}

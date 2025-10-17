@@ -1,0 +1,4 @@
+To read a json file in matlab proceed as follows
+f=fopen('trainset.json')
+s=fread(f)
+data=parse_json(char(s'))

@@ -1,0 +1,38 @@
+DESCRIPTION "Example INDEX";
+
+DATAPOOL
+  REAL {EDITABLE}
+    a
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  INDEX
+    index_a { RANGE(1,10), STEP 2 }
+  ;
+  FIELDGROUP
+    fieldgroup_a (
+      "a[index]" a[index_a]:10
+    , "a[index+1]" a[1+index_a]:10
+    , "Index of a" index_a
+    );
+  FORM
+    Form { "Index" } (
+      fieldgroup_a
+    )
+  ;
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC
+    INIT {
+      INTEGER i;
+      i=0;
+      WHILE ( i < 10 ) {
+        a[i] = i + 1;
+        i++;
+      }
+    }
+  ;
+END FUNCTIONS;
+END.

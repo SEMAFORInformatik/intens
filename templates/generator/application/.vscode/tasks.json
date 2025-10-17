@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cmake",
+      "hide": true,
+      "type": "shell",
+      "command": "cmake . -B build",
+      "group": {
+        "kind": "build",
+      }
+    },
+    {
+      "label": "venv setup",
+      "hide": true,
+      "type": "shell",
+      "command": "python -m venv .venv && .venv/bin/pip install -r api-gateway/requirements.txt",
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "dependsOn": "cmake",
+      "command": "make",
+      "options": {
+        "cwd": "@@{workspaceFolder}/build"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "run",
+      "type": "shell",
+      "dependsOn": [
+        "build",
+        "venv setup"
+      ],
+      "command": "source ../.venv/bin/activate && ./scripts/${application}",
+      "options": {
+        "cwd": "@@{workspaceFolder}/build"
+      },
+      "problemMatcher": {
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(.*)\"?:(\\d+): at \"(.*)\":\\s+(.*)\\.@@",
+          "file": 1,
+          "line": 2,
+          "message": 4,
+          "code": 3
+        }
+      }
+    },
+  ]
+}

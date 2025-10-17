@@ -1,0 +1,937 @@
+DESCRIPTION "JSON stream writing";
+
+DATAPOOL
+  STRING filename;
+
+  STRUCT
+    DataType {
+      INTEGER i;                     // 1
+      INTEGER {SCALAR} iScalar;      // 2
+      INTEGER iVector;               // 3, 4
+    }
+  ;
+  STRUCT
+    Data {
+      DataType type;                 // 10
+      DataType {SCALAR} typeScalar;  // 20
+      DataType typeVector;           // 30, 40
+    }
+  ;
+  Data data;                         // 100
+  Data {SCALAR} dataScalar;          // 200
+  Data dataVector;                   // 300, 400
+
+  STRUCT
+    Data1 {
+      STRING s1, s2;
+      INTEGER i1;
+      REAL r1;
+    }
+  ;
+  Data1 data1;
+  Data1 {SCALAR} data1Scalar;
+END DATAPOOL;
+
+STREAMER
+  data_type_i_stream                      {JSON} (data.type.i);
+  data_typeScalar_i_stream                {JSON} (data.typeScalar.i);
+  data_typeVector0_i_stream               {JSON} (data.typeVector[0].i);
+  data_typeVector1_i_stream               {JSON} (data.typeVector[1].i);
+  dataScalar_type_i_stream                {JSON} (dataScalar.type.i);
+  dataScalar_typeScalar_i_stream          {JSON} (dataScalar.typeScalar.i);
+  dataScalar_typeVector0_i_stream         {JSON} (dataScalar.typeVector[0].i);
+  dataScalar_typeVector1_i_stream         {JSON} (dataScalar.typeVector[1].i);
+  dataVector0_type_i_stream               {JSON} (dataVector[0].type.i);
+  dataVector0_typeScalar_i_stream         {JSON} (dataVector[0].typeScalar.i);
+  dataVector0_typeVector0_i_stream        {JSON} (dataVector[0].typeVector[0].i);
+  dataVector0_typeVector1_i_stream        {JSON} (dataVector[0].typeVector[1].i);
+  dataVector1_type_i_stream               {JSON} (dataVector[1].type.i);
+  dataVector1_typeScalar_i_stream         {JSON} (dataVector[1].typeScalar.i);
+  dataVector1_typeVector0_i_stream        {JSON} (dataVector[1].typeVector[0].i);
+  dataVector1_typeVector1_i_stream        {JSON} (dataVector[1].typeVector[1].i);
+
+  data_type_iScalar_stream                {JSON} (data.type.iScalar);
+  data_typeScalar_iScalar_stream          {JSON} (data.typeScalar.iScalar);
+  data_typeVector0_iScalar_stream         {JSON} (data.typeVector[0].iScalar);
+  data_typeVector1_iScalar_stream         {JSON} (data.typeVector[1].iScalar);
+  dataScalar_type_iScalar_stream          {JSON} (dataScalar.type.iScalar);
+  dataScalar_typeScalar_iScalar_stream    {JSON} (dataScalar.typeScalar.iScalar);
+  dataScalar_typeVector0_iScalar_stream   {JSON} (dataScalar.typeVector[0].iScalar);
+  dataScalar_typeVector1_iScalar_stream   {JSON} (dataScalar.typeVector[1].iScalar);
+  dataVector0_type_iScalar_stream         {JSON} (dataVector[0].type.iScalar);
+  dataVector0_typeScalar_iScalar_stream   {JSON} (dataVector[0].typeScalar.iScalar);
+  dataVector0_typeVector0_iScalar_stream  {JSON} (dataVector[0].typeVector[0].iScalar);
+  dataVector0_typeVector1_iScalar_stream  {JSON} (dataVector[0].typeVector[1].iScalar);
+  dataVector1_type_iScalar_stream         {JSON} (dataVector[1].type.iScalar);
+  dataVector1_typeScalar_iScalar_stream   {JSON} (dataVector[1].typeScalar.iScalar);
+  dataVector1_typeVector0_iScalar_stream  {JSON} (dataVector[1].typeVector[0].iScalar);
+  dataVector1_typeVector1_iScalar_stream  {JSON} (dataVector[1].typeVector[1].iScalar);
+
+  data_type_iVector_stream                {JSON} (data.type.iVector);
+  data_typeScalar_iVector_stream          {JSON} (data.typeScalar.iVector);
+  data_typeVector0_iVector_stream         {JSON} (data.typeVector[0].iVector);
+  data_typeVector1_iVector_stream         {JSON} (data.typeVector[1].iVector);
+  dataScalar_type_iVector_stream          {JSON} (dataScalar.type.iVector);
+  dataScalar_typeScalar_iVector_stream    {JSON} (dataScalar.typeScalar.iVector);
+  dataScalar_typeVector0_iVector_stream   {JSON} (dataScalar.typeVector[0].iVector);
+  dataScalar_typeVector1_iVector_stream   {JSON} (dataScalar.typeVector[1].iVector);
+  dataVector0_type_iVector_stream         {JSON} (dataVector[0].type.iVector);
+  dataVector0_typeScalar_iVector_stream   {JSON} (dataVector[0].typeScalar.iVector);
+  dataVector0_typeVector0_iVector_stream  {JSON} (dataVector[0].typeVector[0].iVector);
+  dataVector0_typeVector1_iVector_stream  {JSON} (dataVector[0].typeVector[1].iVector);
+  dataVector1_type_iVector_stream         {JSON} (dataVector[1].type.iVector);
+  dataVector1_typeScalar_iVector_stream   {JSON} (dataVector[1].typeScalar.iVector);
+  dataVector1_typeVector0_iVector_stream  {JSON} (dataVector[1].typeVector[0].iVector);
+  dataVector1_typeVector1_iVector_stream  {JSON} (dataVector[1].typeVector[1].iVector);
+
+  data_type_iVector1_stream               {JSON} (data.type.iVector[1]);
+  data_typeScalar_iVector1_stream         {JSON} (data.typeScalar.iVector[1]);
+  data_typeVector0_iVector1_stream        {JSON} (data.typeVector[0].iVector[1]);
+  data_typeVector1_iVector1_stream        {JSON} (data.typeVector[1].iVector[1]);
+  dataScalar_type_iVector1_stream         {JSON} (dataScalar.type.iVector[1]);
+  dataScalar_typeScalar_iVector1_stream   {JSON} (dataScalar.typeScalar.iVector[1]);
+  dataScalar_typeVector0_iVector1_stream  {JSON} (dataScalar.typeVector[0].iVector[1]);
+  dataScalar_typeVector1_iVector1_stream  {JSON} (dataScalar.typeVector[1].iVector[1]);
+  dataVector0_type_iVector1_stream        {JSON} (dataVector[0].type.iVector[1]);
+  dataVector0_typeScalar_iVector1_stream  {JSON} (dataVector[0].typeScalar.iVector[1]);
+  dataVector0_typeVector0_iVector1_stream {JSON} (dataVector[0].typeVector[0].iVector[1]);
+  dataVector0_typeVector1_iVector1_stream {JSON} (dataVector[0].typeVector[1].iVector[1]);
+  dataVector1_type_iVector1_stream        {JSON} (dataVector[1].type.iVector[1]);
+  dataVector1_typeScalar_iVector1_stream  {JSON} (dataVector[1].typeScalar.iVector[1]);
+  dataVector1_typeVector0_iVector1_stream {JSON} (dataVector[1].typeVector[0].iVector[1]);
+  dataVector1_typeVector1_iVector1_stream {JSON} (dataVector[1].typeVector[1].iVector[1]);
+
+  data_type_stream                        {JSON} (data.type);
+  data_typeScalar_stream                  {JSON} (data.typeScalar);
+  data_typeVector_stream                  {JSON} (data.typeVector);
+  data_typeVector1_stream                 {JSON} (data.typeVector[1]);
+  dataScalar_type_stream                  {JSON} (dataScalar.type);
+  dataScalar_typeScalar_stream            {JSON} (dataScalar.typeScalar);
+  dataScalar_typeVector_stream            {JSON} (dataScalar.typeVector);
+  dataScalar_typeVector1_stream           {JSON} (dataScalar.typeVector[1]);
+  dataVector0_type_stream                 {JSON} (dataVector[0].type);
+  dataVector0_typeScalar_stream           {JSON} (dataVector[0].typeScalar);
+  dataVector0_typeVector_stream           {JSON} (dataVector[0].typeVector);
+  dataVector0_typeVector1_stream          {JSON} (dataVector[0].typeVector[1]);
+  dataVector1_type_stream                 {JSON} (dataVector[1].type);
+  dataVector1_typeScalar_stream           {JSON} (dataVector[1].typeScalar);
+  dataVector1_typeVector_stream           {JSON} (dataVector[1].typeVector);
+  dataVector1_typeVector1_stream          {JSON} (dataVector[1].typeVector[1]);
+
+  data_stream                             {JSON} (data);
+  dataScalar_stream                       {JSON} (dataScalar);
+  dataVector_stream                       {JSON} (dataVector);
+  dataVector1_stream                      {JSON} (dataVector[1]);
+
+
+  data1_stream                            {JSON} (data1);
+  data1_s1_stream                         {JSON} (data1.s1);
+  data1_i1_stream                         {JSON} (data1.i1);
+  data1_r1_stream                         {JSON} (data1.r1);
+  data1Scalar_stream                      {JSON} (data1Scalar);
+
+
+  // INDENT=4
+  data_type_i_indent_stream                      {JSON, INDENT=4} (data.type.i);
+  data_typeScalar_i_indent_stream                {JSON, INDENT=4} (data.typeScalar.i);
+  data_typeVector0_i_indent_stream               {JSON, INDENT=4} (data.typeVector[0].i);
+  data_typeVector1_i_indent_stream               {JSON, INDENT=4} (data.typeVector[1].i);
+  dataScalar_type_i_indent_stream                {JSON, INDENT=4} (dataScalar.type.i);
+  dataScalar_typeScalar_i_indent_stream          {JSON, INDENT=4} (dataScalar.typeScalar.i);
+  dataScalar_typeVector0_i_indent_stream         {JSON, INDENT=4} (dataScalar.typeVector[0].i);
+  dataScalar_typeVector1_i_indent_stream         {JSON, INDENT=4} (dataScalar.typeVector[1].i);
+  dataVector0_type_i_indent_stream               {JSON, INDENT=4} (dataVector[0].type.i);
+  dataVector0_typeScalar_i_indent_stream         {JSON, INDENT=4} (dataVector[0].typeScalar.i);
+  dataVector0_typeVector0_i_indent_stream        {JSON, INDENT=4} (dataVector[0].typeVector[0].i);
+  dataVector0_typeVector1_i_indent_stream        {JSON, INDENT=4} (dataVector[0].typeVector[1].i);
+  dataVector1_type_i_indent_stream               {JSON, INDENT=4} (dataVector[1].type.i);
+  dataVector1_typeScalar_i_indent_stream         {JSON, INDENT=4} (dataVector[1].typeScalar.i);
+  dataVector1_typeVector0_i_indent_stream        {JSON, INDENT=4} (dataVector[1].typeVector[0].i);
+  dataVector1_typeVector1_i_indent_stream        {JSON, INDENT=4} (dataVector[1].typeVector[1].i);
+
+  data_type_iScalar_indent_stream                {JSON, INDENT=4} (data.type.iScalar);
+  data_typeScalar_iScalar_indent_stream          {JSON, INDENT=4} (data.typeScalar.iScalar);
+  data_typeVector0_iScalar_indent_stream         {JSON, INDENT=4} (data.typeVector[0].iScalar);
+  data_typeVector1_iScalar_indent_stream         {JSON, INDENT=4} (data.typeVector[1].iScalar);
+  dataScalar_type_iScalar_indent_stream          {JSON, INDENT=4} (dataScalar.type.iScalar);
+  dataScalar_typeScalar_iScalar_indent_stream    {JSON, INDENT=4} (dataScalar.typeScalar.iScalar);
+  dataScalar_typeVector0_iScalar_indent_stream   {JSON, INDENT=4} (dataScalar.typeVector[0].iScalar);
+  dataScalar_typeVector1_iScalar_indent_stream   {JSON, INDENT=4} (dataScalar.typeVector[1].iScalar);
+  dataVector0_type_iScalar_indent_stream         {JSON, INDENT=4} (dataVector[0].type.iScalar);
+  dataVector0_typeScalar_iScalar_indent_stream   {JSON, INDENT=4} (dataVector[0].typeScalar.iScalar);
+  dataVector0_typeVector0_iScalar_indent_stream  {JSON, INDENT=4} (dataVector[0].typeVector[0].iScalar);
+  dataVector0_typeVector1_iScalar_indent_stream  {JSON, INDENT=4} (dataVector[0].typeVector[1].iScalar);
+  dataVector1_type_iScalar_indent_stream         {JSON, INDENT=4} (dataVector[1].type.iScalar);
+  dataVector1_typeScalar_iScalar_indent_stream   {JSON, INDENT=4} (dataVector[1].typeScalar.iScalar);
+  dataVector1_typeVector0_iScalar_indent_stream  {JSON, INDENT=4} (dataVector[1].typeVector[0].iScalar);
+  dataVector1_typeVector1_iScalar_indent_stream  {JSON, INDENT=4} (dataVector[1].typeVector[1].iScalar);
+
+  data_type_iVector_indent_stream                {JSON, INDENT=4} (data.type.iVector);
+  data_typeScalar_iVector_indent_stream          {JSON, INDENT=4} (data.typeScalar.iVector);
+  data_typeVector0_iVector_indent_stream         {JSON, INDENT=4} (data.typeVector[0].iVector);
+  data_typeVector1_iVector_indent_stream         {JSON, INDENT=4} (data.typeVector[1].iVector);
+  dataScalar_type_iVector_indent_stream          {JSON, INDENT=4} (dataScalar.type.iVector);
+  dataScalar_typeScalar_iVector_indent_stream    {JSON, INDENT=4} (dataScalar.typeScalar.iVector);
+  dataScalar_typeVector0_iVector_indent_stream   {JSON, INDENT=4} (dataScalar.typeVector[0].iVector);
+  dataScalar_typeVector1_iVector_indent_stream   {JSON, INDENT=4} (dataScalar.typeVector[1].iVector);
+  dataVector0_type_iVector_indent_stream         {JSON, INDENT=4} (dataVector[0].type.iVector);
+  dataVector0_typeScalar_iVector_indent_stream   {JSON, INDENT=4} (dataVector[0].typeScalar.iVector);
+  dataVector0_typeVector0_iVector_indent_stream  {JSON, INDENT=4} (dataVector[0].typeVector[0].iVector);
+  dataVector0_typeVector1_iVector_indent_stream  {JSON, INDENT=4} (dataVector[0].typeVector[1].iVector);
+  dataVector1_type_iVector_indent_stream         {JSON, INDENT=4} (dataVector[1].type.iVector);
+  dataVector1_typeScalar_iVector_indent_stream   {JSON, INDENT=4} (dataVector[1].typeScalar.iVector);
+  dataVector1_typeVector0_iVector_indent_stream  {JSON, INDENT=4} (dataVector[1].typeVector[0].iVector);
+  dataVector1_typeVector1_iVector_indent_stream  {JSON, INDENT=4} (dataVector[1].typeVector[1].iVector);
+
+  data_type_iVector1_indent_stream               {JSON, INDENT=4} (data.type.iVector[1]);
+  data_typeScalar_iVector1_indent_stream         {JSON, INDENT=4} (data.typeScalar.iVector[1]);
+  data_typeVector0_iVector1_indent_stream        {JSON, INDENT=4} (data.typeVector[0].iVector[1]);
+  data_typeVector1_iVector1_indent_stream        {JSON, INDENT=4} (data.typeVector[1].iVector[1]);
+  dataScalar_type_iVector1_indent_stream         {JSON, INDENT=4} (dataScalar.type.iVector[1]);
+  dataScalar_typeScalar_iVector1_indent_stream   {JSON, INDENT=4} (dataScalar.typeScalar.iVector[1]);
+  dataScalar_typeVector0_iVector1_indent_stream  {JSON, INDENT=4} (dataScalar.typeVector[0].iVector[1]);
+  dataScalar_typeVector1_iVector1_indent_stream  {JSON, INDENT=4} (dataScalar.typeVector[1].iVector[1]);
+  dataVector0_type_iVector1_indent_stream        {JSON, INDENT=4} (dataVector[0].type.iVector[1]);
+  dataVector0_typeScalar_iVector1_indent_stream  {JSON, INDENT=4} (dataVector[0].typeScalar.iVector[1]);
+  dataVector0_typeVector0_iVector1_indent_stream {JSON, INDENT=4} (dataVector[0].typeVector[0].iVector[1]);
+  dataVector0_typeVector1_iVector1_indent_stream {JSON, INDENT=4} (dataVector[0].typeVector[1].iVector[1]);
+  dataVector1_type_iVector1_indent_stream        {JSON, INDENT=4} (dataVector[1].type.iVector[1]);
+  dataVector1_typeScalar_iVector1_indent_stream  {JSON, INDENT=4} (dataVector[1].typeScalar.iVector[1]);
+  dataVector1_typeVector0_iVector1_indent_stream {JSON, INDENT=4} (dataVector[1].typeVector[0].iVector[1]);
+  dataVector1_typeVector1_iVector1_indent_stream {JSON, INDENT=4} (dataVector[1].typeVector[1].iVector[1]);
+
+  data_type_indent_stream                        {JSON, INDENT=4} (data.type);
+  data_typeScalar_indent_stream                  {JSON, INDENT=4} (data.typeScalar);
+  data_typeVector_indent_stream                  {JSON, INDENT=4} (data.typeVector);
+  data_typeVector1_indent_stream                 {JSON, INDENT=4} (data.typeVector[1]);
+  dataScalar_type_indent_stream                  {JSON, INDENT=4} (dataScalar.type);
+  dataScalar_typeScalar_indent_stream            {JSON, INDENT=4} (dataScalar.typeScalar);
+  dataScalar_typeVector_indent_stream            {JSON, INDENT=4} (dataScalar.typeVector);
+  dataScalar_typeVector1_indent_stream           {JSON, INDENT=4} (dataScalar.typeVector[1]);
+  dataVector0_type_indent_stream                 {JSON, INDENT=4} (dataVector[0].type);
+  dataVector0_typeScalar_indent_stream           {JSON, INDENT=4} (dataVector[0].typeScalar);
+  dataVector0_typeVector_indent_stream           {JSON, INDENT=4} (dataVector[0].typeVector);
+  dataVector0_typeVector1_indent_stream          {JSON, INDENT=4} (dataVector[0].typeVector[1]);
+  dataVector1_type_indent_stream                 {JSON, INDENT=4} (dataVector[1].type);
+  dataVector1_typeScalar_indent_stream           {JSON, INDENT=4} (dataVector[1].typeScalar);
+  dataVector1_typeVector_indent_stream           {JSON, INDENT=4} (dataVector[1].typeVector);
+  dataVector1_typeVector1_indent_stream          {JSON, INDENT=4} (dataVector[1].typeVector[1]);
+
+  data_indent_stream                             {JSON, INDENT=4} (data);
+  dataScalar_indent_stream                       {JSON, INDENT=4} (dataScalar);
+  dataVector_indent_stream                       {JSON, INDENT=4} (dataVector);
+  dataVector1_indent_stream                      {JSON, INDENT=4} (dataVector[1]);
+
+
+  data1_indent_stream                            {JSON, INDENT=4} (data1);
+  data1_s1_indent_stream                         {JSON, INDENT=4} (data1.s1);
+  data1_i1_indent_stream                         {JSON, INDENT=4} (data1.i1);
+  data1_r1_indent_stream                         {JSON, INDENT=4} (data1.r1);
+  data1Scalar_indent_stream                      {JSON, INDENT=4} (data1Scalar);
+END STREAMER;
+
+OPERATOR
+  FILESTREAM
+    data_type_i_fs = data_type_i_stream {"data.type.i"}
+  , data_typeScalar_i_fs = data_typeScalar_i_stream {"data.typeScalar.i"}
+  , data_typeVector0_i_fs = data_typeVector0_i_stream {"data.typeVector[0].i"}
+  , data_typeVector1_i_fs = data_typeVector1_i_stream {"data.typeVector[1].i"}
+  , dataScalar_type_i_fs = dataScalar_type_i_stream {"dataScalar.type.i"}
+  , dataScalar_typeScalar_i_fs = dataScalar_typeScalar_i_stream {"dataScalar.typeScalar.i"}
+  , dataScalar_typeVector0_i_fs = dataScalar_typeVector0_i_stream {"dataScalar.typeVector[0].i"}
+  , dataScalar_typeVector1_i_fs = dataScalar_typeVector1_i_stream {"dataScalar.typeVector[1].i"}
+  , dataVector0_type_i_fs = dataVector0_type_i_stream {"dataVector[0].type.i"}
+  , dataVector0_typeScalar_i_fs = dataVector0_typeScalar_i_stream {"dataVector[0].typeScalar.i"}
+  , dataVector0_typeVector0_i_fs = dataVector0_typeVector0_i_stream {"dataVector[0].typeVector[0].i"}
+  , dataVector0_typeVector1_i_fs = dataVector0_typeVector1_i_stream {"dataVector[0].typeVector[1].i"}
+  , dataVector1_type_i_fs = dataVector1_type_i_stream {"dataVector[1].type.i"}
+  , dataVector1_typeScalar_i_fs = dataVector1_typeScalar_i_stream {"dataVector[1].typeScalar.i"}
+  , dataVector1_typeVector0_i_fs = dataVector1_typeVector0_i_stream {"dataVector[1].typeVector[0].i"}
+  , dataVector1_typeVector1_i_fs = dataVector1_typeVector1_i_stream {"dataVector[1].typeVector[1].i"}
+
+  , data_type_iScalar_fs = data_type_iScalar_stream {"data.type.iScalar"}
+  , data_typeScalar_iScalar_fs = data_typeScalar_iScalar_stream {"data.typeScalar.iScalar"}
+  , data_typeVector0_iScalar_fs = data_typeVector0_iScalar_stream {"data.typeVector[0].iScalar"}
+  , data_typeVector1_iScalar_fs = data_typeVector1_iScalar_stream {"data.typeVector[1].iScalar"}
+  , dataScalar_type_iScalar_fs = dataScalar_type_iScalar_stream {"dataScalar.type.iScalar"}
+  , dataScalar_typeScalar_iScalar_fs = dataScalar_typeScalar_iScalar_stream {"dataScalar.typeScalar.iScalar"}
+  , dataScalar_typeVector0_iScalar_fs = dataScalar_typeVector0_iScalar_stream {"dataScalar.typeVector[0].iScalar"}
+  , dataScalar_typeVector1_iScalar_fs = dataScalar_typeVector1_iScalar_stream {"dataScalar.typeVector[1].iScalar"}
+  , dataVector0_type_iScalar_fs = dataVector0_type_iScalar_stream {"dataVector[0].type.iScalar"}
+  , dataVector0_typeScalar_iScalar_fs = dataVector0_typeScalar_iScalar_stream {"dataVector[0].typeScalar.iScalar"}
+  , dataVector0_typeVector0_iScalar_fs = dataVector0_typeVector0_iScalar_stream {"dataVector[0].typeVector[0].iScalar"}
+  , dataVector0_typeVector1_iScalar_fs = dataVector0_typeVector1_iScalar_stream {"dataVector[0].typeVector[1].iScalar"}
+  , dataVector1_type_iScalar_fs = dataVector1_type_iScalar_stream {"dataVector[1].type.iScalar"}
+  , dataVector1_typeScalar_iScalar_fs = dataVector1_typeScalar_iScalar_stream {"dataVector[1].typeScalar.iScalar"}
+  , dataVector1_typeVector0_iScalar_fs = dataVector1_typeVector0_iScalar_stream {"dataVector[1].typeVector[0].iScalar"}
+  , dataVector1_typeVector1_iScalar_fs = dataVector1_typeVector1_iScalar_stream {"dataVector[1].typeVector[1].iScalar"}
+
+  , data_type_iVector_fs = data_type_iVector_stream {"data.type.iVector"}
+  , data_typeScalar_iVector_fs = data_typeScalar_iVector_stream {"data.typeScalar.iVector"}
+  , data_typeVector0_iVector_fs = data_typeVector0_iVector_stream {"data.typeVector[0].iVector"}
+  , data_typeVector1_iVector_fs = data_typeVector1_iVector_stream {"data.typeVector[1].iVector"}
+  , dataScalar_type_iVector_fs = dataScalar_type_iVector_stream {"dataScalar.type.iVector"}
+  , dataScalar_typeScalar_iVector_fs = dataScalar_typeScalar_iVector_stream {"dataScalar.typeScalar.iVector"}
+  , dataScalar_typeVector0_iVector_fs = dataScalar_typeVector0_iVector_stream {"dataScalar.typeVector[0].iVector"}
+  , dataScalar_typeVector1_iVector_fs = dataScalar_typeVector1_iVector_stream {"dataScalar.typeVector[1].iVector"}
+  , dataVector0_type_iVector_fs = dataVector0_type_iVector_stream {"dataVector[0].type.iVector"}
+  , dataVector0_typeScalar_iVector_fs = dataVector0_typeScalar_iVector_stream {"dataVector[0].typeScalar.iVector"}
+  , dataVector0_typeVector0_iVector_fs = dataVector0_typeVector0_iVector_stream {"dataVector[0].typeVector[0].iVector"}
+  , dataVector0_typeVector1_iVector_fs = dataVector0_typeVector1_iVector_stream {"dataVector[0].typeVector[1].iVector"}
+  , dataVector1_type_iVector_fs = dataVector1_type_iVector_stream {"dataVector[1].type.iVector"}
+  , dataVector1_typeScalar_iVector_fs = dataVector1_typeScalar_iVector_stream {"dataVector[1].typeScalar.iVector"}
+  , dataVector1_typeVector0_iVector_fs = dataVector1_typeVector0_iVector_stream {"dataVector[1].typeVector[0].iVector"}
+  , dataVector1_typeVector1_iVector_fs = dataVector1_typeVector1_iVector_stream {"dataVector[1].typeVector[1].iVector"}
+
+  , data_type_iVector1_fs = data_type_iVector1_stream {"data.type.iVector[1]"}
+  , data_typeScalar_iVector1_fs = data_typeScalar_iVector1_stream {"data.typeScalar.iVector[1]"}
+  , data_typeVector0_iVector1_fs = data_typeVector0_iVector1_stream {"data.typeVector[0].iVector[1]"}
+  , data_typeVector1_iVector1_fs = data_typeVector1_iVector1_stream {"data.typeVector[1].iVector[1]"}
+  , dataScalar_type_iVector1_fs = dataScalar_type_iVector1_stream {"dataScalar.type.iVector[1]"}
+  , dataScalar_typeScalar_iVector1_fs = dataScalar_typeScalar_iVector1_stream {"dataScalar.typeScalar.iVector[1]"}
+  , dataScalar_typeVector0_iVector1_fs = dataScalar_typeVector0_iVector1_stream {"dataScalar.typeVector[0].iVector[1]"}
+  , dataScalar_typeVector1_iVector1_fs = dataScalar_typeVector1_iVector1_stream {"dataScalar.typeVector[1].iVector[1]"}
+  , dataVector0_type_iVector1_fs = dataVector0_type_iVector1_stream {"dataVector[0].type.iVector[1]"}
+  , dataVector0_typeScalar_iVector1_fs = dataVector0_typeScalar_iVector1_stream {"dataVector[0].typeScalar.iVector[1]"}
+  , dataVector0_typeVector0_iVector1_fs = dataVector0_typeVector0_iVector1_stream {"dataVector[0].typeVector[0].iVector[1]"}
+  , dataVector0_typeVector1_iVector1_fs = dataVector0_typeVector1_iVector1_stream {"dataVector[0].typeVector[1].iVector[1]"}
+  , dataVector1_type_iVector1_fs = dataVector1_type_iVector1_stream {"dataVector[1].type.iVector[1]"}
+  , dataVector1_typeScalar_iVector1_fs = dataVector1_typeScalar_iVector1_stream {"dataVector[1].typeScalar.iVector[1]"}
+  , dataVector1_typeVector0_iVector1_fs = dataVector1_typeVector0_iVector1_stream {"dataVector[1].typeVector[0].iVector[1]"}
+  , dataVector1_typeVector1_iVector1_fs = dataVector1_typeVector1_iVector1_stream {"dataVector[1].typeVector[1].iVector[1]"}
+
+  , data_type_fs = data_type_stream {"data.type"}
+  , data_typeScalar_fs = data_typeScalar_stream {"data.typeScalar"}
+  , data_typeVector_fs = data_typeVector_stream {"data.typeVector"}
+  , data_typeVector1_fs = data_typeVector1_stream {"data.typeVector[1]"}
+  , dataScalar_type_fs = dataScalar_type_stream {"dataScalar.type"}
+  , dataScalar_typeScalar_fs = dataScalar_typeScalar_stream {"dataScalar.typeScalar"}
+  , dataScalar_typeVector_fs = dataScalar_typeVector_stream {"dataScalar.typeVector"}
+  , dataScalar_typeVector1_fs = dataScalar_typeVector1_stream {"dataScalar.typeVector[1]"}
+  , dataVector0_type_fs = dataVector0_type_stream {"dataVector[0].type"}
+  , dataVector0_typeScalar_fs = dataVector0_typeScalar_stream {"dataVector[0].typeScalar"}
+  , dataVector0_typeVector_fs = dataVector0_typeVector_stream {"dataVector[0].typeVector"}
+  , dataVector0_typeVector1_fs = dataVector0_typeVector1_stream {"dataVector[0].typeVector[1]"}
+  , dataVector1_type_fs = dataVector1_type_stream {"dataVector[1].type"}
+  , dataVector1_typeScalar_fs = dataVector1_typeScalar_stream {"dataVector[1].typeScalar"}
+  , dataVector1_typeVector_fs = dataVector1_typeVector_stream {"dataVector[1].typeVector"}
+  , dataVector1_typeVector1_fs = dataVector1_typeVector1_stream {"dataVector[1].typeVector[1]"}
+
+  , data_fs = data_stream {"data"}
+  , dataScalar_fs = dataScalar_stream {"dataScalar"}
+  , dataVector_fs = dataVector_stream {"dataVector"}
+  , dataVector1_fs = dataVector1_stream {"dataVector[1]"}
+  ;
+
+
+  FILESTREAM
+    data1_fs = data1_stream {"data1"}
+  , data1_s1_fs = data1_s1_stream {"data1.s1"}
+  , data1_i1_fs = data1_i1_stream {"data1.i1"}
+  , data1_r1_fs = data1_r1_stream {"data1.r1"}
+  , data1Scalar_fs = data1Scalar_stream {"data1Scalar"}
+  ;
+
+
+  // INDENT=4
+  FILESTREAM
+    data_type_i_indent_fs = data_type_i_indent_stream {"data.type.i indented"}
+  , data_typeScalar_i_indent_fs = data_typeScalar_i_indent_stream {"data.typeScalar.i indented"}
+  , data_typeVector0_i_indent_fs = data_typeVector0_i_indent_stream {"data.typeVector[0].i indented"}
+  , data_typeVector1_i_indent_fs = data_typeVector1_i_indent_stream {"data.typeVector[1].i indented"}
+  , dataScalar_type_i_indent_fs = dataScalar_type_i_indent_stream {"dataScalar.type.i indented"}
+  , dataScalar_typeScalar_i_indent_fs = dataScalar_typeScalar_i_indent_stream {"dataScalar.typeScalar.i indented"}
+  , dataScalar_typeVector0_i_indent_fs = dataScalar_typeVector0_i_indent_stream {"dataScalar.typeVector[0].i indented"}
+  , dataScalar_typeVector1_i_indent_fs = dataScalar_typeVector1_i_indent_stream {"dataScalar.typeVector[1].i indented"}
+  , dataVector0_type_i_indent_fs = dataVector0_type_i_indent_stream {"dataVector[0].type.i indented"}
+  , dataVector0_typeScalar_i_indent_fs = dataVector0_typeScalar_i_indent_stream {"dataVector[0].typeScalar.i indented"}
+  , dataVector0_typeVector0_i_indent_fs = dataVector0_typeVector0_i_indent_stream {"dataVector[0].typeVector[0].i indented"}
+  , dataVector0_typeVector1_i_indent_fs = dataVector0_typeVector1_i_indent_stream {"dataVector[0].typeVector[1].i indented"}
+  , dataVector1_type_i_indent_fs = dataVector1_type_i_indent_stream {"dataVector[1].type.i indented"}
+  , dataVector1_typeScalar_i_indent_fs = dataVector1_typeScalar_i_indent_stream {"dataVector[1].typeScalar.i indented"}
+  , dataVector1_typeVector0_i_indent_fs = dataVector1_typeVector0_i_indent_stream {"dataVector[1].typeVector[0].i indented"}
+  , dataVector1_typeVector1_i_indent_fs = dataVector1_typeVector1_i_indent_stream {"dataVector[1].typeVector[1].i indented"}
+
+  , data_type_iScalar_indent_fs = data_type_iScalar_indent_stream {"data.type.iScalar indented"}
+  , data_typeScalar_iScalar_indent_fs = data_typeScalar_iScalar_indent_stream {"data.typeScalar.iScalar indented"}
+  , data_typeVector0_iScalar_indent_fs = data_typeVector0_iScalar_indent_stream {"data.typeVector[0].iScalar indented"}
+  , data_typeVector1_iScalar_indent_fs = data_typeVector1_iScalar_indent_stream {"data.typeVector[1].iScalar indented"}
+  , dataScalar_type_iScalar_indent_fs = dataScalar_type_iScalar_indent_stream {"dataScalar.type.iScalar indented"}
+  , dataScalar_typeScalar_iScalar_indent_fs = dataScalar_typeScalar_iScalar_indent_stream {"dataScalar.typeScalar.iScalar indented"}
+  , dataScalar_typeVector0_iScalar_indent_fs = dataScalar_typeVector0_iScalar_indent_stream {"dataScalar.typeVector[0].iScalar indented"}
+  , dataScalar_typeVector1_iScalar_indent_fs = dataScalar_typeVector1_iScalar_indent_stream {"dataScalar.typeVector[1].iScalar indented"}
+  , dataVector0_type_iScalar_indent_fs = dataVector0_type_iScalar_indent_stream {"dataVector[0].type.iScalar indented"}
+  , dataVector0_typeScalar_iScalar_indent_fs = dataVector0_typeScalar_iScalar_indent_stream {"dataVector[0].typeScalar.iScalar indented"}
+  , dataVector0_typeVector0_iScalar_indent_fs = dataVector0_typeVector0_iScalar_indent_stream {"dataVector[0].typeVector[0].iScalar indented"}
+  , dataVector0_typeVector1_iScalar_indent_fs = dataVector0_typeVector1_iScalar_indent_stream {"dataVector[0].typeVector[1].iScalar indented"}
+  , dataVector1_type_iScalar_indent_fs = dataVector1_type_iScalar_indent_stream {"dataVector[1].type.iScalar indented"}
+  , dataVector1_typeScalar_iScalar_indent_fs = dataVector1_typeScalar_iScalar_indent_stream {"dataVector[1].typeScalar.iScalar indented"}
+  , dataVector1_typeVector0_iScalar_indent_fs = dataVector1_typeVector0_iScalar_indent_stream {"dataVector[1].typeVector[0].iScalar indented"}
+  , dataVector1_typeVector1_iScalar_indent_fs = dataVector1_typeVector1_iScalar_indent_stream {"dataVector[1].typeVector[1].iScalar indented"}
+
+  , data_type_iVector_indent_fs = data_type_iVector_indent_stream {"data.type.iVector indented"}
+  , data_typeScalar_iVector_indent_fs = data_typeScalar_iVector_indent_stream {"data.typeScalar.iVector indented"}
+  , data_typeVector0_iVector_indent_fs = data_typeVector0_iVector_indent_stream {"data.typeVector[0].iVector indented"}
+  , data_typeVector1_iVector_indent_fs = data_typeVector1_iVector_indent_stream {"data.typeVector[1].iVector indented"}
+  , dataScalar_type_iVector_indent_fs = dataScalar_type_iVector_indent_stream {"dataScalar.type.iVector indented"}
+  , dataScalar_typeScalar_iVector_indent_fs = dataScalar_typeScalar_iVector_indent_stream {"dataScalar.typeScalar.iVector indented"}
+  , dataScalar_typeVector0_iVector_indent_fs = dataScalar_typeVector0_iVector_indent_stream {"dataScalar.typeVector[0].iVector indented"}
+  , dataScalar_typeVector1_iVector_indent_fs = dataScalar_typeVector1_iVector_indent_stream {"dataScalar.typeVector[1].iVector indented"}
+  , dataVector0_type_iVector_indent_fs = dataVector0_type_iVector_indent_stream {"dataVector[0].type.iVector indented"}
+  , dataVector0_typeScalar_iVector_indent_fs = dataVector0_typeScalar_iVector_indent_stream {"dataVector[0].typeScalar.iVector indented"}
+  , dataVector0_typeVector0_iVector_indent_fs = dataVector0_typeVector0_iVector_indent_stream {"dataVector[0].typeVector[0].iVector indented"}
+  , dataVector0_typeVector1_iVector_indent_fs = dataVector0_typeVector1_iVector_indent_stream {"dataVector[0].typeVector[1].iVector indented"}
+  , dataVector1_type_iVector_indent_fs = dataVector1_type_iVector_indent_stream {"dataVector[1].type.iVector indented"}
+  , dataVector1_typeScalar_iVector_indent_fs = dataVector1_typeScalar_iVector_indent_stream {"dataVector[1].typeScalar.iVector indented"}
+  , dataVector1_typeVector0_iVector_indent_fs = dataVector1_typeVector0_iVector_indent_stream {"dataVector[1].typeVector[0].iVector indented"}
+  , dataVector1_typeVector1_iVector_indent_fs = dataVector1_typeVector1_iVector_indent_stream {"dataVector[1].typeVector[1].iVector indented"}
+
+  , data_type_iVector1_indent_fs = data_type_iVector1_indent_stream {"data.type.iVector[1] indented"}
+  , data_typeScalar_iVector1_indent_fs = data_typeScalar_iVector1_indent_stream {"data.typeScalar.iVector[1] indented"}
+  , data_typeVector0_iVector1_indent_fs = data_typeVector0_iVector1_indent_stream {"data.typeVector[0].iVector[1] indented"}
+  , data_typeVector1_iVector1_indent_fs = data_typeVector1_iVector1_indent_stream {"data.typeVector[1].iVector[1] indented"}
+  , dataScalar_type_iVector1_indent_fs = dataScalar_type_iVector1_indent_stream {"dataScalar.type.iVector[1] indented"}
+  , dataScalar_typeScalar_iVector1_indent_fs = dataScalar_typeScalar_iVector1_indent_stream {"dataScalar.typeScalar.iVector[1] indented"}
+  , dataScalar_typeVector0_iVector1_indent_fs = dataScalar_typeVector0_iVector1_indent_stream {"dataScalar.typeVector[0].iVector[1] indented"}
+  , dataScalar_typeVector1_iVector1_indent_fs = dataScalar_typeVector1_iVector1_indent_stream {"dataScalar.typeVector[1].iVector[1] indented"}
+  , dataVector0_type_iVector1_indent_fs = dataVector0_type_iVector1_indent_stream {"dataVector[0].type.iVector[1] indented"}
+  , dataVector0_typeScalar_iVector1_indent_fs = dataVector0_typeScalar_iVector1_indent_stream {"dataVector[0].typeScalar.iVector[1] indented"}
+  , dataVector0_typeVector0_iVector1_indent_fs = dataVector0_typeVector0_iVector1_indent_stream {"dataVector[0].typeVector[0].iVector[1] indented"}
+  , dataVector0_typeVector1_iVector1_indent_fs = dataVector0_typeVector1_iVector1_indent_stream {"dataVector[0].typeVector[1].iVector[1] indented"}
+  , dataVector1_type_iVector1_indent_fs = dataVector1_type_iVector1_indent_stream {"dataVector[1].type.iVector[1] indented"}
+  , dataVector1_typeScalar_iVector1_indent_fs = dataVector1_typeScalar_iVector1_indent_stream {"dataVector[1].typeScalar.iVector[1] indented"}
+  , dataVector1_typeVector0_iVector1_indent_fs = dataVector1_typeVector0_iVector1_indent_stream {"dataVector[1].typeVector[0].iVector[1] indented"}
+  , dataVector1_typeVector1_iVector1_indent_fs = dataVector1_typeVector1_iVector1_indent_stream {"dataVector[1].typeVector[1].iVector[1] indented"}
+
+  , data_type_indent_fs = data_type_indent_stream {"data.type indented"}
+  , data_typeScalar_indent_fs = data_typeScalar_indent_stream {"data.typeScalar indented"}
+  , data_typeVector_indent_fs = data_typeVector_indent_stream {"data.typeVector indented"}
+  , data_typeVector1_indent_fs = data_typeVector1_indent_stream {"data.typeVector[1] indented"}
+  , dataScalar_type_indent_fs = dataScalar_type_indent_stream {"dataScalar.type indented"}
+  , dataScalar_typeScalar_indent_fs = dataScalar_typeScalar_indent_stream {"dataScalar.typeScalar indented"}
+  , dataScalar_typeVector_indent_fs = dataScalar_typeVector_indent_stream {"dataScalar.typeVector indented"}
+  , dataScalar_typeVector1_indent_fs = dataScalar_typeVector1_indent_stream {"dataScalar.typeVector[1] indented"}
+  , dataVector0_type_indent_fs = dataVector0_type_indent_stream {"dataVector[0].type indented"}
+  , dataVector0_typeScalar_indent_fs = dataVector0_typeScalar_indent_stream {"dataVector[0].typeScalar indented"}
+  , dataVector0_typeVector_indent_fs = dataVector0_typeVector_indent_stream {"dataVector[0].typeVector indented"}
+  , dataVector0_typeVector1_indent_fs = dataVector0_typeVector1_indent_stream {"dataVector[0].typeVector[1] indented"}
+  , dataVector1_type_indent_fs = dataVector1_type_indent_stream {"dataVector[1].type indented"}
+  , dataVector1_typeScalar_indent_fs = dataVector1_typeScalar_indent_stream {"dataVector[1].typeScalar indented"}
+  , dataVector1_typeVector_indent_fs = dataVector1_typeVector_indent_stream {"dataVector[1].typeVector indented"}
+  , dataVector1_typeVector1_indent_fs = dataVector1_typeVector1_indent_stream {"dataVector[1].typeVector[1] indented"}
+
+  , data_indent_fs = data_indent_stream {"data indented"}
+  , dataScalar_indent_fs = dataScalar_indent_stream {"dataScalar indented"}
+  , dataVector_indent_fs = dataVector_indent_stream {"dataVector indented"}
+  , dataVector1_indent_fs = dataVector1_indent_stream {"dataVector[1] indented"}
+  ;
+
+
+  FILESTREAM
+    data1_indent_fs = data1_indent_stream {"data1 indented"}
+  , data1_s1_indent_fs = data1_s1_indent_stream {"data1.s1 indented"}
+  , data1_i1_indent_fs = data1_i1_indent_stream {"data1.i1 indented"}
+  , data1_r1_indent_fs = data1_r1_indent_stream {"data1.r1 indented"}
+  , data1Scalar_indent_fs = data1Scalar_indent_stream {"data1Scalar indented"}
+  ;
+END OPERATOR;
+
+FUNCTIONS
+  FUNC
+    test_func {
+      CLEAR(data, data1, dataScalar, dataVector);
+      data.type.i = 111;
+      data.type.iScalar = 112;
+      data.type.iVector[0] = 113;
+      data.type.iVector[1] = 114;
+
+      data.typeScalar.i = 121;
+      data.typeScalar.iScalar = 122;
+      data.typeScalar.iVector[0] = 123;
+      data.typeScalar.iVector[1] = 124;
+
+      data.typeVector[0].i = 131;
+      data.typeVector[0].iScalar = 132;
+      data.typeVector[0].iVector[0] = 133;
+      data.typeVector[0].iVector[1] = 134;
+
+      data.typeVector[1].i = 141;
+      data.typeVector[1].iScalar = 142;
+      data.typeVector[1].iVector[0] = 143;
+      data.typeVector[1].iVector[1] = 144;
+
+
+      dataScalar.type.i = 211;
+      dataScalar.type.iScalar = 212;
+      dataScalar.type.iVector[0] = 213;
+      dataScalar.type.iVector[1] = 214;
+
+      dataScalar.typeScalar.i = 221;
+      dataScalar.typeScalar.iScalar = 222;
+      dataScalar.typeScalar.iVector[0] = 223;
+      dataScalar.typeScalar.iVector[1] = 224;
+
+      dataScalar.typeVector[0].i = 231;
+      dataScalar.typeVector[0].iScalar = 232;
+      dataScalar.typeVector[0].iVector[0] = 233;
+      dataScalar.typeVector[0].iVector[1] = 234;
+
+      dataScalar.typeVector[1].i = 241;
+      dataScalar.typeVector[1].iScalar = 242;
+      dataScalar.typeVector[1].iVector[0] = 243;
+      dataScalar.typeVector[1].iVector[1] = 244;
+
+
+      dataVector[0].type.i = 311;
+      dataVector[0].type.iScalar = 312;
+      dataVector[0].type.iVector[0] = 313;
+      dataVector[0].type.iVector[1] = 314;
+
+      dataVector[0].typeScalar.i = 321;
+      dataVector[0].typeScalar.iScalar = 322;
+      dataVector[0].typeScalar.iVector[0] = 323;
+      dataVector[0].typeScalar.iVector[1] = 324;
+
+      dataVector[0].typeVector[0].i = 331;
+      dataVector[0].typeVector[0].iScalar = 332;
+      dataVector[0].typeVector[0].iVector[0] = 333;
+      dataVector[0].typeVector[0].iVector[1] = 334;
+
+      dataVector[0].typeVector[1].i = 341;
+      dataVector[0].typeVector[1].iScalar = 342;
+      dataVector[0].typeVector[1].iVector[0] = 343;
+      dataVector[0].typeVector[1].iVector[1] = 344;
+
+
+      dataVector[1].type.i = 411;
+      dataVector[1].type.iScalar = 412;
+      dataVector[1].type.iVector[0] = 413;
+      dataVector[1].type.iVector[1] = 414;
+
+      dataVector[1].typeScalar.i = 421;
+      dataVector[1].typeScalar.iScalar = 422;
+      dataVector[1].typeScalar.iVector[0] = 423;
+      dataVector[1].typeScalar.iVector[1] = 424;
+
+      dataVector[1].typeVector[0].i = 431;
+      dataVector[1].typeVector[0].iScalar = 432;
+      dataVector[1].typeVector[0].iVector[0] = 433;
+      dataVector[1].typeVector[0].iVector[1] = 434;
+
+      dataVector[1].typeVector[1].i = 441;
+      dataVector[1].typeVector[1].iScalar = 442;
+      dataVector[1].typeVector[1].iVector[0] = 443;
+      dataVector[1].typeVector[1].iVector[1] = 444;
+
+      filename = "./reality/data_type_i.json";
+      SAVE(data_type_i_fs, filename);
+      filename = "./reality/data_typeScalar_i.json";
+      SAVE(data_typeScalar_i_fs, filename);
+      filename = "./reality/data_typeVector0_i.json";
+      SAVE(data_typeVector0_i_fs, filename);
+      filename = "./reality/data_typeVector1_i.json";
+      SAVE(data_typeVector1_i_fs, filename);
+      filename = "./reality/dataScalar_type_i.json";
+      SAVE(dataScalar_type_i_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_i.json";
+      SAVE(dataScalar_typeScalar_i_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_i.json";
+      SAVE(dataScalar_typeVector0_i_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_i.json";
+      SAVE(dataScalar_typeVector1_i_fs, filename);
+      filename = "./reality/dataVector0_type_i.json";
+      SAVE(dataVector0_type_i_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_i.json";
+      SAVE(dataVector0_typeScalar_i_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_i.json";
+      SAVE(dataVector0_typeVector0_i_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_i.json";
+      SAVE(dataVector0_typeVector1_i_fs, filename);
+      filename = "./reality/dataVector1_type_i.json";
+      SAVE(dataVector1_type_i_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_i.json";
+      SAVE(dataVector1_typeScalar_i_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_i.json";
+      SAVE(dataVector1_typeVector0_i_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_i.json";
+      SAVE(dataVector1_typeVector1_i_fs, filename);
+
+      filename = "./reality/data_type_iScalar.json";
+      SAVE(data_type_iScalar_fs, filename);
+      filename = "./reality/data_typeScalar_iScalar.json";
+      SAVE(data_typeScalar_iScalar_fs, filename);
+      filename = "./reality/data_typeVector0_iScalar.json";
+      SAVE(data_typeVector0_iScalar_fs, filename);
+      filename = "./reality/data_typeVector1_iScalar.json";
+      SAVE(data_typeVector1_iScalar_fs, filename);
+      filename = "./reality/dataScalar_type_iScalar.json";
+      SAVE(dataScalar_type_iScalar_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_iScalar.json";
+      SAVE(dataScalar_typeScalar_iScalar_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_iScalar.json";
+      SAVE(dataScalar_typeVector0_iScalar_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_iScalar.json";
+      SAVE(dataScalar_typeVector1_iScalar_fs, filename);
+      filename = "./reality/dataVector0_type_iScalar.json";
+      SAVE(dataVector0_type_iScalar_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_iScalar.json";
+      SAVE(dataVector0_typeScalar_iScalar_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_iScalar.json";
+      SAVE(dataVector0_typeVector0_iScalar_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_iScalar.json";
+      SAVE(dataVector0_typeVector1_iScalar_fs, filename);
+      filename = "./reality/dataVector1_type_iScalar.json";
+      SAVE(dataVector1_type_iScalar_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_iScalar.json";
+      SAVE(dataVector1_typeScalar_iScalar_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_iScalar.json";
+      SAVE(dataVector1_typeVector0_iScalar_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_iScalar.json";
+      SAVE(dataVector1_typeVector1_iScalar_fs, filename);
+
+      filename = "./reality/data_type_iVector.json";
+      SAVE(data_type_iVector_fs, filename);
+      filename = "./reality/data_typeScalar_iVector.json";
+      SAVE(data_typeScalar_iVector_fs, filename);
+      filename = "./reality/data_typeVector0_iVector.json";
+      SAVE(data_typeVector0_iVector_fs, filename);
+      filename = "./reality/data_typeVector1_iVector.json";
+      SAVE(data_typeVector1_iVector_fs, filename);
+      filename = "./reality/dataScalar_type_iVector.json";
+      SAVE(dataScalar_type_iVector_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_iVector.json";
+      SAVE(dataScalar_typeScalar_iVector_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_iVector.json";
+      SAVE(dataScalar_typeVector0_iVector_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_iVector.json";
+      SAVE(dataScalar_typeVector1_iVector_fs, filename);
+      filename = "./reality/dataVector0_type_iVector.json";
+      SAVE(dataVector0_type_iVector_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_iVector.json";
+      SAVE(dataVector0_typeScalar_iVector_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_iVector.json";
+      SAVE(dataVector0_typeVector0_iVector_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_iVector.json";
+      SAVE(dataVector0_typeVector1_iVector_fs, filename);
+      filename = "./reality/dataVector1_type_iVector.json";
+      SAVE(dataVector1_type_iVector_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_iVector.json";
+      SAVE(dataVector1_typeScalar_iVector_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_iVector.json";
+      SAVE(dataVector1_typeVector0_iVector_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_iVector.json";
+      SAVE(dataVector1_typeVector1_iVector_fs, filename);
+
+      filename = "./reality/data_type_iVector1.json";
+      SAVE(data_type_iVector1_fs, filename);
+      filename = "./reality/data_typeScalar_iVector1.json";
+      SAVE(data_typeScalar_iVector1_fs, filename);
+      filename = "./reality/data_typeVector0_iVector1.json";
+      SAVE(data_typeVector0_iVector1_fs, filename);
+      filename = "./reality/data_typeVector1_iVector1.json";
+      SAVE(data_typeVector1_iVector1_fs, filename);
+      filename = "./reality/dataScalar_type_iVector1.json";
+      SAVE(dataScalar_type_iVector1_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_iVector1.json";
+      SAVE(dataScalar_typeScalar_iVector1_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_iVector1.json";
+      SAVE(dataScalar_typeVector0_iVector1_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_iVector1.json";
+      SAVE(dataScalar_typeVector1_iVector1_fs, filename);
+      filename = "./reality/dataVector0_type_iVector1.json";
+      SAVE(dataVector0_type_iVector1_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_iVector1.json";
+      SAVE(dataVector0_typeScalar_iVector1_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_iVector1.json";
+      SAVE(dataVector0_typeVector0_iVector1_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_iVector1.json";
+      SAVE(dataVector0_typeVector1_iVector1_fs, filename);
+      filename = "./reality/dataVector1_type_iVector1.json";
+      SAVE(dataVector1_type_iVector1_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_iVector1.json";
+      SAVE(dataVector1_typeScalar_iVector1_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_iVector1.json";
+      SAVE(dataVector1_typeVector0_iVector1_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_iVector1.json";
+      SAVE(dataVector1_typeVector1_iVector1_fs, filename);
+
+      filename = "./reality/data_type.json";
+      SAVE(data_type_fs, filename);
+      filename = "./reality/data_typeScalar.json";
+      SAVE(data_typeScalar_fs, filename);
+      filename = "./reality/data_typeVector.json";
+      SAVE(data_typeVector_fs, filename);
+      filename = "./reality/data_typeVector1.json";
+      SAVE(data_typeVector1_fs, filename);
+      filename = "./reality/dataScalar_type.json";
+      SAVE(dataScalar_type_fs, filename);
+      filename = "./reality/dataScalar_typeScalar.json";
+      SAVE(dataScalar_typeScalar_fs, filename);
+      filename = "./reality/dataScalar_typeVector.json";
+      SAVE(dataScalar_typeVector_fs, filename);
+      filename = "./reality/dataScalar_typeVector1.json";
+      SAVE(dataScalar_typeVector1_fs, filename);
+      filename = "./reality/dataVector0_type.json";
+      SAVE(dataVector0_type_fs, filename);
+      filename = "./reality/dataVector0_typeScalar.json";
+      SAVE(dataVector0_typeScalar_fs, filename);
+      filename = "./reality/dataVector0_typeVector.json";
+      SAVE(dataVector0_typeVector_fs, filename);
+      filename = "./reality/dataVector0_typeVector1.json";
+      SAVE(dataVector0_typeVector1_fs, filename);
+      filename = "./reality/dataVector1_type.json";
+      SAVE(dataVector1_type_fs, filename);
+      filename = "./reality/dataVector1_typeScalar.json";
+      SAVE(dataVector1_typeScalar_fs, filename);
+      filename = "./reality/dataVector1_typeVector.json";
+      SAVE(dataVector1_typeVector_fs, filename);
+      filename = "./reality/dataVector1_typeVector1.json";
+      SAVE(dataVector1_typeVector1_fs, filename);
+
+      filename = "./reality/data.json";
+      SAVE(data_fs, filename);
+      filename = "./reality/dataScalar.json";
+      SAVE(dataScalar_fs, filename);
+      filename = "./reality/dataVector.json";
+      SAVE(dataVector_fs, filename);
+      filename = "./reality/dataVector1.json";
+      SAVE(dataVector1_fs, filename);
+
+
+      // INDENT=4
+      filename = "./reality/data_type_i-indented.json";
+      SAVE(data_type_i_indent_fs, filename);
+      filename = "./reality/data_typeScalar_i-indented.json";
+      SAVE(data_typeScalar_i_indent_fs, filename);
+      filename = "./reality/data_typeVector0_i-indented.json";
+      SAVE(data_typeVector0_i_indent_fs, filename);
+      filename = "./reality/data_typeVector1_i-indented.json";
+      SAVE(data_typeVector1_i_indent_fs, filename);
+      filename = "./reality/dataScalar_type_i-indented.json";
+      SAVE(dataScalar_type_i_indent_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_i-indented.json";
+      SAVE(dataScalar_typeScalar_i_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_i-indented.json";
+      SAVE(dataScalar_typeVector0_i_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_i-indented.json";
+      SAVE(dataScalar_typeVector1_i_indent_fs, filename);
+      filename = "./reality/dataVector0_type_i-indented.json";
+      SAVE(dataVector0_type_i_indent_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_i-indented.json";
+      SAVE(dataVector0_typeScalar_i_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_i-indented.json";
+      SAVE(dataVector0_typeVector0_i_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_i-indented.json";
+      SAVE(dataVector0_typeVector1_i_indent_fs, filename);
+      filename = "./reality/dataVector1_type_i-indented.json";
+      SAVE(dataVector1_type_i_indent_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_i-indented.json";
+      SAVE(dataVector1_typeScalar_i_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_i-indented.json";
+      SAVE(dataVector1_typeVector0_i_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_i-indented.json";
+      SAVE(dataVector1_typeVector1_i_indent_fs, filename);
+
+      filename = "./reality/data_type_iScalar-indented.json";
+      SAVE(data_type_iScalar_indent_fs, filename);
+      filename = "./reality/data_typeScalar_iScalar-indented.json";
+      SAVE(data_typeScalar_iScalar_indent_fs, filename);
+      filename = "./reality/data_typeVector0_iScalar-indented.json";
+      SAVE(data_typeVector0_iScalar_indent_fs, filename);
+      filename = "./reality/data_typeVector1_iScalar-indented.json";
+      SAVE(data_typeVector1_iScalar_indent_fs, filename);
+      filename = "./reality/dataScalar_type_iScalar-indented.json";
+      SAVE(dataScalar_type_iScalar_indent_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_iScalar-indented.json";
+      SAVE(dataScalar_typeScalar_iScalar_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_iScalar-indented.json";
+      SAVE(dataScalar_typeVector0_iScalar_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_iScalar-indented.json";
+      SAVE(dataScalar_typeVector1_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector0_type_iScalar-indented.json";
+      SAVE(dataVector0_type_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_iScalar-indented.json";
+      SAVE(dataVector0_typeScalar_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_iScalar-indented.json";
+      SAVE(dataVector0_typeVector0_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_iScalar-indented.json";
+      SAVE(dataVector0_typeVector1_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector1_type_iScalar-indented.json";
+      SAVE(dataVector1_type_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_iScalar-indented.json";
+      SAVE(dataVector1_typeScalar_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_iScalar-indented.json";
+      SAVE(dataVector1_typeVector0_iScalar_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_iScalar-indented.json";
+      SAVE(dataVector1_typeVector1_iScalar_indent_fs, filename);
+
+      filename = "./reality/data_type_iVector-indented.json";
+      SAVE(data_type_iVector_indent_fs, filename);
+      filename = "./reality/data_typeScalar_iVector-indented.json";
+      SAVE(data_typeScalar_iVector_indent_fs, filename);
+      filename = "./reality/data_typeVector0_iVector-indented.json";
+      SAVE(data_typeVector0_iVector_indent_fs, filename);
+      filename = "./reality/data_typeVector1_iVector-indented.json";
+      SAVE(data_typeVector1_iVector_indent_fs, filename);
+      filename = "./reality/dataScalar_type_iVector-indented.json";
+      SAVE(dataScalar_type_iVector_indent_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_iVector-indented.json";
+      SAVE(dataScalar_typeScalar_iVector_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_iVector-indented.json";
+      SAVE(dataScalar_typeVector0_iVector_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_iVector-indented.json";
+      SAVE(dataScalar_typeVector1_iVector_indent_fs, filename);
+      filename = "./reality/dataVector0_type_iVector-indented.json";
+      SAVE(dataVector0_type_iVector_indent_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_iVector-indented.json";
+      SAVE(dataVector0_typeScalar_iVector_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_iVector-indented.json";
+      SAVE(dataVector0_typeVector0_iVector_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_iVector-indented.json";
+      SAVE(dataVector0_typeVector1_iVector_indent_fs, filename);
+      filename = "./reality/dataVector1_type_iVector-indented.json";
+      SAVE(dataVector1_type_iVector_indent_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_iVector-indented.json";
+      SAVE(dataVector1_typeScalar_iVector_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_iVector-indented.json";
+      SAVE(dataVector1_typeVector0_iVector_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_iVector-indented.json";
+      SAVE(dataVector1_typeVector1_iVector_indent_fs, filename);
+
+      filename = "./reality/data_type_iVector1-indented.json";
+      SAVE(data_type_iVector1_indent_fs, filename);
+      filename = "./reality/data_typeScalar_iVector1-indented.json";
+      SAVE(data_typeScalar_iVector1_indent_fs, filename);
+      filename = "./reality/data_typeVector0_iVector1-indented.json";
+      SAVE(data_typeVector0_iVector1_indent_fs, filename);
+      filename = "./reality/data_typeVector1_iVector1-indented.json";
+      SAVE(data_typeVector1_iVector1_indent_fs, filename);
+      filename = "./reality/dataScalar_type_iVector1-indented.json";
+      SAVE(dataScalar_type_iVector1_indent_fs, filename);
+      filename = "./reality/dataScalar_typeScalar_iVector1-indented.json";
+      SAVE(dataScalar_typeScalar_iVector1_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector0_iVector1-indented.json";
+      SAVE(dataScalar_typeVector0_iVector1_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector1_iVector1-indented.json";
+      SAVE(dataScalar_typeVector1_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector0_type_iVector1-indented.json";
+      SAVE(dataVector0_type_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector0_typeScalar_iVector1-indented.json";
+      SAVE(dataVector0_typeScalar_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector0_iVector1-indented.json";
+      SAVE(dataVector0_typeVector0_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector1_iVector1-indented.json";
+      SAVE(dataVector0_typeVector1_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector1_type_iVector1-indented.json";
+      SAVE(dataVector1_type_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector1_typeScalar_iVector1-indented.json";
+      SAVE(dataVector1_typeScalar_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector0_iVector1-indented.json";
+      SAVE(dataVector1_typeVector0_iVector1_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector1_iVector1-indented.json";
+      SAVE(dataVector1_typeVector1_iVector1_indent_fs, filename);
+
+      filename = "./reality/data_type-indented.json";
+      SAVE(data_type_indent_fs, filename);
+      filename = "./reality/data_typeScalar-indented.json";
+      SAVE(data_typeScalar_indent_fs, filename);
+      filename = "./reality/data_typeVector-indented.json";
+      SAVE(data_typeVector_indent_fs, filename);
+      filename = "./reality/data_typeVector1-indented.json";
+      SAVE(data_typeVector1_indent_fs, filename);
+      filename = "./reality/dataScalar_type-indented.json";
+      SAVE(dataScalar_type_indent_fs, filename);
+      filename = "./reality/dataScalar_typeScalar-indented.json";
+      SAVE(dataScalar_typeScalar_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector-indented.json";
+      SAVE(dataScalar_typeVector_indent_fs, filename);
+      filename = "./reality/dataScalar_typeVector1-indented.json";
+      SAVE(dataScalar_typeVector1_indent_fs, filename);
+      filename = "./reality/dataVector0_type-indented.json";
+      SAVE(dataVector0_type_indent_fs, filename);
+      filename = "./reality/dataVector0_typeScalar-indented.json";
+      SAVE(dataVector0_typeScalar_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector-indented.json";
+      SAVE(dataVector0_typeVector_indent_fs, filename);
+      filename = "./reality/dataVector0_typeVector1-indented.json";
+      SAVE(dataVector0_typeVector1_indent_fs, filename);
+      filename = "./reality/dataVector1_type-indented.json";
+      SAVE(dataVector1_type_indent_fs, filename);
+      filename = "./reality/dataVector1_typeScalar-indented.json";
+      SAVE(dataVector1_typeScalar_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector-indented.json";
+      SAVE(dataVector1_typeVector_indent_fs, filename);
+      filename = "./reality/dataVector1_typeVector1-indented.json";
+      SAVE(dataVector1_typeVector1_indent_fs, filename);
+
+      filename = "./reality/data-indented.json";
+      SAVE(data_indent_fs, filename);
+      filename = "./reality/dataScalar-indented.json";
+      SAVE(dataScalar_indent_fs, filename);
+      filename = "./reality/dataVector-indented.json";
+      SAVE(dataVector_indent_fs, filename);
+      filename = "./reality/dataVector1-indented.json";
+      SAVE(dataVector1_indent_fs, filename);
+
+
+      // scalar used as vector
+      data.type.iScalar[0] = 112;
+      data.type.iScalar[1] = 115;
+
+      filename = "./reality/data_type_iScalarVector.json";
+      SAVE(data_type_iScalar_fs, filename);
+      filename = "./reality/data_type-iScalarVector.json";
+      SAVE(data_type_fs, filename);
+      filename = "./reality/data-iScalarVector.json";
+      SAVE(data_fs, filename);
+
+
+      // INDENT=4
+      filename = "./reality/data_type_iScalarVector-indented.json";
+      SAVE(data_type_iScalar_indent_fs, filename);
+      filename = "./reality/data_type-iScalarVector-indented.json";
+      SAVE(data_type_indent_fs, filename);
+      filename = "./reality/data-iScalarVector-indented.json";
+      SAVE(data_indent_fs, filename);
+
+
+      filename = "./reality/data1.json";
+      SAVE(data1_fs, filename);
+
+      // INDENT=4
+      filename = "./reality/data1-indented.json";
+      SAVE(data1_indent_fs, filename);
+
+      data1.s2 = "a";
+
+      filename = "./reality/data1_s1.json";
+      SAVE(data1_s1_fs, filename);
+
+      filename = "./reality/data1_i1.json";
+      SAVE(data1_i1_fs, filename);
+
+      filename = "./reality/data1_r1.json";
+      SAVE(data1_r1_fs, filename);
+
+      filename = "./reality/data1Scalar.json";
+      SAVE(data1Scalar_fs, filename);
+
+
+      // INDENT=4
+      filename = "./reality/data1_s1-indented.json";
+      SAVE(data1_s1_indent_fs, filename);
+
+      filename = "./reality/data1_i1-indented.json";
+      SAVE(data1_i1_indent_fs, filename);
+
+      filename = "./reality/data1_r1-indented.json";
+      SAVE(data1_r1_indent_fs, filename);
+
+      filename = "./reality/data1Scalar-indented.json";
+      SAVE(data1Scalar_indent_fs, filename);
+    }
+  ;
+
+END FUNCTIONS;
+
+END.

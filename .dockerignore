@@ -1,0 +1,5 @@
+build*
+doc
+.git
+etc/lsp
+docker-bake.hcl

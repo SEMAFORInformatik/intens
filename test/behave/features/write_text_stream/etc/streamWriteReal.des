@@ -1,0 +1,68 @@
+DESCRIPTION "Output Stream REAL Numbers";
+
+DATAPOOL
+  REAL {EDITABLE} r;
+  STRING {SCALAR} filename;
+  CDATA {SCALAR} output;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP fg (
+    LABEL(r) r[0] r[1] r[2] r[3]
+  , LABEL(output) output:30:10 {COLSPAN=4}
+  );
+
+  FORM main_form {MAIN} (fg);
+END UI_MANAGER;
+
+STREAMER
+  classic_stream (
+    LABEL(r), " "
+  , (r[#]), EOLN
+  );
+
+  xml_stream {XML} (r);
+  json_stream {JSON} (r);
+END STREAMER;
+
+OPERATOR
+  FILESTREAM
+    classic_fs = classic_stream {"classic", FILTER="TXT or CSV (*.txt *.csv)"}
+  , xml_fs = xml_stream {"XML", FILTER="XML (*.xml)"}
+  , json_fs = json_stream {"JSON", FILTER="JSON (*.json)"}
+  ;
+
+  TASK write_streams_task {"write streams"} {
+    filename = "./reality/r.txt";
+    SAVE(classic_fs, filename);
+
+    filename = "./reality/r.xml";
+    SAVE(xml_fs, filename);
+
+    filename = "./reality/r.json";
+    SAVE(json_fs, filename);
+  };
+
+  PROCESS cat_pr : BATCH{"cat ./reality/r.txt ./reality/r.xml ./reality/r.json"};
+
+  PROCESSGROUP cat_pg {"Cat"} (
+    [output:2000] = cat_pr();
+  );
+END OPERATOR;
+
+FUNCTIONS
+  FUNC INIT {
+    r[0] = 3.0793;
+    r[1] = 5.1678;
+    r[2] = 2.923;
+
+    RUN(write_streams_task);
+    RUN(cat_pg);
+  };
+
+  FUNC test_func {
+    RUN(INIT);
+  };
+END FUNCTIONS;
+
+END.

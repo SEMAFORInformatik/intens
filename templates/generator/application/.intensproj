@@ -1,0 +1,4 @@
+output=etc/${application}.des
+
+[cmake]
+target = ${application}-des # target

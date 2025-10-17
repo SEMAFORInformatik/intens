@@ -1,0 +1,834 @@
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{times}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage{color,colortbl}
+\usepackage[bookmarks,colorlinks,linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{makeidx}
+\usepackage{alltt}
+\usepackage{upquote}
+\usepackage{verbatim}
+\usepackage[numbered, open, openlevel=2]{bookmark}
+\usepackage{caption}
+\usepackage{everyshi}
+\usepackage{lmodern}
+\usepackage{nameref}
+\usepackage{fancybox,color}
+\usepackage{epic}
+% nice picture \oval (corners fit straight lines)
+\usepackage{pict2e}
+\usepackage{boxedminipage}
+\usepackage{float}
+%
+\addtolength{\textheight}{2cm}
+\definecolor{SteelBlue}     {rgb}{0.27,0.51,0.71}
+\definecolor{DarkGreen}     {rgb}{0.0, 0.5, 0.0}
+\definecolor{DarkRed}       {rgb}{0.8, 0.0, 0.0}
+
+\newcommand{\structure}[1]{\textcolor{SteelBlue}{\bfseries #1}}
+
+\newcommand{\Intens}[1][ ]{\textcolor{SteelBlue}{\bfseries INTENS}#1}
+\newcommand{\nothing}{\rule{0pt}{0pt}}
+\newcommand{\Zitat}[1]{\flqq{#1}\frqq}
+\newcommand{\Slanted}[1]{{\normalfont\slshape #1}}
+\newcommand{\SlantedB}[1]{{\normalfont\bfseries\slshape #1}}
+\newcommand{\Bold}[1]{{\bfseries{#1}}}
+\newcommand{\BoldIt}[1]{{\bfseries\textit{#1}}}
+\newcommand{\BoldTt}[1]{{\bfseries\ttfamily{#1}}}
+\newcommand{\Tt}[1]{{\ttfamily{#1}}}
+\newcommand{\Kopffreiheit}[1][2.5ex]{\rule{0pt}{#1}}
+\newcommand{\Fussfreiheit}[1][-0.7ex]{\rule[#1]{0pt}{1ex}}
+\newcommand{\Tilde}{\raisebox{-0.8ex}{\~\ }}
+\newcommand{\TildeTt}{\raisebox{-0.8ex}{\~\ \hspace{-0.7em}}}
+
+\definecolor{delim}{RGB}{20,105,176}
+
+\lstdefinelanguage{json}{
+    showspaces=false,
+    showtabs=false,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
+    breakatwhitespace=true,
+    basicstyle=\ttfamily\small,
+    upquote=true,
+    morestring=[b]",
+}
+
+% Standard Environments
+% =====================
+%%ragged2e \newenvironment{Center}[1][\textwidth]
+%%ragged2e {\begin{minipage}[t]{#1}\begin{center}}
+%%ragged2e {\end{center}\end{minipage}}
+
+\newenvironment{JustLeft}[1][\textwidth]
+{\begin{minipage}[t]{#1}\begin{flushleft}}
+{\end{flushleft}\end{minipage}}
+
+\newenvironment{JustRight}[1][\textwidth]
+{\begin{minipage}[t]{#1}\begin{flushright}}
+{\end{flushright}\end{minipage}}
+
+% Enumerations
+% ============
+\usepackage{enumitem}
+
+\newenvironment{ItemizeBullet}[1][]
+{\begin{itemize}[label=\textbullet
+                ,leftmargin=1.6em
+                ,#1]}
+{\end{itemize}}
+
+\newenvironment{ItemizeSquare}[1][]
+{\begin{itemize}[label=\rule{1ex}{1ex}\hspace{3pt}
+                ,leftmargin=1.6em
+                ,#1]}
+{\end{itemize}}
+
+\newenvironment{ItemizeDash}[1][]
+{\begin{itemize}[label=\textendash
+                ,leftmargin=1.6em
+                ,#1]}
+{\end{itemize}}
+
+\newenvironment{EnumAlpha}[1][]
+{\begin{enumerate}[label=\alph*)
+                ,leftmargin=1.8em
+                ,#1]}
+{\end{enumerate}}
+
+\newenvironment{EnumArabic}[1][]
+{\begin{enumerate}[label=\arabic*.
+                  ,leftmargin=1.8em
+                  ,#1]}
+{\end{enumerate}}
+
+\newenvironment{CompactItemBullet}[1][]
+{\begin{itemize}[label=\textbullet
+                ,topsep=0pt
+                ,partopsep=\parsep
+                ,parsep=0pt
+                ,itemsep=0pt
+                ,leftmargin=1.8em
+                ,labelwidth=1em
+                ,#1]}
+{\end{itemize}}
+
+\newenvironment{CompactItemDash}[1][]
+{\begin{itemize}[label=\textendash
+                ,topsep=0pt
+                ,partopsep=\parsep
+                ,parsep=0pt
+                ,itemsep=0pt
+                ,leftmargin=1.8em,labelwidth=1em
+                ,#1]}
+{\end{itemize}}
+
+\newenvironment{CompactItemSquare}[1][]
+{\begin{itemize}[label=\raisebox{0.3ex}{\rule{0.8ex}{0.8ex}}\hspace{2pt}
+                ,topsep=0pt
+                ,partopsep=\parsep
+                ,parsep=0pt
+                ,itemsep=2pt
+                ,leftmargin=1.6em
+                ,labelwidth=1em
+                ,#1]}
+{\end{itemize}}
+
+\newenvironment{CompactEnumAlpha}[1][]
+{\begin{enumerate}[label=\small\alph*)
+                  ,leftmargin=1.8em
+                  ,topsep=0pt
+                  ,partopsep=\parsep
+                  ,parsep=0pt
+                  ,itemsep=0pt
+                  ,leftmargin=1.6em
+                  ,labelwidth=1em
+                  ,#1]}
+{\end{enumerate}}
+
+% Directory Tree
+% ==============
+\usepackage{dirtree}
+
+\renewcommand*\DTstyle{\ttfamily}
+\renewcommand*\DTstylecomment{\color{DarkGreen}\rmfamily\small}
+\DTsetlength{0.2em}{1em}{0.2em}{0.4pt}{3pt}
+
+\newcommand{\DirectoryTree}[1]{
+\begin{JustLeft}[\linewidth]
+\renewcommand{\dotfill}{\leaders\hbox to 12pt{\hss.\hss}\hfill}
+\dirtree{#1}
+\end{JustLeft}\\%
+}
+
+% Boxes
+% =====
+\usepackage{tcolorbox}
+
+\newenvironment{WhiteBox}[1][]
+{\begin{tcolorbox}
+  [colback=white
+  ,arc=0pt
+  ,boxrule=1pt
+  ,boxsep=0pt
+  ]%
+}
+{\end{tcolorbox}}
+
+\newenvironment{Note}[1][]
+{\begin{tcolorbox}
+  [colback=yellow!20!white
+  ,colframe=black
+  ,colbacktitle=red!50!white
+  ,coltitle=black
+  ,fonttitle=\bfseries
+  ,title=\Kopffreiheit Note \Fussfreiheit
+  ,arc=0pt
+  ,boxrule=1pt
+  ,boxsep=0pt
+  ,center
+  ,#1
+  ]}
+{\end{tcolorbox}}
+
+\lstset{%
+  basicstyle=\small,
+  keywordstyle=\color{blue}\bfseries\sffamily,
+  identifierstyle=\ttfamily,
+  commentstyle=\em,
+  stringstyle=\ttfamily,
+  extendedchars=true,
+  showstringspaces=false,
+  literate=%
+   {Ω}{{O}}1
+{Ö}{{\"O}}1
+{Ä}{{\"A}}1
+{Ü}{{\"U}}1
+{ß}{{\ss}}2
+{ü}{{\"u}}1
+{ä}{{\"a}}1
+{ö}{{\"o}}1
+}
+\lstdefinestyle{DescStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{yellow!5!white},
+  keywordstyle=\color{blue},
+  identifierstyle=\ttfamily,
+  commentstyle=\em,
+  stringstyle=\ttfamily,
+  extendedchars=true,
+  showstringspaces=false,
+  escapechar=\£,
+  morekeywords={*,INTEGER,REAL,STRING,EDITABLE,SCALAR,LABEL,HELPTEXT,UNIT,DBUNIT,PERSISTENT
+               ,FIELDGROUP,DATAPOOL,END,STRUCT,BUTTON,FUNC,UI_MANAGER,PLOT2D,FORM
+               ,FUNCTIONS,MAP,VOID,COLSPAN,STREAMER,OPERATOR,PROCESS,PROCESSGROUP
+               ,DISPLAY,NONE,HIDDEN,SILENT,NO_LOG,JSON,BATCH,MATLAB,FOLDER,MAIN
+               ,YAXIS1,YAXIS2,MESSAGE_QUEUE,REQUEST,HOST,RESOURCE,PORT_REQUEST,TIMEOUT
+               ,TASK,HEADER,RESPONSE,MESSAGEBOX,ABORT},
+}
+
+\lstdefinestyle{CmdStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{blue!8!white},
+  escapechar=\£
+}
+
+\lstdefinestyle{ShellStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{blue!15!white},
+  escapechar=\£
+}
+
+\lstdefinestyle{URLStyle}{%
+  basicstyle=\small,
+  frame=single,
+  backgroundcolor=\color{red!10!white},
+  escapechar=\£
+}
+
+\lstdefinestyle{PyStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{green!10!white},
+  escapechar=\£
+}
+
+\lstdefinestyle{ListStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{white},
+  escapechar=\£
+}
+
+\lstdefinestyle{DockerStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{magenta!20!white},
+  escapechar=\£,
+  keywordstyle=\color{black}\bfseries\sffamily,
+  morekeywords={*,MAINTAINER,FROM,LABEL,RUN,ADD,COPY,ENV,EXPOSE,ENTRYPOINT,CMD},
+  numbers=left,
+  stepnumber=1,
+  numberstyle=\tiny,
+  numbersep=2ex,
+}
+
+\lstdefinestyle{ComposeStyle}{%
+  basicstyle=\footnotesize,
+  frame=single,
+  backgroundcolor=\color{green!20!white},
+  escapechar=\£,
+  keywordstyle=\color{blue}\bfseries\sffamily,
+  morekeywords={*,version,services,image,build,command,deploy,replicas,placement,constraints,
+                ports,volumes,depends_on,environment,networks},
+  numbers=left,
+  stepnumber=1,
+  numberstyle=\tiny,
+  numbersep=2ex,
+}
+
+\newcommand{\strich}{\ttfamily\textminus}
+
+\newcolumntype{A}{%
+  >{\color{white}\columncolor[gray]{.8}}c
+}
+
+\defaultfontfeatures{Ligatures={TeX}}
+%\setsansfont{CMU Sans Serif}%{Arial}
+%\setmainfont{CMU Serif}%{Times New Roman}
+%\setmonofont{CMU Typewriter Text}%{Consolas}
+\keepXColumns
+
+% Index
+% indexheading is used in sysadmin.mst
+\newcommand{\indexheading}[1]{%
+\hypertarget{index:#1}{\centerline{\Large{#1}}\nopagebreak}%
+\pdfbookmark[2]{#1}{index:#1}
+}%
+\makeindex
+\usepackage[totoc]{idxlayout}
+%
+% top align includegraphics
+\usepackage[export]{adjustbox}
+\usepackage{listings} % lstlisting
+
+\raggedbottom
+
+\usepackage[strict]{changepage}
+%% to print some pages in one
+%% \usepackage{lscape}
+%
+% This is the layout command
+\newcommand{\keyword}[1]{\mbox{\bfseries\sffamily {#1}}}
+%
+% here are all INTENS keywords
+%
+\def\ABORT{\keyword{ABORT}}
+\def\ABORTTRANSACTION{\keyword{ABORTTRANSACTION}}
+\def\ABS{\keyword{ABS}}
+\def\ACOS{\keyword{ACOS}}
+\def\AFTERDBLOGON{\keyword{AFTER\_DB\_LOGON}}
+\def\AFTERUPDATEFORMS{\keyword{AFTER\_UPDATE\_FORMS}}
+\def\ALARMCOLOR{\keyword{ALARM\_COLOR}}
+\def\ALARMLEVEL{\keyword{ALARM\_LEVEL}}
+\def\ALIGN{\keyword{ALIGN}}
+\def\ALLCYCLES{\keyword{ALLCYCLES}}
+\def\ALLOW{\keyword{ALLOW}}
+\def\ALWAYS{\keyword{ALWAYS}}
+\def\APPEND{\keyword{APPEND}}
+\def\APPMODAL{\keyword{APP\_MODAL}}
+\def\ANNOTATION{\keyword{ANNOTATION}}
+\def\AREA{\keyword{AREA}}
+\def\ARG{\keyword{ARG}}
+\def\ARROWS{\keyword{ARROWS}}
+\def\AS{\keyword{AS}}
+\def\ASCII{\keyword{ASCII}}
+\def\ASIN{\keyword{ASIN}}
+\def\ASPECTRATIO{\keyword{ASPECT\_RATIO}}
+\def\ASPECTRATIOREFAXIS{\keyword{ASPECT\_RATIO\_REF\_AXIS}}
+\def\ASSIGNCONSISTENCY{\keyword{ASSIGN\_CONSISTENCY}}
+\def\ASSIGNCORR{\keyword{ASSIGN\_CORR}}
+\def\ATAN{\keyword{ATAN}}
+\def\ATANTWO{\keyword{ATAN2}}
+\def\ATTRS{\keyword{ATTRS}}
+\def\AUTOCLEARDEPENDENCIES{\keyword{AUTOCLEAR\_DEPENDENCIES}}
+\def\AUTOLEVEL{\keyword{AUTOLEVEL}}
+\def\AUTOSCROLL{\keyword{AUTO\_SCROLL}}
+\def\AUTOWIDTH{\keyword{AUTO\_WIDTH}}
+\def\AVG{\keyword{AVG}}
+\def\AXESORIGIN{\keyword{AXES\_ORIGIN}}
+\def\AXESORIGINX{\keyword{AXES\_ORIGIN\_X}}
+\def\AXESORIGINY{\keyword{AXES\_ORIGIN\_Y}}
+
+\def\BAR{\keyword{BAR}}
+\def\BASE{\keyword{BASE}}
+\def\BASENAME{\keyword{BASENAME}}
+\def\BATCH{\keyword{BATCH}}
+\def\BEEP{\keyword{BEEP}}
+\def\BEGINTRANSACTION{\keyword{BEGINTRANSACTION}}
+\def\BINARY{\keyword{BINARY}}
+\def\BOTTOM{\keyword{BOTTOM}}
+\def\BUTTON{\keyword{BUTTON}}
+\def\BUTTONCANCEL{\keyword{BUTTON\_CANCEL}}
+\def\BUTTONNO{\keyword{BUTTON\_NO}}
+\def\BUTTONYES{\keyword{BUTTON\_YES}}
+\def\BUTTONS{\keyword{BUTTONS}}
+
+\def\CAPTION{\keyword{CAPTION}}
+\def\CDATA{\keyword{CDATA}}
+\def\CELL{\keyword{CELL}}
+\def\CENTER{\keyword{CENTER}}
+\def\CHANGED{\keyword{CHANGED}}
+\def\CLASS{\keyword{CLASS}}
+\def\CLASSNAME{\keyword{CLASSNAME}}
+\def\CLEAR{\keyword{CLEAR}}
+\def\CLEARCYCLE{\keyword{CLEARCYCLE}}
+\def\CLEARSELECTION{\keyword{CLEAR\_SELECTION}}
+\def\CLOSEBUTTON{\keyword{CLOSE\_BUTTON}}
+\def\COMMITTRANSACTION{\keyword{COMMITTRANSACTION}}
+\def\COL{\keyword{COL}}
+\def\COLOR{\keyword{COLOR}}
+\def\COLORBIT{\keyword{COLORBIT}}
+\def\COLORSCALE{\keyword{COLOR\_SCALE}}
+\def\COLSPAN{\keyword{COLSPAN}}
+\def\COMBOBOX{\keyword{COMBOBOX}}
+\def\COMPARE{\keyword{COMPARE}}
+\def\COMPLEX{\keyword{COMPLEX}}
+\def\COMPOSE{\keyword{COMPOSE}}
+\def\COMPOSESTRING{\keyword{COMPOSE\_STRING}}
+\def\CONFIRM{\keyword{CONFIRM}}
+\def\CONFIRMCANCEL{\keyword{CONFIRM\_CANCEL}}
+\def\CONTOUR{\keyword{CONTOUR}}
+\def\COPY{\keyword{COPY}}
+\def\COS{\keyword{COS}}
+\def\CREATE{\keyword{CREATE}}
+\def\CURRENTDATE{\keyword{CURRENT\_DATE}}
+\def\CURRENTTIME{\keyword{CURRENT\_TIME}}
+\def\CURRENTDATETIME{\keyword{CURRENT\_DATETIME}}
+\def\CYCLE{\keyword{CYCLE}}
+\def\CYCLENAME{\keyword{CYCLENAME}}
+
+\def\DAEMON{\keyword{DAEMON}}
+\def\DATA{\keyword{DATA}}
+\def\DATAPOOL{\keyword{DATAPOOL}}
+\def\DATASETTEXT{\keyword{DATASET\_TEXT}}
+\def\DATASIZE{\keyword{DATA\_SIZE}}
+\def\DATE{\keyword{DATE}}
+\def\DBASSEMBLY{\keyword{DBASSEMBLY}}
+\def\DBATTR{\keyword{DBATTR}}
+\def\DBMANAGER{\keyword{DB\_MANAGER}}
+\def\DBLIST{\keyword{DBLIST}}
+\def\DBUNIT{\keyword{DBUNIT}}
+\def\DEBUG{\keyword{DEBUG}}
+\def\DELAY{\keyword{DELAY}}
+\def\DELETE{\keyword{DELETE}}
+\def\DELETECYCLE{\keyword{DELETECYCLE}}
+\def\DELIMITER{\keyword{DELIMITER}}
+\def\DEPENDENCIES{\keyword{DEPENDENCIES}}
+\def\DESCRIPTION{\keyword{DESCRIPTION}}
+\def\DESCRIPTIONFILE{\keyword{DESCRIPTION\_FILE}}
+\def\DIAGRAM{\keyword{DIAGRAM}}
+\def\DIAGRAMXPOS{\keyword{DIAGRAM\_XPOS}}
+\def\DIAGRAMYPOS{\keyword{DIAGRAM\_YPOS}}
+\def\DIRNAME{\keyword{DIRNAME}}
+\def\DISABLE{\keyword{DISABLE}}
+\def\DISALLOW{\keyword{DISALLOW}}
+\def\DISCRETE{\keyword{DISCRETE}}
+\def\DISPLAY{\keyword{DISPLAY}}
+\def\DOTS{\keyword{DOTS}}
+\def\DROP{\keyword{DROP}}
+
+\def\EDITABLE{\keyword{EDITABLE}}
+\def\ELSE{\keyword{ELSE}}
+\def\ENABLE{\keyword{ENABLE}}
+\def\END{\keyword{END}}
+\def\EOLN{\keyword{EOLN}}
+\def\ERASE{\keyword{ERASE}}
+\def\ERROR{\keyword{ERROR}}
+\def\EXIT{\keyword{EXIT}}
+\def\EXPAND{\keyword{EXPAND}}
+\def\EXPLICIT{\keyword{EXPLICIT}}
+\def\EXTENSION{\keyword{EXTENSION}}
+
+\def\FALSE{\keyword{FALSE}}
+\def\FATAL{\keyword{FATAL}}
+\def\FIELDGROUP{\keyword{FIELDGROUP}}
+\def\FILE{\keyword{FILE}}
+\def\FILENAME{\keyword{FILENAME}}
+\def\FILESTREAM{\keyword{FILESTREAM}}
+\def\FILTER{\keyword{FILTER}}
+\def\FIRSTCYCLE{\keyword{FIRSTCYCLE}}
+\def\FIRSTLEVEL{\keyword{FIRSTLEVEL}}
+\def\FOLDER{\keyword{FOLDER}}
+\def\FORM{\keyword{FORM}}
+\def\FORMAT{\keyword{FORMAT}}
+\def\FORTRAN{\keyword{FORTRAN}}
+\def\FRAME{\keyword{FRAME}}
+\def\FROM{\keyword{FROM}}
+\def\FROMSTRINGDATETIME{\keyword{FROM\_STRING\_DATETIME}}
+\def\FUNC{\keyword{FUNC}}
+\def\FUNCTION{\keyword{FUNCTION}}
+\def\FUNCTIONS{\keyword{FUNCTIONS}}
+
+\def\GET{\keyword{GET}}
+\def\GETCYCLE{\keyword{GETCYCLE}}
+\def\GETSELECTION{\keyword{GET\_SELECTION}}
+\def\GETSORTCRITERIA{\keyword{GET\_SORT\_CRITERIA}}
+\def\GETTEXT{\keyword{GETTEXT}}
+\def\GLOBAL{\keyword{GLOBAL}}
+\def\GlobalPoint{\keyword{Global\_Point}}
+\def\GlobalRect{\keyword{Global\_Rect}}
+\def\GOCYCLE{\keyword{GOCYCLE}}
+
+\def\HEADER{\keyword{HEADER}}
+\def\HELPFILE{\keyword{HELPFILE}}
+\def\HELPKEY{\keyword{HELPKEY}}
+\def\HELPTEXT{\keyword{HELPTEXT}}
+\def\HIDDEN{\keyword{HIDDEN}}
+\def\HIDECYCLE{\keyword{HIDE\_CYCLE}}
+\def\HIDEEMPTYFOLDERS{\keyword{HIDE\_EMPTY\_FOLDERS}}
+\def\HIGH{\keyword{HIGH}}
+\def\HORIZONTAL{\keyword{HORIZONTAL}}
+\def\HOST{\keyword{HOST}}
+
+\def\ICONVIEW{\keyword{ICONVIEW}}
+\def\IF{\keyword{IF}}
+\def\IGNORE{\keyword{IGNORE}}
+\def\IMAG{\keyword{IMAG}}
+\def\IMAGE{\keyword{IMAGE}}
+\def\IN{\keyword{IN}}
+\def\INDENT{\keyword{INDENT}}
+\def\INDEX{\keyword{INDEX}}
+\def\INDEXEDSET{\keyword{INDEXED\_SET}}
+\def\INFO{\keyword{INFO}}
+\def\INIT{\keyword{INIT}}
+\def\INPUT{\keyword{INPUT}}
+\def\INT{\keyword{INT}}
+\def\INTEGER{\keyword{INTEGER}}
+\def\INTENS{\keyword{INTENS}}
+\def\INTENSREVISION{\keyword{INTENS\_REVISION}}
+\def\INTENSVERSION{\keyword{INTENS\_VERSION}}
+\def\INTENSVERSIONMAJOR{\keyword{INTENS\_VERSION\_MAJOR}}
+\def\INTENSVERSIONMINOR{\keyword{INTENS\_VERSION\_MINOR}}
+\def\INTENSVERSIONPATCH{\keyword{INTENS\_VERSION\_PATCH}}
+\def\INVALID{\keyword{INVALID}}
+\def\INVERTED{\keyword{INVERTED}}
+\def\IPADDR{\keyword{IPADDR}}
+
+\def\JSON{\keyword{JSON}}
+\def\JUSTIFY{\keyword{JUSTIFY}}
+\def\JUSTLEFT{\keyword{JUSTLEFT}}
+\def\JUSTRIGHT{\keyword{JUSTRIGHT}}
+
+\def\KEY{\keyword{KEY}}
+
+\def\LABEL{\keyword{LABEL}}
+\def\LANGUAGE{\keyword{LANGUAGE}}
+\def\LASTCYCLE{\keyword{LASTCYCLE}}
+\def\LASTLEVEL{\keyword{LASTLEVEL}}
+\def\LATEX{\keyword{LATEX}}
+\def\LATEXREPORT{\keyword{LATEXREPORT}}
+\def\LEFT{\keyword{LEFT}}
+\def\LEGEND{\keyword{LEGEND}}
+\def\LENGTH{\keyword{LENGTH}}
+\def\LINEAR{\keyword{LINEAR}}
+\def\LINEPLOT{\keyword{LINEPLOT}}
+\def\LINESTYLE{\keyword{LINESTYLE}}
+\def\LIST{\keyword{LIST}}
+\def\LISTPLOT{\keyword{LISTPLOT}}
+\def\LOAD{\keyword{LOAD}}
+\def\LOCALE{\keyword{LOCALE}}
+\def\LOCK{\keyword{LOCK}}
+\def\LOCKABLE{\keyword{LOCKABLE}}
+\def\LOG{\keyword{LOG}}
+\def\LOGTEN{\keyword{LOG10}}
+\def\LOGON{\keyword{LOGON}}
+\def\LOGOFF{\keyword{LOGOFF}}
+\def\LOGWINDOW{\keyword{LOG\_WINDOW}}
+\def\LOGX{\keyword{LOG\_X}}
+\def\LOGY{\keyword{LOG\_Y}}
+
+\def\MAIN{\keyword{MAIN}}
+\def\MAP{\keyword{MAP}}
+\def\MARGIN{\keyword{MARGIN}}
+\def\MARKER{\keyword{MARKER}}
+\def\MATHEMATICA{\keyword{MATHEMATICA}}
+\def\MATLAB{\keyword{MATLAB}}
+\def\MATRIX{\keyword{MATRIX}}
+\def\MAX{\keyword{MAX}}
+\def\MAXCYCLE{\keyword{MAXCYCLE}}
+\def\MAXPENDINGFUNCTIONS{\keyword{MAX\_PENDING\_FUNCTIONS}}
+\def\MENU{\keyword{MENU}}
+\def\MESSAGEBOX{\keyword{MESSAGEBOX}}
+\def\MESSAGEQUEUE{\keyword{MESSAGE\_QUEUE}}
+\def\MFM{\keyword{MFM}}
+\def\MINMAX{\keyword{MINMAX}}
+\def\MODIFY{\keyword{MODIFY}}
+\def\MODIFIED{\keyword{MODIFIED}}
+\def\MOVE{\keyword{MOVE}}
+\def\MULTIPLESELECTION{\keyword{MULTIPLE\_SELECTION}}
+
+\def\NAMESPACE{\keyword{NAMESPACE}}
+\def\NAVIGATION{\keyword{NAVIGATION}}
+\def\NAVIGATOR{\keyword{NAVIGATOR}}
+\def\NEWCYCLE{\keyword{NEWCYCLE}}
+\def\NEXTCYCLE{\keyword{NEXTCYCLE}}
+\def\NOCOLORBIT{\keyword{NO\_COLORBIT}}
+\def\NODE{\keyword{NODE}}
+\def\NODEPENDENCIES{\keyword{NO\_DEPENDENCIES}}
+\def\NOGZ{\keyword{NO\_GZ}}
+\def\NOLOG{\keyword{NO\_LOG}}
+\def\NONE{\keyword{NONE}}
+\def\NOPANEDWINDOW{\keyword{NO\_PANEDWINDOW}}
+\def\NOSCROLLBARS{\keyword{NO\_SCROLLBARS}}
+\def\NP{\keyword{NP}}
+\def\NS{\keyword{NS}}
+
+\def\OFFSET{\keyword{OFFSET}}
+\def\OLDVALUE{\keyword{OLDVALUE}}
+\def\OMITACTIVATE{\keyword{OMIT\_ACTIVATE}}
+\def\OMITTTRAIL{\keyword{OMIT\_TTRAIL}}
+\def\ONCYCLEEVENT{\keyword{ON\_CYCLE\_EVENT}}
+\def\ONCYCLESWITCH{\keyword{ON\_CYCLE\_SWITCH}}
+\def\ONEOS{\keyword{ON\_EOS}}
+\def\ONVIEWACTION{\keyword{ON\_VIEW\_ACTION}}
+\def\OPEN{\keyword{OPEN}}
+\def\OPENFILE{\keyword{OPEN\_FILE}}
+\def\OPENURL{\keyword{OPEN\_URL}}
+\def\OPENLEVELS{\keyword{OPENLEVELS}}
+\def\OPERATOR{\keyword{OPERATOR}}
+\def\OPTIONAL{\keyword{OPTIONAL}}
+\def\ORIENTATION{\keyword{ORIENTATION}}
+\def\OUT{\keyword{OUT}}
+
+\def\PACK{\keyword{PACK}}
+\def\PACKAGES{\keyword{PACKAGES}}
+\def\PANEDWINDOW{\keyword{PANEDWINDOW}}
+\def\PARENT{\keyword{PARENT}}
+\def\PASSWORD{\keyword{PASSWORD}}
+\def\PASTE{\keyword{PASTE}}
+\def\PATH{\keyword{PATH}}
+\def\PATTERN{\keyword{PATTERN}}
+\def\PERSISTENT{\keyword{PERSISTENT}}
+\def\PERIOD{\keyword{PERIOD}}
+\def\PIXMAP{\keyword{PIXMAP}}
+\def\PLACEHOLDER{\keyword{PLACEHOLDER}}
+\def\PLOT{\keyword{PLOT}}
+\def\PLOTTHREED{\keyword{PLOT3D}}
+\def\PLOTTWOD{\keyword{PLOT2D}}
+\def\PLOTTWODUIMODE{\keyword{PLOT2D\_UIMODE}}
+\def\PLOTTWODSYMBOLSIZE{\keyword{PLOT2D\_SYMBOLSIZE}}
+\def\PLOTGROUP{\keyword{PLOTGROUP}}
+\def\PLUGIN{\keyword{PLUGIN}}
+\def\POLAR{\keyword{POLAR}}
+\def\PORT{\keyword{PORT}}
+\def\PORTREQUEST{\keyword{PORT\_REQUEST}}
+\def\POSITION{\keyword{POSITION}}
+\def\POST{\keyword{POST}}
+\def\POSTGRES{\keyword{POSTGRES}}
+\def\PREVIEW{\keyword{PREVIEW}}
+\def\PRINT{\keyword{PRINT}}
+\def\PRINTLOG{\keyword{PRINTLOG}}
+\def\PRINTSTYLE{\keyword{PRINTSTYLE}}
+\def\PRIORITY{\keyword{PRIORITY}}
+\def\PROCESS{\keyword{PROCESS}}
+\def\PROCESSGROUP{\keyword{PROCESSGROUP}}
+\def\PROTO{\keyword{PROTO}}
+\def\PUBLISH{\keyword{PUBLISH}}
+\def\PUT{\keyword{PUT}}
+\def\PW{\keyword{PW}}
+\def\PYTHON{\keyword{PYTHON}}
+
+\def\QUERY{\keyword{QUERY}}
+\def\QUIT{\keyword{QUIT}}
+
+\def\RADIO{\keyword{RADIO}}
+\def\RANGE{\keyword{RANGE}}
+\def\READONLY{\keyword{READONLY}}
+\def\REAL{\keyword{REAL}}
+\def\REASON{\keyword{REASON}}
+\def\REASONACTIVATE{\keyword{REASON\_ACTIVATE}}
+\def\REASONCLEAR{\keyword{REASON\_CLEAR}}
+\def\REASONCLOSE{\keyword{REASON\_CLOSE}}
+\def\REASONCONNECTION{\keyword{REASON\_CONNECTION}}
+\def\REASONCYCLECLEAR{\keyword{REASON\_CYCLE\_CLEAR}}
+\def\REASONCYCLEDELETE{\keyword{REASON\_CYCLE\_DELETE}}
+\def\REASONCYCLENEW{\keyword{REASON\_CYCLE\_NEW}}
+\def\REASONCYCLERENAME{\keyword{REASON\_CYCLE\_RENAME}}
+\def\REASONCYCLESWITCH{\keyword{REASON\_CYCLE\_SWITCH}}
+\def\REASONDROP{\keyword{REASON\_DROP}}
+\def\REASONDUPLICATE{\keyword{REASON\_DUPLICATE}}
+\def\REASONFUNCTION{\keyword{REASON\_FUNCTION}}
+\def\REASONGUIUPDATE{\keyword{REASON\_GUI\_UPDATE}}
+\def\REASONINPUT{\keyword{REASON\_INPUT}}
+\def\REASONINSERT{\keyword{REASON\_INSERT}}
+\def\REASONMOVE{\keyword{REASON\_MOVE}}
+\def\REASONOPEN{\keyword{REASON\_OPEN}}
+\def\REASONPACK{\keyword{REASON\_PACK}}
+\def\REASONREMOVE{\keyword{REASON\_REMOVE}}
+\def\REASONREMOVECONNECTION{\keyword{REASON\_REMOVE\_CONNECTION}}
+\def\REASONREMOVEELEMENT{\keyword{REASON\_REMOVE\_ELEMENT}}
+\def\REASONSELECT{\keyword{REASON\_SELECT}}
+\def\REASONSELECTPOINT{\keyword{REASON\_SELECT\_POINT}}
+\def\REASONSELECTRECTANGLE{\keyword{REASON\_SELECT\_RECTANGLE}}
+\def\REASONSORT{\keyword{REASON\_SORT}}
+\def\REASONTASK{\keyword{REASON\_TASK}}
+\def\REASONUNSELECT{\keyword{REASON\_UNSELECT}}
+\def\REPLACE{\keyword{REPLACE}}
+\def\REPLY{\keyword{REPLY}}
+\def\REPORT{\keyword{REPORT}}
+\def\REPORTSTREAM{\keyword{REPORTSTREAM}}
+\def\REQUEST{\keyword{REQUEST}}
+\def\RESET{\keyword{RESET}}
+\def\RESETERROR{\keyword{RESET\_ERROR}}
+\def\RESPONSE{\keyword{RESPONSE}}
+\def\RESTBASE{\keyword{RESTBASE}}
+\def\RESTLOGON{\keyword{REST\_LOGON}}
+\def\RESTJWTLOGON{\keyword{REST\_JWT\_LOGON}}
+\def\RESTLOGOFF{\keyword{REST\_LOGOFF}}
+\def\RESTSERVICEAPPVERSIONMAJOR{\keyword{REST\_SERVICE.APP\_VERSION\_MAJOR}}
+\def\RESTSERVICEAPPVERSIONMINOR{\keyword{REST\_SERVICE.APP\_VERSION\_MINOR}}
+\def\RESTSERVICEAPPVERSIONPATCH{\keyword{REST\_SERVICE.APP\_VERSION\_PATCH}}
+\def\RESTSERVICEDBVERSIONMAJOR{\keyword{REST\_SERVICE.DB\_VERSION\_MAJOR}}
+\def\RESTSERVICEDBVERSIONMINOR{\keyword{REST\_SERVICE.DB\_VERSION\_MINOR}}
+\def\RESTSERVICEDBVERSIONPATCH{\keyword{REST\_SERVICE.DB\_VERSION\_PATCH}}
+\def\RESTSERVICEDBVERSIONIGNORE{\keyword{REST\_SERVICE.DB\_VERSION\_IGNORE}}
+\def\RESTUSERNAME{\keyword{RESTUSERNAME}}
+\def\RESTUSERNAMELIST{\keyword{RESTUSERNAMELIST}}
+\def\RETURN{\keyword{RETURN}}
+\def\RIGHT{\keyword{RIGHT}}
+\def\RMS{\keyword{RMS}}
+\def\ROTATEONEEIGHTY{\keyword{ROTATE\_180}}
+\def\ROUND{\keyword{ROUND}}
+\def\ROUNDFIVE{\keyword{ROUND5}}
+\def\ROUNDTEN{\keyword{ROUND10}}
+\def\ROW{\keyword{ROW}}
+\def\ROWSPAN{\keyword{ROWSPAN}}
+\def\RUN{\keyword{RUN}}
+
+\def\SAMEYRANGE{\keyword{SAME\_YRANGE}}
+\def\SAVE{\keyword{SAVE}}
+\def\SB{\keyword{SB}}
+\def\SCALAR{\keyword{SCALAR}}
+\def\SCALE{\keyword{SCALE}}
+\def\SCHEMA{\keyword{SCHEMA}}
+\def\SCROLLBAR{\keyword{SCROLLBAR}}
+\def\SCROLLBARS{\keyword{SCROLLBARS}}
+\def\SELECTLIST{\keyword{SELECT\_LIST}}
+\def\SEPARATOR{\keyword{SEPARATOR}}
+\def\SEND{\keyword{SEND}}
+\def\SERIALIZE{\keyword{SERIALIZE}}
+\def\SERIALIZEFORM{\keyword{SERIALIZE\_FORM}}
+\def\SET{\keyword{SET}}
+\def\SETDBTIMESTAMP{\keyword{SET\_DB\_TIMESTAMP}}
+\def\SETERROR{\keyword{SET\_ERROR}}
+\def\SETINDEX{\keyword{SET\_INDEX}}
+\def\SETMSG{\keyword{SET\_MSG}}
+\def\SETMQHOST{\keyword{SET\_MQ\_HOST}}
+\def\SETREASON{\keyword{SET\_REASON}}
+\def\SETRESOURCE{\keyword{SET\_RESOURCE}}
+\def\SETTHIS{\keyword{SET\_THIS}}
+\def\SETTINGS{\keyword{SETTINGS}}
+\def\SILENT{\keyword{SILENT}}
+\def\SIN{\keyword{SIN}}
+\def\SIZE{\keyword{SIZE}}
+\def\SKIP{\keyword{SKIP}}
+\def\SLIDER{\keyword{SLIDER}}
+\def\SOCKET{\keyword{SOCKET}}
+\def\SORT{\keyword{SORT}}
+\def\SORTORDER{\keyword{SORTORDER}}
+\def\SOURCE{\keyword{SOURCE}}
+\def\SOURCETWO{\keyword{SOURCE2}}
+\def\SQRT{\keyword{SQRT}}
+\def\STACKINGBAR{\keyword{STACKING\_BAR}}
+\def\START{\keyword{START}}
+\def\STDWINDOW{\keyword{STD\_WINDOW}}
+\def\STEP{\keyword{STEP}}
+\def\STOP{\keyword{STOP}}
+\def\STREAM{\keyword{STREAM}}
+\def\STREAMER{\keyword{STREAMER}}
+\def\STRETCH{\keyword{STRETCH}}
+\def\STRING{\keyword{STRING}}
+\def\STRINGDATE{\keyword{STRING\_DATE}}
+\def\STRINGDATETIME{\keyword{STRING\_DATETIME}}
+\def\STRINGTIME{\keyword{STRING\_TIME}}
+\def\STRINGVALUE{\keyword{STRING\_VALUE}}
+\def\STRUCT{\keyword{STRUCT}}
+\def\STYLE{\keyword{STYLE}}
+\def\STYLESHEET{\keyword{STYLESHEET}}
+\def\SUBSCRIBE{\keyword{SUBSCRIBE}}
+\def\SURFACE{\keyword{SURFACE}}
+
+\def\TABLE{\keyword{TABLE}}
+\def\TABLESIZE{\keyword{TABLESIZE}}
+\def\TAG{\keyword{TAG}}
+\def\TAN{\keyword{TAN}}
+\def\TASK{\keyword{TASK}}
+\def\TEMPLATE{\keyword{TEMPLATE}}
+\def\TEXTWINDOW{\keyword{TEXT\_WINDOW}}
+\def\THIS{\keyword{THIS}}
+\def\THERMO{\keyword{THERMO}}
+\def\THUMBNAIL{\keyword{THUMBNAIL}}
+\def\TIMER{\keyword{TIMER}}
+\def\TIMEOUT{\keyword{TIMEOUT}}
+\def\TIMESTAMP{\keyword{TIMESTAMP}}
+\def\TIMETABLE{\keyword{TIMETABLE}}
+\def\TOGGLE{\keyword{TOGGLE}}
+\def\TOOLTIP{\keyword{TOOLTIP}}
+\def\TOP{\keyword{TOP}}
+\def\TOSTRINGTIME{\keyword{TO\_STRING\_TIME}}
+\def\TOSTRINGDATETIME{\keyword{TO\_STRING\_DATETIME}}
+\def\TOUCH{\keyword{TOUCH}}
+\def\TRANSACTION{\keyword{TRANSACTION}}
+\def\TRANSIENT{\keyword{TRANSIENT}}
+\def\TRANSPARENT{\keyword{TRANSPARENT}}
+\def\TRUE{\keyword{TRUE}}
+\def\TSEP{\keyword{TSEP}}
+\def\TYPE{\keyword{TYPE}}
+
+\def\UIMANAGER{\keyword{UI\_MANAGER}}
+\def\UIUPDATE{\keyword{UI\_UPDATE}}
+\def\UNIPLOT{\keyword{UNIPLOT}}
+\def\UNIT{\keyword{UNIT}}
+\def\UNMAP{\keyword{UNMAP}}
+\def\UNSET{\keyword{UNSET}}
+\def\UPDATEFORMS{\keyword{UPDATE\_FORMS}}
+\def\URL{\keyword{URL}}
+\def\USER{\keyword{USER}}
+\def\USERGROUPS{\keyword{USERGROUPS}}
+\def\USERPATH{\keyword{USER\_PATH}}
+
+\def\VALID{\keyword{VALID}}
+\def\VAR{\keyword{VAR}}
+\def\VERSION{\keyword{VERSION}}
+\def\VERTICAL{\keyword{VERTICAL}}
+\def\VISIBLE{\keyword{VISIBLE}}
+\def\VOID{\keyword{VOID}}
+
+\def\WARN{\keyword{WARN}}
+\def\WHEELEVENT{\keyword{WHEEL\_EVENT}}
+\def\WHILE{\keyword{WHILE}}
+\def\WRAP{\keyword{WRAP}}
+\def\WRITEONLY{\keyword{WRITEONLY}}
+\def\WRITESETTINGS{\keyword{WRITE\_SETTINGS}}
+
+\def\XANNOTATION{\keyword{XANNOTATION}}
+\def\XAXIS{\keyword{XAXIS}}
+\def\XAXISTWO{\keyword{XAXIS2}}
+\def\XML{\keyword{XML}}
+\def\XMLGROUP{\keyword{XMLGROUP}}
+\def\XRTTHREEDPLOT{\keyword{XRT3DPLOT}}
+\def\XRTGRAPH{\keyword{XRTGRAPH}}
+
+\def\YANNOTATION{\keyword{YANNOTATION}}
+\def\YONESTYLE{\keyword{Y1\_STYLE}}
+\def\YTWOSTYLE{\keyword{Y2\_STYLE}}
+\def\YAXIS{\keyword{YAXIS}}
+\def\YAXISONE{\keyword{YAXIS1}}
+\def\YAXISTWO{\keyword{YAXIS2}}

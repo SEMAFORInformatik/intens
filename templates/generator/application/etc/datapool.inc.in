@@ -1,0 +1,22 @@
+//
+//  Purpose: DATAPOOL description file for ${applicationShortName}.
+//
+
+DATAPOOL
+
+#include <common/common_datapool.inc>
+#include <python_logger/python_logger_datapool.inc>
+#include <component/component_datapool.inc>
+#include <logbook/logbook_datapool.inc>
+
+// BEGIN BLOCK COMPONENT
+//#include <<component>/<component>_datapool.inc>
+// END BLOCK COMPONENT
+
+#include <variant/variant_datapool.inc>
+#include <project/project_datapool.inc>
+#include <modifications/modifications_datapool.inc>
+#include <used_in_projects/used_in_projects_datapool.inc>
+#include <element_rename/element_rename_datapool.inc>
+
+END DATAPOOL;

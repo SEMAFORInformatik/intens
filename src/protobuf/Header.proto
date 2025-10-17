@@ -1,0 +1,11 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Header {
+  GuiElement base = 1;
+  string title = 2;
+  string subtitle = 3;
+  string left_icon = 4;
+  string right_icon = 5;
+}

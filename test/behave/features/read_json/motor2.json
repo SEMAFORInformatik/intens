@@ -1,0 +1,23 @@
+{
+    "id": 4,
+    "name": "motor 2",
+    "desc": "Test Motor 2",
+    "version": 1,
+    "current_version": 1,
+    "detached": 0,
+    "rev": 0,
+    "approval": "inPreparation",
+    "created": "2021-01-14T12:28:55.366+00:00",
+    "owner": "bas",
+    "ownername": "Simon Bader",
+    "group": "SEMAFOR",
+    "p": 2,
+    "psityp": 1.0,
+    "rs_Tref": 0.1,
+    "rr_Tref": 0.1,
+    "Lls": 0.001,
+    "Lh": 0.03,
+    "Llr": 0.001,
+    "rh": 1000.0,
+    "Iin": 2.0
+}

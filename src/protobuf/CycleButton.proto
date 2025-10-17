@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message CycleButton {
+  GuiElement base = 1;
+  string label = 2;
+  uint32 cycle = 3;
+  uint32 num_cycle = 4;
+  repeated string cycles = 5;
+}
+

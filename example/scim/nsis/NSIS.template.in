@@ -1,0 +1,144 @@
+; Do necessary inclusions.
+!include ..\\..\\..\\nsis\\NSIS.definitions.nsh
+
+!include "MUI2.nsh"
+!include "Sections.nsh"
+!include "InstallOptions.nsh"
+!include "x64.nsh"
+
+; MUI Settings
+!define MUI_ABORTWARNING
+!define MUI_WELCOMEPAGE_TITLE_3LINES
+!define MUI_FINISHPAGE_TITLE_3LINES
+!define MUI_HEADERIMAGE
+
+!define INST_DIR "@CPACK_TEMPORARY_DIRECTORY@"
+
+; Define variables
+; Var proxy_username
+; Var proxy_password
+Var proxy_url
+Var proxy_port
+
+;installer run privileges
+RequestExecutionLevel user
+
+; The name of the installer
+Name "${AppName}"
+
+; The file to write
+OutFile "@CPACK_TOPLEVEL_DIRECTORY@/@CPACK_OUTPUT_FILE_NAME@"
+
+; The default installation directory
+; InstallDir $PROGRAMFILES\${Vendor}
+InstallDir D:\Programme\${Vendor}
+
+;ShowInstDetails show
+;ShowUnInstDetails show
+
+; Registry key to check for directory ( so if you install again, it will
+; overwrite the old one automatically)
+; InstallDirRegKey HKLM "SOFTWARE\${Vendor}\${ShortName}" "Install_Dir"
+
+
+;!insertmacro RESERVEFILE_INSTALLOPTIONS
+
+
+; ------------------------------------
+; Pages
+; Welcome page
+!insertmacro MUI_PAGE_WELCOME
+;Page custom CheckInstalledIntensVersion
+; License page
+!insertmacro MUI_PAGE_LICENSE $(license)
+
+; Components page
+!insertmacro MUI_PAGE_COMPONENTS
+
+; Directory page
+!insertmacro MUI_PAGE_DIRECTORY
+
+; Instfiles page
+!insertmacro MUI_PAGE_INSTFILES
+; Finish page
+!insertmacro MUI_PAGE_FINISH
+
+;
+; ------------------------------------
+; Languages
+
+; First is default
+!insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "German"
+
+LangString TEXT_INTENS_TITLE ${LANG_ENGLISH} "Intens Platform"
+LangString TEXT_INTENS_SUBTITLE ${LANG_ENGLISH} "Installation"
+
+LangString TEXT_INTENS_TITLE ${LANG_GERMAN} "Intens Platform"
+LangString TEXT_INTENS_SUBTITLE ${LANG_GERMAN} "Installation"
+
+LangString SELECT_WORK_DIR_MESSAGE ${LANG_ENGLISH} "Select your Work Directory for temporary calculation files.."
+LangString SELECT_WORK_DIR_MESSAGE ${LANG_GERMAN} "Wählen Sie ihr Arbeitsverzeichnis für temporäre Dateien.."
+LicenseLangString license ${LANG_ENGLISH} "${ProjectDir}/nsis/LICENSE.txt"
+LicenseLangString license ${LANG_GERMAN} "${ProjectDir}/nsis/LIZENZ.txt"
+
+; PROXY
+LangString PROXY_TITLE ${LANG_ENGLISH} "Proxy Settings"
+LangString PROXY_DESC ${LANG_ENGLISH} "Please fill out the proxy-settings. (without http://, /https://)"
+;LangString PROXY_USERNAME ${LANG_ENGLISH} "Username"
+;LangString PROXY_PASSWORD ${LANG_ENGLISH} "Password"
+LangString PROXY_URL ${LANG_ENGLISH} "URL Address"
+LangString PROXY_PORT ${LANG_ENGLISH} "Port"
+;LangString PROXY_STORED ${LANG_ENGLISH} "The proxy settings are successfully stored at $PROFILE\.condarc."
+
+LangString PROXY_TITLE ${LANG_GERMAN} "Proxy Einstellungen"
+LangString PROXY_DESC ${LANG_GERMAN} "Bitte geben Sie die Proxy Adresse (ohne http://, https://) mit dem dazugehörigen Port an"
+;LangString PROXY_USERNAME ${LANG_GERMAN} "Benutzername"
+;LangString PROXY_PASSWORD ${LANG_GERMAN} "Passwort"
+LangString PROXY_URL ${LANG_GERMAN} "Adresse"
+LangString PROXY_PORT ${LANG_GERMAN} "Port"
+;LangString PROXY_STORED ${LANG_GERMAN} "Die Proxy-Einstellungen wurden erfolgreich im $PROFILE\.condarc gespeichert."
+
+;-------------------------------
+Section "INTENS ${IntensVersion}" SEC01
+; check if Intens is already installed
+;  EnumRegKey $1 HKLM "SOFTWARE\Semafor\intens" "1"
+; MessageBox MB_OK "Checking Installed Intens Version $1"
+;  StrCmp $1 "" 0 no_install_intens
+SetOutPath "$INSTDIR\intens\${IntensVersion}"
+CreateDirectory "$OUTDIR"
+File /r /x templates /x include /x xml "${IntensDir}\${IntensVersion}\*.*"
+
+; no_install_intens:
+
+SectionEnd
+
+; The stuff to install
+Section "${ShortName}" SEC03
+
+  SectionIn RO
+
+  ; Set output path to the installation directory.
+  SetOutPath "$INSTDIR\\${ShortName}\${AppVersion}"
+
+  ; Install core application files.
+  @CPACK_NSIS_FULL_INSTALL@
+
+  FileOpen $4 "$INSTDIR\${ShortName}\${AppVersion}\${ShortName}.cfg" w
+  FileWrite $4 'api_gateway_port="19991"$\r$\n'
+  FileClose $4
+
+SectionEnd
+
+Function .onInit
+
+  ;Language selection dialog
+  !insertmacro MUI_LANGDLL_DISPLAY
+
+  ; set $INSTDIR to preferred directory
+  ${If} ${RunningX64}
+    StrCpy $INSTDIR "$PROGRAMFILES64\${Vendor}"
+  ${Else}
+    StrCpy $INSTDIR "$PROGRAMFILES\${Vendor}"
+  ${EndIf}
+FunctionEnd

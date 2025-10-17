@@ -1,0 +1,94 @@
+DESCRIPTION "Resource";
+
+DATAPOOL
+  REAL { EDITABLE }
+    speed { LABEL="speed"
+          , UNIT="km/h"
+          , FUNC=speed_func
+          , HELPTEXT="speed ..."
+          }
+  ;
+  REAL
+    speed1{ LABEL="speed"
+          , UNIT="km/h"
+          , FUNC=speed_func
+          }
+  ;
+  SET
+    color_set (
+      "default"         = 0
+    , "yellow/black"    = 1
+    , "red/red"         = 2
+    , "black/red"       = 3
+    , "blue/blue"       = 4
+    , "cyan/cyan"       = 5
+    , "magenta/magenta" = 6
+    , "yellow/white"    = 7
+    , "black/grey"     = 8
+    )
+  ;
+  INTEGER { EDITABLE }
+    color { LABEL="color"
+          , SET=color_set
+          }
+  , name { LABEL="name"
+         }
+  , button { LABEL="push"
+           , BUTTON
+           , FUNC=button_func
+           }
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+INDEX
+  inx
+;
+FIELDGROUP
+  fg { "Fieldgroup Title" }(
+    LABEL(speed) speed speed1 UNIT(speed)
+  , LABEL(color) color[inx]  inx
+  , LABEL(name) name
+  , VOID button
+  )
+;
+FOLDER
+  folder (
+    ["tab1"](fg)
+  , ["tab2"](fg)
+  )
+;
+FORM
+  form { MAIN } (
+    (folder)
+  )
+;
+END UI_MANAGER;
+
+FUNCTIONS
+FUNC INIT {
+  SET(COLOR, color[0], 0);
+  SET(COLOR, color[1], 1);
+  SET(COLOR, color[2], 2);
+  SET(COLOR, color[3], 3);
+  SET(COLOR, color[4], 4);
+  SET(COLOR, color[5], 5);
+  SET(COLOR, color[6], 6);
+  SET(COLOR, color[7], 7);
+  SET(COLOR, color[8], 8);
+  SET(COLOR, color[9], 9);
+  color[0] = 0;
+  color[1] = 1;
+  color[2] = 2;
+  color[3] = 3;
+  color[4] = 4;
+  color[5] = 5;
+  color[6] = 6;
+  color[7] = 7;
+  color[8] = 8;
+  color[9] = 9;
+  speed  = 1.23;
+  speed1 = 1.23;
+};
+END FUNCTIONS;
+END.

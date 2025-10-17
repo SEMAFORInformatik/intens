@@ -1,0 +1,95 @@
+syntax = "proto3";
+import "Plot2D.proto";
+import "Plot3D.proto";
+import "Buttonbar.proto";
+import "Button.proto";
+import "CycleButton.proto";
+import "ComboBox.proto";
+import "Container.proto";
+import "FieldGroup.proto";
+import "Folder.proto";
+import "Form.proto";
+import "Header.proto";
+import "Index.proto";
+import "IndexMenu.proto";
+import "Label.proto";
+import "List.proto";
+import "Menubar.proto";
+import "MenuButton.proto";
+import "Messagebar.proto";
+import "Navigator.proto";
+import "Radio.proto";
+import "Separator.proto";
+import "Stretch.proto";
+import "Table.proto";
+import "Text.proto";
+import "Datafield.proto";
+import "Thermo.proto";
+import "Toggle.proto";
+import "Void.proto";
+import "Progressbar.proto";
+package in_proto;
+
+message ElementList {
+  repeated Plot2D plot_2ds = 1;
+  repeated Plot3D plot_3ds = 2;
+  repeated Buttonbar buttonbars = 3;
+  repeated Button buttons = 4;
+  repeated ComboBox comboboxes = 5;
+  repeated Container containers = 6;
+  repeated FieldGroup field_groups = 8;
+  repeated Folder folders = 9;
+  repeated Form forms = 10;
+  repeated Header headers = 12;
+  repeated Index indexs = 14;
+  repeated IndexMenu index_menus = 15;
+  repeated Label labels = 16;
+  repeated List lists = 17;
+  repeated Menubar menubars = 18;
+  repeated MenuButton menu_buttons = 19;
+  repeated Messagebar messagebars = 20;
+  repeated Navigator navigators = 22;
+  repeated Radio radios = 25;
+  repeated Separator separators = 27;
+  repeated Stretch stretchs = 29;
+  repeated Table tables = 30;
+  repeated Text texts = 31;
+  repeated DataField data_fields = 32;
+  repeated Thermo thermos = 33;
+  repeated Toggle toggles = 34;
+  repeated Void voids = 35;
+  repeated ButtonField buttonfields = 36;
+  repeated CycleButton cyclebuttons = 37;
+  repeated PulldownMenu pulldown_menus = 38;
+  repeated PopupMenu popup_menu = 39;
+}
+
+message WebAPIResponse {
+  ElementList elements = 1;
+  repeated string forms = 2;
+  string top_form = 3;
+  repeated string cycles = 4;
+  message FunctionStatus {
+    string status = 1;
+    string message = 2;
+    string name = 3;
+    bool exit = 4;
+    string open_url = 5;
+  }
+  FunctionStatus function = 5;
+
+  message FolderUpdate {
+    uint32 active = 1;
+    string name = 2;
+    repeated int32 ids = 3;
+    repeated bool visible_pages = 4;
+  }
+  repeated FolderUpdate folders = 6;
+  string clipboard = 7;
+  repeated string forms_replaced = 8;
+}
+
+message ControlResponse {
+  string status = 1;
+  repeated Plot2D.PlotItem plotitems = 2;
+}

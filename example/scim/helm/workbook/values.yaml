@@ -1,0 +1,31 @@
+image:
+  repository: hub.semafor.ch/semafor/generic-workbook
+  pullPolicy: IfNotPresent
+  tag: "3.3-SNAPSHOT"
+
+imageCredentials:
+  registry: hub.semafor.ch
+  username: gitlab+deploy-token-41
+  password: 5FRWoky79_-f_gFd7vjQ
+
+nameOverride: ""
+fullnameOverride: ""
+
+datasource:
+  url: jdbc:h2:file:/tmp/db/data
+  username:
+  password:
+
+metrics:
+  enabled: false
+
+otel:
+  enabled: false
+  # endpoint:
+
+oidc:
+  enabled: false
+  # issuer:
+  # client:
+  # clientSecret:
+  # certificates:

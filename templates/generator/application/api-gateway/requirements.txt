@@ -1,0 +1,4 @@
+pyzmq
+
+opentelemetry-distro
+opentelemetry-exporter-otlp-proto-http

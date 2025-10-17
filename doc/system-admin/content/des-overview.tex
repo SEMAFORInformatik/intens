@@ -1,0 +1,354 @@
+\newpage
+\section{APPENDIX A: DESCRIPTION - syntax-overview}
+\label{sec:descriptionoverview}
+\index{Description-file syntax-overview}
+\begin{tabular} { l l l p{8cm} }
+\multicolumn{3}{ l }{\DESCRIPTION{} "..." ;}	&\multicolumn{1}{ r }{// (section \nameref{sec:description} page \pageref{sec:description})}\\
+	&\multicolumn{2}{ l }{\LANGUAGE}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwlanguage} page \pageref{sec:ovwlanguage})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \LANGUAGE;}	&\\
+	&	&... , 	&\\
+	&	&...  	&\\
+	&;	&	&\\
+	&\multicolumn{2}{ l }{\HELPFILE}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwhelpfile} page \pageref{sec:ovwhelpfile})}\\
+	&	&... , 	&\\
+	&	&...  	&\\
+	&;	&	&\\
+	&\multicolumn{2}{ l }{\DATAPOOL}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwdatapool} page \pageref{sec:ovwdatapool})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \DATAPOOL;}	&\\
+	&\multicolumn{2}{ l }{\STREAMER}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwstreamer} page \pageref{sec:ovwstreamer})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \STREAMER;}	&\\
+	&\multicolumn{2}{ l }{\UIMANAGER}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwuimanager} page \pageref{sec:ovwuimanager})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \UIMANAGER;}	&\\
+	&\multicolumn{2}{ l }{\OPERATOR}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwoperator} page \pageref{sec:ovwoperator})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \OPERATOR;}	&\\
+	&\multicolumn{2}{ l }{\FUNCTIONS}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwfunctions} page \pageref{sec:ovwfunctions})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \FUNCTIONS;}	&\\
+	&\multicolumn{2}{ l }{\DBMANAGER}	&\multicolumn{1}{ r }{// (section \nameref{sec:ovwdbmanager} page \pageref{sec:ovwdbmanager})}\\
+	&	& ... ; &\\
+	&\multicolumn{2}{ l }{\END{} \DBMANAGER;}	&\\
+\multicolumn{3}{ l }{\END.}				&\\
+\end{tabular}
+
+%%-------------------------------------------------------------------
+\newpage
+%%-------------------------------------------------------------------
+\subsection{LANGUAGE - overview}
+\label{sec:ovwlanguage}
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\LANGUAGE}		&\multicolumn{1}{ r }{// (section \nameref{sec:language} page \pageref{sec:language})}\\
+	&\multicolumn{4}{ l }{USER\_PATH = "..." ;}		\\
+%%	&\multicolumn{4}{ l }{INTENS\_PATH = "..." ;}		\\
+	&\multicolumn{4}{ l }{DESCRIPTION\_FILE = "..." ;}	\\
+%%	&\multicolumn{4}{ l }{DEFAULT\_LANG = "..." ; 	}	\\
+\multicolumn{5}{ l }{\END{} \LANGUAGE;}			\\
+&&&&\\
+&&&&\\
+\end{tabular}
+
+%%-------------------------------------------------------------------
+%%-------------------------------------------------------------------
+\subsection{HELPFILE - overview}
+\label{sec:ovwhelpfile}
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\HELPFILE}		&\multicolumn{1}{ r }{// (section \nameref{sec:helpfile} page \pageref{sec:helpfile})}\\
+	&\multicolumn{4}{ l }{"helpfile 1",}			\\
+	&\multicolumn{4}{ l }{"helpfile 2",}			\\
+	&\multicolumn{4}{ l }{OPEN\_FILE "html-file",}		\\
+	&\multicolumn{4}{ l }{OPEN\_URL "internet-address"}	\\
+%;	&&&\\
+\multicolumn{4}{ l }{;}				\\
+&&&&\\
+&&&&\\
+\end{tabular}
+
+%%-------------------------------------------------------------------
+\newpage
+%%-------------------------------------------------------------------
+\subsection{DATAPOOL - overview}
+\label{sec:ovwdatapool}
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\DATAPOOL}		&\multicolumn{1}{ r }{// (section \nameref{sec:datapool} page \pageref{sec:datapool})}\\
+	&\multicolumn{3}{ l }{\SET}	&\multicolumn{1}{ r }{// (section \nameref{sec:dpset} page \pageref{sec:dpset})}	\\
+	&	&\multicolumn{3}{ l }{identifier ( }		\\
+	&	&	&\multicolumn{2}{ l }{"...",}		\\
+	&	&	&\multicolumn{2}{ l }{"..." = "..."}	\\
+	&	&\multicolumn{3}{ l }{)}			\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\REAL}		&\multicolumn{1}{ r }{// (section \nameref{sec:dpitem} page \pageref{sec:dpitem})}	\\
+	&	&\multicolumn{3}{ l }{identifier,}		\\
+	&	&\multicolumn{3}{ l }{identifier}		\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\INTEGER}	&\multicolumn{1}{ r }{// (section \nameref{sec:dpitem} page \pageref{sec:dpitem})}	\\
+	&	&\multicolumn{3}{ l }{identifier,}		\\
+	&	&\multicolumn{3}{ l }{identifier}		\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\STRING}	&\multicolumn{1}{ r }{// (section \nameref{sec:dpitem} page \pageref{sec:dpitem})}	\\
+	&	&\multicolumn{3}{ l }{identifier,}		\\
+	&	&\multicolumn{3}{ l }{identifier}		\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\COMPLEX}	&\multicolumn{1}{ r }{// (section \nameref{sec:dpitem} page \pageref{sec:dpitem})}	\\
+	&	&\multicolumn{3}{ l }{identifier,}		\\
+	&	&\multicolumn{3}{ l }{identifier}		\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\STRUCT}	&\multicolumn{1}{ r }{// (section \nameref{sec:dpstruct} page \pageref{sec:dpstruct})}\\
+	&	&\multicolumn{3}{ l }{identifier \{}		\\
+	&	&	&\multicolumn{2}{ l }{SET.......;}	\\
+	&	&	&\multicolumn{2}{ l }{REAL......;}	\\
+	&	&	&\multicolumn{2}{ l }{INTEGER...;}	\\
+	&	&	&\multicolumn{2}{ l }{STRING....;}	\\
+	&	&	&\multicolumn{2}{ l }{COMPLEX...;}	\\
+	&	&\multicolumn{3}{ l }{\}}			\\
+	&\multicolumn{4}{ l }{;}				\\
+\multicolumn{4}{ l }{\END{} \DATAPOOL;}	&\\
+\end{tabular}
+
+%%-------------------------------------------------------------------
+\newpage
+%%-------------------------------------------------------------------
+\subsection{STREAMER - overview}
+\label{sec:ovwstreamer}
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\STREAMER}		&\multicolumn{1}{ r }{// (section \nameref{sec:streamer} page \pageref{sec:streamer})}\\
+	&\multicolumn{3}{ l }{identifier1}	&	\\
+	&	&\multicolumn{3}{ l }{(}		\\
+	&	&	&\multicolumn{2}{ l }{data item,}	\\
+	&	&	&\multicolumn{2}{ l }{data item}	\\
+	&	&\multicolumn{3}{ l }{)}		\\
+	&\multicolumn{3}{ l }{;}		&	\\
+	&\multicolumn{3}{ l }{identifier2}	&	\\
+	&	&\multicolumn{3}{ l }{(}		\\
+	&	&	&\multicolumn{2}{ l }{data item,}	\\
+	&	&	&\multicolumn{2}{ l }{data item}	\\
+	&	&\multicolumn{3}{ l }{)}		\\
+	&\multicolumn{3}{ l }{;}		&	\\
+\multicolumn{4}{ l }{\END{} \STREAMER;}	&\\
+\end{tabular}
+%%-------------------------------------------------------------------
+\newpage
+%%-------------------------------------------------------------------
+\subsection{UI\_MANAGER - overview}
+\label{sec:ovwuimanager}
+
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\UIMANAGER}		&\multicolumn{1}{ r }{// (section \nameref{sec:uimanager} page \pageref{sec:uimanager}) }\\
+	&\multicolumn{3}{ l }{\FIELDGROUP}	&\multicolumn{1}{ r }{// (section \nameref{sec:uifieldgroup} page \pageref{sec:uifieldgroup})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{fieldgroup line,}	\\
+	&	&	&\multicolumn{2}{ l }{fieldgroup line}	\\
+	&	&\multicolumn{3}{ l }{)}		\\
+	&\multicolumn{4}{ l }{;}		\\
+	&\multicolumn{3}{ l }{\TABLE}	&\multicolumn{1}{ r }{// (section \nameref{sec:uitable} page \pageref{sec:uitable})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{TABLE (}		\\
+	&	&	&	&\multicolumn{1}{ l }{"row label" data item,}	\\
+	&	&	&	&\multicolumn{1}{ l }{"row label" data item}	\\
+	&	&	&\multicolumn{2}{ l }{);}		\\
+	&	&\multicolumn{3}{ l }{)}		\\
+	&\multicolumn{4}{ l }{;}		\\
+	&\multicolumn{3}{ l }{\INDEX}	&\multicolumn{1}{ r }{// (section \nameref{sec:uiindex} page \pageref{sec:uiindex})}	\\
+	&	&\multicolumn{3}{ l }{identifier,}	\\
+	&	&\multicolumn{3}{ l }{identifier}	\\
+	&\multicolumn{4}{ l }{;}		\\
+	&\multicolumn{3}{ l }{\LISTPLOT}	&\multicolumn{1}{ r }{// (section \nameref{sec:uilistplot} page \pageref{sec:uilistplot})}	\\
+	&	&\multicolumn{3}{ l }{listplot\_id ( ( }\\
+	&	&	&\multicolumn{2}{ l }{graph\_id (}	\\
+	&	&	&	&\multicolumn{1}{ l }{data-item,}	\\
+	&	&	&	&\multicolumn{1}{ l }{data-item}	\\
+	&	&	&\multicolumn{2}{ l }{)}		\\
+	&	&\multicolumn{3}{ l }{) ) }		\\
+	&\multicolumn{4}{ l }{;}		\\
+	&\multicolumn{3}{ l }{\UNIPLOT}	&\multicolumn{1}{ r }{// (section \nameref{sec:uiuniplot} page \pageref{sec:uiuniplot})}	\\
+	&	&\multicolumn{3}{ l }{identifier}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\end{tabular}
+\newpage
+\begin{tabular} { l l l l p{8cm} }
+	&\multicolumn{3}{ l }{\PLOTTHREED}	&\multicolumn{1}{ r }{// (section \nameref{sec:uixrt3dplot} page \pageref{sec:uixrt3dplot})}	\\
+	&	&\multicolumn{3}{ l }{plot-identifier (}\\
+	&	&	&\multicolumn{2}{ l }{graph-identifier (}\\
+	&	&	&	&\multicolumn{1}{ l }{3d item}	\\
+	&	&	&\multicolumn{2}{ l }{)}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\PLOTTWOD}	&\multicolumn{1}{ r }{// (section \nameref{sec:uiplot2d} page \pageref{sec:uiplot2d})}	\\
+	&	&\multicolumn{3}{ l }{plot-identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{graph-identifier ( ( }	\\
+	&	&	&	&\multicolumn{1}{ l }{y1values \{YAXIS1\},}	\\
+	&	&	&	&\multicolumn{1}{ l }{y2Values \{YAXIS2\}}	\\
+	&	&	&\multicolumn{2}{ l }{ ) ) }	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\TEXTWINDOW}	&\multicolumn{1}{ r }{// (section \nameref{sec:uitextwindow} page \pageref{sec:uitextwindow})}	\\
+	&	&\multicolumn{3}{ l }{identifier,}	\\
+	&	&\multicolumn{3}{ l }{identifier}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\end{tabular}
+\newpage
+\begin{tabular} { l l l l p{8cm} }
+	&\multicolumn{3}{ l }{\FOLDER}	&\multicolumn{1}{ r }{// (section \nameref{sec:uifolder} page \pageref{sec:uifolder})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (identifier),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (STD\_WINDOW),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (LOG\_WINDOW),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (fieldgroup\_id),}\\
+	&	&	&\multicolumn{2}{ l }{["label"] (plot\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (graph\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (table\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (window\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{["label"] (folder\_id)}	\\
+	&	&\multicolumn{3}{ l }{),}	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{...,}	\\
+	&	&	&\multicolumn{2}{ l }{...}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\end{tabular}
+\newpage
+\begin{tabular} { l l l l p{8cm} }
+	&\multicolumn{3}{ l }{\FORM}	&\multicolumn{1}{ r }{// (section \nameref{sec:uiform} page \pageref{sec:uiform})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{(fieldgroup\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{(folder\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{(plot\_id),}	\\
+	&	&	&\multicolumn{2}{ l }{(fieldgroup\_id, folder\_id, plot\_id)}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\MENU}	&\multicolumn{1}{ r }{// (section \nameref{sec:uimenu} page \pageref{sec:uimenu})}	\\
+	&	&\multicolumn{3}{ l }{"menu label" (}	\\
+	&	&	&\multicolumn{2}{ l }{FORM form\_id,}	\\
+	&	&	&\multicolumn{2}{ l }{STD\_WINDOW = "menu button (item) label",}	\\
+	&	&	&\multicolumn{2}{ l }{LOG\_WINDOW = "menu button (item) label",}	\\
+	&	&	&\multicolumn{2}{ l }{\MENU{} "submenu label" ( }	\\
+	&	&	&	&\multicolumn{1}{ l }{FORM form\_id,}	\\
+	&	&	&	&\multicolumn{1}{ l }{STD\_WINDOW = "menu button (item) label",}	\\
+	&	&	&	&\multicolumn{1}{ l }{LOG\_WINDOW = "menu button (item) label"}	\\
+	&	&	&\multicolumn{2}{ l }{),}	\\
+	&	&	&\multicolumn{2}{ l }{FORM form\_id}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\NAVIGATOR}	&\multicolumn{1}{ r }{// (section \nameref{sec:uinavigator} page \pageref{sec:uinavigator})} \\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{structure\_identifier [*]}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\multicolumn{4}{ l }{\END{} \UIMANAGER;}	&\\
+\end{tabular}
+%%-------------------------------------------------------------------
+%\newpage
+%%-------------------------------------------------------------------
+\subsection{OPERATOR - overview}
+\label{sec:ovwoperator}
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\OPERATOR}		&\multicolumn{1}{ r }{// (section \nameref{sec:operator} page \pageref{sec:operator})}\\
+	&\multicolumn{3}{ l }{\PROCESS}	&\multicolumn{1}{ r }{// (section \nameref{sec:opprocess} page \pageref{sec:opprocess})}	\\
+	&	&\multicolumn{3}{ l }{identifier : BATCH \{ }	\\
+	&	&	&\multicolumn{2}{ l }{"...",}	\\
+	&	&	&\multicolumn{2}{ l }{"..."}	\\
+	&	&\multicolumn{3}{ l }{\}}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\PROCESSGROUP}	&\multicolumn{1}{ r }{// (section \nameref{sec:opprocessgroup} page \pageref{sec:opprocessgroup})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{streamer\_id = process\_id(streamer\_id);}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\REPORTSTREAM}	&\multicolumn{1}{ r }{// (section \nameref{sec:opreportstreams} page \pageref{sec:opreportstreams})}\\
+	&	&\multicolumn{3}{ l }{identifier = }	\\
+	&	&	&\multicolumn{2}{ l }{stream\_id}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\FILESTREAM}	&\multicolumn{1}{ r }{// (section \nameref{sec:opfilestreams} page \pageref{sec:opfilestreams})}	\\
+	&	&\multicolumn{3}{ l }{identifier = }	\\
+	&	&	&\multicolumn{2}{ l }{stream\_id}	\\
+	&\multicolumn{4}{ l }{;}	\\
+	&\multicolumn{3}{ l }{\MATHEMATICA{} \PACKAGES{} (}	&\multicolumn{1}{ r }{// (section \nameref{sec:oppackages} page \pageref{sec:oppackages})}	\\
+	&	&\multicolumn{3}{ l }{"...",}	\\
+	&	&\multicolumn{3}{ l }{"..."}	\\
+	&\multicolumn{4}{ l }{);}	\\
+	&\multicolumn{3}{ l }{\TASK}	&\multicolumn{1}{ r }{// (section \nameref{sec:optasks} page \pageref{sec:optasks})}	\\
+	&	&\multicolumn{3}{ l }{identifier \{"..."\} \{}	\\
+	&	&	&\multicolumn{2}{ l }{statement;}	\\
+	&	&	&\multicolumn{2}{ l }{statement;}	\\
+	&	&\multicolumn{3}{ l }{\}}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\end{tabular}
+\newpage
+\begin{tabular} { l l l l p{8cm} }
+	&\multicolumn{3}{ l }{\MENU}	&\multicolumn{1}{ r }{// (section \nameref{sec:opmenu} page \pageref{sec:opmenu}) }	\\
+	&	&\multicolumn{3}{ l }{identifier (}	\\
+	&	&	&\multicolumn{2}{ l }{PROCESS process\_id,}	\\
+	&	&	&\multicolumn{2}{ l }{SEPARATOR,}	\\
+	&	&	&\multicolumn{2}{ l }{PROCESS process\_id}	\\
+	&	&\multicolumn{3}{ l }{)}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\multicolumn{4}{ l }{\END{} \OPERATOR;}	&\\
+\end{tabular}
+%%-------------------------------------------------------------------
+%\newpage
+%%-------------------------------------------------------------------
+\subsection{FUNCTIONS - overview}
+\label{sec:ovwfunctions}
+\begin{tabular} { l l l l p{8cm} }
+&&&&\\
+\multicolumn{4}{ l }{\FUNCTIONS}		&\multicolumn{1}{ r }{// (section \nameref{sec:functions} page \pageref{sec:functions})}\\
+	&\multicolumn{3}{ l }{\FUNC}	&	\\
+	&	&\multicolumn{3}{ l }{identifier \{}	\\
+	&	&	&\multicolumn{1}{ l }{statement;}	&\multicolumn{1}{ r }{// (section \nameref{fustatements} page \pageref{fustatements})}\\
+	&	&	&\multicolumn{1}{ l }{expression;}	&\multicolumn{1}{ r }{// (section \nameref{fuexpressions} page \pageref{fuexpressions})}\\
+	&	&\multicolumn{3}{ l }{\}}	\\
+	&\multicolumn{4}{ l }{;}	\\
+\multicolumn{4}{ l }{\END{} \FUNCTIONS;}	&\\
+\end{tabular}
+
+%%-------------------------------------------------------------------
+\newpage
+%%-------------------------------------------------------------------
+\subsection{DB\_MANAGER - overview}
+\label{sec:ovwdbmanager}
+\begin{tabular} { l l l l p{6cm} }
+&&&&\\
+\multicolumn{4}{ l }{\DBMANAGER}		&\multicolumn{1}{ r }{// (section \nameref{sec:dbmanager} page \pageref{sec:dbmanager})}\\
+	&\multicolumn{3}{ l }{\TRANSACTION}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbtransaction} page \pageref{sec:dbtransaction})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}		\\
+	&	&	&\multicolumn{1}{ l }{(output-variable) = [bind\_id] (input-variable) \{}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbvariables} page \pageref{sec:dbvariables})}	\\
+	&	&	&\multicolumn{2}{ l }{sql statement}		\\
+	&	&	&\multicolumn{2}{ l }{sql statement :bind\_id}		\\
+	&	&	&\multicolumn{2}{ l }{;}	\\
+	&	&\multicolumn{3}{ l }{\}}	\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\MODIFY}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbmodify} page \pageref{sec:dbmodify})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}		\\
+	&	&	&\multicolumn{1}{ l }{(output-variable) = [bind\_id] (input-variable) \{}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbvariables} page \pageref{sec:dbvariables})}	\\
+	&	&	&\multicolumn{2}{ l }{sql statement}		\\
+	&	&	&\multicolumn{2}{ l }{sql statement :bind\_id}		\\
+	&	&	&\multicolumn{2}{ l }{;}	\\
+	&	&\multicolumn{3}{ l }{\}}	\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\FILTER}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbfilter} page \pageref{sec:dbfilter})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}		\\
+	&	&	&\multicolumn{1}{ l }{(output-variable) = [bind\_id] (input-variable) \{}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbvariables} page \pageref{sec:dbvariables})}	\\
+	&	&	&\multicolumn{2}{ l }{sql statement}		\\
+	&	&	&\multicolumn{2}{ l }{sql statement :bind\_id}		\\
+	&	&	&\multicolumn{2}{ l }{;}	\\
+	&	&\multicolumn{3}{ l }{\}}	\\
+	&\multicolumn{4}{ l }{;}				\\
+	&\multicolumn{3}{ l }{\MENU}	&\multicolumn{1}{ r }{// (section \nameref{sec:dbmenu} page \pageref{sec:dbmenu})}	\\
+	&	&\multicolumn{3}{ l }{identifier (}		\\
+	&	&	&\multicolumn{2}{ l }{LOGON,}		\\
+	&	&	&\multicolumn{2}{ l }{LOGOFF}		\\
+	&	&\multicolumn{3}{ l }{)}			\\
+	&\multicolumn{4}{ l }{;}				\\
+\multicolumn{4}{ l }{\END{} \DBMANAGER;}	&\\
+\end{tabular}
+
+%%-------------------------------------------------------------------

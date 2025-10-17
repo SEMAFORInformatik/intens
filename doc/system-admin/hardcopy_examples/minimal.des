@@ -1,0 +1,17 @@
+// SEMAFOR Informatik & Energie AG
+// Basel, Switzerland
+//
+DESCRIPTION "Minimal Example";
+DATAPOOL
+REAL{EDITABLE}
+   speed;
+END DATAPOOL;
+
+UI_MANAGER
+   FIELDGROUP 
+      g1( "speed:" speed "km/h" );
+   FORM       
+      f1{MAIN}( (g1) );
+END UI_MANAGER;
+END.
+

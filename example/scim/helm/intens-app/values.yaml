@@ -1,0 +1,46 @@
+# Default values for scim
+
+apiGatewayReplicaCount: 1
+
+app:
+  restServiceBase: http://workbook:8080/workbook
+  image:
+    repository: hub.semafor.ch/semafor/scim
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+apiGateway:
+  image:
+    repository: hub.semafor.ch/semafor/scim/api-gateway
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  repport: 15558
+  logport: 15574
+
+otel:
+  enabled: false
+  endpoint:
+
+existingImageCredentials:
+
+imageCredentials:
+  registry: hub.semafor.ch
+  username:
+  password:

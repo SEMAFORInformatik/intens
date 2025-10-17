@@ -1,0 +1,21 @@
+DESCRIPTION "Example PIXMAP";
+DATAPOOL
+  SET
+    pixmap_set ("plot2d", "semafor-logo");
+  STRING { EDITABLE }
+    filename {SET = pixmap_set};
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP
+    Group_1 (
+      filename PIXMAP( filename, 100, 50 )
+    )
+  ;
+  FORM
+    Form_1
+      ( ( Group_1 )
+      )
+    ;
+END UI_MANAGER;
+END .

@@ -1,0 +1,27 @@
+DESCRIPTION "Subscriber";
+
+INCLUDE common.inc
+
+UI_MANAGER
+  FORM
+    main_form { MAIN, HIDE_CYCLE } (
+      weather_fg
+    )
+  ;
+END UI_MANAGER;
+
+OPERATOR
+  MESSAGE_QUEUE
+    weather_subscriber {
+      SUBSCRIBE            // *MessageQueue Pattern
+    , HOST="localhost"     // Hostname
+    , PORT=5561            // TCP port
+    , (
+        HEADER="Weather"
+      , STREAM=weather_stream
+      )
+    }
+  ;
+END OPERATOR;
+
+END.

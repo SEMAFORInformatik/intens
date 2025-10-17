@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<intens:Document xmlns:intens="http://www.semafor.ch/XML/2003/intens/1.0">
+<intens:Form name="fkennl_res" title="Wertetabelle">
+<intens:Fieldgroup name="fkennl_tab" label="Fahrkennlinien" orientation="horizontal" frame="false">
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>f1</intens:Value>
+</intens:Label>
+<intens:Textfield name="f1" disabled="f1_disabled[1,fkennl_tab]" action="test_freq" fullName="f1[1,fkennl_tab]" label="f1" length="9" type="double">
+<intens:Value>  1.58629</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1" disabled="f1_disabled[1,fkennl_tab]" action="test_freq" fullName="f1[1,fkennl_tab]" label="f1" length="9" type="double">
+<intens:Value>  3.60613</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1" disabled="f1_disabled[1,fkennl_tab]" action="test_freq" fullName="f1[1,fkennl_tab]" label="f1" length="9" type="double">
+<intens:Value>  5.62599</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1" disabled="f1_disabled[1,fkennl_tab]" action="test_freq" fullName="f1[1,fkennl_tab]" label="f1" length="9" type="double">
+<intens:Value>  7.64585</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1" disabled="f1_disabled[1,fkennl_tab]" action="test_freq" fullName="f1[1,fkennl_tab]" label="f1" length="9" type="double">
+<intens:Value>  9.66571</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>f1_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="f1_out" disabled="f1_out_disabled[fkennl_tab]" action="" fullName="f1_out[fkennl_tab]" label="f1_out" length="9" type="double">
+<intens:Value>  1.58629</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1_out" disabled="f1_out_disabled[fkennl_tab]" action="" fullName="f1_out[fkennl_tab]" label="f1_out" length="9" type="double">
+<intens:Value>  3.60613</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1_out" disabled="f1_out_disabled[fkennl_tab]" action="" fullName="f1_out[fkennl_tab]" label="f1_out" length="9" type="double">
+<intens:Value>  5.62599</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1_out" disabled="f1_out_disabled[fkennl_tab]" action="" fullName="f1_out[fkennl_tab]" label="f1_out" length="9" type="double">
+<intens:Value>  7.64585</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f1_out" disabled="f1_out_disabled[fkennl_tab]" action="" fullName="f1_out[fkennl_tab]" label="f1_out" length="9" type="double">
+<intens:Value>  9.66571</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>f2</intens:Value>
+</intens:Label>
+<intens:Textfield name="f2" disabled="f2_disabled[1,fkennl_tab]" action="" fullName="f2[1,fkennl_tab]" label="f2" length="9" type="double">
+<intens:Value>  1.58629</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2" disabled="f2_disabled[1,fkennl_tab]" action="" fullName="f2[1,fkennl_tab]" label="f2" length="9" type="double">
+<intens:Value>   1.5863</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2" disabled="f2_disabled[1,fkennl_tab]" action="" fullName="f2[1,fkennl_tab]" label="f2" length="9" type="double">
+<intens:Value>  1.58632</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2" disabled="f2_disabled[1,fkennl_tab]" action="" fullName="f2[1,fkennl_tab]" label="f2" length="9" type="double">
+<intens:Value>  1.58634</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2" disabled="f2_disabled[1,fkennl_tab]" action="" fullName="f2[1,fkennl_tab]" label="f2" length="9" type="double">
+<intens:Value>  1.58636</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>f2_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="f2_out" disabled="f2_out_disabled[fkennl_tab]" action="" fullName="f2_out[fkennl_tab]" label="f2_out" length="9" type="double">
+<intens:Value>  1.58629</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2_out" disabled="f2_out_disabled[fkennl_tab]" action="" fullName="f2_out[fkennl_tab]" label="f2_out" length="9" type="double">
+<intens:Value>   1.5863</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2_out" disabled="f2_out_disabled[fkennl_tab]" action="" fullName="f2_out[fkennl_tab]" label="f2_out" length="9" type="double">
+<intens:Value>  1.58632</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2_out" disabled="f2_out_disabled[fkennl_tab]" action="" fullName="f2_out[fkennl_tab]" label="f2_out" length="9" type="double">
+<intens:Value>  1.58634</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="f2_out" disabled="f2_out_disabled[fkennl_tab]" action="" fullName="f2_out[fkennl_tab]" label="f2_out" length="9" type="double">
+<intens:Value>  1.58636</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>U1</intens:Value>
+</intens:Label>
+<intens:Textfield name="u1" disabled="u1_disabled[1,fkennl_tab]" action="" fullName="u1[1,fkennl_tab]" label="u1" length="9" type="double">
+<intens:Value>  68.7922</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1" disabled="u1_disabled[1,fkennl_tab]" action="" fullName="u1[1,fkennl_tab]" label="u1" length="9" type="double">
+<intens:Value>  107.807</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1" disabled="u1_disabled[1,fkennl_tab]" action="" fullName="u1[1,fkennl_tab]" label="u1" length="9" type="double">
+<intens:Value>  147.505</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1" disabled="u1_disabled[1,fkennl_tab]" action="" fullName="u1[1,fkennl_tab]" label="u1" length="9" type="double">
+<intens:Value>  187.455</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1" disabled="u1_disabled[1,fkennl_tab]" action="" fullName="u1[1,fkennl_tab]" label="u1" length="9" type="double">
+<intens:Value>  227.523</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>U1_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="u1_out" disabled="u1_out_disabled[fkennl_tab]" action="" fullName="u1_out[fkennl_tab]" label="u1_out" length="9" type="double">
+<intens:Value>  68.7922</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1_out" disabled="u1_out_disabled[fkennl_tab]" action="" fullName="u1_out[fkennl_tab]" label="u1_out" length="9" type="double">
+<intens:Value>  107.807</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1_out" disabled="u1_out_disabled[fkennl_tab]" action="" fullName="u1_out[fkennl_tab]" label="u1_out" length="9" type="double">
+<intens:Value>  147.505</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1_out" disabled="u1_out_disabled[fkennl_tab]" action="" fullName="u1_out[fkennl_tab]" label="u1_out" length="9" type="double">
+<intens:Value>  187.455</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="u1_out" disabled="u1_out_disabled[fkennl_tab]" action="" fullName="u1_out[fkennl_tab]" label="u1_out" length="9" type="double">
+<intens:Value>  227.523</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>I1</intens:Value>
+</intens:Label>
+<intens:Textfield name="i1" disabled="i1_disabled[1,fkennl_tab]" action="" fullName="i1[1,fkennl_tab]" label="i1" length="9" type="double">
+<intens:Value>  341.861</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1" disabled="i1_disabled[1,fkennl_tab]" action="" fullName="i1[1,fkennl_tab]" label="i1" length="9" type="double">
+<intens:Value>  341.763</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1" disabled="i1_disabled[1,fkennl_tab]" action="" fullName="i1[1,fkennl_tab]" label="i1" length="9" type="double">
+<intens:Value>  341.716</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1" disabled="i1_disabled[1,fkennl_tab]" action="" fullName="i1[1,fkennl_tab]" label="i1" length="9" type="double">
+<intens:Value>  341.694</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1" disabled="i1_disabled[1,fkennl_tab]" action="" fullName="i1[1,fkennl_tab]" label="i1" length="9" type="double">
+<intens:Value>  341.686</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>I1_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="i1_out" disabled="i1_out_disabled[fkennl_tab]" action="" fullName="i1_out[fkennl_tab]" label="i1_out" length="9" type="double">
+<intens:Value>  341.861</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1_out" disabled="i1_out_disabled[fkennl_tab]" action="" fullName="i1_out[fkennl_tab]" label="i1_out" length="9" type="double">
+<intens:Value>  341.763</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1_out" disabled="i1_out_disabled[fkennl_tab]" action="" fullName="i1_out[fkennl_tab]" label="i1_out" length="9" type="double">
+<intens:Value>  341.716</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1_out" disabled="i1_out_disabled[fkennl_tab]" action="" fullName="i1_out[fkennl_tab]" label="i1_out" length="9" type="double">
+<intens:Value>  341.694</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="i1_out" disabled="i1_out_disabled[fkennl_tab]" action="" fullName="i1_out[fkennl_tab]" label="i1_out" length="9" type="double">
+<intens:Value>  341.686</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>Cos</intens:Value>
+</intens:Label>
+<intens:Textfield name="cosphi" disabled="cosphi_disabled[1,fkennl_tab]" action="" fullName="cosphi[1,fkennl_tab]" label="cosphi" length="9" type="double">
+<intens:Value> 0.969506</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi" disabled="cosphi_disabled[1,fkennl_tab]" action="" fullName="cosphi[1,fkennl_tab]" label="cosphi" length="9" type="double">
+<intens:Value> 0.934632</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi" disabled="cosphi_disabled[1,fkennl_tab]" action="" fullName="cosphi[1,fkennl_tab]" label="cosphi" length="9" type="double">
+<intens:Value> 0.914069</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi" disabled="cosphi_disabled[1,fkennl_tab]" action="" fullName="cosphi[1,fkennl_tab]" label="cosphi" length="9" type="double">
+<intens:Value> 0.901033</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi" disabled="cosphi_disabled[1,fkennl_tab]" action="" fullName="cosphi[1,fkennl_tab]" label="cosphi" length="9" type="double">
+<intens:Value> 0.892118</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>Cos_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="cosphi_out" disabled="cosphi_out_disabled[fkennl_tab]" action="" fullName="cosphi_out[fkennl_tab]" label="cosphi_out" length="9" type="double">
+<intens:Value> 0.969506</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi_out" disabled="cosphi_out_disabled[fkennl_tab]" action="" fullName="cosphi_out[fkennl_tab]" label="cosphi_out" length="9" type="double">
+<intens:Value> 0.934632</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi_out" disabled="cosphi_out_disabled[fkennl_tab]" action="" fullName="cosphi_out[fkennl_tab]" label="cosphi_out" length="9" type="double">
+<intens:Value> 0.914069</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi_out" disabled="cosphi_out_disabled[fkennl_tab]" action="" fullName="cosphi_out[fkennl_tab]" label="cosphi_out" length="9" type="double">
+<intens:Value> 0.901033</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="cosphi_out" disabled="cosphi_out_disabled[fkennl_tab]" action="" fullName="cosphi_out[fkennl_tab]" label="cosphi_out" length="9" type="double">
+<intens:Value> 0.892118</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>P2</intens:Value>
+</intens:Label>
+<intens:Textfield name="pm" disabled="pm_disabled[1,fkennl_tab]" action="" fullName="pm[1,fkennl_tab]" label="pm" length="9" type="double">
+<intens:Value>        0</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm" disabled="pm_disabled[1,fkennl_tab]" action="" fullName="pm[1,fkennl_tab]" label="pm" length="9" type="double">
+<intens:Value>  19.9249</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm" disabled="pm_disabled[1,fkennl_tab]" action="" fullName="pm[1,fkennl_tab]" label="pm" length="9" type="double">
+<intens:Value>  39.8498</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm" disabled="pm_disabled[1,fkennl_tab]" action="" fullName="pm[1,fkennl_tab]" label="pm" length="9" type="double">
+<intens:Value>  59.7746</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm" disabled="pm_disabled[1,fkennl_tab]" action="" fullName="pm[1,fkennl_tab]" label="pm" length="9" type="double">
+<intens:Value>  79.6995</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>P2_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="pm_out" disabled="pm_out_disabled[fkennl_tab]" action="" fullName="pm_out[fkennl_tab]" label="pm_out" length="9" type="double">
+<intens:Value>        0</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm_out" disabled="pm_out_disabled[fkennl_tab]" action="" fullName="pm_out[fkennl_tab]" label="pm_out" length="9" type="double">
+<intens:Value>  19.9249</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm_out" disabled="pm_out_disabled[fkennl_tab]" action="" fullName="pm_out[fkennl_tab]" label="pm_out" length="9" type="double">
+<intens:Value>  39.8498</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm_out" disabled="pm_out_disabled[fkennl_tab]" action="" fullName="pm_out[fkennl_tab]" label="pm_out" length="9" type="double">
+<intens:Value>  59.7746</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="pm_out" disabled="pm_out_disabled[fkennl_tab]" action="" fullName="pm_out[fkennl_tab]" label="pm_out" length="9" type="double">
+<intens:Value>  79.6995</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>T</intens:Value>
+</intens:Label>
+<intens:Textfield name="mom" disabled="mom_disabled[1,fkennl_tab]" action="" fullName="mom[1,fkennl_tab]" label="mom" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom" disabled="mom_disabled[1,fkennl_tab]" action="" fullName="mom[1,fkennl_tab]" label="mom" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom" disabled="mom_disabled[1,fkennl_tab]" action="" fullName="mom[1,fkennl_tab]" label="mom" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom" disabled="mom_disabled[1,fkennl_tab]" action="" fullName="mom[1,fkennl_tab]" label="mom" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom" disabled="mom_disabled[1,fkennl_tab]" action="" fullName="mom[1,fkennl_tab]" label="mom" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>T_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="mom_out" disabled="mom_out_disabled[fkennl_tab]" action="" fullName="mom_out[fkennl_tab]" label="mom_out" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom_out" disabled="mom_out_disabled[fkennl_tab]" action="" fullName="mom_out[fkennl_tab]" label="mom_out" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom_out" disabled="mom_out_disabled[fkennl_tab]" action="" fullName="mom_out[fkennl_tab]" label="mom_out" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom_out" disabled="mom_out_disabled[fkennl_tab]" action="" fullName="mom_out[fkennl_tab]" label="mom_out" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="mom_out" disabled="mom_out_disabled[fkennl_tab]" action="" fullName="mom_out[fkennl_tab]" label="mom_out" length="9" type="double">
+<intens:Value>     4710</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>n</intens:Value>
+</intens:Label>
+<intens:Textfield name="nn" disabled="nn_disabled[1,fkennl_tab]" action="" fullName="nn[1,fkennl_tab]" label="Drehzahl" unit="RPM" length="9" type="double">
+<intens:Value>        0</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn" disabled="nn_disabled[1,fkennl_tab]" action="" fullName="nn[1,fkennl_tab]" label="Drehzahl" unit="RPM" length="9" type="double">
+<intens:Value> 40.39674</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn" disabled="nn_disabled[1,fkennl_tab]" action="" fullName="nn[1,fkennl_tab]" label="Drehzahl" unit="RPM" length="9" type="double">
+<intens:Value>  80.7936</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn" disabled="nn_disabled[1,fkennl_tab]" action="" fullName="nn[1,fkennl_tab]" label="Drehzahl" unit="RPM" length="9" type="double">
+<intens:Value> 121.1904</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn" disabled="nn_disabled[1,fkennl_tab]" action="" fullName="nn[1,fkennl_tab]" label="Drehzahl" unit="RPM" length="9" type="double">
+<intens:Value> 161.5872</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>n_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="nn_out" disabled="nn_out_disabled[fkennl_tab]" action="" fullName="nn_out[fkennl_tab]" label="nn_out" length="9" type="double">
+<intens:Value>        0</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn_out" disabled="nn_out_disabled[fkennl_tab]" action="" fullName="nn_out[fkennl_tab]" label="nn_out" length="9" type="double">
+<intens:Value> 40.39674</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn_out" disabled="nn_out_disabled[fkennl_tab]" action="" fullName="nn_out[fkennl_tab]" label="nn_out" length="9" type="double">
+<intens:Value>  80.7936</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn_out" disabled="nn_out_disabled[fkennl_tab]" action="" fullName="nn_out[fkennl_tab]" label="nn_out" length="9" type="double">
+<intens:Value> 121.1904</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="nn_out" disabled="nn_out_disabled[fkennl_tab]" action="" fullName="nn_out[fkennl_tab]" label="nn_out" length="9" type="double">
+<intens:Value> 161.5872</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>Psi</intens:Value>
+</intens:Label>
+<intens:Textfield name="psi" disabled="psi_disabled[1,fkennl_tab]" action="" fullName="psi[1,fkennl_tab]" label="psi" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi" disabled="psi_disabled[1,fkennl_tab]" action="" fullName="psi[1,fkennl_tab]" label="psi" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi" disabled="psi_disabled[1,fkennl_tab]" action="" fullName="psi[1,fkennl_tab]" label="psi" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi" disabled="psi_disabled[1,fkennl_tab]" action="" fullName="psi[1,fkennl_tab]" label="psi" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi" disabled="psi_disabled[1,fkennl_tab]" action="" fullName="psi[1,fkennl_tab]" label="psi" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>Psi_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="psi_out" disabled="psi_out_disabled[fkennl_tab]" action="" fullName="psi_out[fkennl_tab]" label="psi_out" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi_out" disabled="psi_out_disabled[fkennl_tab]" action="" fullName="psi_out[fkennl_tab]" label="psi_out" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi_out" disabled="psi_out_disabled[fkennl_tab]" action="" fullName="psi_out[fkennl_tab]" label="psi_out" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi_out" disabled="psi_out_disabled[fkennl_tab]" action="" fullName="psi_out[fkennl_tab]" label="psi_out" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="psi_out" disabled="psi_out_disabled[fkennl_tab]" action="" fullName="psi_out[fkennl_tab]" label="psi_out" length="9" type="double">
+<intens:Value>   1.6822</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>Eta</intens:Value>
+</intens:Label>
+<intens:Textfield name="eta" disabled="eta_disabled[1,fkennl_tab]" action="" fullName="eta[1,fkennl_tab]" label="eta" length="8" type="double">
+<intens:Value>       0</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta" disabled="eta_disabled[1,fkennl_tab]" action="" fullName="eta[1,fkennl_tab]" label="eta" length="8" type="double">
+<intens:Value> 33.4059</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta" disabled="eta_disabled[1,fkennl_tab]" action="" fullName="eta[1,fkennl_tab]" label="eta" length="8" type="double">
+<intens:Value> 49.9359</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta" disabled="eta_disabled[1,fkennl_tab]" action="" fullName="eta[1,fkennl_tab]" label="eta" length="8" type="double">
+<intens:Value> 59.7973</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta" disabled="eta_disabled[1,fkennl_tab]" action="" fullName="eta[1,fkennl_tab]" label="eta" length="8" type="double">
+<intens:Value> 66.3468</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+<intens:FieldgroupLine>
+<intens:Label>
+<intens:Value>Eta_out</intens:Value>
+</intens:Label>
+<intens:Textfield name="eta_out" disabled="eta_out_disabled[fkennl_tab]" action="" fullName="eta_out[fkennl_tab]" label="eta_out" length="8" type="double">
+<intens:Value>       0</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta_out" disabled="eta_out_disabled[fkennl_tab]" action="" fullName="eta_out[fkennl_tab]" label="eta_out" length="8" type="double">
+<intens:Value> 33.4059</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta_out" disabled="eta_out_disabled[fkennl_tab]" action="" fullName="eta_out[fkennl_tab]" label="eta_out" length="8" type="double">
+<intens:Value> 49.9359</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta_out" disabled="eta_out_disabled[fkennl_tab]" action="" fullName="eta_out[fkennl_tab]" label="eta_out" length="8" type="double">
+<intens:Value> 59.7973</intens:Value>
+</intens:Textfield>
+<intens:Textfield name="eta_out" disabled="eta_out_disabled[fkennl_tab]" action="" fullName="eta_out[fkennl_tab]" label="eta_out" length="8" type="double">
+<intens:Value> 66.3468</intens:Value>
+</intens:Textfield>
+</intens:FieldgroupLine>
+</intens:Fieldgroup>
+<intens:MessageLine>
+</intens:MessageLine>
+<intens:Buttonbar>
+<intens:Button  pixmap="false" label="Serialize" action="func->Name()"/>
+<intens:Button  pixmap="false" label="Close" action="func->Name()"/>
+</intens:Buttonbar>
+</intens:Form>

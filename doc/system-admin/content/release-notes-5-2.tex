@@ -1,0 +1,143 @@
+\subsubsection{Release Notes 5.2}
+%           =================
+\label{sec:releasenotes-5-2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                        Release Notes 5.2                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The following features have been changed or added in Version 5.2:\\
+
+%%---------------------------------------------------------------
+\paragraph{5.2.16 (2025-05-21)}  % af12461ebce4835961c4208a868b244ca576771b
+
+%%---------------------------------------------------------------
+\paragraph{5.2.15 (2025-03-06)}  % 7271e7f78ff72513db7fd0c6481694b6a086fb3d
+
+%%---------------------------------------------------------------
+\paragraph{5.2.14 (2025-01-20)}  % f7e2260c1523b3b7160056a05564d000101bbb04
+\begin{enumerate}
+\item \FOLDER{} option \BUTTON{} = \TRUE{} added.
+      See \nameref{dia:uifolderoptionlist} on page \pageref{dia:uifolderoptionlist}.
+\item Possibility to \MAP{} and \UNMAP{} a line or column of a \TABLE{} added.
+      See \nameref{dia:jobmapelement} on page \pageref{dia:jobmapelement}.
+\item \TABLE{} option \AUTOWIDTH{} added.
+      See \nameref{dia:uitbloption} on page \pageref{dia:uitbloption}.
+\item \FIELDGROUP{} field and \FIELDGROUP{} option \CLASS{} added.
+      See \nameref{dia:uifieldadditionalattributes} on page \pageref{dia:uifieldadditionalattributes}
+      \nameref{dia:uifieldoptions} on page \pageref{dia:uifieldoptions} and
+      \nameref{sec:uifieldgroupotions} on page \pageref{sec:uifieldgroupotions}.
+\item Added possibility to provide a title for a \MESSAGEBOX{}.
+      See \nameref{dia:messageboxstatement} on page \pageref{dia:messageboxstatement}.
+\item Added possibility to hide MenuButtons (PulldownMenu).
+      See \nameref{dia:jobunmapelement} on page \pageref{dia:jobunmapelement}.
+\item Added possibility to check \EDITABLE{} state of a \FIELDGROUP.
+      See \nameref{dia:jobeditableaction} on page \pageref{dia:jobeditableaction}.
+\item Option \FILE{} for \STREAM{} added.
+      See \nameref{dia:stoptionlist} on page \pageref{dia:stoptionlist}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.13 (2024-10-03)}  % 192416a352296fad301979ddcec16cdef2979d8b
+\begin{enumerate}
+\item Added possibility to check \EDITABLE{} state of a variable.
+      See \nameref{dia:jobeditableaction} on page \pageref{dia:jobeditableaction}.
+\item \LIST{} \FUNCTION{} is called when a \LIST{} is sorted differently, with \REASONSORT.
+      See \nameref{sec:uilist} on page \pageref{sec:uilist}
+      and \nameref{dia:reasonexpression} on page \pageref{dia:reasonexpression}.
+\item Added function statement \GETSORTCRITERIA.
+      See \nameref{dia:guimorestatement} on page \pageref{dia:guimorestatement}.
+\item \FIELDGROUP{} option \INDEX{} added.
+      See \nameref{sec:uifieldgroupotions} on page \pageref{sec:uifieldgroupotions}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.12 (2024-07-17)}  % 9356838ee53217a17e57b272f3843c1de6e5247e
+\begin{enumerate}
+\item Option \OMITACTIVATE{} for \MAP{} folder tab added.
+      See \nameref{dia:jobmapelement} on page \pageref{dia:jobmapelement}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.11 (2024-03-14)}  % 268a8249641e74fb8cc1f0f462d3025dc25ceb91
+\begin{enumerate}
+\item Function Expression \GETTEXT{} added
+      (see \nameref{dia:functionexpression} on page \pageref{dia:functionexpression}).
+\item Possibility added to \ENABLE{} and \DISABLE{} a \DIAGRAM{}
+      (see \nameref{dia:guistatement} on page \pageref{dia:guistatement} and
+       \nameref{sec:uinavigatorDiagram} on page \pageref{sec:uinavigatorDiagram}).
+\item Set \STYLESHEET{} of \FORM{} now possible
+      (see \nameref{dia:guimorestatement} on page \pageref{dia:guimorestatement}).
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.10 (2023-12-01)}  % 5fbd27be589c4cedb32c60234417abfae6add37a
+\begin{enumerate}
+\item WebApi: Alternate Background Color in Table and List GuiElements.
+\item PASTE webtens improved (performance).
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.9 (2023-11-10)}  % 00c5be5070f36f8a28703b7c8e5287b71bb76bbb
+\begin{enumerate}
+\item PASTE works with webtens.
+\item Error label in password dialog spans all columns.
+\item Improve jwt login.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.8 (2023-10-26)}  % 9bca5074292bec7225a70d22c9b656c527cf1c21
+\begin{enumerate}
+\item Fix bug in \TABLE{} > right click menu > Clear all.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.7 (2023-10-04)}  % bca29744b281aa450962599a460c97002d0a6bec
+\begin{enumerate}
+\item Dependencies added between input (\REQUEST) and output (\RESPONSE) \STREAM{}s of
+      \MESSAGEQUEUE{} \REQUEST{}s. \newline
+      \STREAM{}s can be excluded from dependencies using the option \NODEPENDENCIES{}
+      (see \nameref{dia:jobmessagequeueoption} on page \pageref{dia:jobmessagequeueoption} or
+      \nameref{dia:jobpluginoption} on page \pageref{dia:jobpluginoption}).
+\item Commandline option defaultMessageQueueDependencies added (default: true)
+      See \nameref{sec:cloptions} on page \pageref{sec:cloptions}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.6 (2023-09-13)}  % 7cf6ca36aa2210d52d9284734f5c5968f85fd789
+\begin{enumerate}
+\item Fix bug in \TABLE{} > right click menu > Clear selected rows/columns.
+\item Added Clear to \TABLE{} > bottom right > right click menu.
+      See \nameref{par:uitablemenubottomright} on page \pageref{par:uitablemenubottomright}.
+\item Added function statement \BEEP.
+      See \nameref{dia:systemstatement} on page \pageref{dia:systemstatement}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.5 (2023-07-26)}  % 7086fb3850e6fadf40b8415f80588599f62c98d3
+\begin{enumerate}
+\item Fix table layout problem.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.4 (2023-04-04)}  % 175b192cf5d584d2c209852b513e4546800b091e
+
+%%---------------------------------------------------------------
+\paragraph{5.2.3 (2023-03-21)}  % ae538885c3613a3b1c185dd3f69aa001e10f9ad2
+
+%%---------------------------------------------------------------
+\paragraph{5.2.2 (2023-03-08)}  % 0361e23af2b9c242447cdfe3c0430121d9cb95c2
+\begin{enumerate}
+\item Added \RESTJWTLOGON.
+      See \nameref{dia:restServiceaction} on page \pageref{dia:restServiceaction}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.2.1 (2023-01-19)}  % 2e98bc149366caadad6e845ae33b36208b1cca5e
+
+%%---------------------------------------------------------------
+\paragraph{5.2.0 (2022-11-24)}  % d9b17ffe874a6582cad3edba04f676e6c7f43632
+\begin{enumerate}
+\item \FOLDER{} button option \HIDDEN{} added.
+      See \nameref{dia:uifolderbutton} on page \pageref{dia:uifolderbutton}.
+\end{enumerate}
+%%
+%%---------------------------------------------------------------

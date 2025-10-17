@@ -1,0 +1,54 @@
+DESCRIPTION "Example LISTPLOT";
+
+DATAPOOL
+  REAL { EDITABLE }
+    iMag
+  , psiMag
+  , speed
+  , i2
+  , torque
+  , i1
+  , cos
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+LISTPLOT
+  curve_plot{ "Plot" } (
+    ( magn_curve {"Magnetizing curve", XAXIS =iMag}
+      ( psiMag{"[Vs]"} ),
+      x_i2 {"Rotor current", XAXIS =speed*60{"1/min"} }
+      (i2{"[A]"} )
+    )
+  , ( x_torque{"Induction Motor", XAXIS =speed*60{"1/min"} }
+      ( torque*1e-3{"[kNm]"}, i1{"[A]"}, cos )
+    )
+  )
+;
+FORM
+  curve_form { "Listplot" } (
+    curve_plot
+  )
+;
+END UI_MANAGER;
+
+FUNCTIONS
+FUNC
+  INIT {
+    INTEGER i;
+    i=0;
+    WHILE ( i < 100 ) {
+      iMag[i] =   i;
+      psiMag[i] = i;
+      speed[i] =  i;
+      i2[i] =     i;
+      torque[i] = i;
+      i1[i] =     i;
+      cos[i] =    COS(i);
+      i++;
+    }
+  }
+;
+END FUNCTIONS;
+
+END.

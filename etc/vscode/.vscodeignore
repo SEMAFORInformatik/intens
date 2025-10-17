@@ -1,0 +1,6 @@
+tsconfig.json
+scripts
+src
+*.vsix
+.vscode
+.gitignore

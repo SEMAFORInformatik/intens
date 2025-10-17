@@ -1,0 +1,92 @@
+//
+//  Purpose: INTENS description file for SCIM.
+//
+
+DESCRIPTION "SCIM " & _VERSION_;
+
+#include <datapool.inc>
+
+// DATAPOOL generated for persistent objects
+// BEGIN BLOCK COMPONENT
+//#include <g_<component>_datapool.inc>
+// END BLOCK COMPONENT
+#include <g_motor_datapool.inc>
+
+//#include <user/user.inc>
+//#include <approval_report/approval_report.inc>
+#include <result/result_datapool.inc>
+#include <result/result_uiManager.inc>
+
+#include <calculation_interface.inc>
+
+UI_MANAGER
+#include <common/common_uiManager.inc>
+#include <python_logger/python_logger_uiManager.inc>
+#include <logbook/logbook_uiManager.inc>
+#include <variant/variant_uiManager.inc>
+#include <project/project_uiManager.inc>
+#include <modifications/modifications_uiManager.inc>
+#include <used_in_projects/used_in_projects_uiManager.inc>
+#include <element_rename/element_rename_uiManager.inc>
+
+// BEGIN BLOCK COMPONENT
+//#include <<component>/<component>_uiManager.inc>
+// END BLOCK COMPONENT
+#include <short_circuit/short_circuit_uiManager.inc>
+#include <motor/motor_uiManager.inc>
+
+#include <main_window/main_window_uiManager.inc>
+
+END UI_MANAGER;
+
+STREAMER
+
+// BEGIN BLOCK COMPONENT
+//#include <<component>/<component>_streamer.inc>
+// END BLOCK COMPONENT
+#include <motor/motor_streamer.inc>
+
+#include <variant/variant_streamer.inc>
+#include <common/common_streamer.inc>
+#include <logbook/logbook_streamer.inc>
+#include <python_logger/python_logger_streamer.inc>
+END STREAMER;
+
+OPERATOR
+#include <common/common_operator.inc>
+#include <python_logger/python_logger_operator.inc>
+#include <logbook/logbook_operator.inc>
+
+// BEGIN BLOCK COMPONENT
+//#include <<component>/<component>_operator.inc>
+// END BLOCK COMPONENT
+#include <motor/motor_operator.inc>
+
+#include <variant/variant_operator.inc>
+#include <element_rename/element_rename_operator.inc>
+END OPERATOR;
+
+FUNCTIONS
+#include <g_project_functions.inc>
+
+// BEGIN BLOCK COMPONENT
+//#include <<component>/<component>_functions.inc>
+// END BLOCK COMPONENT
+#include <short_circuit/short_circuit_functions.inc>
+#include <motor/motor_functions.inc>
+
+#include <component/component_functions.inc>
+#include <common/common_functions.inc>
+#include <python_logger/python_logger_functions.inc>
+#include <modifications/modifications_functions.inc>
+#include <variant/variant_functions.inc>
+#include <project/project_functions.inc>
+#include <used_in_projects/used_in_projects_functions.inc>
+#include <element_rename/element_rename_functions.inc>
+#include <logbook/logbook_functions.inc>
+END FUNCTIONS;
+
+#include <menu/menu.inc>
+
+
+END.

@@ -1,0 +1,9 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Label {
+  GuiElement base = 1;
+  string icon = 2;
+  string label = 3;
+}

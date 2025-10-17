@@ -1,0 +1,1582 @@
+\newpage
+\subsection{FUNCTIONS}
+\label{sec:functions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Description                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Description}
+\label{sec:fudescription}
+Functions are mostly used to check user input (see section \nameref{sec:datapool} on page \pageref{sec:datapool}). \\
+
+\input{diagrams/functions_description}
+\input{diagrams/job_function_declaration}
+\index{FUNCTIONS@\FUNCTIONS}
+\index{FUNC@\FUNC}
+
+\input{diagrams/job_option}
+
+\label{sec:funcoptions}
+\index{SILENT@\SILENT!function attributes}
+\index{UPDATE\_FORMS@\UPDATEFORMS!function attributes}
+\index{NONE@\NONE!function attributes}
+\index{PRIORITY@\PRIORITY!function attributes}
+\index{HIGH@\HIGH!function attributes}
+\index{PROTO@\PROTO!function attributes}
+\begin{tabularx}{\textwidth}{l|X}
+option & description \\
+\hline
+\SILENT            & The functions write nothing to the log window (except \PRINT{}, \SETERROR{} and \ABORT{} messages),
+                     the status line and no busy cursor appears. \\
+\UPDATEFORMS=\NONE & The forms are not updated when the function is done. \\
+\PRIORITY=\HIGH    & When a user action, a message queue message, a timer starts a function
+                     and another function is already running, the new function is normally added
+                     at the end of the function queue: it will run after all other waiting
+                     functions finished. \newline
+                     This option adds the function at the beginning of the function queue: it will
+                     run before the other waiting functions. \\
+\PROTO             & TODO. \\
+\end{tabularx}
+
+\input{diagrams/job_function}
+
+\label{sec:funcidentifiers}
+\index{FUNCTIONS@\FUNCTIONS!\INIT}
+\index{FUNCTIONS@\FUNCTIONS!\QUIT}
+\index{FUNCTIONS@\FUNCTIONS!\ONCYCLEEVENT}
+\index{FUNCTIONS@\FUNCTIONS!\ONCYCLESWITCH}
+\index{FUNCTIONS@\FUNCTIONS!\AFTERUPDATEFORMS}
+\index{INIT@\INIT!function identifier}
+\index{QUIT@\QUIT!function identifier}
+\index{ON\_CYCLE\_EVENT@\ONCYCLEEVENT!function identifier}
+\index{ON\_CYCLE\_SWITCH@\ONCYCLESWITCH!function identifier}
+\index{AFTER\_UPDATE\_FORMS@\AFTERUPDATEFORMS!function identifier}
+
+The following function identifiers have a special meaning.
+If they are defined, INTENS calls these functions automatically in certain situations.
+
+As of version 5.2.1, INTENS no longer calls these functions after cycle statements
+(see section \nameref{fu:cycle:statement} on page \pageref{fu:cycle:statement}).
+
+\begin{tabularx}{\textwidth}{l|X}
+function identifier & description \\
+\hline
+\INIT             & \begin{itemize}[noitemsep,topsep=0pt,partopsep=0pt]
+                    \item at startup
+                    \item after clear cycle from Cycle Dialog
+                    \end{itemize} \\
+\QUIT             & \begin{itemize}
+                    \item before quitting INTENS
+                    \end{itemize}\\
+\ONCYCLEEVENT     & \begin{itemize}
+                    \item after cycle events (clear, delete, new, rename, switch)
+                    from Cycle Dialog\footnotemark[\value{footnote}].
+                    \end{itemize}
+                    Within the function, the event can be distinguished using
+                    \begin{itemize}
+                    \item \REASONCYCLECLEAR
+                    \item \REASONCYCLEDELETE
+                    \item \REASONCYCLENEW
+                    \item \REASONCYCLERENAME
+                    \item \REASONCYCLESWITCH
+                    \end{itemize} \\
+\ONCYCLESWITCH    & \begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
+                    \item after cycle events (delete, new, switch)
+                    from Cycle Dialog\footnotemark[\value{footnote}]
+                    \end{itemize} \\
+\AFTERUPDATEFORMS & \begin{itemize}
+                    \item after a gui update (after forms are updated)
+                    \end{itemize} \\
+\end{tabularx}
+
+\footnotetext{Menu Options > Cycle or ctrl-l}
+
+% \vspace{0.5cm}
+% See examples on page \pageref{releasenotesfuncinit}.
+
+\input{diagrams/job_local_variables}
+
+\Slanted{Job local variables} are defined just like \Slanted{data items}
+(see section \nameref{sec:dpitem} on page \pageref{sec:dpitem}).
+The only difference are the \Slanted{data variable attributes} which are not available
+for \Slanted{job local variables}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Statements                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Statements}
+\label{fustatements}
+\input{diagrams/job_statement}
+
+Function statements have the same syntax as task statements (OPERATOR section \nameref{sec:optasks}). \\
+
+\input{diagrams/job_single_statement}
+
+\input{diagrams/job_data_reference}
+\label{fu:data:reference}
+\index{VAR@\VAR!function command}
+\index{PARENT@\PARENT!function command}
+\index{DATASET\_TEXT@\DATASETTEXT!function command}
+\index{STRING\_DATE@\STRINGDATE!function command}
+\index{STRING\_TIME@\STRINGTIME!function command}
+\index{STRING\_DATETIME@\STRINGDATETIME!function command}
+\index{STRING\_VALUE@\STRINGVALUE!function command}
+\index{CURRENT\_TIME@\CURRENTTIME!function expression}
+\index{CURRENT\_DATE@\CURRENTDATE!function expression}
+\index{CURRENT\_DATETIME@\CURRENTDATETIME!function expression}
+\index{INPUT@\INPUT!function expression}
+\index{SOURCE@\SOURCE!function expression}
+\index{SOURCE2@\SOURCETWO!function expression}
+\index{THIS@\THIS!function expression}
+\index{BASE@\BASE!function expression}
+
+\begin{tabularx}{\textwidth}{l|X}
+statements        & description \\
+\hline
+\VAR(string-item) & references a datapool item element. \newline
+                    String dataitem contains the identifier of a data item.
+                    By changing the contents of string-item at runtime, specified datapool item is referenced. \\
+\PARENT           & references parent structure of \verb+job_expression+ \\
+\DATASETTEXT      & references the string of the \SET{} associated with the item (can only be
+                    used if the item has a \SET) \\
+{\bfseries STRING\_*}  & see section \nameref{fig:st_format_command} on page \pageref{fig:st_format_command} \\
+{\bfseries CURRENT\_*}  & references the current time, date or datetime \\
+\INPUT            & references the user input of the field that called the function \\
+\SOURCE           & references structure of data item, which was dragged or connected. (see example on page \pageref{navigatordragndrop}) \\
+\SOURCETWO        & references second structure of data item, which was connected (see section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram}). \\
+\THIS             & references structure of data item, which called the function. (see \nameref{fuexample2} on page \pageref{fuexample2}, \pageref{navigatordragndrop}) \\
+\BASE             & references structure of called function. (see \nameref{fuexample3} on page \pageref{fuexample3}) \\
+\end{tabularx}
+
+
+\input{diagrams/job_data_identifier_options}
+\index{  @Signs / Characters!\texttt{"@} (at)!cycle number }
+
+\begin{tabularx}{\textwidth}{l|X}
+statements & description \\
+\hline
+{\verb+indexes+} & references a specific element of a (possibly multidimensional) array \\
+{\verb+struct_reference_list+} & reference a specific element of a structure (i.E. motor.weight) \\
+{\bfseries @}    & reference an element in a specific \CYCLE \newline
+                   default is current \CYCLE \\
+\end{tabularx}
+
+\input{diagrams/job_data_indizes}
+\label{fu:data:indizes}
+
+\input{diagrams/job_data_struct_reference_list}
+\label{fu:data:struct:reference:list}
+
+\begin{tabularx}{\textwidth}{l|X}
+statements        & description \\
+\hline
+\VAR(string-item) & references a datapool item element. \newline
+                    String dataitem contains the identifier of a data item.
+                    By changing the contents of string-item at runtime, specified datapool item is referenced. \newline
+                    Note: only one \VAR{} is allowed in a \verb+job_data_reference+. \\
+\end{tabularx}
+
+
+
+\input{diagrams/data_statement}
+
+\label{fu:data:statement}
+\index{  @Signs / Characters!=!function statement}
+\index{  @Signs / Characters!++!function statement}
+\index{  @Signs / Characters!+=!function statement}
+\index{  @Signs / Characters!- -!function statement}
+\index{CLEAR@\CLEAR!function statement}
+\index{ERASE@\ERASE!function statement}
+\index{PACK@\PACK!function statement}
+\index{ROW@\ROW!function statement}
+\index{COL@\COL!function statement}
+\index{SIZE@\SIZE!function statement}
+\index{DATASIZE@\DATASIZE!function statement}
+\index{INDEX@\INDEX!function statement}
+\index{COMPARE@\COMPARE!function statement}
+\index{ASSIGN\_CORR@\ASSIGNCORR!function statement}
+\index{SET\_RESOURCE@\SETRESOURCE!function statement}
+\index{COMPOSE@\COMPOSE!function statement}
+\index{ASSIGN\_CONSISTENCY@\ASSIGNCONSISTENCY!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+data statement    & description \\
+\hline
+{\verb+job_data_reference+}& references a (possibly indexed) datapool element. \\
+\CLEAR            & clears all values of the specified datapool item elements. \\
+{\bfseries ID\_TEXTWINDOW} & clears the content of the text window.
+                    (see section \nameref{sec:uitextwindow} on page \pageref{sec:uitextwindow}) \\
+\STDWINDOW        & clears the content of the text window \STDWINDOW.
+                    (see section \nameref{sec:uitextwindow} on page \pageref{sec:uitextwindow}) \\
+\LOGWINDOW        & clears the content of the text window \LOGWINDOW.
+                    (see section \nameref{sec:uitextwindow} on page \pageref{sec:uitextwindow}) \\
+\ERASE            & clears all values and attributes (color, etc.) of the specified datapool item elements. \\
+\PACK             & removes empty entries \newline
+                    {\verb+job_data_reference+} should have wildcard(s) (nothing is done otherwise). \newline
+                    The wildcard(s) specify the dimension on which \PACK{} operates. \\
+\ROW              & (=default) with two wildcards, empty rows (first wildcard) are removed. \\
+\COL              & with two wildcards, empty columns (second wildcard) are removed. \\
+\SIZE             & stores the number of elements of the first argument into the second. \newline
+                    When the first argument has multiple dimentions (on the last level), the
+                    second stores a list of sizes: \newline
+                    data.value[2,3] = 0; \SIZE(data.value, size); -> size[0] is 3, size[1] is 4. \newline
+                    The first argument may have wildcards. The second argument gets the size of every
+                    wildcard: \SIZE(data[*].value[*,*], size); -> size[0] is size of data, size[1] is size of
+                    first dimension of data.value, size[2] is size of second dimension of data.value \\
+\DATASIZE         & stores the size of the first argument (number of characters when written as JSON) into the second. \newline
+                    \TRANSIENT{} items are ignored (not counted) \newline
+                    Can be used to know the data size of an object before if is sent to the database. \\
+\INDEX            & \INDEX{} is used to know the index of the field that called the function. \newline
+                    stores up the index of the first argument into the second. \newline
+                    The first argument may be \THIS, \PARENT(\THIS), \PARENT(\PARENT(\THIS)), etc., \BASE. \newline
+                    Example: data[2].value[3] was changed on the GUI and a function was called.
+                    After {\verb+INDEX(THIS, idx);+}, idx is 2. \newline
+                    See \nameref{dia:dataexpression} on page \pageref{dia:dataexpression}
+                    and \nameref{dia:functionexpression} on page \pageref{dia:functionexpression}
+                    for other \INDEX{} expressions. \\
+\COMPARE          & compare structure data. All arguments must be of the same data type (usually a Structure).
+                    With a third argument, the second and third arguments are compared.
+                    Without a third argument, the values of the second argument in all cycles are compared. \newline
+                    The result is written to the first argument. It can be used in
+                    \begin{itemize}
+                      \item a NAVIGATOR with the option \COMPARE{}
+                        (see section \nameref{sec:uinavigator} on page \pageref{dia:uinavigatoroptionlist}).
+                      \item the compare dialog: fill COMPAREDIALOG struct and call MAP ( COMPARE\_DIALOG );
+                    \end{itemize} \\
+\ASSIGNCORR       & assign corresponding elements from second argument structure to first argument structure. \\
+\SETRESOURCE      & Set value of a resource property (with name {\bfseries string}). \newline
+                    The value is written to the user resource file when the \INTENS{} application
+                    is quit or when \WRITESETTINGS{} is called.
+                    It can then be used when the \INTENS{} application is started next time(s). \\
+\COMPOSE          & Compose string: write values into string. Needed for translatable strings. \newline
+                    The (format-)string (first argument) contains \%1, \%2, ... and the value(s) of the
+                    corresponding data reference is put in these places. \newline
+                    Up to 15 values are implemented. \\
+\ASSIGNCONSISTENCY & Assign the (value of the) second argument to the first. \newline
+                    \INVALID: clear the first arguments value. \newline
+                    Then, clear all dependent results
+                    (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}). \\
+\end{tabularx}
+
+\input{diagrams/file_statement}
+
+\index{OPEN@\OPEN!function statement}
+\index{LOAD@\LOAD!function statement}
+\index{SAVE@\SAVE!function statement}
+\index{SERIALIZE@\SERIALIZE!function statement}
+\index{SERIALIZE\_FORM@\SERIALIZEFORM!function statement}
+\index{WRITE\_SETTINGS@\WRITESETTINGS!function statement}
+\index{XML@\XML!function statement option}
+\index{JSON@\JSON!function statement option}
+\index{PROTO@\PROTO!function statement option}
+\begin{tabularx}{\textwidth}{l|X}
+data statement          & description \\
+\hline
+\OPEN                   & Read a file and write its content to the \DATAPOOL{}. \newline
+                          The \STREAM{} of the \FILESTREAM{} (first argument) defines
+                          the files format and the variables to write to. \newline
+                          Opens the file OPEN dialog unless the filename
+                          is given as the second argument.\\
+\verb+job data reference+ & string item containing the filename \\
+                        & No file selection dialog window is opened and
+                          the \OPEN{} or \SAVE{} operation is done using this filename. \\
+                        & References a data item declared in the datapool
+                          (section \nameref{sec:tempdatareference} page \pageref{sec:tempdatareference}). \\
+\LOAD                   & Parse the content of the \STRING{} data reference. \\
+\SAVE                   & Saves the contens of the first argument to a file. \newline
+                          Opens the file SAVE dialog window unless the filename
+                          is given as the second argument. \\
+{\bfseries ID\_STREAM}  & Saves the content of the stream.
+                          (see section \nameref{sec:streamer} on page \pageref{sec:streamer}) \\
+{\bfseries ID\_REPORTSTREAM}  & Saves the content of the reportstream.
+                          (see section \nameref{sec:reportstreams} on page \pageref{sec:reportstreams}) \\
+{\bfseries ID\_TEXTWINDOW}    & Saves the content of the text window.
+                          (see section \nameref{sec:uitextwindow} on page \pageref{sec:uitextwindow}) \\
+\STDWINDOW              & Saves the content of the text window \STDWINDOW.
+                          (see section \nameref{sec:uitextwindow} on page \pageref{sec:uitextwindow}) \\
+\LOGWINDOW              & Saves the content of the text window \LOGWINDOW.
+                          (see section \nameref{sec:uitextwindow} on page \pageref{sec:uitextwindow}) \\
+\SERIALIZE              & Writes the definition and content of a ui element to a file. \\
+\SERIALIZEFORM          & TODO \\
+\WRITESETTINGS          & Write settings to user resource file now - as done when the \INTENS{} application is quit. \\
+\XML                    & Use \XML{} format. \\
+\JSON                   & Use \JSON{} format. \\
+\PROTO                  & TODO. \\
+\end{tabularx}
+
+\input{diagrams/set_statement}
+\input{diagrams/job_data_reference_boolean}
+
+These statements are used to dynamically change the attributes of DATAPOOL elements at runtime. \\
+\label{fu:set:statement}
+
+\index{SET@\SET!function statement}
+\index{SET!LOCK}
+\index{SET!EDITABLE}
+\index{SET!COLOR}
+\index{SET!COLORBIT}
+\index{SET!TIMESTAMP}
+\index{UNSET@\UNSET!function statement}
+\index{UNSET!LOCK}
+\index{UNSET!EDITABLE}
+\index{UNSET!COLORBIT}
+\index{UNSET!TIMESTAMP}
+\index{LOCK@\LOCK!function statement (set/unset)}
+\index{EDITABLE@\EDITABLE!function statement (set/unset)}
+\index{TIMESTAMP@\TIMESTAMP!function statement (set/unset)}
+\index{COLOR@\COLOR!function statement (set)}
+\index{COLORBIT@\COLORBIT!function statement (set/unset)}
+\index{FALSE@\FALSE!function statement (set/unset)}
+\index{TRUE@\TRUE!function statement (set/unset)}
+\index{TOUCH@\TOUCH!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+set statement    & description \\
+\hline
+{\verb+bool value+} & \TRUE{} or \FALSE. If omitted, TRUE is the default value. \SET{} FALSE is equivalent to \UNSET. \\
+\LOCK               & See \LOCKABLE{} attribute (section \nameref{dataitemattributes} page \pageref{dataitemattributes}). \\
+\EDITABLE           & See \EDITABLE{} attribute (section \nameref{dataitemattributes} page \pageref{dataitemattributes}). \\
+\TIMESTAMP          & Efects the modify status. (See also DB\_MANAGER MODIFY page \pageref{sec:dbmodify}) \\
+\COLOR              & SET the color to corresponding value 1-8 (or 1 - 255 with the \NOCOLORBIT{} options). \\
+                    & Value 0 is used to reset color settings. \\
+                    & Previously set colors will be lost. \\
+\COLORBIT           & \SET{} the color to corresponding value 1-8. \\
+                    & \UNSET ting higher level color (smaller value), the item is displayed whith next lower lever color. \\
+\TOUCH              & Sets the attribute timestamp of \verb+job_data_reference+. This causes the next gui update
+                      to update the gui elements. \newline
+                      The data timestamp is not touched, so \verb+MODIFIED ( job_data_reference )+ stays at it was. \\
+%%                    & See example at release notes page \pageref{relnotescolorbit}. \\
+\end{tabularx}
+
+\input{diagrams/gui_statement}
+\input{diagrams/job_map_element}
+\input{diagrams/job_unmap_element}
+\label{fu:gui:statement}
+\label{key:map_form}
+\index{UPDATE\_FORMS@\UPDATEFORMS!function statement}
+\index{UI\_UPDATE@\UIUPDATE!function statement}
+\index{MAP@\MAP!function statement}
+\index{OMIT\_TTRAIL@\OMITTTRAIL!function statement option}
+\index{OMIT\_ACTIVATE@\OMITACTIVATE!function statement option}
+\index{UNMAP@\UNMAP!function statement}
+\index{ALLOW@\ALLOW!function statement}
+\index{DISALLOW@\DISALLOW!function statement}
+\index{ENABLE@\ENABLE!function statement}
+\index{DISABLE@\DISABLE!function statement}
+\index{CYCLE@\CYCLE!function statement option}
+
+\input{diagrams/gui_more_statement}
+\input{diagrams/job_get_selection_element}
+\input{diagrams/job_set_stylesheet_element}
+\index{RANGE@\RANGE!function statement}
+\index{SELECT\_LIST@\SELECTLIST!function statement}
+\index{GET\_SELECTION@\GETSELECTION!function statement}
+\index{CLEAR\_SELECTION@\CLEARSELECTION!function statement}
+\index{GET\_SORT\_CRITERIA@\GETSORTCRITERIA!function statement}
+\index{STYLESHEET@\STYLESHEET!function statement}
+\index{REPLACE@\REPLACE!function statement}
+
+\begin{tabularx}{\textwidth}{l|X}
+gui statement         & description \\
+\hline
+{\verb+identifier+}   & previously declared identifiers \\
+\UPDATEFORMS          & updates all forms \\
+\UIUPDATE             & Update a gui element. \\
+\MAP                  & shows the form, progressbar, folder tab, table line or gui element referenced by the identifier. \newline
+                        \OMITTTRAIL : The folder tab mapping is not handled by transactions (ABORT, UNDO, ...). \newline
+                        \OMITACTIVATE : The folder tab button is visible again (after an \UNMAP), but not activated. \newline
+                        \verb+temp_data_reference+ : The value of a string variable is used as the identifier.
+                        This can be used to map something different in different situations. \newline
+                        To map a folder tab, use its {\bfseries ID\_FOLDERGROUP} or the identifier of the \FOLDER{},
+                        followed by a \verb+:+ and the tab index (as a integer or a variable) \newline
+                        To map a table line, the second argument is the data reference shown in that table line,
+                        including the wildcards, as given in the \TABLE{} definition. \\
+\UNMAP                & closes (form, progressbar) or hides (folder tab, table line, gui element) specified element. \newline
+                        \verb+temp_data_reference+ : The value of a string variable is used as the identifier.
+                        This can be used to map / unmap something different in different situations. \newline
+                        It is possible to unmap (hide) menu entries. Here are a few examples:
+                        \begin{itemize}
+                        \item "File->Open"
+                        \item "File->Save"
+                        \item "File->Print"
+                        \item "Option"
+                        \item "Help->Copyright"
+                        \end{itemize} \\
+\ALLOW                & mapping, opening or execution of specified identifier is allowed. \\
+\DISALLOW             & mapping, opening or execution of specified identifier is not allowed (Menu buttons are gray). \\
+\ENABLE               & input fields (data items) or menu items are enabled (editable, choosable). \\
+\DISABLE              & input fields (data items) or menu items are disabled (no entries are possible. Menu buttons are gray). \\
+\CYCLE                & Disable or enable all input fields of a cycle. \\
+{\bfseries ID\_INDEX} & previously declared index-object (page \pageref{sec:uiindex}) is set to expression. \\
+\RANGE                & Set range of previously declared \FIELDGROUP{} (with option \TABLESIZE) (see section \nameref{sec:uifieldgroupotions}
+                        on page \pageref{sec:uifieldgroupotions}) to the interval [first job\_expression, second job\_expression].
+                        This may also reduce the number of rows/lines shown to less than \TABLESIZE{} if the \FIELDGROUP{} has the option \STRETCH{}. \\
+\SELECTLIST           & Select the line(s) defined in the second argument (array with integer index(es)) in the \LIST{}, the \TABLE{} or the \NAVIGATOR. \\
+\GETSELECTION         & \LIST{} and \NAVIGATOR: write the selected row(s) index(es) to the second argument (array with integer index(es)). \newline
+                        \TABLE: write the selected cell(s) row and column index(es) to the second (rows) and third (cols)
+                        arguments (array with integer index(es)). \newline
+                        When (at least) one complete row and/or column is selected, the index(es) of all completely selected row(s) and/or column(s) are writen to the
+                        second (rows) and third (cols). \newline
+                        \PLOTTWOD: write the coordinates (x and y), the y-axis type (1 or 2) and the y-axis title of the
+                        selected points to the arguments (x, y, axisType, axisLabel). \\
+\CLEARSELECTION       & \LIST, \TABLE{} and \NAVIGATOR: unselect all elements \\
+\GETSORTCRITERIA      & \LIST: write the current sort criteria to the variable (job\_data\_reference) \\
+\STYLESHEET           & To customize their look, you can set the Qt Style Sheet (qss) string of a gui element or a data reference.
+                        The second argument (a data reference), contains the string.
+                        With a data reference, the qss string is passed to the gui field showing that data reference. \newline
+                        Example (gui element): use a picture as the background of a \PLOTTWOD: \newline
+                        \verb+"QwtPlotCanvas{background-repeat: no-repeat; border-image: url(./bitmaps/fans/xy.png) 0 0 0 0 stretch stretch;}"+ \newline
+                        Example (data reference): show a data item with bold font: \newline
+                        \verb+"QLineEdit{font-weight:bold;}"+ \\
+\REPLACE              & Replace the first gui element by the second. \\
+\end{tabularx}
+
+\input{diagrams/job_enable_disable_cycle}
+
+\input{diagrams/cycle_statement}
+\label{fu:cycle:statement}
+
+\index{NEWCYCLE@\NEWCYCLE!function statement}
+\index{FIRSTCYCLE@\FIRSTCYCLE!function statement}
+\index{LASTCYCLE@\LASTCYCLE!function statement}
+\index{NEXTCYCLE@\NEXTCYCLE!function statement}
+\index{CLEARCYCLE@\CLEARCYCLE!function statement}
+\index{DELETECYCLE@\DELETECYCLE!function statement}
+\index{GOCYCLE@\GOCYCLE!function statement}
+\index{CYCLENAME@\CYCLENAME!function statement}
+
+The cycle statement is used to make a copy of the entire datapool, switch between cycles, delete a cycle, etc.\\
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{l|X}
+cycle statement   & description \\
+\hline
+\FIRSTCYCLE       & switches to the first cycle\\
+\LASTCYCLE        & switches to the last cycle\\
+\NEXTCYCLE        & switches to the next cycle. If already in last cycle, a new cycle is created.\\
+\CLEARCYCLE       & clears all values of recent cycle whithout removing it. And executes INIT-function. \\
+\DELETECYCLE      & deletes current cycle (as long as another one remains)\\
+\GOCYCLE          & switches to cycle no. '(int)' \\
+\NEWCYCLE         & creates a new cycle (with optional name)\\
+\CYCLENAME        & sets name of current or specified cycle\\
+\end{tabularx}
+
+
+\input{diagrams/print_statement}
+
+\label{fu:print:statement}
+\index{PRINT@\PRINT!function statement}
+\index{SET\_MSG@\SETMSG!function statement}
+\index{LOG@\LOG!function statement}
+\index{DEBUG@\DEBUG!LOG statement!log level}
+\index{INFO@\INFO!LOG statement!log level}
+\index{WARN@\WARN!LOG statement!log level}
+\index{ERROR@\ERROR!LOG statement!log level}
+\index{FATAL@\FATAL!LOG statement!log level}
+\index{REPORT@\REPORT!function statement}
+\index{PREVIEW@\PREVIEW!function statement}
+\index{STD\_WINDOW@\STDWINDOW!PRINT statement}
+\index{LOG\_WINDOW@\LOGWINDOW!PRINT statement}
+\index{PRINT\_LOG@\PRINTLOG!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+print statement  & description \\
+\hline
+\PRINT           & Prints its arguments to \LOGWINDOW. \\
+\SETMSG          & Text to be printed after execution. \\
+\LOG             & Log a message with the given level. \\
+\REPORT          & Opens the printer dialog to print, save or preview the specified reportstream. \\
+\PREVIEW         & Creates and opens the report (i.E. using a pdf reader). \\
+\end{tabularx}
+
+
+\input{diagrams/error_statement}
+
+\label{fu:error:statement}
+\index{SET\_ERROR@\SETERROR!function statement}
+\index{ABORT@\ABORT!function statement}
+\index{RESET\_ERROR@\RESETERROR!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+error statement & description \\
+\hline
+\SETERROR       & prints its arguments to a dialog window. \\
+\ABORT          & works like \SETERROR{} and aborts the running task immediately. \\
+\RESETERROR     & resets error setting. \\
+\end{tabularx}
+
+
+\input{diagrams/exit_statement}
+
+\label{fu:exit:statement}
+\index{EXIT@\EXIT!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+exit statement  & description \\
+\hline
+\EXIT           & quit INTENS execution. \\
+\end{tabularx}
+
+
+\input{diagrams/system_statement}
+
+\label{fu:system:statement}
+\index{BEEP@\BEEP!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+system statement  & description \\
+\hline
+\BEEP           & play a system beep. \\
+\end{tabularx}
+
+
+\input{diagrams/messagebox_statement}
+
+\index{MESSAGEBOX@\MESSAGEBOX!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+messagebox statement  & description \\
+\hline
+\MESSAGEBOX           & Displays a messagebox with an OK-Button. \newline
+                        The first job\_expression provides the message to be displayed. \newline
+                        You can optionally provide the title as the second job\_expression.
+                        The default title is ``Inform''. \\
+\end{tabularx}
+
+
+\input{diagrams/run_statement}
+\input{diagrams/job_run_action}
+\label{fu:run:statement}
+
+\index{RUN@\RUN!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+run statement  & description\\
+\hline
+\RUN           & Starts the process group, function, task referenced by the identifier\\
+\verb+temp_data_reference+ & The value of a string variable is used as the identifier.
+                 This can be used to run something different in different situations. \\
+\end{tabularx}
+
+\input{diagrams/return_statement}
+
+\label{fu:return:statement}
+\index{RETURN@\RETURN!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+return statement  & description \\
+\hline
+\RETURN           & exits the function back to calling instance. \\
+\end{tabularx}
+
+
+\input{diagrams/send_statement}
+\input{diagrams/send_action}
+
+\label{fu:send:statement}
+\index{SEND@\SEND!send statement}
+\index{HOST@\HOST!send statement}
+\index{PORT@\PORT!send statement}
+\index{HEADER@\HEADER!send statement}
+\index{STREAM@\STREAM!send statement}
+\begin{tabularx}{\textwidth}{l|X}
+send statement & description \\
+\hline
+\HOST          & host name or ip address. \\
+\PORT          & host port number. \\
+\HEADER        & header string. \\
+\STREAM        & data. \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Send hhHEADERddddddddDATA using tcp to host:port. \\
+
+\begin{tabularx}{\textwidth}{l|X}
+hh       & number of characters of HEADER \\
+dddddddd & number of characters of DATA \\
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            TIMER                                      %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+Timer statements are used to start and stop a timer.
+See \nameref{sec:optimer} on page \pageref{sec:optimer}
+and \nameref{sec:opexamples:messagequeue:publishsubscribe}
+on page \pageref{sec:opexamples:messagequeue:publishsubscribe}. \\[2ex]
+
+\input{diagrams/timer_statement}
+\input{diagrams/job_timer_options}
+\index{START@\START!timer function statement}
+\index{STOP@\STOP!timer function statement}
+\index{TIMER@\TIMER!timer function option}
+\index{PERIOD@\PERIOD!timer function option}
+\index{DELAY@\DELAY!timer function option}
+
+\vspace{0.5cm}
+\begin{tabularx}{\textwidth}{l|X}
+timer statement  & description \\
+\hline
+\START           & Start the timer. \\
+\STOP            & Stop the timer. \\
+\hline
+{\bfseries ID\_TIMER}  & The timer to start or stop. \\
+\PERIOD{} = n    & The timer calls its function every n seconds. \newline
+                   Default is 60 seconds. \newline
+                   \PERIOD{} = 0: call the function once, without \DELAY. \\
+\DELAY{} = n     & The timer starts to call its function after n seconds. \newline
+                   Default is 0: start to call the function after \PERIOD{} seconds. \\
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            MESSAGEQUEUE                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\input{diagrams/message_queue_statement}
+\input{diagrams/message_queue_action}
+\input{diagrams/job_message_queue_option}
+\input{diagrams/job_plugin_option}
+
+\index{REQUEST@\REQUEST!message queue function statement}
+\index{PUBLISH@\PUBLISH!message queue function statement}
+\index{SUBSCRIBE@\SUBSCRIBE!message queue function statement}
+\index{SET\_MQ\_HOST@\SETMQHOST!message queue function statement}
+\index{MESSAGE\_QUEUE@\MESSAGEQUEUE!message queue function option}
+\index{PLUGIN@\PLUGIN!message queue function option}
+\index{REQUEST@\REQUEST!message queue function option}
+\index{RESPONSE@\RESPONSE!message queue function option}
+\index{DEPENDENCIES@\DEPENDENCIES!message queue function option}
+\index{NO\_DEPENDENCIES@\NODEPENDENCIES!message queue function option}
+\index{HEADER@\HEADER!message queue function option}
+\index{TIMEOUT@\TIMEOUT!message queue function option}
+\index{AUTOCLEAR\_DEPENDENCIES@\AUTOCLEARDEPENDENCIES!message queue function option}
+\index{FUNC@\FUNC!message queue function option}
+
+Message Queue statements are used to send data (a message) via ZeroMQ,
+to subscribe to a ZeroMQ publisher of a plugin or
+to set the \HOST of a \SUBSCRIBE{} \MESSAGEQUEUE{}
+(see section \nameref{sec:opmessagequeue} on page \pageref{sec:opmessagequeue}).
+A message can be sent to another program using a \MESSAGEQUEUE{} defined in the \OPERATOR.
+And it can be sent to a \PLUGIN{} defined in the \UIMANAGER{}
+(see section \nameref{sec:uiplugin} on page \pageref{sec:uiplugin}).
+
+The \SUBSCRIBE{} statement is used to subscribe to a \PLUGIN s publisher.
+
+\MESSAGEQUEUE{} or \PLUGIN{} as well as \HEADER{} are mandatory. The other options
+can be given as needed.
+
+See \nameref{sec:opexamples:messagequeue:publishsubscribe}
+on page \pageref{sec:opexamples:messagequeue:publishsubscribe}. \\[2ex]
+
+\begin{tabularx}{\textwidth}{l|X}
+message queue statement & description \\
+\hline
+\REQUEST                & Send a request message. \\
+\PUBLISH                & Publish a message. \\
+\SUBSCRIBE              & Subscribe to a publisher of a plugin. \\
+\SETMQHOST              & Set the \HOST{} (second argument) of a \SUBSCRIBE{} \MESSAGEQUEUE{} (first argument).
+                          This can be done once for every \SUBSCRIBE{} \MESSAGEQUEUE{}, but only when its
+                          \HOST{} is set to "" (empty string) in the definition (in the \OPERATOR). \newline
+                          Setting the \HOST{} makes the \MESSAGEQUEUE{} subscribe to the publisher. \\
+\hline
+\MESSAGEQUEUE           & Send the message using this message queue. \\
+\PLUGIN                 & Send the message or subscribe to this plugin. \\
+\REQUEST                & \REQUEST: Stream(s) define the message(s) to send. \\
+\RESPONSE               & \REQUEST: The received message(s) is/are written to this/these stream(s). \newline
+                          \SUBSCRIBE: The received message(s) is/are written to this/these stream(s). \newline
+                          \PUBLISH: Stream(s) define the message(s) to publish. \\
+\DEPENDENCIES           & \REQUEST: This stream is used with dependencies. \newline
+                          Default, unless commandline option defaultMessageQueueDependencies false is used. \newline
+                          (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}) \\
+\NODEPENDENCIES         & \REQUEST: This stream is not used with dependencies. \newline
+                          (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}) \\
+\HEADER                 & Message header: first part of the message.
+                          The receiver uses it to identify the message type. \\
+\TIMEOUT                & \REQUEST: Number of seconds to wait for a connection to the receiver and its \RESPONSE. \newline
+                          Without this option, the \TIMEOUT{} of the \MESSAGEQUEUE{} is used (default = 10 seconds). \newline
+                          Set \TIMEOUT{} to 0 to have no \TIMEOUT. \\
+\AUTOCLEARDEPENDENCIES  & Dependencies are cleared without user confirmation.
+                          (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}) \\
+\FUNC                   & \SUBSCRIBE: Function to call after receiving the message. \\
+\end{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            DB STATEMENT                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\input{diagrams/database_statement}
+\label{fu:database:statement}
+\index{BEGINTRANSACTION@\BEGINTRANSACTION!database function statement}
+\index{COMMITTRANSACTION@\COMMITTRANSACTION!database function statement}
+\index{ABORTTRANSACTION@\ABORTTRANSACTION!database function statement}
+\index{SET\_DB\_TIMESTAMP@\SETDBTIMESTAMP!database function statement}
+
+\begin{tabularx}{\textwidth}{l|X}
+database statement      & description \\
+\hline
+\BEGINTRANSACTION       & TODO \\
+\COMMITTRANSACTION      & TODO \\
+\ABORTTRANSACTION       & TODO \\
+\SETDBTIMESTAMP         & Sets the database timestamp of \verb+job_data_reference+ to the data timestamp. \newline
+                          Afterwards, \verb+MODIFIED ( job_data_reference )+ returns false. \\
+\end{tabularx}
+
+
+\input{diagrams/if_statement}
+\label{fu:if:statement}
+\index{IF@\IF!function statement}
+\index{ELSE@\ELSE!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+if statement        & description \\
+\hline
+\IF                 & executes the \verb+statement+, if the \verb+expression+ is not 0 (true) \\
+\ELSE               & executes the \verb+statement+, if the if-expression was 0 (false) \\
+\end{tabularx}
+
+\input{diagrams/while_statement}
+\label{fu:while:statement}
+\index{WHILE@\WHILE!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+while statement  & description \\
+\hline
+\WHILE           & executes the \verb+statement+ while the \verb+expression+ is not 0 (true) \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Example:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\FUNCTIONS
+  \FUNC function_identifier \{
+    \IF( data_item_identifier_1 == 99 )\{
+       data_item_identifier_2 = "Error message" ;
+    \}
+    \WHILE( data_item_identifier_1 <= 99 )\{
+       data_item_identifier_1++ ;
+    \}
+  \}
+;
+\END \FUNCTIONS;
+\end{alltt}
+\end{boxedminipage}
+
+
+\input{diagrams/copy_paste_statement}
+\label{fu:copy:paste:statement}
+\index{COPY@\COPY!function statement}
+\index{PASTE@\PASTE!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+copy paste statement & description \\
+\hline
+\COPY                & Copies a streamable object (
+                       \hyperref[sec:uilist]{LIST},
+                       \hyperref[sec:uitable]{TABLE},
+                       \hyperref[sec:streamer]{STREAM}
+                       ) into the clipboard. \newline
+                       Or copies a screenshot of a
+                       \hyperref[dia:uiformelementidentifier]{\nameref{dia:uiformelementidentifier}}
+                       or a \hyperref[sec:uiform]{FORM}
+                       into the clipboard. \\
+\PASTE               & Pastes the clipboard to a streamable object (
+                       \hyperref[sec:uilist]{LIST},
+                       \hyperref[sec:uitable]{TABLE},
+                       \hyperref[sec:streamer]{STREAM}
+                       ). \\
+\end{tabularx}
+
+\newpage
+\input{diagrams/set_func_statement}
+
+These statements are used to change function attributes.
+
+When a function is called, \INTENS{} sets some attributes that can be used
+by the function to know why it was called. Sometimes, such a function should
+be called from another function and these attributes have to be changed so
+that the function does what is needed.
+
+Use these statements carefully as they may change the behaviour of the rest
+of the function, including possible parent functions.
+\\
+
+\index{SET\_THIS@\SETTHIS!function statement}
+\index{THIS@\THIS!function statement}
+\index{SET\_INDEX@\SETINDEX!function statement}
+\index{INDEX@\INDEX!function statement}
+\index{SET\_REASON@\SETREASON!function statement}
+\index{REASON@\REASON!function statement}
+\begin{tabularx}{\textwidth}{l|X}
+statement & description \\
+\hline
+\SETTHIS     & \THIS{} now references \verb+job_data_reference+. \newline
+               See \nameref{dia:jobdatareference} on page \pageref{dia:jobdatareference}. \\
+\SETINDEX    & Set \INDEX{} to the value of \verb+job_data_reference+. \newline
+               See \nameref{dia:dataexpression} on page \pageref{dia:dataexpression}. \\
+\SETREASON   & Set the \REASON{}. To set \REASONINPUT, do \newline
+               \verb+  s = ``INPUT'';+ \newline
+               \verb+  SET_REASON(s);+. \newline
+               See \nameref{fuexpressionsreason} on page \pageref{fuexpressionsreason}. \\
+\end{tabularx}
+
+\newpage
+\paragraph*{Rest Service}
+\label{par:restService}
+Intens knows the following actions to communicate with an INTENS db service (REST).
+
+\input{diagrams/restService_statement}
+\input{diagrams/restService_action}
+\input{diagrams/restService_responseStream}
+\input{diagrams/restService_get_option}
+\input{diagrams/restService_put_option}
+\input{diagrams/restService_post_option}
+\input{diagrams/restService_path}
+\label{fu:restService:statement}
+\index{GET@\GET!restService statement}
+\index{DELETE@\DELETE!restService statement}
+\index{PUT@\PUT!restService statement}
+\index{POST@\POST!restService statement}
+\index{PATH@\PATH!restService statement}
+\index{DATA@\DATA!restService statement}
+\index{SET\_DB\_TIMESTAMP@\SETDBTIMESTAMP!restService statement}
+\index{REST\_LOGON@\RESTLOGON!restService statement}
+\index{REST\_JWT\_LOGON@\RESTJWTLOGON!restService statement}
+\index{REST\_LOGOFF@\RESTLOGOFF!restService statement}
+\begin{tabularx}{\textwidth}{l|X}
+restService statement & description \\
+\hline
+\GET           & Send a GET request. \\
+\DELETE        & Send a DELETE request. \\
+\PUT           & Send a PUT request. \\
+\POST          & Send a POST request. \\
+\PATH          & Second part of the \Slanted{URL} the request is sent to.
+                 The first part is defined in the login dialog. It defaults to
+                 environment variable \Slanted{REST\_SERVICE\_BASE} or to the first
+                 value of the environment variable \Slanted{REST\_SERVICE\_BASE\_LIST}
+                 (list of urls separated by ';'). \newline
+                 {\bfseries ID\_STREAM}: use an \URL{} stream for percent-encoding \\
+\DATA          & Defines the stream that contains the data for \PUT{} and \POST{} requests. \\
+\FILTER        & Defines the stream that contains filter parameters for \GET{}, \DELETE{} and \POST{} requests.
+                 Valid entries are appended to the URL in the form
+                 name=value or name=(value[0],value[1], ...). \\
+\verb+ui xfer+ & Data item (see section \nameref{dia:uixfer} on page \pageref{dia:uixfer}). \\
+\SETDBTIMESTAMP & Update the database timestamp of \DATA{}. \\
+\RESTLOGON     & Set rest credentials. The three arguments are base url, username and password. \\
+\RESTJWTLOGON  & Set rest credentials. The two arguments are base url and jwt (json web token). \\
+\RESTLOGOFF    & Clear rest credentials. Login will appear with next \GET{}, \PUT{} or \DELETE{}. \\
+\end{tabularx}
+
+If an input stream is defined ({\bfseries ID\_STREAM =}), the results are written to it and the database
+timestamp of its data items is set. \\
+Username and password are automatically asked for when a \GET{}, \PUT{} or \DELETE{}
+request is called and the credentials are missing. They are kept in memory for later usage
+until the application is closed or \RESTLOGOFF{} is called in a function. They are also written
+to the environment variable REST\_SERVICE\_AUTHHEADER, i.E. to be used in \BATCH{} programms called
+from the application: base64 encoded ``<username>:<password>''.
+\vspace{0.5cm}
+
+Example:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\FUNCTIONS
+  \FUNC
+    getMotor \{
+      [motor] = \GET( \PATH="/components/123" );
+    \}
+  , saveMotor \{
+      [motor] = \PUT( \PATH="/components"
+                    , \DATA="motor_stream"
+                    , \SETDBTIMESTAMP );
+    \}
+  ;
+\END \FUNCTIONS;
+\end{alltt}
+\end{boxedminipage}
+
+\subparagraph*{Rest Service: Version control}
+\label{par:restServiceVersionControl}
+\index{REST\_SERVICE.APP\_VERSION\_MAJOR@\RESTSERVICEAPPVERSIONMAJOR!Rest Service: Version control}
+\index{REST\_SERVICE.APP\_VERSION\_MINOR@\RESTSERVICEAPPVERSIONMINOR!Rest Service: Version control}
+\index{REST\_SERVICE.APP\_VERSION\_PATCH@\RESTSERVICEAPPVERSIONPATCH!Rest Service: Version control}
+\index{REST\_SERVICE.DB\_VERSION\_MAJOR@\RESTSERVICEDBVERSIONMAJOR!Rest Service: Version control}
+\index{REST\_SERVICE.DB\_VERSION\_MINOR@\RESTSERVICEDBVERSIONMINOR!Rest Service: Version control}
+\index{REST\_SERVICE.DB\_VERSION\_PATCH@\RESTSERVICEDBVERSIONPATCH!Rest Service: Version control}
+\index{REST\_SERVICE.DB\_VERSION\_IGNORE@\RESTSERVICEDBVERSIONIGNORE!Rest Service: Version control}
+
+\def\DbVer{\keyword{database version}}
+\def\MinDbVer{\keyword{minimal database version}}
+\def\AppVer{\keyword{application version}}
+
+Sometimes, an INTENS application requires a \MinDbVer{} or the database requires a minimal
+INTENS \AppVer{}. Login to a database is not allowed when these requirements are not met.
+
+Here is how that version control works and how you can use it.
+
+The \DbVer{} is defined in a (single) component of type AppVersionCtrl (stored in the database)
+with the attribues
+\begin{itemize}
+\item app\_major (mandatory)
+\item app\_minor (optional, defaults to 0)
+\item app\_patch (optional, defaults to 0)
+\end{itemize}
+
+The \AppVer{} is defined using the \DATAPOOL{} variables
+\begin{itemize}
+\item REST\_SERVICE.APP\_VERSION\_MAJOR (mandatory)
+\item REST\_SERVICE.APP\_VERSION\_MINOR (optional, defaults to 0)
+\item REST\_SERVICE.APP\_VERSION\_PATCH (optional, defaults to 0)
+\end{itemize}
+
+The \MinDbVer{} is defined using the \DATAPOOL{} variables
+\begin{itemize}
+\item REST\_SERVICE.DB\_VERSION\_MAJOR (mandatory)
+\item REST\_SERVICE.DB\_VERSION\_MINOR (optional, defaults to 0)
+\item REST\_SERVICE.DB\_VERSION\_PATCH (optional, defaults to 0)
+\end{itemize}
+
+When none of these are set, there is no version control and login is allowed.
+
+Another possibility to disable version control is to set the \DATAPOOL{} variable
+
+\RESTSERVICEDBVERSIONIGNORE{} to a value > 0.
+
+Otherwise, version control is active and
+login is not allowed in any of the following situations:
+\begin{itemize}
+\item \DbVer{} or \AppVer{} are not set
+\item \AppVer{} < \DbVer{} \\
+      \DbVer{} defines the minimal \AppVer{} required
+\item \MinDbVer{} is set and \DbVer{} < \MinDbVer{} \\
+      \MinDbVer{} defines the minimal \DbVer{} required
+\end{itemize}
+
+So, to use the version control, you have to
+\begin{itemize}
+\item require a minimal INTENS \AppVer{} \\
+      Define \DbVer{} in the database and  \AppVer{} in the \DATAPOOL{}.
+      \AppVer{} must not be lower.
+\end{itemize}
+and you can additionally
+\begin{itemize}
+\item require a \MinDbVer{} \\
+      Define \MinDbVer{} in the \DATAPOOL{}. \DbVer{} must not be lower.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Expressions                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsubsection{Expressions}
+\label{fuexpressions}
+\input{diagrams/job_expression}
+
+\begin{tabularx}{\textwidth}{l|X}
+expression                   & description\\
+\hline
+{\verb+Data expression+}    & is called whithout any parameters. (Page \pageref{fuexpressionsdata})\\
+{\verb+Cycle expression+}   & is called whithout any parameters. (Page \pageref{fuexpressionscycle})\\
+{\verb+Function expression+}& must be acompanied by parameters put in parethesis. (Page \pageref{fuexpressionsfunctions})\\
+{\verb+Math expression+}    & calculates a value using parameter(s). (Page \pageref{fuexpressionsmath})\\
+{\verb+Filename expression+}& gives filename, basename or dirname of a parameter. (Page \pageref{fuexpressionsfilename})\\
+{\verb+Reason expression+}  & is used to test where the function itself is called from. (Page \pageref{fuexpressionsreason})\\
+\end{tabularx}
+
+%---------------------------------------------------------------------------%
+\input{diagrams/data_expression}
+\label{fuexpressionsdata}
+
+\index{EOLN@\EOLN!function expression}
+\index{INVALID@\INVALID!function expression}
+\index{OLDVALUE@\OLDVALUE!function expression}
+\index{INDEX@\INDEX!function expression}
+\index{COL@\COL!function expression}
+\index{ROW@\ROW!function expression}
+\index{DIAGRAMXPOS@\DIAGRAMXPOS!function expression}
+\index{DIAGRAMYPOS@\DIAGRAMYPOS!function expression}
+\index{ERROR@\ERROR!function expression}
+\index{  @Signs / Characters!\texttt{"!} (exclamation mark)!not}
+\index{  @Signs / Characters!- (hyphen)!negative value}
+
+\begin{tabularx}{\textwidth}{l|X}
+data expression & description\\
+\hline
+{\verb+real+}   & floating point number (constant) \\
+{\verb+integer+}& integer number (constant) \\
+{\verb+string+} & (see section \nameref{sec:string} on page \pageref{sec:string}) \\
+\EOLN            & represents an end of line character \\
+\INVALID         & returns an invalid value \\
+\OLDVALUE        & returns the old (previous) value of the changed data item \\
+\INDEX           & represents the index of the field that called the function.
+                   Changing data[2].value[3], \INDEX{} is set to 3. \newline
+                   See \nameref{dia:datastatement} on page \pageref{dia:datastatement}
+                   and \nameref{dia:functionexpression} on page \pageref{dia:functionexpression}
+                   for other \INDEX{} expressions. \\
+\COL             & returns the column index of the field that called the function \\
+\ROW             & returns the row index of the field that called the function \\
+\DIAGRAMXPOS     & returns the x coordinate of the diagram element that called the function \\
+\DIAGRAMYPOS     & returns the y coordinate of the diagram element that called the function \\
+\ERROR           & returns True if a error has occured \\
+{\bfseries ID\_INDEX}& references index-object previously declared in ui\_manager (page \pageref{sec:uiindex}) \\
+{\bfseries -}    & inverts the sign of job\_expression (\verb|j = -i;|) \\
+{\bfseries !}    & represents a logical {\bfseries NOT} \\
+\end{tabularx}
+
+\label{fuexpressionsdataoperator}
+\index{  @Signs / Characters!\texttt{"+} (plus)!arithmetic operator}
+\index{  @Signs / Characters!- (hyphen)!arithmetic operator}
+\index{  @Signs / Characters!* (asterisk)!arithmetic operator}
+\index{  @Signs / Characters!/ (slash)!arithmetic operator}
+\index{  @Signs / Characters!\% (percent)!modulo operator}
+\index{  @Signs / Characters!\texttt{"\^}!exponentiation}
+\index{  @Signs / Characters!\texttt{">} (greater than)!logic operator}
+\index{  @Signs / Characters!\texttt{">}=!logic operator}
+\index{  @Signs / Characters!\texttt{"<} (less than)!logic operator}
+\index{  @Signs / Characters!\texttt{"<}=!logic operator}
+\index{  @Signs / Characters!==!logic operator}
+\index{  @Signs / Characters!\texttt{"!}=!logic operator}
+\index{  @Signs / Characters!\&\&!logic operator}
+\index{  @Signs / Characters!\texttt{"|}\texttt{"|}!logic operator}
+
+\input{diagrams/job_string_expression}
+\index{LABEL@\LABEL!function expression}
+\index{UNIT@\UNIT!function expression}
+\begin{tabularx}{\textwidth}{l|X}
+string expression & description\\
+\hline
+\LABEL         & returns previously defined label of data-item. (section \nameref{dia:dataitemoptions} page \pageref{dia:dataitemoptions})\\
+\UNIT          & returns previously defined units of data-item. (section \nameref{dia:dataitemoptions} page \pageref{dia:dataitemoptions})\\
+\end{tabularx}
+
+\input{diagrams/cycle_expression}
+\label{fuexpressionscycle}
+\index{GETCYCLE@\GETCYCLE!function expression}
+\index{MAXCYCLE@\MAXCYCLE!function expression}
+\index{CYCLENAME@\CYCLENAME!function expression}
+
+\begin{tabularx}{\textwidth}{l|X}
+cycle expression     & description\\
+\hline
+\GETCYCLE            & returns current cycle no. \\
+\MAXCYCLE            & returns ammount of cycles \\
+\CYCLENAME           & returns name of current cycle \\
+\CYCLENAME {\bfseries [i]}  & returns name of cycle {\verb+i+}. \\
+\end{tabularx}
+
+
+%---------------------------------------------------------------------------%
+\input{diagrams/function_expression}
+\label{fuexpressionsfunctions}
+\index{VALID@\VALID!function expression}
+\index{INDEX@\INDEX!function expression}
+\index{CONFIRM@\CONFIRM!function expression}
+\index{CONFIRM\_CANCEL@\CONFIRMCANCEL!function expression}
+\index{GETTEXT@\GETTEXT!function expression}
+\index{TIMESTAMP@\TIMESTAMP!function expression}
+\index{MODIFIED@\MODIFIED!function expression}
+\index{CLASSNAME@\CLASSNAME!function expression}
+\index{NODE@\NODE!function expression}
+\index{RUN@\RUN!function expression}
+\index{LOAD@\LOAD!function expression}
+\index{SORTORDER@\SORTORDER!function expression}
+\index{CHANGED@\CHANGED!function expression}
+\index{VISIBLE@\VISIBLE!function expression}
+\index{EDITABLE@\EDITABLE!function expression}
+\index{COMPARE@\COMPARE!function expression}
+\index{SET\_RESOURCE@\SETRESOURCE!function expression}
+\index{COMPOSE@\COMPOSE!function expression}
+\index{ASSIGN\_CONSISTENCY@\ASSIGNCONSISTENCY!function expression}
+
+\begin{tabularx}{\textwidth}{l|X}
+function expression & description\\
+\hline
+\VALID         & returns true if the expression is valid \\
+\INDEX         & returns the index of the field that called the function.
+                 The first argument defines the dimension (counted from right to left -
+                 the last dimension being dimension 0), the optional second argument
+                 defines the structLevel (defaults to the last (highest)). \newline
+                 Example: changing data[1,2].value[3,4]: \newline
+                   \INDEX(1) is 3 (same as \INDEX(1,1) \newline
+                   \INDEX(1,0) is 1 \newline
+                   \INDEX(0,0) is 2 \newline
+                   \INDEX(0,1) is 4 (same as \INDEX(0) or \INDEX) \newline
+                   See \nameref{dia:datastatement} on page \pageref{dia:datastatement}
+                   and \nameref{dia:dataexpression} on page \pageref{dia:dataexpression}
+                   for other \INDEX{} expressions. \\
+\CONFIRM       & displays a messagebox with a yes and no button. It evaluates to 1(yes) or 0(no). \\
+\CONFIRMCANCEL & displays a messagebox with a yes, no and cancel button. It evaluates to 1(yes), 0(no) or \INVALID(cancel). \\
+\GETTEXT       & displays a dialog with the given text and an input field where the user enters a text. \\
+\TIMESTAMP     & Retruns the data timestamp of {\bfseries job\_data\_reference}. \\
+\MODIFIED      & Is {\bfseries job\_data\_reference} modified (compares db and data timestamps)? \\
+\CLASSNAME     & returns previously defined classname of data-item. (section \nameref{dataitemattributes} page \pageref{dataitemattributes}) \\
+\NODE          & returns node name of argument. Useful with \INPUT, \THIS{} or \BASE.
+                 (see \nameref{fuexample3} on page \pageref{fuexample3}) \\
+\RUN           & run the argument. \\
+\LOAD          & parse the content of the \STRING{} data reference \\
+\SORTORDER     & returns the current \SORTORDER{} of the \LIST. \\
+               & The \SORTORDER{} is the number of the column used to sort the list,
+                 starting with 1. Hidden columns are counted.
+                 Descending sort returns a negative number. \\
+               & Defaults to 0. \\
+\CHANGED       & Has any data item that shows in the \FORM{}
+                 changed after timestamp (stored in first
+                {\bfseries job\_data\_reference})? \newline
+                With a second {\bfseries job\_data\_reference}, only data items
+                that belong to that struct object are checked. \newline
+                \TRANSIENT{} data items are ignored. \newline
+                When \FORM{} is the \MAIN{} \FORM{}, data items in all \FORM{}s are checked. \\
+\VISIBLE       & returns true if the \FORM{} or the \FOLDER{} group is visible (MAPPED). \\
+\EDITABLE      & returns true if the variable or \FIELDGROUP{} is editable. \\
+\COMPARE       & see \COMPARE{} function statement on page \pageref{dia:datastatement} \\
+\SETRESOURCE   & Set value of a resource property (with name {\bfseries string}). \newline
+                 The value is written to the user resource file when the \INTENS{} application
+                 is quit or when \WRITESETTINGS{} is called.
+                 It can then be used when the \INTENS{} application is started next time(s). \\
+\COMPOSE       & Compose string: write values into string. Needed for translatable strings. \newline
+                 The (format-)string (first argument) contains \%1, \%2, ... and the values of the
+                 corresponding data references are put in these places. \newline
+                 Up to 15 values are implemented. \\
+\ASSIGNCONSISTENCY & Assign the (value of the) second argument to the first. \newline
+                    \INVALID: clear the first arguments value. \newline
+                    Then, clear all dependent results
+                    (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}).
+\end{tabularx}
+
+
+\index{BUTTON\_YES@\BUTTONYES!confirm option}
+\index{BUTTON\_NO@\BUTTONNO!confirm option}
+\index{BUTTON\_CANCEL@\BUTTONCANCEL!confirm option}
+\input{diagrams/job_confirm_option}
+\begin{tabularx}{\textwidth}{l|X}
+confirm option & description\\
+\hline
+\BUTTONYES    & label shown on the yes button \\
+\BUTTONNO     & label shown on the no button \\
+\BUTTONCANCEL & label shown on the cancel button \\
+\end{tabularx}
+
+
+\input{diagrams/job_visible_action}
+
+\begin{tabularx}{\textwidth}{l|X}
+                    & description \\
+\hline
+\verb+temp_data_reference+ & The value of a string variable is used as the identifier.
+                 This can be used to check the visibility of something different in different situations. \\
+\end{tabularx}
+
+
+\input{diagrams/job_editable_action}
+
+\begin{tabularx}{\textwidth}{l|X}
+                    & description \\
+\hline
+\verb+job_data_reference+ & Check if a variable is editable. \\
+{\bfseries ID\_FIELDGROUP} & Check if a \FIELDGROUP{} is editable.
+\end{tabularx}
+
+%---------------------------------------------------------------------------%
+\input{diagrams/math_expression}
+\label{fuexpressionsmath}
+\index{ABS@\ABS!function expression}
+\index{LENGTH@\LENGTH!function expression}
+\index{SIN@\SIN!function expression}
+\index{COS@\COS!function expression}
+\index{TAN@\TAN!function expression}
+\index{ASIN@\ASIN!function expression}
+\index{ACOS@\ACOS!function expression}
+\index{ATAN@\ATAN!function expression}
+\index{ATAN2@\ATANTWO!function expression}
+\index{LENGTH@\LENGTH!function expression}
+\index{LOG@\LOG!function expression}
+\index{LOG10@\LOGTEN!function expression}
+\index{SQRT@\SQRT!function expression}
+\index{ROUND@\ROUND!function expression}
+\index{ROUND5@\ROUNDFIVE!function expression}
+\index{ROUND10@\ROUNDTEN!function expression}
+\index{REAL@\REAL!function expression}
+\index{IMAG@\IMAG!function expression}
+\index{ARG@\ARG!function expression}
+\index{COMPLEX@\COMPLEX!function expression}
+
+\begin{tabularx}{\textwidth}{l|X}
+math expression & description\\
+\hline
+\ABS           & returns the absolute-value of the expression \\
+\LENGTH        & returns the string length of the expression \\
+\SIN           & returns the sine-value of the expression (radians) \\
+\COS           & returns the cosine-value of the expression (radians) \\
+\TAN           & returns the tangent-value of the expression (radians) \\
+\ASIN          & returns the arcsine-value (radians) of the expression \\
+\ACOS          & returns the arccosine-value (radians) of the expression \\
+\ATAN          & returns the arctangent-value (radians) of the expression \\
+\ATANTWO       & returns the arctangent-value (radians) of (y, x) \\
+\LENGTH        & returns the string length of the expression \\
+\LOG           & returns the natural logarithm of the expression \\
+\LOGTEN        & returns the base 10 logarithm of the expression \\
+\SQRT          & returns the nonnegative square root of the expression \\
+\ROUND         & rounds the value (first expression) to n (second expression) digits after the decimal point \\
+\ROUNDFIVE     & rounds the value to the next 20-th, i.E. to 5 cents \\
+\ROUNDTEN      & rounds the value to the next 10-th, i.E. to 10 cents \\
+\REAL          & returns the real-value of the expression, or invalid if it is not real \\
+\IMAG          & returns the imaginary quantity of a complex expression \\
+\ARG           & returns the angle-value of the expression \\
+\COMPLEX       & returns the complex-notation of 'expression, expression' \\
+\end{tabularx}
+
+%---------------------------------------------------------------------------%
+\input{diagrams/file_expression}
+\label{fuexpressionsfilename}
+\index{OPEN@\OPEN!function expression}
+\index{SAVE@\SAVE!function expression}
+\index{FILENAME@\FILENAME!function expression}
+\index{BASENAME@\BASENAME!function expression}
+\index{DIRNAME@\DIRNAME!function expression}
+\index{FILTER@\FILTER!filename option}
+\index{DIRNAME@\DIRNAME!filename option}
+\index{OPEN@\OPEN!filename option}
+\index{SAVE@\SAVE!filename option}
+
+\begin{tabularx}{\textwidth}{l|X}
+math expression & description\\
+\hline
+\OPEN{} ( ... )   & read data from a file (see \nameref{dia:filestatement} on page \pageref{dia:filestatement}) \\
+\SAVE{} ( ... )   & save to a file (see \nameref{dia:filestatement} on page \pageref{dia:filestatement}) \\
+\FILENAME{} ( ID )  & returns the entire file name (including directory) of previously used file stream. \\
+\BASENAME{} ( ID )  & returns the file name of previously used file stream. \\
+\DIRNAME{} ( ID )   & returns the directory path of previously used file stream. \\
+\FILENAME{} \{ ... \} & open a file selection dialog and return the name of the selected file. \\
+\DIRNAME{} \{ ... \}  & open a directory selection dialog and return the name of the selected directory. \\
+\FILTER           & specify the kind of files that should be shown. \newline
+                    Only xml files: ``XML (*.xml)'' \newline
+                    Image files (one filter): ``Image files (*.png *.xpm *.jpg)'' \newline
+                    xml or json (two filters): ``XML (*.xml);;JSON (*.json)'' \\
+\DIRNAME{} = ...  & default directory used in the select dialog \\
+\OPEN             & use an open select dialog to get a filename \\
+\SAVE             & use a save select dialog to get a filename \\
+\verb+ui xfer+   & Data item (see section \nameref{dia:uixfer} on page \pageref{dia:uixfer}). \\
+\end{tabularx}
+\vspace{0.5cm}
+
+%---------------------------------------------------------------------------%
+
+\paragraph{Reason} \hfill \\
+\label{fuexpressionsreason}
+\index{REASON@\REASON}
+
+Functions may be used to handle input events on data fields. These functions will be invoked each time after
+  a data item has been edited (see \FUNC{} option in \DATAPOOL{} data item declaration
+  section \nameref{sec:dpitem} on page \pageref{sec:dpitem}).
+
+Functions may also be used to handle \LIST{} events. These functions will be invoked each time a
+  line is selected, activated (mouse: double click or keyboard: return/enter) or unselected (see \FUNC{}
+  option in \LIST{} declaration section \nameref{sec:uilist} on page \pageref{dia:uilistoptionlist}).
+
+Functions may also be used to handle \FORM{} events. These functions will be invoked each time a \FORM{}
+  is opened, closed or activated (see \FUNC{} option in \FORM{} declaration section
+  \nameref{sec:uiform} on page \pageref{dia:uiformoptionlist}).
+
+Functions may also be used to handle \PLOTTWOD{} events. These functions will be invoked each time a
+  point or rectangle is selected in the \PLOTTWOD{} (see graph option \FUNC{} in \PLOTTWOD{} declaration
+  section \nameref{sec:uiplot2d} on page \pageref{dia:uiplot2dgraphoption}).
+
+Data items may be displayed as a table by adding the \TABLESIZE{} option to fieldgroups
+  (\UIMANAGER{} fieldgroup options section \nameref{sec:uifieldgroup}) or by defining a \TABLE{}
+  (\UIMANAGER{} table declaration \nameref{sec:uitable}). \\
+Tables are shown with column- and row-titles. By pressing the right mouse button on it, a menu is popped up.
+Selecting an item will execute the data item assigned function first.
+
+Inside a function, you can test the reason for calling it using \REASON{} expressions:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+  \FUNC a\_func \{
+    ...
+    \IF(\REASONINPUT) \{
+      ...
+    \}
+    ...
+  \};
+\end{alltt}
+\end{boxedminipage} \\[2ex]
+
+Sometimes, you may want to call a function with a different REASON.
+See \nameref{dia:setfuncstatement} on page \pageref{dia:setfuncstatement} to know
+how to do so.
+
+You may use one or more of the following REASON expressions:
+
+%---------------------------------------------------------------------------%
+\input{diagrams/reason_expression}
+\index{REASON_INPUT@\REASONINPUT!function exression}
+\index{REASON_INSERT@\REASONINSERT!function exression}
+\index{REASON_DUPLICATE@\REASONDUPLICATE!function exression}
+\index{REASON_CLEAR@\REASONCLEAR!function exression}
+\index{REASON_REMOVE@\REASONREMOVE!function exression}
+\index{REASON_PACK@\REASONPACK!function exression}
+\index{REASON_SELECT@\REASONSELECT!function exression}
+\index{REASON_UNSELECT@\REASONUNSELECT!function exression}
+\index{REASON_SELECT_POINT@\REASONSELECTPOINT!function exression}
+\index{REASON_SELECT_RECTANGLE@\REASONSELECTRECTANGLE!function exression}
+\index{REASON_SORT@\REASONSORT!function exression}
+\index{REASON_ACTIVATE@\REASONACTIVATE!function exression}
+\index{REASON_OPEN@\REASONOPEN!function exression}
+\index{REASON_CLOSE@\REASONCLOSE!function exression}
+\index{REASON_DROP@\REASONDROP!function exression}
+\index{REASON_MOVE@\REASONMOVE!function exression}
+\index{REASON_CONNECTION@\REASONCONNECTION!function exression}
+\index{REASON_REMOVE_CONNECTION@\REASONREMOVECONNECTION!function exression}
+\index{REASON_REMOVE_ELEMENT@\REASONREMOVEELEMENT!function exression}
+\index{REASON_CYCLE_CLEAR@\REASONCYCLECLEAR!function exression}
+\index{REASON_CYCLE_DELETE@\REASONCYCLEDELETE!function exression}
+\index{REASON_CYCLE_NEW@\REASONCYCLENEW!function exression}
+\index{REASON_CYCLE_RENAME@\REASONCYCLERENAME!function exression}
+\index{REASON_CYCLE_SWITCH@\REASONCYCLESWITCH!function exression}
+\index{REASON_FUNCTION@\REASONFUNCTION!function exression}
+\index{REASON_TASK@\REASONTASK!function exression}
+\index{REASON_GUI_UPDATE@\REASONGUIUPDATE!function exression}
+\begin{tabularx}{\textwidth}{l|X}
+reason expression       & description\\
+\hline
+% data item
+\REASONINPUT            & the function was called after the assigned data item has been edited. \\
+% table popup menu
+\REASONINSERT           & insert has been choosen from table popup menu \\
+\REASONDUPLICATE        & duplicate has been choosen from table popup menu \\
+\REASONCLEAR            & clear has been choosen from table popup menu \\
+\REASONREMOVE           & remove has been choosen from table popup menu \\
+\REASONPACK             & pack has been choosen from table popup menu \\
+% select
+\REASONSELECT           & a list or navigator line was selected by a mouseclick \newline
+                          (see section List \nameref{sec:uilist} page \pageref{sec:uilist}) \newline
+                          (see section Navigator \nameref{sec:uinavigator} page \pageref{sec:uinavigator}) \\
+\REASONUNSELECT         & a list or navigator line was unselected by a mouseclick \newline
+                          (see section List \nameref{sec:uilist} page \pageref{sec:uilist})\newline
+                          (see section Navigator \nameref{sec:uinavigator} page \pageref{sec:uinavigator})\\
+\REASONSELECTPOINT      & a plot2d point is selected by a mouseclick \newline
+                          (see paragraph \nameref{par:uiplot2duimode} in section \nameref{sec:uiplot2d} on page \pageref{par:uiplot2duimode})\\
+\REASONSELECTRECTANGLE  & a plot2d rectangle is selected by a mouseclick \newline
+                          (see paragraph \nameref{par:uiplot2duimode} in section \nameref{sec:uiplot2d} on page \pageref{par:uiplot2duimode})\\
+% activate
+\REASONACTIVATE         & a list line was activated by pressing the enter key
+                          (see section \nameref{sec:uilist} page \pageref{sec:uilist}). \newline
+                          a navigator entry was doubleclicked
+                          (see section \nameref{sec:uinavigator} page \pageref{sec:uinavigator}) \newline
+                          a form is activated (becomes the active window)
+                         (see section \nameref{sec:uiform} page \pageref{sec:uiform}). \\
+% list
+\REASONSORT             & a list was sorted differently
+                          (see section \nameref{sec:uilist} page \pageref{sec:uilist}). \\
+% form
+\REASONOPEN             & a form is opened
+                         (see section \nameref{sec:uiform} page \pageref{sec:uiform}). \\
+\REASONCLOSE            & a form is closed
+                         (see section \nameref{sec:uiform} page \pageref{sec:uiform}). \\
+% navigator
+\REASONDROP             & a navigator entry was drag'n'dropped \newline
+                          (see section \nameref{sec:uinavigator} page \pageref{sec:uinavigator}) \newline
+                          (see section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram})\\
+\REASONMOVE             & a navigator (diagram) element was moved
+                          (see section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram})\\
+\REASONCONNECTION       & two navigator (diagram) elements were connected
+                          (see section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram})\\
+\REASONREMOVECONNECTION & a navigator (diagram) connection was removed
+                          (see section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram})\\
+\REASONREMOVEELEMENT    & a navigator (diagram) element was removed
+                          (see section \nameref{sec:uinavigatorDiagram} page \pageref{sec:uinavigatorDiagram})\\
+% cycle
+\REASONCYCLECLEAR       & cycle was cleared. \newline
+                          Used in \FUNCTION{} \ONCYCLEEVENT{}
+                          (see section \nameref{sec:funcidentifiers} on page \pageref{sec:funcidentifiers}) \\
+\REASONCYCLEDELETE      & cycle was deleted. \newline
+                          Used in \FUNCTION{} \ONCYCLEEVENT{}
+                          (see section \nameref{sec:funcidentifiers} on page \pageref{sec:funcidentifiers}) \\
+\REASONCYCLENEW         & cycle was new. \newline
+                          Used in \FUNCTION{} \ONCYCLEEVENT{}
+                          (see section \nameref{sec:funcidentifiers} on page \pageref{sec:funcidentifiers}) \\
+\REASONCYCLERENAME      & cycle was renamed. \newline
+                          Used in \FUNCTION{} \ONCYCLEEVENT{}
+                          (see section \nameref{sec:funcidentifiers} on page \pageref{sec:funcidentifiers}) \\
+\REASONCYCLESWITCH      & cycle was switched. \newline
+                          Used in \FUNCTION{} \ONCYCLEEVENT{}
+                          (see section \nameref{sec:funcidentifiers} on page \pageref{sec:funcidentifiers}) \\
+% other
+\REASONFUNCTION         & the function was called directly (i.E. from a menu) \\
+\REASONTASK             & the function was called from a \TASK{} that was called directly (i.E. using its button) \\
+\REASONGUIUPDATE        & the function was called by a gui update \\
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                             Examples                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Examples}
+\label{fuexamples}
+\paragraph*{Example 1}
+\label{fuexample1}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+\FUNCTIONS
+  \FUNC testminmax \{
+    \IF( \VALID(SnMin) && \VALID(SnMax) )\{
+      \IF( SnMin > SnMax )\{
+        \SETERROR( "Minimum value must be less than maximum!"
+                 , \EOLN );
+      \}
+    \}
+  \}
+;
+\END \FUNCTIONS;
+\end{alltt}
+\end{boxedminipage}
+
+
+\newpage
+\paragraph*{Example 2}
+\label{fuexample2}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+
+DESCRIPTION "Example of THIS";
+
+DATAPOOL
+  SET Set_identifier ("Pass" = 1, "Fail" = 2 );
+  STRUCT Structure \{
+    REAL \{EDITABLE\}
+      Data_item_choice \{ SET = Set_identifier,
+                         FUNC = save_test_results \};
+    STRING
+      Data_item_test_result;
+  \};
+  Structure {\bfseries TestResults} ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP fieldgroup_identifier_1{\bfseries  \{TABLESIZE=5\}} (
+    "Choose restult of each test-run:"
+    {\bfseries TestResults [*] }.Data_item_choice
+  );
+  FORM form_identifier_1 \{MAIN\} (
+    ( fieldgroup_identifier_1 )
+  );
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC save_test_results \{
+    IF ( \THIS.Data_item_choice == 1 ) \{
+      \THIS.Data_item_test_result = "Test result was OK";
+    \}
+    ELSE \{
+      \THIS.Data_item_test_result = "Test failed";
+    \}
+  \}
+;
+END FUNCTIONS;
+
+END.
+\end{alltt}
+\end{boxedminipage}
+
+\newpage
+\paragraph*{Example 3}
+\label{fuexample3}
+
+When \INTENS{} is started with the option \texttt{--}withInputStructFunc
+and an input variable does not have a function, the function
+of its struct (or the first parent of it that has a function)
+is called when the value is changed on the GUI. Inside that
+function, the following expressions can be used:
+
+\begin{description}
+\item[\BASE] references the structure with the called function.
+It is not set if the input variable has a function.
+
+\item[\NODE(\INPUT)] can be used to know the name of the variable that was changed.
+
+\item[\NODE(\THIS)] can be used to know the name of the structure of the variable that was changed.
+
+\item[\NODE(\BASE)] can be used to know the name of the structure with the called function.
+\end{description}
+
+The following table shows the called functions, the references of \THIS{} and \BASE{} as well
+as the values of different \NODE() expressions of the example, when variable is changed on the GUI:
+
+\begin{tabularx}{\textwidth}{l|l|l|l|l|l|l}
+ & & & & \multicolumn{3}{c}{\NODE()} \\
+variable & function & \THIS & \BASE & \INPUT & \THIS & \BASE \\
+\hline
+data1.p1.x & x\_func & data1.p1 & - & x & p1 & - \\
+data1.p1.y & p1\_func & data1.p1 & data1.p1 & y & p1 & p1 \\
+data1.p2.x & x\_func & data1.p2 & - & x & p2 & - \\
+data1.p2.y & data1\_func & data1.p2 & data1 & y & p2 & data1 \\
+data2.p1.x & x\_func & data2.p1 & - & x & p1 & - \\
+data2.p1.y & p1\_func & data2.p1 & data2.p1 & y & p1 & p1 \\
+data2.p2.x & x\_func & data2.p2 & - & x & p2 & - \\
+data2.p2.y & - & - & - & - & - & - \\
+\end{tabularx}
+
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+
+DESCRIPTION "Example of Input Struct Func and NODE, BASE";
+
+DATAPOOL
+  STRUCT Point \{
+    REAL \{EDITABLE, SCALAR\}
+      x \{FUNC=x_func\}
+    , y
+    ;
+  \};
+
+  STRUCT Data \{
+    Point
+      p1 \{FUNC=p1_func\}
+    , p2
+    ;
+  \};
+
+  Data
+    data1 \{FUNC=data1_func\}
+  , data2
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP main_fg (
+    VOID        "x"         "y"
+  , "data1.p1"  data1.p1.x  data1.p1.y
+  , "data1.p2"  data1.p2.x  data1.p2.y
+  , "data2.p1"  data2.p1.x  data2.p1.y
+  , "data2.p2"  data2.p2.x  data2.p2.y
+  );
+
+  FORM main_form \{MAIN, HIDE_CYCLE\} (main_fg);
+END UI_MANAGER;
+
+...
+\end{alltt}
+\end{boxedminipage}
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+...
+FUNCTIONS
+  FUNC print_func \{
+    PRINT("NODE(INPUT): ", NODE(INPUT),
+          ", NODE(THIS): ", NODE(THIS),
+          ", NODE(BASE): ", NODE(BASE), EOLN, EOLN);
+  \};
+
+  FUNC x_func \{
+    PRINT("x_func:", EOLN);
+    RUN(print_func);
+  \};
+
+  FUNC p1_func \{
+    PRINT("p1_func:", EOLN);
+    RUN(print_func);
+  \};
+
+  FUNC data1_func \{
+    PRINT("data1_func:", EOLN);
+    PRINT("BASE.p1:", BASE.p1, ", BASE.p1.x:", BASE.p1.x, EOLN);
+    RUN(print_func);
+  \};
+END FUNCTIONS;
+
+END.
+\end{alltt}
+\end{boxedminipage}

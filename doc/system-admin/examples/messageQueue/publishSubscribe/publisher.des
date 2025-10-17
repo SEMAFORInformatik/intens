@@ -1,0 +1,43 @@
+DESCRIPTION "Publisher";
+
+INCLUDE common.inc
+INCLUDE timer.inc
+
+UI_MANAGER
+  FORM
+    main_form { MAIN, HIDE_CYCLE } (
+      weather_fg
+    , timer_button_fg
+    )
+  ;
+END UI_MANAGER;
+
+OPERATOR
+  MESSAGE_QUEUE
+    weather_publisher {
+      PUBLISH              // *MessageQueue Pattern
+    , PORT=5561            // TCP port
+    }
+  ;
+END OPERATOR;
+
+FUNCTIONS
+  FUNC
+    publish_weather_func {
+      PUBLISH (
+        MESSAGE_QUEUE = weather_publisher
+      , HEADER="Weather"
+      , RESPONSE=weather_stream
+      );
+    }
+  ;
+
+  FUNC
+    INIT {
+      weather.stationName = "Basel";
+      t = 0;
+    }
+  ;
+END FUNCTIONS;
+
+END.

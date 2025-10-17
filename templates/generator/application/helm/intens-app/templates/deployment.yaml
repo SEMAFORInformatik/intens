@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "${application}.fullname" . }}-api-gateway
+  labels:
+    {{- include "${application}.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.apiGateway.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "${application}.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "${application}.labels" . | nindent 8 }}
+        app: {{ include "${application}.fullname" . }}
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9464"
+        prometheus.io/scrape: "true"
+        k8s.grafana.com/scrape: "true"
+        k8s.grafana.com/metrics.path: /metrics
+        k8s.grafana.com/metrics.portNumber: "9464"
+    spec:
+      {{- if .Values.affinity }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            {{- range $key, $value := .Values.affinity }}
+            - matchExpressions:
+              - key: {{ $key }}
+                operator: In
+                values:
+                - "{{ $value }}"
+            {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.apiGateway.image.repository }}:{{ .Values.apiGateway.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.apiGateway.image.pullPolicy }}
+          name: {{ .Chart.Name }}-api-gateway
+          ports:
+            - name: zmqrep
+              containerPort: 15558
+            - name: zmqlog
+              containerPort: 15574
+          {{- if .Values.otel.enabled }}
+          command: ["opentelemetry-instrument", "python3", "./api-gateway.py"]
+          {{- end }}
+          env:
+            - name: CONFIG_CONTROLLER_HOST
+              value: "{{ .Values.configController }}"
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_SERVICE_NAME
+              value: ${application}-api-gateway
+            - name: OTEL_TRACES_EXPORTER
+              value: otlp_proto_http
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: "{{ .Values.otel.endpoint }}"
+            {{- end }}
+            - name: LOG_LEVEL
+              value: INFO
+
+#          resources:
+#            requests:
+#              memory: "400Mi"
+#            limits:
+#
+#              memory: "500Mi"

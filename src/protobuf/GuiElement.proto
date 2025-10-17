@@ -1,0 +1,99 @@
+syntax = "proto3";
+// edition = "2023";
+package in_proto;
+
+message ElementRef {
+  uint32 id = 1;
+  GuiElement.Type type = 2;
+}
+
+message GuiElement {
+  uint32 id = 1;
+  Type type = 2;
+  string Name = 3;
+
+  bool enabled = 4;
+
+  enum Type {
+    Unknown = 0;
+    EPlot2D = 1;
+    EPlot3D = 2;
+    EButtonbar = 3;
+    EButton = 4;
+    EComboBox = 5;
+    EContainer = 6;
+    EDiagram = 7;
+    EFieldGroup = 8;
+    EFolder = 9;
+    EForm = 10;
+    EHeader = 11;
+    EIconView = 12;
+    EIndex = 13;
+    EIndexMenu = 14;
+    ELabel = 15;
+    EList = 16;
+    EMenubar = 17;
+    EMenuButton = 18;
+    EMessagebar = 19;
+    EMessage = 20;
+    ENavigator = 21;
+    ENavigatorNode = 22;
+    EPixmap = 23;
+    ERadio = 24;
+    EScrolledText = 25;
+    ESeparator = 26;
+    ESlider = 27;
+    EStretch = 28;
+    ETable = 29;
+    EText = 30;
+    ETextfield = 31;
+    EThermo = 32;
+    EToggle = 33;
+    EVoid = 34;
+    EFieldGroupLine = 35;
+    EPulldownMenu = 36;
+    EMenuToggle = 37;
+    ETableDataItem = 38;
+    ETableComboBoxDataItem = 39;
+    ETableRadioDataItem = 40;
+    ETableToggleDataItem = 41;
+    ETableColorPickerDataItem = 42;
+    ETableButtonDataItem = 43;
+    ECycleButton = 44;
+    EProgressbar = 45;
+  }
+
+  uint32 width = 5;
+  uint32 height = 6;
+  Orientation expand = 7;
+
+  enum Orientation {
+    None = 0;
+    Horizontal = 1;
+    Vertical = 2;
+    Both = 3;
+  }
+
+  Alignment alignment = 8;
+
+  enum Alignment {
+    Default = 0;
+    Left = 1;
+    Right = 2;
+    Center = 3;
+    Top = 4;
+    Bottom = 5;
+    Stretch = 6;
+    Justify = 7;
+  }
+
+  string helptext = 9;
+
+  bool visible = 10;
+
+  int32 rowspan = 11;
+  int32 colspan = 12;
+
+  string styleClass = 13;
+}
+

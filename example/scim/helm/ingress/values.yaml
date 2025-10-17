@@ -1,0 +1,9 @@
+webtensService: scim-webtens
+workbookService: workbook
+
+ingress:
+  # className: ""
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+  host: scim.k8s.semafor.ch
+  path: /

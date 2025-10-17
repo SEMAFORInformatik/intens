@@ -1,0 +1,58 @@
+DESCRIPTION "Plot Example";
+
+//LANGUAGE
+//DEFAULT_LANG = "en";
+//END LANGUAGE;
+
+DATAPOOL
+
+  psiMag, iMag                : REAL{OPTIONAL};
+  i1, i2                      : REAL{EDITABLE};
+  speed, torque, cos          : REAL{EDITABLE};
+
+END DATAPOOL;
+
+UI_MANAGER
+
+FIELDGROUP
+    input {TABLESIZE = 5}
+      (
+        "psiMag"    psiMag
+      , "iMag"      iMag
+      , "i1"        i1
+      , "i2"        i2
+      , "speed"     speed
+      , "torque"    torque
+      , "cos"       cos
+      )
+   ;
+PLOTGROUP  
+    curve_plot{"Plot" }
+      ( 
+        ( magn_curve {"Magnetizing curve", XAXIS=iMag}
+          ( psiMag{"[Vs]"}
+          ) 
+        , i2{"Rotor current", XAXIS=speed*60{"1/min"} } 
+          (i2{"[A]"}
+          ) 
+        )
+      , ( torque{"Induction Motor", XAXIS=speed*60{"1/min"} }
+          ( torque{"[kNm]"}
+          , i1{"[A]"}
+          , cos
+          )
+        )
+      )
+   ;
+FORM
+    main
+      ( (input)
+      )
+  , curve_form
+      (
+        (curve_plot)
+      )
+  ;
+END UI_MANAGER;
+
+END.

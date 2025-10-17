@@ -1,0 +1,83 @@
+DESCRIPTION "SET ERROR!";
+
+DATAPOOL
+  SET gb_int_set (
+    "Good" = 1
+  , "Bad" = 0
+  );
+  SET gb_string_set (
+    "Good" = "1"
+  , "Bad" = "0"
+  );
+
+  // without INVALID
+  SET gb_int_withoutInvalid_set {INVALID=NONE} (
+    "Good" = 1
+  , "Bad" = 0
+  );
+  SET gb_string_withoutInvalid_set {INVALID=NONE} (
+    "Good" = "1"
+  , "Bad" = "0"
+  );
+
+  // default output values
+  SET gb_int_default_set (
+    "Bad"
+  , "Good"
+  );
+  SET gb_string_default_set (
+    "Bad"
+  , "Good"
+  );
+
+  INTEGER {EDITABLE, SCALAR}
+    gb_int {SET=gb_int_set, FUNC=print_func}
+  , gb_int_default {SET=gb_int_default_set, FUNC=print_func}
+  , gb_int_withoutInvalid {SET=gb_int_withoutInvalid_set, FUNC=print_func}
+  ;
+  STRING {EDITABLE, SCALAR}
+    gb_string {SET=gb_string_set, FUNC=print_func}
+  , gb_string_default {SET=gb_string_default_set, FUNC=print_func}
+  , gb_string_withoutInvalid {SET=gb_string_withoutInvalid_set, FUNC=print_func}
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP fg (
+    VOID
+    "INT"
+    "STRING"
+
+  , "Given Output"
+    gb_int
+    gb_string
+
+  , "Given Output, no INVALID"
+    gb_int_withoutInvalid
+    gb_string_withoutInvalid
+
+  , "Default Output"
+    gb_int_default
+    gb_string_default
+  );
+  FORM main_form {MAIN} (fg);
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC INIT {
+    PRINT("gb_int_set: ", gb_int_set[0], EOLN);
+    PRINT("gb_string_set: ", gb_string_set[0], EOLN);
+
+    PRINT("gb_int_withoutInvalid_set: ", gb_int_withoutInvalid_set[0], EOLN);
+    PRINT("gb_string_withoutInvalid_set: ", gb_string_withoutInvalid_set[0], EOLN);
+
+    PRINT("gb_int_default_set: ", gb_int_default_set[0], EOLN);
+    PRINT("gb_string_default_set: ", gb_string_default_set[0], EOLN);
+  };
+
+  FUNC print_func {
+    PRINT(NODE(INPUT) + " = " + INPUT, EOLN);
+  };
+END FUNCTIONS;
+
+END.

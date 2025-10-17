@@ -1,0 +1,173 @@
+\subsubsection{Release Notes 5.1}
+%           =================
+\label{sec:releasenotes-5-1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                        Release Notes 5.1                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The following features have been changed or added in Version 5.1:\\
+
+%%---------------------------------------------------------------
+\paragraph{5.1.19 (2022-10-27)}  % aeccbd72ab176d20520444fb8a0936af6c91560d
+\begin{enumerate}
+\item added \REASONFUNCTION, \REASONTASK and \REASONGUIUPDATE.
+      See \nameref{dia:reasonexpression} on page \pageref{dia:reasonexpression}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.18 (2022-09-30)}  % 92d289dba8732f7f7dfef145da11b6f991d897eb
+
+%%---------------------------------------------------------------
+\paragraph{5.1.17 (2022-09-26)}  % d949b76e10b8c32590f0fdca14be7412024c37cd
+
+%%---------------------------------------------------------------
+\paragraph{5.1.16 (2022-09-22)}  % ed34a0e41056a1d9ffb32d01db800ceba8d5c0d3
+
+%%---------------------------------------------------------------
+\paragraph{5.1.15 (2022-09-08)}  % 68791790cb9109574456fff18448adc34f335798
+\begin{enumerate}
+\item \INTENS{} commandline option \texttt{--}persistfileREST added.
+      See \nameref{sec:cloptions} on page \pageref{sec:cloptions}.
+\item Added \nameref{sec:helpfile} functionality lost since \INTENS{} version 4.
+      See \nameref{sec:helpfile} on page \pageref{sec:helpfile}.
+\item Added statement \ERASE{} to clear values and attributes.
+      See \nameref{fu:data:statement} on page \pageref{fu:data:statement}.
+\item Added statement to copy a \nameref{dia:uiformelementidentifier}
+      or a \nameref{sec:uiform} to the clipboard.
+      See \nameref{fu:copy:paste:statement} on page \pageref{fu:copy:paste:statement}.
+\item Added variable \PLOTTWODSYMBOLSIZE{} to overwrite the symbol size of all \PLOTTWOD{} curves.
+      See \nameref{par:uiplot2symbolsize} on page \pageref{par:uiplot2symbolsize}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.14 (2022-07-07)}  % 8d5f39543ce93900e38151b9e6829a5f0fba1ed8
+
+%%---------------------------------------------------------------
+\paragraph{5.1.13 (2022-07-01)}  % 14468f9d3f6566a620e0eedcc37870ee72eb062e
+
+%%---------------------------------------------------------------
+\paragraph{5.1.12 (2022-05-30)}  % 08243421def6f40632a8f042b9a4f7fef42fd00f
+\begin{enumerate}
+\item Added options \HIDDEN{} and \TRANSIENT{} for \JSON{} \STREAM{}s.
+      See \nameref{dia:stjsonoptions} on page \pageref{dia:stjsonoptions}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.11 (2022-01-31)}  % a79ebb0b577fa5d852b6d31df739f0fe73c07121
+\begin{enumerate}
+\item Constistency Check with Message-Queue Requests.
+      See \nameref{dia:jobmessagequeueoption} on page \pageref{dia:jobmessagequeueoption}.
+\item Version control in RestService.
+      See \nameref{par:restServiceVersionControl} on page \pageref{par:restServiceVersionControl}.
+\item (bugfix) \NAVIGATOR{}: text formatting was ignored
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.10 (2021-10-27)}  % 62911ba310f3d3adb3974b61cfa647e21ed831f5
+\begin{enumerate}
+\item (bugfix) \NAVIGATOR{} (\DIAGRAM): \STRUCT{} \MENU{} was missing
+\item Removed support for obsolete syntax. Now, the following newer syntax is required:
+  \begin{itemize}
+  \item () after PRINT, SET\_ERROR, ABORT
+  \item VALID(...) instead of ... .VALID
+  \item () after UI\_UPDATE, MAP, UNMAP, ALLOW, DISALLOW, ENABLE, DISABLE
+  \item LABEL(...) instead of LABEL . ...
+  \item UNIT(...) instead of UNIT . ...
+  \item PIXMAP(...) instead of PIXMAP . ...
+  \item REPORT(...) instead of REPORT("...")
+  \item PREVIEW(...) instead of PREVIEW("...")
+  \item RUN(...) instead of RUN ...
+  \item require START/STOP(ID\_TIMER...) instead of START/STOP(TIMER = ID\_TIMER...)
+  \item require tID\_FORM instead of tFORM tID\_FORM (except for \MENU declaration)
+  \item require tID\_FOLDERGROUP instead of tFOLDER tID\_FOLDERGROUP
+  \item require CLEAR(...) instead of CLEAR ...
+  \item require PACK(...) instead of PACK ...
+  \end{itemize}
+\item (bugfix) \ROWSPAN{} only worked once
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.9 (2021-07-29)}  % b6392990c08148243127114097aa7ea4ef200104
+\begin{enumerate}
+\item Added function statement \ASSIGNCONSISTENCY{} to assign a value to a variable and clear all dependent results.
+      See \nameref{dia:datastatement} on page \pageref{dia:datastatement}.
+\item Added option \AUTOSCROLL{} for multiline textfields.
+      See \nameref{dia:uifieldadditionalattributes} on page \pageref{dia:uifieldadditionalattributes}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.8 (2021-07-16)}  % 26779aacdcb992534be1cb6fa4c3891a8f7e6d43
+\begin{enumerate}
+\item (bugfix) Automatic database login (REST) using environment variables REST\_SERVICE\_USERNAME
+      and REST\_SERVICE\_PASSWORD with JWT authorization.
+\item (bugfix) Compare \CYCLE{} (Case) in \PLOTTWOD{}: show correct data when
+      involved \INDEX{} is set to different values in the cycles.
+\item (bugfix) Position of \CYCLE{} (Case) dialog improved.
+\item (bugfix) \TOGGLE{} in \TABLE: single click is sufficient to toggle the field now.
+\item (bugfix) Bug in writing \JSON{} data fixed:
+      Arrays with some \INVALID{} values were not written correctly.
+\item (bugfix) QSS is now applied to all \FORM{}s.
+\item (bugfix) Entering or changing a date in a \STRINGDATE{} input field works again.
+      (Popup calendar always worked).
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.7 (2021-05-12)}  % d14ef13f84264b5fe1b91dccaa077d532ceccbd2
+\begin{enumerate}
+\item (bugfix) \DATASETTEXT{} works with \INDEXEDSET{} now.
+\item Added option \INDENT{} for \JSON{} \STREAM{}s.
+      See \nameref{dia:stjsonoptions} on page \pageref{dia:stjsonoptions}.
+\item (bugfix) \PLOTTWOD{} option \ASPECTRATIO{} works with data reference (variable) now.
+      See \nameref{dia:uiplot2dxaxisoptions} on page \pageref{dia:uiplot2dxaxisoptions}.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.6 (2021-04-23)}  % 819f1a52aa21d80d261aca4cc9542ac2ba9c7bdc
+\begin{enumerate}
+% \item (bugfix) Issue #62 (TABLE: FREEZE) fixed
+\item (bugfix) Write \REAL{} numbers with 12 significant digits to \JSON{} \STREAM s
+               (just as in \XML{} \STREAM s) to write 3.0793 instead of 3.0792999999999999.
+\item (bugfix) Error message in Log Window improved on calling a not implemented function.
+\item (bugfix) Negate fixed: After \verb|j = -i;|, j was i and not -i.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.5 (2021-04-08)}  % 6fbfa3e32b0e78a4c1f445f582a3f352626a57cc
+\begin{enumerate}
+\item \INTENS{} commandline option \texttt{--}withoutTextPopupMenu added
+      to disable the right click menu of multiline text input fields.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.4 (2021-04-06)}  % ff22dd35a3b040d00feebb16d84873f60825cc3a
+
+%%---------------------------------------------------------------
+\paragraph{5.1.3 (2021-02-09)}  % 6224718180a102503de417642e8f6766f033d2ff
+
+%%---------------------------------------------------------------
+\paragraph{5.1.2 (2021-01-26)}  % 0a0fd41a98f0460a96e22f0e833a81d19d0d0fef
+\begin{enumerate}
+\item Added \FUNCTION{} \ONCYCLEEVENT{} and \REASON s
+  \begin{enumerate}
+  \item \REASONCYCLECLEAR
+  \item \REASONCYCLEDELETE
+  \item \REASONCYCLENEW
+  \item \REASONCYCLERENAME
+  \item \REASONCYCLESWITCH
+  \end{enumerate}
+  See \nameref{sec:funcidentifiers} on page \pageref{sec:funcidentifiers} and
+  \nameref{fuexpressionsreason} on page \pageref{fuexpressionsreason}.
+\item Color for \PLOTTWOD symbols Cross, XCross, HLine, VLine and Star1.
+  These symbols are only drawn with a thin line. That line used to black always.
+  Now, that line is drawn in the plot curves symbol color.
+\end{enumerate}
+
+%%---------------------------------------------------------------
+\paragraph{5.1.1 (2020-12-15)}  % ea53551624de50bcdb05f23373287f4a2603583a
+\begin{enumerate}
+\item Added \LIST{} option \SORT{} \DISABLE.
+      See \nameref{dia:uilistoptionlist} on page \pageref{dia:uilistoptionlist}.
+\item Added \FUNCTION{} statement \DATASIZE.
+      See \nameref{dia:datastatement} on page \pageref{dia:datastatement}.
+\end{enumerate}
+%%
+%%---------------------------------------------------------------

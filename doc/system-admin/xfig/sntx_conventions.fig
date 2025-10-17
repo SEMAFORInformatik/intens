@@ -1,0 +1,19 @@
+#FIG 3.2
+Portrait
+Center
+Inches
+A4      
+100.00
+Single
+-2
+1200 2
+2 4 0 1 -1 -1 0 0 -1 0.000 0 0 7 0 0 5
+	 2400 1800 2400 1500 1500 1500 1500 1800 2400 1800
+2 2 0 1 -1 -1 0 0 -1 0.000 0 0 0 0 0 5
+	 2400 2400 2400 2100 1500 2100 1500 2400 2400 2400
+2 2 0 0 0 7 100 0 -1 0.000 0 0 -1 0 0 5
+	 1200 900 9000 900 9000 2400 1200 2400 1200 900
+4 0 -1 0 0 0 12 0.0000 4 180 2475 3300 1125 Boldface text represents a token\001
+4 0 -1 0 0 0 12 0.0000 4 180 5220 3300 1725 A rectangular box with rounded corners represents a terminal symbol\001
+4 0 -1 0 0 18 10 0.0000 4 120 990 1500 1125 boldface text\001
+4 0 -1 0 0 0 12 0.0000 4 180 3960 3300 2325 A rectangular box represents a non-terminal symbol\001

@@ -1,0 +1,103 @@
+DESCRIPTION "Unit Manager Test";
+DATAPOOL
+ STRUCT Motor {
+    INTEGER {EDITABLE, SCALAR}
+      p {
+        LABEL=_("Pole pairs"),
+        HELPTEXT=_("Number of pole pairs")
+      }
+    ;
+    REAL {EDITABLE, SCALAR}
+      psityp {
+        LABEL=_("Nom. Flux"),
+        HELPTEXT=_("Stator Type flux"),
+        UNIT="Vs"
+      },
+      rs_Tref {
+        LABEL=_("Stator Resistance"),
+        HELPTEXT=_("Stator Resistance at 20 deg Celsius"),
+        UNIT="Ω"
+      },
+      rr_Tref {
+        LABEL=_("Rotor Resistance"),
+        HELPTEXT=_("Rotor Resistance at 20 deg Celsius"),
+        UNIT="Ω"
+      },
+    Lls {
+      LABEL=_("Stator Leakage"),
+      HELPTEXT=_("Stator leakage inductance"),
+      UNIT="mH"
+    },
+    Lh {
+      LABEL=_("Magnetizing Inductance"),
+      HELPTEXT=_("Magnetizing inductance"),
+      UNIT="mH"
+    },
+    Llr {
+      LABEL=_("Rotor Leakage"),
+      HELPTEXT=_("Rotor leakage inductance"),
+      UNIT="mH"
+    },
+    rh {
+      LABEL=_("Iron Resistance"),
+      HELPTEXT=_("Resistance representing Iron Losses"),
+      UNIT="Ω"
+    },
+    Iin {
+      LABEL=_("Moment of Inertia"),
+      HELPTEXT=_("Moment of Inertia of rotor"),
+      UNIT="kg*m²"
+    }
+  ;
+};
+
+REAL {SCALAR} psityp, rs_Tref, rr_Tref, Lls, Lh, Llr, rh, Iin;
+INTEGER {SCALAR} p;
+
+Motor
+  motor {
+    LABEL=_("Motor"),
+    PERSISTENT, SCALAR
+  }
+;
+
+END DATAPOOL;
+
+FUNCTIONS
+ FUNC { DEADLY_SILENT }
+  AFTER_UPDATE_FORMS {
+  p = motor.p;
+  psityp = motor.psityp;
+  rs_Tref = motor.rs_Tref;
+  rr_Tref = motor.rr_Tref  ;
+  Lls =     motor.Lls  ;
+  Lh =      motor.Lh   ;
+  rh =      motor.rh       ;
+  Llr =     motor.Llr  ;
+  Iin =     motor.Iin      ;
+  IF(VALID(motor)){PRINT(motor);}
+  };
+END FUNCTIONS;
+
+UI_MANAGER
+  FORM std_form(STD_WINDOW);
+
+  FIELDGROUP motor_properties_fg(
+    VOID                VOID            VOID               "DATAPOOL",
+  LABEL(motor.p)        motor.p         UNIT(motor.p)       p,
+  LABEL(motor.psityp)   motor.psityp    UNIT(motor.psityp)  psityp,
+  LABEL(motor.rs_Tref)  motor.rs_Tref   UNIT(motor.rs_Tref) rs_Tref,
+  LABEL(motor.rr_Tref)  motor.rr_Tref   UNIT(motor.rr_Tref) rr_Tref,
+  LABEL(motor.Lls)      motor.Lls       UNIT(motor.Lls)     Lls,
+  LABEL(motor.Lh)       motor.Lh        UNIT(motor.Lh)      Lh,
+  LABEL(motor.rh)       motor.rh        UNIT(motor.rh)      rh,
+  LABEL(motor.Llr)      motor.Llr       UNIT(motor.Llr)     Llr,
+  LABEL(motor.Iin)      motor.Iin       UNIT(motor.Iin)     Iin
+);
+
+FORM motor_form{_("Motor properties"), MAIN}(
+      motor_properties_fg
+);
+END UI_MANAGER;
+
+END.

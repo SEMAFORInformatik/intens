@@ -1,0 +1,8 @@
+syntax = "proto3";
+package in_proto;
+
+message Stretch {
+  uint32 horizontal_factor = 1;
+  uint32 vertical_factor = 2;
+  uint32 id = 3;
+}

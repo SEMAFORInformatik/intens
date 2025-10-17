@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1 # for versions before 1.14 use extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    {{- include "ingress.labels" . | nindent 4 }}
+  name: {{ include "ingress.fullname" . }}-ingress
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /workbook
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.workbookService }}
+                port:
+                  number: 8080
+          - path: {{ .Values.ingress.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.webtensService }}
+                port:
+                  number: 8000

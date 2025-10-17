@@ -1,0 +1,4 @@
+output=etc/scim.des
+
+[cmake]
+target = scim-des # target

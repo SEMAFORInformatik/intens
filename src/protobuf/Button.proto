@@ -1,0 +1,18 @@
+syntax = "proto3";
+import "GuiElement.proto";
+import "Datafield.proto";
+package in_proto;
+
+message Button {
+  GuiElement base = 1;
+  bool pixmap = 2;
+  string label = 3;
+  bool editable = 4;
+  string action = 5;
+}
+
+message ButtonField {
+  DataField field = 1;
+  bool pixmap = 2;
+  string icon = 3;
+}

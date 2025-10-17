@@ -1,0 +1,9 @@
+syntax = "proto3";
+import "Datafield.proto";
+package in_proto;
+
+message ComboBox {
+  DataField base = 1;
+  repeated string input_dataset = 2;
+  repeated string output_dataset = 3;
+}

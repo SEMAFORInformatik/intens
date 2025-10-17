@@ -1,0 +1,11 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Toggle {
+  GuiElement base = 1;
+  string label = 2;
+  bool checked = 3;
+  bool disable = 4;
+  string action = 5;
+}

@@ -1,0 +1,61 @@
+// SEMAFOR Informatik & Energie AG
+// Basel, Switzerland
+//
+
+DESCRIPTION "NAVIGATOR docu example";
+
+DATAPOOL
+  STRUCT
+    STRU_1 {
+      STRING {EDITABLE}
+        name		{TAG = (tag_name)};
+    };
+  STRUCT
+    STRU_2 {
+      STRING {EDITABLE}
+        name		{TAG = (tag_name)};
+    };
+  STRUCT
+    STRU_MAIN {
+      STRING {EDITABLE}
+        name		{TAG = (tag_name)};
+      STRU_1
+        stru_1;
+      STRU_2
+        stru_2;
+    };
+
+  STRU_MAIN
+    stru_main
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  NAVIGATOR
+    navigator_identifier
+      ( stru_main[*] = "" )
+  ;
+  FIELDGROUP
+    fieldgroup_identifier
+    ( "@title@Structure:",
+      "@title@stru_main",
+      VOID "Name" stru_main.name "(stru_main.name)",
+      VOID "@title@stru_1",
+      VOID VOID "Name" stru_main.stru_1.name "(stru_main.stru_1.name)",
+      VOID "@title@stru_2 [0]",
+      VOID VOID "Name" stru_main.stru_2[0].name "(stru_main.stru_2[0].name)",
+      VOID "@title@stru_2 [1]",
+      VOID VOID "Name" stru_main.stru_2[1].name "(stru_main.stru_2[0].name)",
+      VOID "@title@stru_2 [2]",
+      VOID VOID "Name" stru_main.stru_2[2].name "(stru_main.stru_2[0].name)"
+    )
+  ;
+  FORM
+    form_identifier {MAIN}
+    (
+      ( fieldgroup_identifier, navigator_identifier )
+    )
+  ;
+END UI_MANAGER;
+
+END.

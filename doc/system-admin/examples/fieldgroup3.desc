@@ -1,0 +1,40 @@
+DESCRIPTION "Example 3";
+
+DATAPOOL
+  SET
+    Colors ("red" = 1,"green" = 2,"blue" = 3)
+  ;
+  REAL {EDITABLE}
+    speed, height, length, weight
+  ;
+  INTEGER {EDITABLE}
+    color {SET = Colors}
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP
+    Group_3 { "Group Three", TABLESIZE = 3 STEP 2, RANGE(1)}
+      ( "Speed"    speed       "km/h"<
+      , "Height"   height:5:1  "mm"< 
+      , "Length"   length:4    "mm"<
+      , "Weight"   weight:6:2  "kg"<  
+      , "Color"    color:5
+      )
+   ;
+  FORM
+    Form_3 { HIDE_CYCLE, CLOSE_BUTTON=NONE }
+      ( ( Group_3 )
+      )
+  , Form_2 { HIDE_CYCLE, CLOSE_BUTTON=NONE }
+      ( ( Group_3 )
+      )
+   ;
+  MENU
+    "Fenster" (
+      FORM Form_3
+    )
+  ;
+END UI_MANAGER;
+
+END.

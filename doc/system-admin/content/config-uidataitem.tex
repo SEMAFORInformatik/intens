@@ -1,0 +1,84 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                              Data Variable                            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Data Variables}
+\label{sec:uivariables}
+Most of the GUI-objects defined in the \UIMANAGER{} are directly linked
+with data items of the datapool.
+These objects are used to enter or display values. \\
+
+\input{diagrams/ui_field_data_reference}
+\input{diagrams/ui_xfer}
+\index{data item!ui\_manager}
+\index{data item!data variable}
+\index{data variable}
+
+\index{REAL@\REAL!ui\_manager data item functions}
+\index{IMAG@\IMAG!ui\_manager data item functions}
+\index{ABS@\ABS!ui\_manager data item functions}
+\index{ARG@\ARG!ui\_manager data item functions}
+\index{COMPLEX@\COMPLEX!ui\_manager data item functions}
+\index{FILENAME@\FILENAME!ui\_manager data item functions}
+\index{  @Signs / Characters!. (dot)!structure item separator}
+\index{STRUCT@\STRUCT!structure item separator}
+\begin{tabularx}{\textwidth}{l|X}
+function         & description  \\
+\hline
+\REAL            & Real value of \COMPLEX{} data item \\
+\IMAG            & Imaginary quantity of \COMPLEX{} data item \\
+\ABS             & Absolute value \\
+\ARG             & Angle of \COMPLEX{} data item \\
+\FILENAME        & Name of the file saved or opened through a filestream. \\
+{\bfseries ID\_DATAVARIABLE} & references a data item declared in datapool (section
+                   \nameref{sec:dpitem} page \pageref{sec:dpitem}). \\
+{\bfseries ID\_DATASET} & references a data set declared in datapool (section 
+                   \nameref{sec:dpset} page \pageref{sec:dpset}). \\
+.                & structure item separator \\
+\end{tabularx}
+
+\input{diagrams/ui_field_indizes}
+\input{diagrams/ui_field_index}
+\label{uifieldindizes}
+\vspace{0.5cm}
+
+By using indexes you can refer to each value of a data item. \\
+
+\index{  @Signs / Characters!\texttt{"+} (plus)!index offset}
+\index{  @Signs / Characters!: (colon)!index range}
+\begin{tabularx}{\textwidth}{l|X}
+index                   & description \\ 
+\hline
+\verb+ID_INDEX+         & refers a index object defined in UI\_MANAGER (section \nameref{sec:uiindex} page \pageref{sec:uiindex}) \\
++                       & add constant offset to an array-index \\
+wildcard                & see section \nameref{sec:wildcards} page \pageref{sec:wildcards} \\
+:                       & specifies a range (eg. first 5 [0:4]) \\
+\end{tabularx}
+\vspace{0.5cm}
+
+Examples: \\
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{alltt}
+data_item_id      // a scalar item with index 0,0 (or matrix item)
+data_item_id[ ]   // an array item
+data_item_id[n]   // a scalar item with index 0,n
+data_item_id[*]   // an array item with running index on row
+data_item_id[m,*] // an array item with running index on column
+data_item_id[m,n] // a scalar item with index m,n
+
+data_item_id[index-object_identifier]
+                       // it is displaied an index-object,
+                       // which enables you to scroll through
+                       // the data item using the maouse pointer. \\
+
+data_item_id[ 5 + index-object_identifier]
+                       // adds an offset of 5 to the index-object. \\
+\end{alltt}
+\end{boxedminipage}
+
+\vspace{0.5cm}
+
+\index{LABEL@\LABEL!index identifier}
+\index{UNIT@\UNIT!index identifier}
+For options like \LABEL{} and \UNIT{} use data items without indexes.
+\vspace{0.5cm}

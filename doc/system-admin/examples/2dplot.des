@@ -1,0 +1,71 @@
+DESCRIPTION "Example 2dplot";
+
+DATAPOOL
+  INTEGER { EDITABLE }
+    x
+  , y1
+  , y2
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  PLOT2D
+    bar_pg { "STYLE=BAR", CAPTION="STYLE=BAR" } (
+      plot { "STYLE=BAR", SCROLLBARS
+           , STYLE = BAR
+//           , SIZE(250,250)
+           } (
+        x {LABEL = LABEL(x)} (
+          y1 {LABEL="y1", YAXIS1}
+        , y2 {LABEL="y2", YAXIS2}
+        )
+      )
+    )
+  , step_pg { "STYLE=STEP", CAPTION="STYLE=STEP" } (
+      plot { "STYLE=STEP", SCROLLBARS
+           , STYLE = STEP
+//           , SIZE(250,250)
+           } (
+        x {LABEL = LABEL(x)} (
+          y1 {LABEL="y1", YAXIS1}
+        , y2 {LABEL="y2", YAXIS2}
+        )
+      )
+    )
+  , plot_pg { "STYLE=PLOT", CAPTION="STYLE=PLOT" } (
+      plot { "STYLE=PLOT", SCROLLBARS
+           , STYLE = PLOT
+//           , SIZE(250,250)
+           } (
+        x {LABEL = LABEL(x)} (
+          y1 {LABEL="y1", YAXIS1}
+        , y2 {LABEL="y2", YAXIS2}
+        )
+      )
+    )
+  ;
+  FIELDGROUP
+    data_fg { TABLESIZE=17 } (
+      LABEL(x)  x:3
+    , LABEL(y1) y1:3
+    , LABEL(y2) y2:3
+    )
+  ;
+
+  FORM
+    bar_form (
+      bar_pg
+    )
+  , step_form (
+      step_pg
+    )
+  , plot_form (
+      plot_pg
+    )
+  , data_form (
+      data_fg
+    )
+  ;
+END UI_MANAGER;
+
+END.

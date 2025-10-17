@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html
+     PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN'
+    'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <style>
+      body {
+          width: 21cm;
+          height: 29cm;
+          background: white;
+          font-family: Roboto, Arial, Ubuntu, sans;
+      }
+      h2 {
+          margin-bottom: 0;
+      }
+      .value {
+          background: #e9e9e9;
+          text-align: right;
+          font-weight: bold;
+      }
+    </style>
+
+    <title>Short Circuit Report</title>
+  </head>
+  <body>
+    <table width='650'>
+	    <colgroup>
+	      <col width='10%' />
+	      <col width='80%' />
+	      <col width='10%' />
+	    </colgroup>
+	    <tbody>
+	      <tr>
+	        <td> <img src='{{content.logo}}' alt='logo'/> </td>
+	        <td align='center'>  <h2>Short Circuit Report</h2></td>
+	        <td align='right'> {{content.creationdate}} </td>
+	      </tr>
+      </tbody>
+    </table>
+      <table width='650'>
+	      <colgroup>
+	        <col width='50%' />
+	        <col width='50%' />
+	      </colgroup>
+	      <tr>
+          <td><h3>Motor</h3></td>
+          <td><h3>Short Circuit</h3></td>
+        </tr>
+        <tr><td>
+
+            <table width='300'>
+              <title>Motor</title>
+              <colgroup>
+                <col width='50%' />
+                <col width='15%' />
+                <col width='35%' />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td> Pole pairs </td> <td></td>
+                  <td class='value'> {{content.pmMotor.p}}</td>
+                </tr>
+                <tr>
+                  <td> Nom. Flux </td> <td>Vs</td>
+                  <td class='value'> {{content.pmMotor.psityp}}</td>
+                </tr>
+                <tr>
+                  <td> Stator Resistance </td><td>Ω</td>
+                  <td class='value'> {{content.pmMotor.rs_Tref}}</td>
+                </tr>
+                <tr>
+                  <td> Rotor Resistance </td><td>Ω</td>
+                  <td class='value'> {{content.pmMotor.rr_Tref}}</td>
+                </tr>
+                <tr>
+      	          <td> Stator Leakage </td><td>mH</td>
+      	          <td class='value'> {{(1000*content.pmMotor.Lls)|round(2)}}</td>
+                </tr>
+                <tr>
+      	          <td> Magnetizing Inductance </td><td>mH</td>
+                  <td class='value'> {{(1000*content.pmMotor.Lh)|round(2)}}</td>
+                </tr>
+                <tr>
+      	          <td> Iron Resistance </td><td>Ω</td>
+      	          <td align='right' class='value'> {{content.pmMotor.rh|round|int}}</td>
+                </tr>
+                <tr>
+      	          <td> Rotor Leakage </td><td> mH </td>
+                  <td align='right' class='value'> {{(1000*content.pmMotor.Llr)|round(2)}}</td>
+                </tr>
+                <tr>
+      	          <td> Moment of Inertiar </td><td> kg*A²</td>
+      	          <td align='right' class='value'> {{content.pmMotor.Iin}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td><td>
+            <table width='300'>
+              <title>Short Circuit</title>
+              <colgroup>
+                <col width='50%' />
+                <col width='15%' />
+                <col width='35%' />
+              </colgroup>
+              <tbody>
+              </tbody>
+              <tr>
+                <td> Number of samples </td><td> </td>
+                <td class='value'> {{content.shortCircuit.nsamples}}</td>
+              </tr>
+              <tr>
+                <td> Stator voltage </td><td>V</td>
+                <td class='value'> {{content.shortCircuit.u1}}</td>
+              </tr>
+              <tr>
+                <td> Stator flux </td><td>Vs</td>
+                <td class='value'> {{content.shortCircuit.psi}}</td>
+              </tr>
+              <tr>
+                <td> Load Torque </td><td>Nm</td>
+                <td class='value'> {{content.shortCircuit.tload}}</td>
+              </tr>
+              <tr>
+                <td> Shaft Speed </td><td>1/min</td>
+                <td class='value'> {{(60*content.shortCircuit.speed)|round(1)}}</td>
+              </tr>
+              <tr>
+                <td> T short </td><td>ms</td>
+                <td class='value'> {{(1000*content.shortCircuit.tshort)|round(2)}}</td>
+              </tr>
+              <tr>
+                <td> T end </td><td>ms</td>
+                <td class='value'> {{(1000*content.shortCircuit.tend)|round(2)}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <h3>Results</h3>
+      <table width='500'>
+        <title>Results</title>
+        <colgroup>
+          <col width='30%' />
+          <col width='20%' />
+          <col width='20%' />
+          <col width='20%' />
+          <col width='10%' />
+        </colgroup>
+        <tbody>
+        </tbody>
+        <tr>
+          <td colspan='5'><b>I2T Pulse Energy</b></td>
+        </tr>
+        <tr>
+          <td>Pos.</td>
+          <td class='value'> {{(1e-3*content.result.i2t_pos_max[0])|round(1)}}</td>
+          <td class='value'> {{(1e-3*content.result.i2t_pos_max[1])|round(1)}}</td>
+          <td class='value'> {{(1e-3*content.result.i2t_pos_max[2])|round(1)}}</td>
+          <td>kA²s</td>
+        </tr>
+        <tr>
+          <td>Neg.</td>
+          <td class='value'> {{(1e-3*content.result.i2t_neg_max[0])|round(1)}}</td>
+          <td class='value'> {{(1e-3*content.result.i2t_neg_max[1])|round(1)}}</td>
+          <td class='value'> {{(1e-3*content.result.i2t_neg_max[2])|round(1)}}</td>
+          <td>kA²s</td>
+        </tr>
+        <tr>
+          <td colspan='5'><b>Phase Currents</b></td>
+        </tr>
+        <tr>
+          <td>Is max</td>
+          <td class='value'> {{content.result.ismax[0]|round(1)}}</td>
+          <td class='value'> {{content.result.ismax[1]|round(1)}}</td>
+          <td class='value'> {{content.result.ismax[2]|round(1)}}</td>
+          <td>A</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class='value'> {{content.result.ismin[0]|round(1)}}</td>
+          <td class='value'> {{content.result.ismin[1]|round(1)}}</td>
+          <td class='value'> {{content.result.ismin[2]|round(1)}}</td>
+          <td>A</td>
+        </tr>
+
+        <tr>
+          <td colspan='5'><b>Torque</b></td>
+        </tr>
+        <tr>
+          <td>Maximum Torque</td>
+          <td colspan='1' class='value'> {{(1e-3*content.result.tpeak[0])|round(1)}}</td>
+          <td>kNm</td>
+          <td colspan='2'></td>
+        </tr>
+
+        <tr>
+          <td colspan='5'><b>Stationary Point</b></td>
+        </tr>
+        <tr>
+          <td>Stator Voltage</td>
+          <td colspan='1' class='value'> {{content.result.u1[0]|round(2)}}</td>
+          <td>V</td>
+          <td colspan='2'></td>
+        </tr>
+        <tr>
+          <td>Stator Frequency</td>
+          <td colspan='1' class='value'> {{content.result.f1[0]|round(2)}}</td>
+          <td>Hz</td>
+          <td colspan='2'></td>
+        </tr>
+      </table>
+    </p>
+    {% if content.shortCircuit_plot %}
+    <br/>
+    <h3>Plots</h3>
+    <p>
+      <img src='{{content.shortCircuit_plot}}'/>
+    </p>
+    {% endif %}
+  </body>
+</html>

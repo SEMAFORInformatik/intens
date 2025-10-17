@@ -1,0 +1,78 @@
+DESCRIPTION "INTENS operations";
+
+DATAPOOL
+  INTEGER {EDITABLE, SCALAR} i, j, k;
+  REAL {EDITABLE, SCALAR} x, y, z;
+  STRING {EDITABLE, SCALAR} s;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP fg (
+    LABEL(i) i  LABEL(x) x
+  , LABEL(j) j  LABEL(y) y
+  , LABEL(k) k  LABEL(z) z
+  , LABEL(s) s
+  );
+
+  FORM form {MAIN} (fg);
+
+  // hide STD_WINDOW (Standard output) from main form
+  FORM stdwin_form {
+    _("Standard output")
+  } (
+    STD_WINDOW { SIZE=24*80 }
+  );
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC add {z = x + y;};
+  FUNC subtract {z = x - y;};
+  FUNC multiply {z = x * y;};
+  FUNC divide {z = x / y;};
+
+  FUNC modulo {z = x % y;};
+  FUNC power {z = x ^ y;};
+
+  FUNC gt {k = i > j;};
+  FUNC geq {k = i >= j;};
+  FUNC lt {k = i < j;};
+  FUNC leq {k = i <= j;};
+  FUNC eq {k = i == j;};
+  FUNC neq {k = i != j;};
+
+  FUNC and {k = i && j;};
+  FUNC or {k = i || j;};
+  FUNC negate {j = -1*i;};
+  FUNC not {j = !i;};
+
+  FUNC incr {i++;};
+  FUNC decr {i--;};
+  FUNC accumulate {i += j;};
+
+  FUNC abs {y = ABS(x);};
+
+  FUNC length {i = LENGTH(s);};
+
+  FUNC sin {y = SIN(x);};
+  FUNC cos {y = COS(x);};
+  FUNC tan {y = TAN(x);};
+  FUNC asin {y = ASIN(x);};
+  FUNC acos {y = ACOS(x);};
+  FUNC atan {y = ATAN(x);};
+  FUNC atan2 {z = ATAN2(y, x);};
+
+  FUNC log {y = LOG(x);};
+  FUNC log10 {y = LOG10(x);};
+
+  FUNC sqrt {y = SQRT(x);};
+
+  FUNC round {z = ROUND(x, y);};
+  FUNC round5 {y = ROUND5(x);};
+  FUNC round10 {y = ROUND10(x);};
+
+  FUNC real {z = REAL(COMPLEX(x, y));};
+  FUNC imag {z = IMAG(COMPLEX(x, y));};
+  FUNC arg {z = ARG(COMPLEX(x, y));};
+END FUNCTIONS;
+
+END.

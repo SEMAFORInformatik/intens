@@ -1,0 +1,18 @@
+!define AppName "@CPACK_PACKAGE_DESCRIPTION_SUMMARY@"
+!define AppVersion @PACKAGE_VERSION@
+!define AppVersion_MAJOR @PACKAGE_VERSION_MAJOR@
+!define AppVersion_MINOR @PACKAGE_VERSION_MINOR@
+!define ShortName "@PACKAGE_NAME@"
+!define Vendor @CPACK_PACKAGE_VENDOR@
+!define PRODUCT_PUBLISHER "Semafor Informatik & Energie AG"
+!define PRODUCT_WEB_SITE "http://www.semafor.ch"
+
+!define MUI_ICON "@PROJECT_SOURCE_DIR@\\mingw\\semafor.ico"
+!define MUI_UNICON "@PROJECT_SOURCE_DIR@\\mingw\\semafor.ico"
+;!define MUI_WELCOMEFINISHPAGE_BITMAP "@PROJECT_SOURCE_DIR@\nsis\Welcome.bmp"
+;!define MUI_HEADERIMAGE_BITMAP "@PROJECT_SOURCE_DIR@\nsis\\Header.bmp"  
+
+; License Text
+!define ProjectDir "@PROJECT_SOURCE_DIR@"
+
+!define IntensVersion @INTENS_VERSION@

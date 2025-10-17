@@ -1,0 +1,32 @@
+\section{License Information}
+%        ===================
+You need a valid license together with a password
+provided by SEMAFOR for each
+host you plan to run an INTENS-appplication. This information
+is placed in the file \verb+/usr/local/intens/licenses/semafor.lic+.
+
+It has the following structure:
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+
+# INTENS license information
+#
+# Organisation
+Bombardier Transportation Schweiz / CH-8050 Zurich
+#
+# NOTE: You can edit the hostname on the server line (1st arg).
+#       The (optional) daemon-path on the VENDOR line (2nd arg).
+#       Most other changes will invalidate this license.
+#
+SERVER ampere 00508bb45860
+VENDOR semafor
+FEATURE intens semafor 3.1 permanent 10 D21A284F77B8 ck=124
+FEATURE matlab semafor 3.1 permanent 10 7601493259DA ck=117
+\end{verbatim}
+\end{boxedminipage}
+
+\vspace{1cm}
+
+The organisation name can be changed with affecting the licenses.
+It is used for displaying the license information in the copyright
+dialog.

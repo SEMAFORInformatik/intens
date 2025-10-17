@@ -1,0 +1,79 @@
+DESCRIPTION "Example 2dplot";
+
+DATAPOOL
+  INTEGER { EDITABLE }
+    x
+  , y1
+  , y2
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  PLOT2D
+    bar_pg { "STYLE=BAR", CAPTION="STYLE=BAR" } (
+      plot { "STYLE=BAR", SCROLLBARS
+           , STYLE = BAR
+           } (
+        x {LABEL = LABEL(x)} (
+          y1 {LABEL="y1", YAXIS1}
+        , y2 {LABEL="y2", YAXIS2}
+        )
+      )
+    )
+  , step_pg { "STYLE=STEP", CAPTION="STYLE=STEP" } (
+      plot { "STYLE=STEP", SCROLLBARS
+           , STYLE = STEP
+           } (
+        x {LABEL = LABEL(x)} (
+          y1 {LABEL="y1", YAXIS1}
+        , y2 {LABEL="y2", YAXIS2}
+        )
+      )
+    )
+  , plot_pg { "STYLE=PLOT", CAPTION="STYLE=PLOT" } (
+      plot { "STYLE=PLOT", SCROLLBARS
+           , STYLE = PLOT
+           } (
+        x {LABEL = LABEL(x)} (
+          y1 {LABEL="y1", YAXIS1}
+        , y2 {LABEL="y2", YAXIS2}
+        )
+      )
+    )
+  ;
+  FIELDGROUP
+    data_fg { TABLESIZE=17 } (
+      LABEL(x)  x:3
+    , LABEL(y1) y1:3
+    , LABEL(y2) y2:3
+    )
+  ;
+
+  FOLDER
+    Data { LEFT } (
+      ["BAR"  : tab_bar, FUNC = func_a ] (data_fg)
+    , ["STEP" : tab_step ] (data_fg)
+    , ["PLOT" : tab_plot ] (data_fg)
+    ),
+    Text (
+      ["Standard"] (STD_WINDOW)
+    , ["Log"] (LOG_WINDOW)
+    , ["Input"] (Data)
+    ),
+    Plots { TOP, VERTICAL } (
+      ["BAR"  : tab_bar]  (bar_pg)
+    , ["STEP" : tab_step] (step_pg)
+    , ["PLOT" : tab_plot] (plot_pg)
+    )
+  ;
+  FORM
+    form2 (
+      Text
+    , Plots
+    )
+  ;
+END UI_MANAGER;
+
+INCLUDE folder_plot2d_init.inc
+
+END.

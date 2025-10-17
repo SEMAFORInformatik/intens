@@ -1,0 +1,105 @@
+DESCRIPTION "PLOT2D: AXIS Label not updated";
+
+DATAPOOL
+  SET unit_set {INVALID=NONE} (
+    "degrees" = 0
+  , "radians" = 1
+  , "n" = 2
+  );
+  INTEGER {EDITABLE, SCALAR} unit {LABEL=_("Unit"), SET=unit_set, FUNC=unit_func};
+  STRING unit_label;
+
+  SET function_set {INVALID=NONE} (
+    "sine" = 0
+  , "cosine" = 1
+  , "tan" = 2
+  );
+  INTEGER {EDITABLE, SCALAR} function {LABEL=_("Function"), SET=function_set, FUNC=function_func};
+  STRING function_label;
+
+  REAL x;
+  REAL y;
+END DATAPOOL;
+
+STREAMER
+  unit_label_stream (unit_label);
+  function_label_stream (function_label);
+END STREAMER;
+
+UI_MANAGER
+  INDEX unit_index;
+  INDEX function_index;
+
+  FIELDGROUP selection_fg (
+    LABEL(unit) unit VOID(20,0)
+    LABEL(function) function
+  );
+
+  PLOT2D xy_plot (
+    plot {
+      XAXIS {LABEL=unit_label_stream}
+    , YAXIS1 {LABEL=function_label_stream}
+    } (
+      ( x[unit_index, *] {XAXIS}
+      , y[function_index, *] {YAXIS1}
+      )
+    )
+  );
+
+  FORM main_form {MAIN} (
+    selection_fg
+  , xy_plot
+  );
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC unit_func {
+    IF(!VALID(unit)) {
+      unit = 0;
+    }
+
+    unit_index = unit;  // causes GUI UPDATE
+    unit_label = DATASET_TEXT(unit);
+  };
+
+  FUNC function_func {
+    IF(!VALID(function)) {
+      function = 0;
+    }
+    function_index = function;  // causes GUI UPDATE
+    function_label = DATASET_TEXT(function);
+  };
+
+  FUNC INIT {
+    REAL step;
+    INTEGER i, n;
+
+    RUN(unit_func);
+    RUN(function_func);
+
+    // fill x
+    CLEAR(x);
+    n = 100;
+    step[0] = 360.0 / n;
+    step[1] = 2 * 3.1415926536 / n;
+    step[2] = 1;
+
+    i = 0;
+    WHILE(i <= n) {
+      x[0, i] = i * step[0];
+      x[1, i] = i * step[1];
+      x[2, i] = i * step[2];
+
+      y[0, i] = SIN(x[1, i]);
+      y[1, i] = COS(x[1, i]);
+      y[2, i] = TAN(x[1, i]);
+      IF(ABS(y[2, i]) > 10) {
+        CLEAR(y[2, i]);
+      }
+
+      i++;
+    }
+  };
+END FUNCTIONS;
+
+END.

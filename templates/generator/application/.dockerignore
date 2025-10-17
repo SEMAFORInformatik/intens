@@ -1,0 +1,8 @@
+/build*
+/mingw*
+/registrar*
+/nsis*
+/config-service*
+/docker*
+/intens*
+

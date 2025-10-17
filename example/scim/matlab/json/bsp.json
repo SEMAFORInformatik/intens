@@ -1,0 +1,16 @@
+{
+"Nmot":4,
+"sol_points":2000,
+"motor":{
+"rs_Tref":0.039873,
+"rr_Tref":0.018507,
+"Lls":0.000251,
+"Lh":0.008349,
+"rh":100.0,
+"Llr":0.000265,
+"Iin":2000000.0,
+"p":2},
+"mechvalues":{"n0_rpm":686.11,"Tmech":2669.0},
+"elecvalues":{"fe_ref":24.0,"V1":322.79},
+"temperatures":{"Tref":150.0,"Tact":25.0},
+"shortpar":{"V_dio":1.5,"rs_dio":0.0012,"rs_add_short":0.0,"V_short":10.0,"Lls_add_short":4e-07,"frac_per":6.0,"numshort":20}}

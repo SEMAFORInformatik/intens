@@ -1,0 +1,70 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            SOCKET                                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Sockets}
+Sockets define a tcp server socket created when the application starts.
+\label{sec:opsocket}
+
+\input{diagrams/op_socket_declaration_list}
+\index{SOCKET@\SOCKET}
+
+\begin{tabularx}{\textwidth}{l|X}
+socket            & description \\ 
+\hline
+\verb+identifier+ & Identifies the Socket. \\
+\end{tabularx}
+
+\input{diagrams/op_socket_option}
+
+\index{PORT@\PORT!socket option}
+\index{STREAM@\STREAM!socket option}
+\index{FUNC@\FUNC!socket option}
+\index{MFM@\MFM!socket option}
+\index{ON\_EOS@\ONEOS!socket option}
+\index{ON\_VIEW\_ACTION@\ONVIEWACTION!socket option}
+\index{THUMBNAIL@\THUMBNAIL!socket option}
+\begin{tabularx}{\textwidth}{l|X}
+socket option  & description \\ \hline
+\PORT          & tcp/ip port the server socket listenes at \\
+\STREAM        & References a stream defined in section \nameref{sec:streamer}
+                 (page \pageref{sec:streamer}) \\
+	             & Data sent to this socket is read and stored in the datapool
+                  according to this stream. \\
+\FUNC          & Function to call when all data is sent to this socket ( ``EOF'' on a single line)
+                 and, if a \STREAM{} is defined, after the data has been read using that \STREAM. \\
+\hline
+\MFM           & MFM socket. Data sent to this socket is interpreted as MFM scan data. \\
+\ONEOS         & Function to call when the stream starts with ``EOS'' (End Of Scan). In this case, no data is
+                 stored in the datapool even if a socket is defined. \\
+\ONVIEWACTION  & Function to call when a view action is called from an image using this socket.
+                 ( for MFM sockets only )\\
+\verb+ui xfer+ & Store scan data in ui\_xfer(see section \nameref{dia:uixfer} on page \pageref{dia:uixfer}).
+                 Three wildcards are required (scan, direction, channel).
+                 ( for MFM sockets only ) \\
+\THUMBNAIL     & Data item to store thumbnail of scan data, followed by width and height in pixels.
+                 ( for MFM sockets only ) \\
+\end{tabularx}
+
+\input{diagrams/op_socket_header_option}
+
+Different types of messages can be sent to a single socket.
+They are identified by their \HEADER{}
+(see \nameref{fu:send:statement} on page \pageref{fu:send:statement}). \\
+A different \REQUEST{}, \RESPONSE{} and \FUNC{} is used for each type. \\
+
+\begin{tabularx}{\textwidth}{l|X}
+header option & description \\ \hline
+\HEADER       & Defines the header string used to identify the message type. \\
+\REQUEST      & References a stream defined in section \nameref{sec:streamer}
+                 (page \pageref{sec:streamer}) \\
+	             & Data sent to this socket is read and stored in the datapool
+                  according to this stream. \\
+\RESPONSE      & References a stream defined in section \nameref{sec:streamer}
+                 (page \pageref{sec:streamer}) \\
+	             & A response is read from the datapool and sent
+                 according to this stream. \\
+\FUNC         & Function to call when all data with this \HEADER{} is sent to this socket
+                and, if a \REQUEST{} is defined, after the data has been read using that \STREAM{}
+                and, if a \RESPONSE{} is defined, before that response is sent. \\
+\end{tabularx}
+

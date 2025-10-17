@@ -1,0 +1,2000 @@
+#+SETUPFILE: ./styles/theme-bigblow-local.setup
+# source https://github.com/fniessen/org-html-themes
+#+EXPORT_FILE_NAME: public/index
+#+title:  Getting Started with the INTENS Application Development
+#+author: SEMAFOR Informatik & Energie AG, Basel, Switzerland
+#+OPTIONS: ^:nil
+
+
+* Overview
+# Software development is expensive, time consuming and prone to error.
+INTENS is an integration and development framework and runtime
+platform for scientific
+applications providing key benefits in a fast and effective way:
+
+- Usability, traceability, data consistency
+- Calculation module integration
+- Variant evaluation and comparison
+- Desktop (Linux, Windows) and Cloud (Docker, Kubernetes) operation
+- Flexibility and maintainability
+# - Throughput time and cost effectiveness
+
+** Purpose
+This document demonstrates the build and configuration process with INTENS
+and the sample application SCIM which can be used to analyze the short-circuit
+characteristics of induction motors.
+
+#+CAPTION: Main Dialog Window of SCIM Application
+#+NAME:   fig:main-dialog
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-mainWindow.png]]
+
+The application can be run in three different environments:
+
+1. Linux or Windows desktop using a Qt user interface
+2. Docker using a web browser interface
+3. Kubernetes Cloud using a web browser interface
+
+** Calculation Interface and Data Model
+The calculation modules are already implemented both as a python and a
+matlab function having the following interface:
+#+begin_src matlab
+function result = imsc(motor, short_circuit)
+#+end_src
+
+This function ~imsc~ has 2 input parameters and returns a
+result. Their data types are structures, that contain scalar values,
+vectors and matrices. The following tables describe their structure
+in more detail.
+
+- Induction Motor ~motor~:
+| Property | Unit  | Description                         |
+|----------+-------+-------------------------------------|
+| rr_Tref  | Ω     | rotor resistance at 20° Celsius     |
+| psityp   | Vs    | type flux                           |
+| p        |       | number of pole pairs                |
+| rs_Tref  | Ω     | stator resistance at 20° Celsius    |
+| Lls      | H     | stator leakage inductance           |
+| Lh       | H     | magnetizing inductance              |
+| rh       | Ω     | resistance representing iron losses |
+| Llr      | H     | rotor leakage inductance            |
+| Iin      | kg²m² | moment of inertia                   |
+
+- Short-Circuit Specification ~short_circuit~:
+| Property | Unit | Description                    |
+|----------+------+--------------------------------|
+| u1       | V    | stator maximum voltage         |
+| psi      | Vs   | stator maximum flux            |
+| tload    | Nm   | load torque                    |
+| speed    | 1/s  | shaft speed at load torque     |
+| tshort   | s    | start time of short circuit    |
+| tend     | s    | end time of calculation period |
+| nsamples |      | number of samples              |
+
+- Calculation Results ~result~:
+| Property    | Unit | Description                                    |
+|-------------+------+------------------------------------------------|
+| t           | s    | time vector                                    |
+| torque      | Nm   | torque vector                                  |
+| is          | A    | 3 phase currents matrix                        |
+| i2t_pos     | A²s  | matrix of integrated i²(t) for positive values |
+| i2t_neg     | A²s  | matrix of integrated i²(t) for negative values |
+| ismax       | A    | vector of maximum values of phase currents     |
+| ismin       | A    | vector of minimum values of phase currents     |
+| tpeak       | Nm   | peak value of torque                           |
+| i2t_pos_max | A²s  | vector of maximum values of positive i2t       |
+| i2t_neg_max | A²s  | vector of maximum values of negative i2t       |
+| u1          | V    | stator voltage at begin of short circuit       |
+| f1          | Hz   | stator frequency at begin of short circuit     |
+
+** Prerequisites
+
+This demo project can be built on a Linux/Unix or Windows system with the
+following packages installed:
+
+- Intens 5 (with REST-DB-Server)
+- Python 3.12 (virtualenv)
+- Java (JRE) 17
+- CMake (Version >3.10, for Windows, see special information in appendix [[*Installation on Windows]])
+- MinGW/MSys (on Windows only, see appendix [[*Installation on Windows]])
+
+The installation process for these packages on Linux/Unix systems is
+straightforward. For Windows see appendix [[*Installation on Windows]]).
+
+In addition to the above listed software the
+database service must be installed and started
+with a special installation script. The description of these steps
+can be found in section [[*Database Installation]].
+
+It is assumed that the reader has some basic knowledge of the bash
+shell and a text editor such as Emacs (recommended) or Vi.
+
+** Demo Application Architecture
+The demo application is developed with the Intens framework. Each
+intens application has its own configuration which is
+interpreted at startup by the parser.
+
+
+#+CAPTION: SCIM Application Architecture
+#+NAME:   fig:app-architecture
+[[./images/Scim-Architecture.drawio.png]]
+
+This application is composed of
+
+- the *Intens* core module which provides the user interface and communicates with
+  - the 2 external calculation modules: ~scim_calc.py~, ~scim_calc.m~ and
+  - the *api-gateway* that delegates the calculation command to the ~scim_calc~ function and
+  - the *DB-Service* with Spring REST, a RDBMS database (H2) and a dashboard
+- the *configuration* file which describes the required interfaces,
+  the controller logic, the UI layout and the data to be managed.
+
+We will use the Intens generator ~intens-gen~ to create the necessary components
+(Motor and ShortCircuit) for the application. For each component a sub-folder
+is created in the ~etc/~ directory with the name of the component, e.g. a motor component:
+
+#+begin_example
+scim
+📁 etc
+    📁 motor
+       📄 motor_datapool.inc
+       📄 motor_functions.inc
+       📄 motor_uiManager.inc
+       📄 motor_streamer.inc
+       📄 motor_operator.inc
+#+end_example
+
+In this getting-started guide the only files in the ~etc/motor~ directory that need to be
+modified are ~motor_datapool.inc~ and ~motor_uiManager.inc~.
+
+The final result can be downloaded from [[https://owncloud.semafor.ch/s/f0sTdM9gKZh61q4/download]]
+
+** Database Installation
+1. Create a new project directory:
+  #+begin_example
+  $ mkdir intens-training
+  $ cd intens-training
+  #+end_example
+2. Download the DB server from https://owncloud.semafor.ch/s/B1RWj71nvPNO89t/download (100 MB)
+  and unpack the file:
+  #+begin_example
+  ~/intens-training $ tar -xf workbook.tgz
+  #+end_example
+3. Start the Database Service
+  - for Linux (and MinGW/MSys): ~$ java -jar workbook.jar~
+  - for Windows: make sure java is installed (see [[*Java]]), then double-click on workbook.jar.
+  Or start it from the command line as shown above.
+
+*** Database configuration
+The database itself offers many options to configure its behavior.
+These options can be configured in various ways.
+
+The easiest way to configure them is via a config file that
+ will be loaded from the current working directory at startup of the service.
+The name of the config file is either ~application.properties~ or ~application.yaml~
+depending on the preferred file format.
+A simple example properties file is provided in the template you will generate later
+with the ~intens-gen~ command.
+
+Here are some examples for different database configurations in properties file format:
+
+- H2:
+#+begin_example
+spring.datasource.url=jdbc:h2:file:./workbookdb;DB_CLOSE_DELAY=-1
+spring.datasource.username=sa
+spring.datasource.password=
+#+end_example
+
+- Postgres:
+#+begin_example
+spring.datasource.url=jdbc:postgresql://localhost:5432/scimdb
+spring.datasource.username=postgres
+spring.datasource.password=1234
+#+end_example
+
+- SQLServer:
+#+begin_example
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=scim-db
+spring.datasource.username=sa
+spring.datasource.password=1234
+#+end_example
+
+- Mysql:
+#+begin_example
+spring.datasource.url=jdbc:mysql://localhost:3306/database_scim
+spring.datasource.username=root
+spring.datasource.password=
+#+end_example
+*** User Creation
+The database access is restricted to authorized users only. The database service
+uses Spring Security and offers 2 methods for Identity and Access Management (IAM):
+- JWT with username and password
+- OAuth2 with an authorization service (such as Keycloak)
+Here we will focus on the JWT method.
+
+Open http://localhost:8080/workbook in your browser (Firefox, Google Chrome):
+#+CAPTION: Database Login Screen
+#+NAME:   fig:database-login
+#+ATTR_HTML: :width 400px :align center
+[[./images/screenshots/dashboard-login.png]]
+
+- Login with Username/Pasword: admin/admin
+#+CAPTION: Database Service Dashboard
+#+NAME:   fig:database-dashboard
+#+ATTR_HTML: :width 400px :align center
+[[./images/screenshots/dashboard-home.png]]
+
+- Press Button *Users*
+#+CAPTION: Database User Administration
+#+NAME:   fig:database-user-admin
+#+ATTR_HTML: :width 400px :align center
+[[./images/screenshots/dashboard-users.png]]
+
+A user must have an active group, with the ~ROLE_USER~. When a component is created,
+it is owned by the current user and its active group.
+These settings, along with a component's approval state,
+determine the accessability of the component.
+A user may be member of multiple groups to get access permissions
+to components of other groups.
+
+To create a group, enter the group name in the field
+~Group name~ and confirm with ~Add~.
+
+** The Development Environment
+
+Intens has support for a bunch of development tooling, including [[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]]
+and [[https://microsoft.github.io/language-server-protocol/][Language Sever Protocol]].
+
+Any editor that supports these can be set up to make use of these features, but we provide extensions for Emacs and VSCode.
+
+*** Emacs (Recommended)
+
+To use Emacs with the Intens tooling, simply load the intens-ts-mode.el file provided with Intens like this:
+
+#+begin_example
+(add-to-list 'load-path "/usr/local/intens/current/etc")
+(load "intens-ts-mode")
+#+end_example
+
+Replace the path to your Intens install if it differs.
+With this loaded, Emacs should be ready to use Tree-sitter and the Intens Language Server.
+
+The next time you open an intens description file, it will have syntax highlighting provided by Tree-sitter.
+If you have configured [[https://www.gnu.org/software/emacs/manual/html_mono/eglot.html][Eglot]] in your Emacs, it will also provide
+auto completion, go to definition, and syntax error highlighting.
+
+*** VSCode
+
+For VSCode we provide an extension that lets VSCode use syntax highlighting and various Language Server features.
+The *INTENS Tools* extension then has options to specify the Intens install to use.
+
+If Intens and all the build tools already are in your PATH, it should work out of the box.
+Otherwise, in the Settings menu of VSCode you will find the *Intens Installation* and *Intens Msys* settings.
+
+*Intens Installation* points to the directory where you have Intens installed. (The directory with bin, etc, templates)
+
+*Intens Msys* points to your Msys installation. (Default is C:\msys64)
+
+** CMake
+
+For maintainability reasons the Intens configuration is
+typically split into several files which are merged together
+during the build process. To provide a robust and portable environment
+the build process is based on the *CMake* tool.
+
+CMake is a popular open-source, cross-platform family of tools designed to build,
+test and package software.
+CMake is used to control the software compilation process using simple platform and
+compiler independent configuration files, and generate native makefiles and workspaces
+that can be used in the compiler environment of your choice.
+More information here: [[https://cmake.org]]
+
+* Building
+For building the application we will follow the
+process depicted in this figure:
+
+#+CAPTION: Intens Build Process
+#+NAME:   fig:build-process
+#+ATTR_HTML: :width 600px :align center
+[[./images/figs/process.png]]
+
+It would be perfectly appropriate to create the configuration files
+completely using your preferred text editor or IDE. However as there are
+several boiler-plate parts
+in this configuration the application generator script ~intens-gen~
+is included in the INTENS development package and will be used here.
+
+In the following steps we are going to define
+
+- the data elements of the input and output data
+- the dialog windows
+- the calculation interface
+
+The database interface (the REST-service requests)
+will be automatically created by the intens generator.
+
+** Setup Application Folder
+Startup your shell. Before proceeding please make sure
+your PATH-Variable includes the intens bin folder.
+- Add intens bin folder to your PATH variable:
+#+begin_example
+PATH=$PATH:<installed_intens_directory>/bin
+#+end_example
+- Create a virtual environment with venv: This is used to manage python packages
+  for different projects. Using venv allows you to avoid installing python packages globally
+  which could break system tools or other projects. Make sure python3 is in your PATH when exec python.
+#+begin_example
+~/intens-training $ python -m venv training
+~/intens-training $ source training/bin/activate
+(training) ~/intens-training $
+#+end_example
+  On Windows, the activate file is placed in the folder 'Scripts' instead of 'bin'.
+#+begin_example
+~/intens-training $ source training/Scripts/activate
+#+end_example
+  The above command activates the python virtual environment named ``training'', and the string
+  ``(training)'' in your shell prompt keeps you informed about that.
+- Install the required python packages:
+  The required packages for a specific project should be maintained in a file,
+  usually named as ~requirements.txt~. The following packages are required:
+#+begin_example
+Jinja2
+lxml
+Mako
+PyInstaller
+python-dateutil
+pyzmq
+requests
+#+end_example
+Install the python packages:
+#+begin_example
+(training) ~/intens-training $ pip install -r requirements.txt
+#+end_example
+** Create and Build the Base Application
+Create the directory structure using the Intens application generator
+#+begin_example
+(training) ~/intens-training $ intens-gen --create application
+#+end_example
+~Identifier of the application (without blanks):~ *scim*\\
+~application title [scim]:~ *Short Circuit Characteristics of Induction Motors*\\
+~application title short name [SCIM]:~\\
+~Destination directory of the application [/home/user/intens-training/scim]:~\\
+
+The bold faced texts represent the user inputs. The default values are shown within brackets.
+
+- Create the build folder and the Makefiles:
+  In order to separate the build files from the source files it is a
+  recommended practice to create a dedicated build folder:
+#+begin_example
+(training) ~/intens-training $ cd scim
+(training) ~/intens-training/scim $ mkdir build
+#+end_example
+- Create the Makefiles by changing to the build folder and
+  run configure:
+#+begin_example
+(training) ~/intens-training/scim $ cd build
+(training) ~/intens-training/scim/build $ ../configure
+#+end_example
+  This command will populate the build tree with
+  all required folders and Makefiles.
+- Build the executable appplication:
+#+begin_example
+(training) ~/intens-training/scim/build $ make
+#+end_example
+** Run the Base Application
+The created application can now be run and tested by invoking:
+#+begin_example
+(training) ~/intens-training/scim/build $ ./scripts/scim
+#+end_example
+The main window presents a menu bar and a fieldgroup for opening and
+saving workbooks:
+
+#+CAPTION: Main Dialog Window
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-mainWindow1.png]]
+
+However there are currently no components included in this
+application. The next steps will add the motor component and the short-circuit data set.
+Close the application and proceed.
+
+The most relevant parts of the created directory tree are
+#+begin_example
+📁 scim
+    📄 configure
+    📄 CMakeLists.txt
+    📁 api-gateway           Calculation interface
+    │  📄 api-gateway.py
+    │  📄 CMakeLists.txt
+    │  📁 tests
+    │  📁 zrpc
+    📁 bitmaps               Bitmap/Icon files
+    📁 config                Logging configuration
+    📁 db                    DB configuration
+    📁 docker
+    📁 etc                   Intens Description Files
+    │  📄 scim.des.in        Main description file
+    │  📁 main_window        main dialog window
+    │  │ 📄 main_window_uiManager.inc
+    │  📁 project
+    │  📁 variant
+    📁 helm
+    📁 mingw                 EXE File
+    📁 nsis                  Windows Installer
+    📁 po
+    📁 qss                   Qt Style Files
+    📁 scripts
+    📁 templates
+    📁 testing
+#+end_example
+** Create the Motor Component
+- Change to the project root and create the motor component with
+  the Intens application generator:
+#+begin_example
+(training) ~/intens-training/scim/build $ cd ..
+(training) ~/intens-training/scim $ intens-gen --create component
+#+end_example
+~Identifier of the component (without blanks):~ *motor*\\
+~component type (without blanks) [Motor]:~\\
+~component type label [Motor]:~\\
+~component type label short name [MO]:~\\
+~Destination directory of the application [/home/user/intens-training/scim]:~\\
+
+Only the bold faced text needs to be entered.
+
+The above command creates the new folder ~etc/motor~ populated with these five files:
+#+begin_example
+scim
+📁 etc
+   📁 motor
+      📄 motor_datapool.inc
+      📄 motor_functions.inc
+      📄 motor_uiManager.inc
+      📄 motor_streamer.inc
+      📄 motor_operator.inc
+#+end_example
+- Open the file ~etc/motor/motor_datapool~ and include the data items in the Motor STRUCT block:
+#+begin_src intens
+  STRUCT Motor: Component {
+    INTEGER {EDITABLE, SCALAR}
+      p {
+        LABEL=_("Pole pairs"),
+        HELPTEXT=_("Number of pole pairs"),
+        DBUNIT="1"
+      }
+    ;
+    REAL {EDITABLE, SCALAR}
+      psityp {
+        LABEL=_("Nom. Flux"),
+        HELPTEXT=_("Stator Type flux"),
+        UNIT="Vs"
+      },
+      rs_Tref {
+        LABEL=_("Stator Resistance"),
+        HELPTEXT=_("Stator Resistance at 20 deg Celsius"),
+        UNIT="Ω"
+      },
+      rr_Tref {
+        LABEL=_("Rotor Resistance"),
+        HELPTEXT=_("Rotor Resistance at 20 deg Celsius"),
+        UNIT="Ω"
+      },
+      Lls {
+        LABEL=_("Stator Leakage"),
+        HELPTEXT=_("Stator leakage inductance"),
+        UNIT="mH",
+        DBUNIT="H"
+      },
+      Lh {
+        LABEL=_("Magnetizing Inductance"),
+        HELPTEXT=_("Magnetizing inductance"),
+        UNIT="mH",
+        DBUNIT="H"
+      },
+      Llr {
+        LABEL=_("Rotor Leakage"),
+        HELPTEXT=_("Rotor leakage inductance"),
+        UNIT="mH",
+        DBUNIT="H"
+      },
+      rh {
+        LABEL=_("Iron Resistance"),
+        HELPTEXT=_("Resistance representing Iron Losses"),
+        UNIT="Ω"
+      },
+      Iin {
+        LABEL=_("Moment of Inertia"),
+        HELPTEXT=_("Moment of Inertia of rotor"),
+        UNIT="kg*m²"
+      }
+    ;
+};
+#+end_src
+This defines the data structure for the motor.
+  The following attributes can be used for the definition of the data types:
+   | Name      | Description                                             |
+   |-----------+---------------------------------------------------------|
+   | TRANSIENT | item will be ignored in db transactions                 |
+   | HELPTEXT  | defines a help text that is shown on mouse pointer over |
+   | HIDDEN    | item will not be transferred in a JSON output           |
+   |           | or to the Matlab workspace                              |
+   | SCALAR    | item will be transferred as a scalar type in a          |
+   |           | JSON output or to the Matlab workspace                  |
+   | UNIT      | defines the unit string of the item                     |
+   | DBUNIT    | defines the unit in the db (default is UNIT)            |
+
+- Add the keyword ~SCALAR~ to the the motor declaration in the same file
+  as we do only want to handle one motor:
+#+begin_src intens
+  Motor
+    motor {
+      LABEL=_("Motor"),
+      PERSISTENT, SCALAR
+    }
+  ;
+#+end_src
+- Open the file ~motor_uiManager.inc~ and
+  include the following lines
+  into the ~FIELDGROUP motor_properties_fg~
+#+begin_src intens
+FIELDGROUP motor_properties_fg(
+  LABEL(motor.p)        motor.p         UNIT(motor.p),
+  LABEL(motor.psityp)   motor.psityp    UNIT(motor.psityp),
+  LABEL(motor.rs_Tref)  motor.rs_Tref   UNIT(motor.rs_Tref),
+  LABEL(motor.rr_Tref)  motor.rr_Tref   UNIT(motor.rr_Tref),
+  LABEL(motor.Lls)      motor.Lls*1e3   UNIT(motor.Lls),
+  LABEL(motor.Lh)       motor.Lh*1e3    UNIT(motor.Lh),
+  LABEL(motor.rh)       motor.rh        UNIT(motor.rh),
+  LABEL(motor.Llr)      motor.Llr*1e3   UNIT(motor.Llr),
+  LABEL(motor.Iin)      motor.Iin       UNIT(motor.Iin)
+);
+#+end_src
+  The above lines define the content of the UI container
+  ~motor_properties.fg~.
+  Dialogs can contain several types of UI containers such
+  as fieldgroups, folders, tables, plots.
+  Fieldgroups are UI containers that align their children
+  horizontally and vertically like the cells of a chessboard.
+  Horizontal lines are terminated by the character ','.
+
+  Dialogs (~FORM~) contain a collection of containers that are again aligned
+  horizontally and vertically. The collection is grouped by pairs of parentheses.
+  Each pair toggles the direction of alignement starting with horizontal direction.
+
+  The dialog ~motor_form~ includes 2 fieldgroups that are aligned vertically:
+#+begin_src intens
+FORM motor_form{_("Motor properties")}(
+  (
+    (
+      motor_top_section_fg,
+      motor_properties_fg
+    )
+  )
+);
+#+end_src
+- Change again to the build folder, type make
+  and startup the application:
+#+begin_example
+(training) ~/intens-training/scim $ cd build
+(training) ~/intens-training/scim/build $ make && ./scripts/scim
+#+end_example
+- Open the form ~Motor properties~ which you find in the menu
+  ~Forms~. The following dialog should be displayed:
+#+CAPTION: Motor Properties
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-motorProperties.png]]
+
+Using this dialog you can now create, open or update motor components.
+** Create the Short-Circuit as a Variant Data Set
+In contrast to the motor the short-circuit data has no identity and therefor
+cannot be modeled as a component. We attach it to the variant:
+#+begin_example
+(training) ~/intens-training/scim/build $ cd ..
+(training) ~/intens-training/scim $ intens-gen --create variant
+#+end_example
+~Identifier of the variant (without blanks):~ *short\under{}circuit*\\
+~variant type (without blanks) [ShortCircuit]:~\\
+~component type label [Short Circuit]:~\\
+~component type label short name [SC]:~\\
+~Destination directory of the application [/home/user/intens-training/scim]:~\\
+
+Only the bold faced text needs to be entered.
+
+The above command creates the new folder ~etc/short_circuit~ populated with
+  the uiManager and functions file and adds VariantShortCircuit to the variant datapool:
+#+begin_example
+scim
+📁 etc
+   📁 variant
+   │  📄 variant_uiManager.inc
+   │     ...
+   │
+   📁 short_circuit
+      📄 short_circuit_uiManager.inc
+      📄 short_circuit_functions.inc
+#+end_example
+- Open the file ~etc/variant/variant_datapool.inc~
+  and insert the following lines to the VariantShortCircuit:
+#+begin_src intens
+STRUCT VariantShortCircuit  {
+  INTEGER{EDITABLE, SCALAR}
+    nsamples { LABEL=_("Number of samples") }
+  ;
+  REAL {EDITABLE, SCALAR}
+    u1 {
+      LABEL=_("Stator voltage"),
+      HELPTEXT=_("stator maximum voltage"),
+      UNIT="V"
+    },
+    psi {
+      LABEL=_("Stator flux"),
+      HELPTEXT=_("stator maximum flux"),
+      UNIT="Vs"
+    },
+    tload {
+      LABEL=_("Load Torque"),
+      HELPTEXT=_("load torque at begin of short circuit"),
+      UNIT="Nm"
+    },
+    speed {
+      LABEL=_("Shaft Speed"),
+      HELPTEXT=_("shaft speed at load torque"),
+      UNIT="1/min", DBUNIT="1/s"
+    },
+    tshort {
+      LABEL=_("T short"),
+      HELPTEXT=_("Start time of short circuit"),
+      UNIT="ms", DBUNIT="s"
+    },
+    tend {
+      LABEL=_("T end"),
+      HELPTEXT=_("End time of calculation period"),
+      UNIT="ms", DBUNIT="s"
+    }
+  ;
+};
+#+end_src
+- Add this content to the file ~short_circuit_uiManager.inc~:
+#+begin_src intens
+FIELDGROUP short_circuit_properties_fg(
+  LABEL(variant.short_circuit.nsamples)  variant.short_circuit.nsamples,
+  LABEL(variant.short_circuit.u1)        variant.short_circuit.u1
+                                           UNIT(variant.short_circuit.u1),
+  LABEL(variant.short_circuit.psi)       variant.short_circuit.psi
+                                           UNIT(variant.short_circuit.psi),
+  LABEL(variant.short_circuit.tload)     variant.short_circuit.tload
+                                           UNIT(variant.short_circuit.tload),
+  LABEL(variant.short_circuit.speed)     variant.short_circuit.speed*60
+                                           UNIT(variant.short_circuit.speed),
+  LABEL(variant.short_circuit.tshort)    variant.short_circuit.tshort*1e3
+                                           UNIT(variant.short_circuit.tshort),
+  LABEL(variant.short_circuit.tend)      variant.short_circuit.tend*1e3
+                                           UNIT(variant.short_circuit.tend)
+);
+#+end_src
+- Type ~make~ in the ~build~ directory and start the scim-script:
+#+begin_example
+(training) ~/intens-training/scim $ cd build
+(training) ~/intens-training/scim/build $ make && ./scripts/scim
+#+end_example
+- Open the form ~Short Circuit properties~ which you find in the menu
+  ~Forms~. The following dialog should be displayed:
+#+CAPTION: Short-Circuit Properties
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-shortCircuitProperties.png]]
+
+  Note that the database buttons are missing here because short circuit is not a component.
+  The short circuit properties are included in the variant.
+
+** Create the Results Data and Dialog Elements
+- In the etc folder of the project root create a new folder
+  for the configuration of the calculation results:
+#+begin_example
+(training) ~/intens-training/scim/build $ cd ..
+(training) ~/intens-training/scim $ mkdir etc/result
+#+end_example
+- Create the file ~etc/result/result_datapool.inc~
+  with following content:
+#+begin_src intens
+DATAPOOL
+  STRUCT Result {
+    REAL
+      i2t_pos_max {
+        LABEL=_("I2t Max (Pos)"),
+        UNIT="kA²s"
+      },
+      i2t_neg_max {
+        LABEL=_("I2t Max (Pos)"),
+        UNIT="kA²s"
+      },
+      u1 {
+        LABEL=_("Stator Voltage"),
+        UNIT="V"
+      },
+      f1 {
+        LABEL=_("Stator Frequency"),
+        UNIT="Hz"
+      },
+      tpeak {
+        LABEL=_("Maximum Torque"),
+        UNIT="kNm"
+      },
+      ismin {
+        LABEL=_("Is min"),
+        UNIT="A"
+      },
+      ismax {
+        LABEL=_("Is max"),
+        UNIT="A"
+      },
+      t {
+        LABEL=_("time"),
+        UNIT="s"
+      },
+      torque {
+        LABEL=_("torque"),
+        UNIT="Nm"
+      },
+      is {
+        LABEL=_("current"),
+        UNIT="A",
+        HELPTEXT=_("Phase Currents")
+      },
+      i2t_pos {
+        LABEL=_("I2T pos"),
+        UNIT="kA²s",
+        HELPTEXT=_("I2T Pulse Energy for positive currents")
+      },
+      i2t_neg {
+        LABEL=_("I2T neg"),
+        UNIT="kA²s",
+        HELPTEXT=_("I2T Pulse Energy for negative currents")
+      };
+    }
+  ;
+
+  Result result;
+
+  INTEGER {EDITABLE}
+    plot_button {
+      LABEL=_("Plot..."),
+      BUTTON,
+      FUNC=map_plot_form
+    }
+  ;
+END DATAPOOL;
+#+end_src
+Note that the variable ~result~ has no ~PERSIST~ attribute as its
+  values will not be saved in the database.
+- Create the file ~result/result_uiManager.inc~
+  with following content (a field group and 2 plot diagrams for currents and torque)
+#+begin_src intens
+UI_MANAGER
+  FIELDGROUP results_fg {_("Results")}(
+    VOID,
+    "<b>" & _("I2T Pulse Energy") & "</b>"{ COLSPAN = 3 },
+    _("Pos.")
+    result.i2t_pos_max[0]*1e-3:8:1
+    result.i2t_pos_max[1]*1e-3:8:1
+    result.i2t_pos_max[2]*1e-3:8:1
+    UNIT(result.i2t_pos_max),
+    _("Neg.")
+    result.i2t_neg_max[0]*1e-3:8:1
+    result.i2t_neg_max[1]*1e-3:8:1
+    result.i2t_neg_max[2]*1e-3:8:1
+    UNIT(result.i2t_neg_max),
+    VOID
+    "<b>" & _("Phase Currents") & "</b>"{ COLSPAN = 3 },
+    LABEL(result.ismax)
+    result.ismax[0]:8:1
+    result.ismax[1]:8:1
+    result.ismax[2]:8:1
+    UNIT(result.ismax),
+    VOID
+    result.ismin[0]:8:1
+    result.ismin[1]:8:1
+    result.ismin[2]:8:1
+    UNIT(result.ismax),
+    VOID,
+    "<b>" & _("Torque") & "</b>"{ COLSPAN = 3 },
+    LABEL(result.tpeak)
+    result.tpeak*1e-3:8:1
+    UNIT(result.tpeak),
+    VOID,
+    "<b>" & _("Stationary Point") & "</b>"{ COLSPAN = 3 },
+    LABEL(result.u1) >
+    result.u1:8:2
+    UNIT(result.u1),
+    LABEL(result.f1) >
+    result.f1:8:2
+    UNIT(result.f1),
+    VOID,
+    plot_button
+  )
+;
+
+PLOT2D sc_plot {_("Short circuit plot")} (
+  plot {
+    _("Short Circuit Plot"),
+    YAXIS1 {LABEL="A"},
+    YAXIS2 {LABEL="kNm"}
+  }(
+    result.t[*]*1e3 {LABEL=_("time/ms")}
+    (
+      result.is[0,*] {LABEL=_("Is a"), YAXIS1},
+      result.is[1,*] {LABEL=_("Is b"), YAXIS1},
+      result.is[2,*] {LABEL=_("Is c"), YAXIS1},
+      result.torque[*] {LABEL=_("Torque"), YAXIS2}
+    )
+  )
+);
+
+PLOT2D sc_torque_plot {_("Short circuit torque plot")} (
+  plot {
+    _("Short Circuit Torque Plot"),
+    YAXIS1 {LABEL="kNm"}
+  }(
+    result.t[*]*1e3 {LABEL=_("time/ms")} (
+      result.torque[*] {LABEL=_("Torque"), YAXIS1}
+    )
+  )
+);
+
+FOLDER plot_folder (
+  [_("All"): plot_tab](
+    sc_plot
+  ),
+  [_("Torque, Current"): plot2_tab](
+    sc_torque_plot
+  )
+);
+
+FORM plot_form {HIDDEN} (plot_folder);
+
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC map_plot_form {
+    MAP(plot_form);
+  };
+END FUNCTIONS;
+#+end_src
+** Create the Calculation Interface
+- Create the file ~etc/calculation_interface.inc~ in the etc
+  folder with following content:
+#+begin_src intens
+  DATAPOOL
+    STRUCT
+      MqResponse {
+        STRING {SCALAR} status;
+        STRING message;
+      }
+    ;
+    MqResponse mq_response;
+    STRUCT ResultReport {
+      CDATA short_circuit;
+    };
+    ResultReport report;
+  END DATAPOOL;
+
+  UI_MANAGER
+  FIELDGROUP short_circuit_report_fg (
+    report.short_circuit:80:10 {EXPAND}
+  );
+
+  FORM short_circuit_report_form {
+    _("Short Circuit Report"), HIDDEN } (
+    short_circuit_report_fg
+  );
+  MENU "Reports" (
+    FORM short_circuit_report_form
+  );
+  END UI_MANAGER;
+
+  STREAMER
+    sc_input_stream{JSON}(motor, variant.short_circuit);
+    sc_output_stream{JSON}(result);
+    report_input_stream{JSON}(motor, variant.short_circuit, result);
+    report_output_stream{JSON}(report.short_circuit);
+    mq_response_stream{JSON}(mq_response);
+  END STREAMER;
+
+  OPERATOR
+    PROCESS imsc_python: BATCH{"scim_calc.py"};
+    PROCESS imsc_matlab: MATLAB;
+
+    PROCESSGROUP
+      imsc_python_pg { _("Calculate (Python)"), HIDDEN, SILENT, NO_LOG }(
+        sc_output_stream{DISPLAY=NONE} = imsc_python(sc_input_stream);
+      ),
+      imsc_matlab_pg { _("Calculate (Matlab)"), HIDDEN, SILENT, NO_LOG }(
+        [result] = imsc_matlab(motor, variant.short_circuit);
+      )
+    ;
+
+    MESSAGE_QUEUE python_mq {
+      REQUEST,
+      HOST=RESOURCE("API_GATEWAY_HOST"),
+      PORT_REQUEST=RESOURCE("API_GATEWAY_PORT"),
+      TIMEOUT=0
+    };
+
+    TASK calculate {_("Calculate (api-gateway)")}{
+      REQUEST(MESSAGE_QUEUE=python_mq,
+                HEADER="scimcalc",
+                REQUEST(sc_input_stream),
+                RESPONSE(mq_response_stream, sc_output_stream)
+              );
+     IF (mq_response.status != "ok" && VALID(mq_response.message)) {
+         MESSAGEBOX("<h3>" & _("Message") & "</h3><p>" + mq_response.message + "</p>");
+     }
+    };
+    TASK report_task {_("Report")}{
+      REQUEST(MESSAGE_QUEUE=python_mq,
+                HEADER="report",
+                REQUEST(report_input_stream),
+                RESPONSE(mq_response_stream, report_output_stream)
+              );
+     IF (mq_response.status != "ok" && VALID(mq_response.message)) {
+         MESSAGEBOX("<h3>" & _("Message") & "</h3><p>" + mq_response.message + "</p>");
+       }
+    };
+  END OPERATOR;
+#+end_src
+- Include the following lines in the file
+  ~etc/scim.des.in~ right before the ~UI_MANAGER~ section:
+#+begin_src intens
+#include <result/result_datapool.inc>
+#include <result/result_uiManager.inc>
+
+#include <calculation_interface.inc>
+
+UI_MANAGER
+..
+#+end_src
+- Open the file ~etc/main_window/main_window_uiManager.inc~ and
+  modify the ~main_window~ folder definition:
+#+begin_src intens
+FOLDER main_window_folder (
+  [_("Motor"): motor_tab] (
+    (motor_top_section_fg,
+     motor_properties_fg)
+  ),
+  [_("Short Circuit"): short_circuit_tab] (
+     short_circuit_properties_fg
+  ),
+  [_("Logbook"): logbook_tab] (
+    (
+      logbook_action_fg,
+      logbook_text_fg
+    )
+  )
+);
+#+end_src
+- Modify the main form definition:
+#+begin_src intens
+FORM main_window_form {
+  "SCIM", MAIN
+} (
+  main_window_top_section_fg,
+  (main_window_folder, VOID(20), results_fg)
+);
+#+end_src
+- Check if the application is running now: Type make and start the
+  scim-script in the build folder:
+#+begin_example
+(training) ~/intens-training/scim $ cd build
+(training) ~/intens-training/scim/build $ make && ./scripts/scim
+#+end_example
+#+CAPTION: Modified Main Dialog
+#+ATTR_HTML: :width 600px :align center
+[[./images/screenshots/scim-mainWindow2.png]]
+
+- Create the file ~api-gateway/scim_calc.py~ with this content:
+#+begin_src python :exports results :results value code
+  from pathlib import Path
+  return Path('../../example/scim/api-gateway//scim_calc.py').read_text()
+#+end_src
+The file ~scim_calc.py~ must have set the execute permission flag if invoked directly:
+#+begin_example
+(training) ~/intens-training/scim $ chmod +x ./api-gateway/scim_calc.py
+#+end_example
+- Insert the filename ~scim_calc.py~ in the ~DIST_BIN_SCRIPTS~ variable
+  in the file ~api-gateway/CMakeLists.txt~
+#+begin_example
+  ...
+set(DIST_BIN_SCRIPTS api-gateway.py
+  config.py
+  scim_calc.py
+)
+  ...
+#+end_example
+- Download and extract the calculation code
+#+begin_example
+(training) ~/intens-training/scim $ for f in gTikcPcOBTfDdKJ sij6BV4rC4mByf0
+ do wget https://owncloud.semafor.ch/s/$f/download -O - | tar xzf -
+ done
+#+end_example
+  This will create and populate the directories ~api-gateway/tests~, ~api-gateway/tractools~,
+  ~matlab~.
+- To invoke the calculation function of ~scim_calc.py~ and the report generation function
+  from the ~api-gateway~ add the following lines to the file
+  ~scim/api-gateway/api-gateway.py~
+#+begin_src python
+  @zrpc.route("scimcalc")
+  def scimcalc(request):
+      app.logger.info("Scim Calc %s", request)
+      try:
+          import scim_calc
+
+          return [
+              {"status": "ok", "message": "successfully completed"},
+              scim_calc.calculate_sc(request),
+          ]
+      except Exception as e:
+          app.logger.error(e, exc_info=True)
+          return [{"status": "error", "message": str(e)}]
+
+  @zrpc.route("report")
+  def report(request):
+      import tractools.repgen
+      pmMotor = request.get("motor", {})
+      shortCircuit = request.get("short_circuit", {})
+      result = request.get("result", [{}])[0]
+      try:
+          doc = tractools.repgen.main(
+              pmMotor,
+              shortCircuit,
+              result)
+          return [{"status": "ok"}, doc]
+      except Exception:
+          import traceback
+          return [{
+              "status": "error",
+              "message": "<h3>Incomplete Report data</h3><p>{}</p>".format(
+                  traceback.format_exc().replace("\\n", "<br/>"))},
+              {}]
+      return [{"status": "info", "message": "empty document"}, {}]
+#+end_src
+- Now install in the training environment the additional required Python packages:
+#+begin_example
+(training) ~/intens-training/scim $ pip install -r api-gateway/requirements.txt
+#+end_example
+- Check if the application is runninhg now:
+  Type make and start the scim-script in the build folder:
+#+begin_example
+(training) ~/intens-training/scim $ cd build
+(training) ~/intens-training/scim/build $ make && ./scripts/scim
+#+end_example
+For debugging and development purposes it could be beneficial to separate the
+execution of the api-gateway and intens.
+This can be achieved using the command line arguments:
+- ~-i~ do not start intens
+- ~-a~ do not start api-gateway
+You will need 2 console windows to execute the Intens app:
+#+begin_example
+(training) ~/intens-training/scim/build $ ./scripts/scim -i
+(training) ~/intens-training/scim/build $ ./scripts/scim -a
+#+end_example
+Each of these processes can be stopped and restarted independently.
+* Desktop
+The following steps demonstrate a typical use case:
+- edit input values and execute calculations
+- modify values and compare results
+- store the dataset (motor and short circuit parameters) into the database
+** Edit Values and Execute Calculation
+- Enter these values in the text fields of the motor and short circuit tab folders:
+#+CAPTION: Motor Test Values
+#+NAME:   fig:input-motor
+#+ATTR_HTML: :width 400px :align center
+[[./images/screenshots/scim-input-motor.png]]
+#+CAPTION: Short Circuit Test Values
+#+NAME:   fig:input-short-circuit
+#+ATTR_HTML: :width 400px :align center
+[[./images/screenshots/scim-input-shortCircuit.png]]
+
+-  Invoke the calculation functions by activating one of the
+  buttons ~Calculate (Python)~, ~Calculate (Matlab)~ or ~Calculate (api-gateway)~
+  All functions should return the same values. (However there is a small
+  variation with the phase currents due to the different numerical
+  integration used by python and matlab)
+
+#+CAPTION: Calculation Results
+#+NAME:   fig:results
+#+ATTR_HTML: :width 600px :align center
+[[./images/screenshots/scim-results.png]]
+** Compare Results
+Engineering is typically a highly iterative process.
+During the design of a system or component usually a couple of calculations
+with varying inputs are executed. When a input value is modified, Intens
+informs the user that the corresponding results will be deleted.
+
+#+caption: Consistency Check Dialog
+#+attr_html: :width 500px :align center
+[[./images/screenshots/scim-consistency-check.png]]
+
+To keep these values for a later comparison a new version (or case) can be created
+by pressing the New button on the bottom line of the dialog window.
+
+A new dialog window CaseDialog asking for a case name will be shown:
+#+caption: Case Dialog
+#+attr_html: :width 500px :align center
+[[./images/screenshots/scim-new-case.png]]
+
+Enter a name for the new case (or accept the default) and press ~OK~.
+This will create a copy of all values in the current user session.
+Now a new calculation can be invoked. This procedure can be repeated
+as often as required. The navigation between these cases is done with the arrow buttons
+on the bottom of the dialog. More functions can be found in the ~CaseDialog~ that is opened via
+the Case menu under ~Options~.
+
+A more advanced comparison feature is included in the plot diagrams. Pressing
+the right button while the pointer is over a plot area invokes an option menu
+where one ore more cases can be selected:
+
+#+caption: Compare Cases
+#+attr_html: :width 500px :align center
+[[./images/screenshots/scim-compare-case.png]]
+
+
+** Store into Database
+In order to store datasets the database must first be initialized. Enter the following command
+in the console of your build directory:
+#+begin_example
+(training) ~/intens-training/scim/build $ make && make update-db
+#+end_example
+
+~2025-05-08 10:30:18,128 INFO: LogBook: 200~\\
+~2025-05-08 10:30:18,161 INFO: Motor: 200~\\
+~2025-05-08 10:30:18,192 INFO: Variant: 200~\\
+~2025-05-08 10:30:18,205 INFO: Project: 200~\\
+~2025-05-08 10:30:18,205 INFO: TOTAL success 4 failed 0~\\
+~Built target update-db~
+
+- In the main window enter the workbook and variant description and save the workbook
+  by pressing the disk icon on the right with your mouse pointer:
+#+caption: Database operation
+#+attr_html: :width 600px :align center
+[[./images/screenshots/scim-workbook.png]]
+
+- Activate the button ~Workbook~ on the left which will open the workbook overview dialog:
+
+#+caption: Project and Variants
+#+attr_html: :width 600px :align center
+[[./images/screenshots/scim-workbookOverview.png]]
+
+There are 2 trees visible in the overview tab.
+The right tree shows the data set that is currently active, eg. is used
+for the calculation. The left tree shows all variants and baselines of
+the loaded workbook. The active dataset can be replaced by any of these
+variants by simply dragging and dropping the respective folder from the
+workbook tree on the left to the active dataset tree on the right.
+** Testing with behave and allure
+  Behavior-driven development (or BDD) is an agile software development technique that encourages
+collaboration between developers, QA and non-technical or business participants in a software project.
+behave uses tests written in a natural language style, backed up by python code.
+(See i.E. [[https://behave.readthedocs.io/en/stable/tutorial.html][Tutorial]] for more information on behave.)
+
+#+BEGIN_EXAMPLE
+📁 scim
+└── 📁 testing
+    ├── 📄 behave.ini                  Behave configuration file
+    └── 📁 features
+        ├── 📄 environment.py          Code to run before and after certain events
+        ├── 📄 scim.feature            Feature File (describes a feature in plain-text)
+        └── 📁 steps                  for Python step implementations
+            ├── 📄 scim-steps.py       Python step implementations
+            └── 📁 intens
+                └── 📄 intensZMQ.py    Functions to communicate with Intens using ZeroMQ
+#+END_EXAMPLE
+*** Installation
+#+begin_example
+(training) ~/intens-training $ pip install behave allure-behave
+#+end_example
+
+Download from [https://allurereport.org/docs/install], unpack the file and
+add the bin directory of the unpacked files to you ~PATH~ variable.
+
+*** Features
+
+A behave feature is a collection of scenarios found in a feature file. These files are stored in the folder
+*{testing/features}*.
+
+A scenario is a test case including input, actions and expected output.
+
+The ~environment.py~ module in directory ~testing/features~ contains the functions
+~before_scenario~ and ~after_scenario~. As their name suggests,
+these functions are executed before and after each scenario.
+(See [[https://behave.readthedocs.io/en/stable/tutorial.html#environmental-controls][Environmental Controls]] for more information.)
+
+The functions needed to communicate with Intens (using [[https://zguide.zeromq.org/][ZeroMQ]])
+are imported from the file *testing/features/steps/intens/intensZMQ.py*.
+
+Change the arguments of ~intens.login_database()~ to the username and password created in section
+[[*User Creation]].
+
+Feature Files: A feature file has a natural language format describing a feature (or part of it)
+with representative examples of expected outcomes:
+
+#+BEGIN_SRC gherkin
+Feature: Test SCIM
+
+  Scenario: Check Variant Name
+     Given SCIM is running
+      When project window is opened
+       And project 0 is selected
+       And variant 0 is selected
+      Then string variant.name is "variant 1"
+
+  Scenario: Calculate with Python
+     Given SCIM is running
+       And project window is opened
+       And project 0 is selected
+       And variant 0 is selected
+      When call function imsc_python_pg
+      Then real result.u1 is 378.67, rounded with precision 2
+       And the results are as follows with a tolerance of 0.05
+        | key	      |	value                  | factor |
+      	| i2t_pos_max | 8.9 0.5 1.3            | 1000   |
+      	| i2t_neg_max | 0.0 6.6 4.0            | 1000   |
+      	| u1	      | 378.67                 | 1      |
+      	| f1	      | 57.47                  | 1      |
+      	| tpeak	      | 2.4                    | 1000   |
+      	| ismin	      | -112.0 -1377.4 -1058.9 | 1      |
+      	| ismax	      | 1502.9 430.0 739.2     | 1      |
+
+#+END_SRC
+*** Steps
+A scenario has (one or) several steps *Given*, *When*, *Then*.
+Each step is mapped to a python step implementation. behave looks for these implementations in
+the python files stored in the folder *features/steps*.
+#+begin_src python -n 14 -r
+  @given("SCIM is running")         (ref:given)
+  def step_impl(context):
+  intens.hello()
+#+END_SRC
+Line [[(given)]] maps the following step from the feature file *scim.feature*:
+#+begin_example
+  Given SCIM is running
+#+end_example
+#+begin_src python -n 35 -r
+@given("project {index} is selected") (ref:proj)
+@when("project {index} is selected")
+def step_select_project(context, index):
+    intens.call_process("project_select_list_func", get_string(index), "ACTIVATE")
+#+END_SRC
+
+The ~@given~, ~@when~, and ~@then~ decorators correspond to the steps defined in the
+feature file. You can use all of them when writing step definitions to handle
+scenarios where the same step appears with different parameters. This approach
+helps avoid code duplication and promotes reusability.
+
+Line [[(proj)]] maps the step
+#+begin_example
+  Given ...
+    And project 0 is selected
+#+end_example
+
+Line 36 maps the step
+#+begin_example
+  When ...
+   And project 0 is selected
+#+end_example
+
+*** Running the tests
+#+begin_example
+(training) ~/intens-training $ cd scim/testing
+(training) ~/intens-training $ behave -f allure_behave.formatter:AllureFormatter -o reports
+(training) ~/intens-training $ allure serve reports
+#+end_example
+
+These commands run the tests and show the test report.
+
+In line 2, behave is told to write the results to the folder reports, formatted for allure.
+
+Line 3 calls [[https://docs.qameta.io/allure/][allure]], a tool to create test reports.
+The test report should open in your web browser. If it does not open automatically, you can
+see the report visiting the url given in the terminal (i.E. *http://127.0.0.1:45043*.
+#+CAPTION: Allure Report
+#+ATTR_HTML: :width 500px :align center
+  [[./images/screenshots/selenium-allure.png]]
+
+
+* Web Application
+** In a docker environment
+When running in a docker runtime environment the user access is based on HTTP/S via a web browser and
+each INTENS application is packed into a docker container.
+
+#+caption: Intens Application Architecture in a Docker Environment
+#+attr_html: :width 500px :align center
+[[./images/docker-compose.drawio.png]]
+
+The INTENS docker application system
+consists of the following services each implemented as docker containers:
+
+- traefik :: provides access to the webtens, workbook (dashboard) services,
+- webtens :: manages authentication, session handling, browser communication
+    (via HTTP/S, Websockets), view creation,
+- config-controller :: creation of INTENS containers (scim)
+    on a per user basis,
+- workbook :: DB access (users, groups, projects, variants and components)
+  with approval and configuration management,
+- scim :: INTENS application with data pool, process control, ui handling,
+- api-gateway :: calculation programs invocation,
+
+Follow these steps to setup up and to run a INTENS application in docker:
+
+(*Prerequisite*: The docker software package  [[https://docs.docker.com/desktop]]
+  is installed on your system.)
+
+1. In the build folder execute ~make docker-image~. (This builds the docker image
+   "hub.semafor.ch/semafor/scim".)
+   Next change to the docker folder in the main project folder and execute the
+   ~docker compose up~ command.
+   Make sure no other rest service or other process is running on port 8080.
+
+   #+begin_example
+(training) ~/intens-training/scim $ cd build
+(training) ~/intens-training/scim/build $ make docker-image
+(training) ~/intens-training/scim/build $ cd ../docker
+(training) ~/intens-training/scim/docker $ docker compose up -d --build
+#+end_example
+   The console output of ~docker compose up~ should show the status "Started" for all services:
+
+   ~✔ Container docker-traefik-1         Started            0.2s~\\
+   ~✔ Container docker-webtens-1         Started            0.2s~\\
+   ~✔ Container docker-config-service-1  Started            0.2s~\\
+   ~✔ Container docker-workbook-1        Started            0.2s~\\
+   ~✔ Container docker-api-gw-1          Started            0.2s~\\
+
+2. Add a new user, using the Workbook dashboard
+  (follow the same steps as described in section [[*User Creation]])
+
+3. With the new database again we must update the database. Change to the build folder,
+  type make, update the database application:
+
+  #+begin_example
+  (training) ~/intens-training/scim $ cd build
+  (training) ~/intens-training/scim/build $ make && make update-db
+  #+end_example
+  ~2025-05-08 10:30:18,128 INFO: LogBook: 200~\\
+  ~2025-05-08 10:30:18,161 INFO: Motor: 200~\\
+  ~2025-05-08 10:30:18,192 INFO: Variant: 200~\\
+  ~2025-05-08 10:30:18,205 INFO: Project: 200~\\
+  ~2025-05-08 10:30:18,205 INFO: TOTAL success 4 failed 0~\\
+  ~Built target update-db~
+
+4. Navigate to the start screen of the web interface in our web browser [[http://localhost:8080]]
+  #+caption: Login Dialog
+  #+attr_html: :width 600px :align center
+  [[./images/screenshots/webtens-login.png]]
+
+5. After Login to the Demo Application:
+  #+caption: SCIM Application Screen after Login
+  #+attr_html: :width 600px :align center
+  [[./images/screenshots/webtens-scim-css.png]]
+
+  Plot Screen
+  #+caption: SCIM Plot Screen after Calculation
+  #+attr_html: :width 600px :align center
+  [[./images/screenshots/webtens-plot.png]]
+
+6. Add custom CSS:
+  To add custom styles or scripts to your webtens application,
+  you can simply add the files into the folder ~/home/app/server/public~ folder via a volume mount.
+  After that you have to set the environment variables ~CUSTOM_STYLES~ or ~CUSTOM_SCRIPTS~ to their path relative of the public folder.
+  #+begin_example
+  webtens:
+    image: hub.semafor.ch/semafor/webtens-vue:latest
+    expose:
+      - 8000
+    environment:
+      - APP_NAME=SCIM latest
+      - CONTAINER_TYPE=scim
+      - CUSTOM_STYLES=scim/scim.css
+      - SESSION_TIMEOUT=900
+    volumes:
+      - ../qss:/home/app/server/public/scim
+  #+end_example
+
+  Only singular js files are supported for scripts. For styles you can use a singular css file or an scss file importing multiple.
+
+  Webtens will automatically load those additional styles/scripts on startup.
+
+** Authentication and Authorization
+Intens applications use JWT (JSON Web Token) by default for access authorization. The tokens are
+created by webtens via a workbook login request. As an alternative OAuth2/OpenId Connect can be used
+in which case an external SSO server must be available.
+To use this a few environment variables in Webtens must be set:
+
+| VARIABLE           | Description                      | Example                                     |
+|--------------------+----------------------------------+---------------------------------------------|
+| OIDC_ISSUER        | Issuer URL for the OIDC provider | https://keycloak.example.com/realms/semafor |
+| OIDC_CLIENT        | Client name                      | webtens                                     |
+| OIDC_CLIENT_SECRET | Client secret                    | password                                    |
+| BASE_URL           | Full base URL of Webtens         | https://webtens.semafor.ch                  |
+
+In addition the following environment variable must be set in the workbook service:
+
+- spring.security.oauth2.resourceserver.jwt.jwk-set-uri :: https://keycloak.example.com/auth/semafor/protocol/openid-connect/certs
+
+It needs to point to the certificates endpoint of your SSO provider so the workbook can verify the user's tokens.
+
+When using OAuth2 the workbook service will use the roles, groups and the active group provided by your SSO server.
+The specific entries needed in your access token are the following:
+
+- groups :: a list of group names
+- resource_access -> account -> roles :: [USER, ADMIN]: USER to let the user access the workbook itself. ADMIN to make them a workbook admin
+- active_group :: any from the groups key. Name must match fully
+
+For details see [[*Keycloak group and active_group mappers]]
+
+*** OAuth in desktop
+
+OAuth login is also supported when running as a desktop application.
+With the only configuration difference that the OIDC client in Keycloak
+needs to be set to public access by disabling "Client authentication".
+
+#+CAPTION: SCIM client
+#+NAME:   fig:keycloak-scim-client
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-keycloak1.png]]
+
+#+CAPTION: SCIM client authentication config
+#+NAME:   fig:keycloak-scim-client-authentication
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-keycloak2.png]]
+
+#+CAPTION: SCIM client redirects
+#+NAME:   fig:keycloak-scim-client-redirects
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-keycloak3.png]]
+
+Intens requires two command line arguments to use OIDC, with the client name being specified before the url in the first one:
+#+begin_example
+  --oauth "https://scim@keycloak.example.com/realms/semafor/protocol/openid-connect/auth" \
+  --oauthAccessTokenUrl "https://keycloak.example.com/realms/semafor/protocol/openid-connect/token" \
+#+end_example
+
+
+** Deploying to the cloud
+
+#+caption: Intens Application Architecture in a Kubernetes Cloud
+#+attr_html: :width 500px :align center
+[[./images/k8s-scim.drawio.png]]
+
+Prerequisites:
+- Access to a kubernetes cluster (docker desktop, [[https://minikube.sigs.k8s.io]], [[https://k3d.io]] ..)
+- The kubectl tool [[https://kubernetes.io/docs/tasks/tools]] (already included in docker desktop)
+- The helm package manager for kubernetes [[https://helm.sh]]
+- The Skaffold command line tool for easy kubernetes development [[https://skaffold.dev/]]
+
+To deploy and develop our application in a kubernetes powered cloud, we use helm and skaffold.
+Since kubernetes itself is very complex and has a steep learning curve, we provide
+an easier way to deploy the application and its dependencies via helm charts.
+A helm chart is a package that gives you an easier to use interface to deploy the app,
+with the complexities hidden away.
+To learn more about helm, the helm website linked above has all the documentation you need.
+
+*** Semafor Helm Registry
+
+You will need to use a few helm charts that are stored in our external helm registry.
+To add our registry use the following command:
+#+begin_example
+$ helm repo add semafor https://charts.semafor.ch
+#+end_example
+
+**** Available config files
+
+Navigate to the "helm" directory in the project root.
+This directory contains the charts for our intens application, the api-gateway,
+and configuration files for the webtens and config-controller charts.
+The workbook subdirectory contains a values file for the workbook and the stuff
+to tell the generic workbook chart about our database schema.
+
+Since the webtens, config-controller and workbook parts work the same
+regardless of application, they are stored in an external repository
+with only the configuration files in the directory. These config files work as follows:
+
+- config-controller.yaml :: The intensApps value contains a list of apps with the
+  first name being the one given to the webtens chart,
+  and the second name being the one given to the chart of the intens app.
+  In most cases these two names are equal.
+  This configuration has only our one scim app in its config,
+  but for larger multi-app deployments, the config can support an arbitrary amount of intens applications.
+#+begin_example
+intensApps:
+  scim-intens: scim-intens
+#+end_example
+- webtens.yaml :: The appName value is the value that will end up being displayed on the login page of the app.
+  appType specifies what app the webtens instance should ask for at the config-controller.
+  This value should be equivalent to the one in the config-controller file.
+  The baseUrl can be localhost for development, but has to be changed in an actual deployment
+  as the web application redirects all request to it.
+#+begin_example
+appName: SCIM
+appType: scim-intens
+baseUrl: http://localhost:8000
+#+end_example
+- workbook/values.yaml :: The workbook values file is a bit bigger, but we don't need a big part of it for basic usage.
+  For brevity, the file shown here only has the important parts that we need for this explanation.
+  - The datasource section describes our database connection.
+    Its url is formatted as a jdbc database url. Please consult your specific database's documentation for the correct format.
+  - The username and password fields are as expected, the login data for your database if needed.
+  - The metrics field toggles the endpoint for metrics via [[https://prometheus.io/]] and if your cluster has
+    prometheus already configured to collect metrics.
+  - The oidc section is for setting up authentication via identity provider. Consult your identity provider's documentation
+    for more details.
+#+begin_example
+datasource:
+  url: jdbc:h2:file:/tmp/db/data
+  username:
+  password:
+metrics:
+  enabled: false
+oidc:
+  enabled: false
+  # issuer:
+  # client:
+  # clientSecret:
+  # certificates:
+#+end_example
+**** Project helm charts
+The folder "intens-app", in our helm directory, is the helm chart for the the app itself.
+Since these settings are very specific to the project needs, the chart is stored in here instead of an external repository.
+
+For a typical intens app the required configuration is included so you won't need to look into the chart itself,
+but it's useful to have at least a basic understanding of its content.
+
+The most important file in the intens-app chart can be found under "templates/statefulset.yaml".
+This chart defines the intens service itself and is where you can change settings for the application and the api-gateway.
+
+Settings include things like open ports, environment variables or even adding additional services if needed.
+
+*** Skaffold
+Skaffold is a CLI tool to simplify the process of building, developing and deploying your kubernetes app.
+All settings related to skaffold can be found in the "skaffold.yaml" file in the project root.
+
+The two important sections in that file are the "build" and "deploy" sections.
+
+In the build section we tell skaffold what images to build and how to build them.
+There are different options, but the simplest one, that we use here, is just specifying a Dockerfile.
+
+In the deploy section we specify how the app and its dependencies are deployed.
+In this case we specified that with helm charts.
+The helm charts can be local or remote, with a version specified.
+You can also customize the helm charts here via setting the values.
+
+How to use the tool to deploy to a cluster will be explained in the next part.
+
+*** Deploying to a cluster
+
+This section assumes you have a kubernetes cluster and skaffold set up with a docker image repo.
+If you don't have that set up, please consult the documentation for skaffold:
+https://skaffold.dev/docs/quickstart/
+and for minikube to get a local development cluster https://minikube.sigs.k8s.io.
+
+To build and deploy your images, go into the root folder and execute the skaffold command with the run argument.
+
+#+begin_example
+$ skaffold run
+#+end_example
+This will take a while while it builds and deploys the application, but once the command is
+finished you should be able to list all the running
+kubernetes pods and see your application running in the cluster.
+
+The output of the command ~kubectl get pods~ should then show all pods as running:
+#+begin_example
+NAME                               READY   STATUS    RESTARTS   AGE
+config-controller-bd8fb547-6q699   1/1     Running   0          87s
+scim-intens-0                      2/2     Running   0          87s
+webtens-79c95ff6c9-k5cbz           1/1     Running   0          86s
+workbook-6f4966984-rr4dl           1/1     Running   0          86s
+#+end_example
+
+*** Redis
+Redis is used as a session store to improve session handling and runtime scaling of the Webtens server
+(for more information visit [[https://redis.io]])
+
+To activate the usage of Redis, the following environment variables are used:
+#+begin_example
+REDIS_HOST
+REDIS_PORT
+REDIS_PASSWORD
+#+end_example
+If you use the default port for Redis you can omit that variable.
+Same with the password if you have auth disabled for Redis.
+
+** Webtens Testing with Behave
+
+Create the directory where all testing files will be stored by using the following commands:
+
+#+begin_example
+(training) ~/intens-training $  cd testing
+(training) ~/intens-training $  mkdir webtesting
+(training) ~/intens-training/testing $  cd webtesting
+(training) ~/intens-training/testing/webtesting $ wget https://owncloud.semafor.ch/s/DnE3mx17s2GgrSq/download -O - | tar xzf -
+(training) ~/intens-training/testing/webtesting $ cd behave
+#+end_example
+
+
+Now install the Python packages from the requirements.txt and run the Behave
+  test
+#+begin_example
+(training) ~/intens-training/testing/webtesting $ pip install -r requirements.txt
+(training) ~/intens-training/testing/webtesting $ behave -f allure_behave.formatter:AllureFormatter -o reports
+#+end_example
+#+CAPTION: Allure Report
+#+ATTR_HTML: :width 500px :align center
+  [[./images/screenshots/selenium-allure.png]]
+
+  The test report should open in your web browser. If it does not open automatically, you can
+see the report visiting the url given in the terminal (i.E. *http://127.0.0.1:45043*).
+
+
+#+begin_comment
+- explain helm/helmfile
+- explain minikube https://www.baeldung.com/ops/docker-local-images-minikube
+- liquibase handling
+- oauth2
+#+end_comment
+* Data Management
+** Data Model
+The database access is implemented by a REST service which is connected
+to a SQL or NOSQL database. The data model comprises 3 main types
+of entities:
+
+- Workbook (Project) :: a collection of variants that serve a common engineering goal.
+  Each workbook has a unique name, an optional set of properties, an owner and a visibility state
+  (local, global, obsolete).
+- Variants :: a collection of components used for specific calculation tasks. Each variant
+  has a name which is unique within its workbook, an owner, an approval state
+  and an optional set of properties.
+- Components :: persistent objects each having a type, a name, a revision number,
+  an owner,  an approval state and a set of type specific properties. The same component
+  can be attached to several variants. Each component is identified by its type, name
+  and revision. The component types have a unique name and a set of property types
+  which each have a unique name, a physical unit and a data type (~STRING~, ~INTEGER~, ~REAL~, ~DATE~, ~CDATA~)
+  and 0 (scalar) or more dimensions (array).
+
+#+CAPTION: Intens Data Model
+#+NAME:   fig:data-model
+#+ATTR_HTML: :width 500px :align center
+[[./images/intens-db-model.drawio.png]]
+
+Modifications of property values are saved with timestamp, user name and change comment
+such that the changes are traceable and the version of components and variants
+can be restored.
+
+This model is known as
+  [[https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model][Entity-Attribute-Value Model (EAV)]].
+
+The database service is based on [[https://spring.io/projects/spring-boot][Spring Boot]] using Spring Security, Spring MVC/REST, Data/JPA and
+[[https://www.liquibase.org/][Liquibase]] for the database schema change management.
+
+To prevent interferencies of concurrent modifications an
+[[https://en.wikipedia.org/wiki/Optimistic_concurrency_control][Optimistic Concurrency Control]] is implemented. If a conflict occurs
+it will be detected and the save operation will be aborted with an ``Up-to-date Conflict'' message.
+
+** REST Interface
+*** Queries
+HTTP GET with base path ~/services/rest~:
+
+| URL                                   | Description                             | Parameter |
+|---------------------------------------+-----------------------------------------+-----------|
+| users                                 | All Users (Owners)                      |           |
+| users/groups                          | All Groups                              |           |
+| users/<name>                          | User by name                            |           |
+| projects                              | All projects                            | ✓         |
+| projects/<id>                         | Project by id                           |           |
+| projects/component/<id>               | Projects with component by id           |           |
+| variants                              | All Variants                            | ✓         |
+| variants/<id>                         | Variant by id                           |           |
+| variants/project/<id>                 | All Variants of Project by id           |           |
+| components/<id>                       | Component by id                         |           |
+| components/type/<type>                | Components by type                      | ✓         |
+| components/types                      | Component Types                         |           |
+| components/<id>/modifications         | Modifications of Component by id        |           |
+| components/<id>/modifications/<modid> | Component by id with Modification modid |           |
+| components/variant/<id>               | Components of Variant by id             |           |
+
+The queries marked with ~✓~ in the above table accept query parameters listed in the table below.
+Multiple parameters must be separated by an ampersand ~&~ and the first parameter must be prefixed by a question mark ~?~.
+#+begin_example
+components/type/Motor?_approval=(inPreparation,shared)&_page=0&_pageSize=5
+#+end_example
+
+Query Parameters:
+| Parameter                        | Description                                       |
+|----------------------------------+---------------------------------------------------|
+| _projection=<attr0>              | include values of attr0                           |
+| _projection=(<attr0>,<attr1>...) | include values of attr0, attr1 ...                |
+| _ignorecase                      | ignore case                                       |
+| _sort=<attr0:1>                  | sort by attr0 (ascending)                         |
+| _sort=(<attr0>:1,<attr1>:-1...)  | sort by attr0 (ascending), attr1 (descending) ... |
+| _page=<n>&_pageSize=<pageSize>   | return nth group of pageSize Elements             |
+| id=<id>                          | Element by id                                     |
+| id=(<id1>,<id2>...)              | Elements by id                                    |
+| name=<string>                    | Elements by name (% is wildcard)                  |
+| maxAge=<years>                   | Elements younger than years                       |
+| approval=(<app0>,<app1>...)      | Elements by approval state                        |
+| status=(<s0>,<s1>...)            | Projects by Status                                |
+| owner=<ownername>                | Elements by Owner                                 |
+| <pname>=<value>                  | Elements by property pname equals value           |
+| <pname>={<val1>,<val1>...}       | value of pname equals val1 or val2 ...            |
+| <pname>=[<l>,<u>]                | pname in interval l <= x <= u                     |
+| <pname>=[<l>,<u>)                | pname in interval l <= x < u                      |
+| <pname>=(<l>,<u>]                | pname in interval l < x <= u                      |
+| <pname>=(<l>,<u>)                | pname in interval l < x < u                       |
+
+The following attributes and their values
+are always returned with queries that accept query parameters:
+
+| Attribute | Project | Variant | Component |
+|-----------+---------+---------+-----------|
+| id        | ✓       | ✓       | ✓         |
+| version   | ✓       | ✓       | ✓         |
+| name      | ✓       | ✓       | ✓         |
+| created   | ✓       | ✓       | ✓         |
+| owner     | ✓       | ✓       | ✓         |
+| ownername | ✓       | ✓       | ✓         |
+| group     | ✓       | ✓       | ✓         |
+| desc      | ✓       |         |           |
+| status    | ✓       |         |           |
+| approval  |         | ✓       | ✓         |
+| projectId |         | ✓       |           |
+| rev       |         | ✓       | ✓         |
+
+*** Creation, update and check
+HTTP PUT with base path: ~/services/rest~
+
+| URL                     | Description                             | Admin |
+|-------------------------+-----------------------------------------+-------|
+| users                   | create a new or modify an existing user | ✓     |
+| users/password          | set password of current user            |       |
+| projects                | create a new project                    |       |
+| projects/<id>           | modify the project with id              |       |
+| projects/check          | check status of project                 |       |
+| projects/<id>/rename    | rename the project with id              |       |
+| variants                | create a new variant                    |       |
+| variants/<id>           | modify the variant with id              |       |
+| variants/check          | check status of variant                 |       |
+| components/type         | create a new component type             | ✓     |
+| components              | create a new component                  |       |
+| components/<id>         | modify the component with id            |       |
+| components/check        | check status of component               |       |
+| components/<id>/rename  | rename the component with id            |       |
+| components/<id>/approve | set aproval state of component          |       |
+
+* Appendix
+** Installation on Windows
+The following sections describe the installation and setup of an Intens
+development environment on Windows.
+It is not necessary for executing Intens applications.
+
+*** MSYS2 and MinGW
+MinGW ("Minimalist GNU for Windows"), is a free and open source software development
+environment to create Microsoft Windows applications. It includes also the MSYS2 command shell.
+
+- Download and run the latest MSYS2 64bit Setup:
+  [[https://www.msys2.org]]
+
+- Start the MSYS2 MinGW 64-bit Shell and use the package manager (pacman) to
+  update the packages:
+  #+begin_example
+  pacman -Syu
+  #+end_example
+  Remove deprecated packages (if any)
+  #+begin_example
+  pacman -Qm
+  #+end_example
+- Install the development tools:
+  #+begin_example
+  pacman -S git base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake
+  #+end_example
+
+*** Python
+On windows systems the official distribution is recommended:
+      [[https://www.python.org/downloads]]
+
+Note: You need administrator permissions on Windows for the installation.
+
+- Edit ~/.bash_profile~ in your mingw home directory and add the PATH:
+  #+begin_example
+  export PATH=/C/Python/Python313/:$PATH
+  #+end_example
+  Note: check and correct the path to reflect your python installation directory.
+
+*** Java
+Java (Runtime Environment) is needed for the database service.
+Check if Java is already installed on your system:
+#+begin_example
+java -version
+#+end_example
+(Note: version 17 or newer is required). Download a Java/JRE installer
+if no such version is installed. There are multiple providers such as:
+[[https://adoptium.net/temurin/releases]]
+
+** Coding Conventions
+To improve the readability of the source code and
+make software maintenance easier at set of guidelines
+should be followed.
+
+As our basis we've chosen the [[https://pep8.org]]
+(PEP 8 Style Guide for Python Code) with some pragmatic adaptions:
+
+- Use 2 spaces per identation level.
+- Use Spaces and not Tabs.
+- Keep the line lengths below 80 characters.
+- Avoid extraneous whitespace.
+- Struct names should use the CapWords convention.
+- Names of functions and variables should be lowercase, with words separated by underscores.
+- Constants are written in all capital letters with underscores separating words.
+
+** Internationalization (I18n) and Localization (L10n)
+Intens applications can be adapted to differented languages and regions without
+code modifications. This is based on the tool GNU gettext https://www.gnu.org/software/gettext
+
+The following steps create a German translation of SCIM.
+
+*** Prepare the sources
+All strings you want to translate need to be embraced by ~_("...")~.
+#+begin_src intens
+SET projectStatus_set (
+  _("Local") = "local"
+, _("Division") = "division"
+, _("Global") = "global"
+, _("Delivered") = "delivered"
+, _("Obsolete") = "obsolete"
+);
+#+end_src
+In the file CMakeLists.txt modify ~copyright-holder~ and ~msgid-bugs-address~:
+#+begin_example
+configure_gettext(
+    ...
+    XGETTEXT_ARGS
+        ...
+        "--copyright-holder=COPYRIGHT HOLDER"
+        "--msgid-bugs-address=bugs@example.com"
+
+#+end_example
+Add all relevant source files to the SOURCES list:
+#+begin_example
+configure_gettext(
+    ...
+    SOURCES
+        ...
+        "etc/calculation_interface.inc"
+        ...
+#+end_example
+Add the language ~de~ to the list of languages in the file:
+#+begin_example
+configure_gettext(
+    ...
+    LANGUAGES "en_US" "de"
+    ...
+#+end_example
+*** Translation
+Before you can do the translation of the strings,
+you need to create the template file ~po/scim.pot~ and the language file ~po/de/scim.po~:
+#+begin_example
+$ ~/intens-training/scim/build: make update-po
+#+end_example
+This will generate the pot, po and gmo files in the po directory:
+#+begin_example
+📁 po
+    📁 de
+       📄 scim.gmo
+       📄 scim.po
+    📁 en_US
+       📄 scim.gmo
+       📄 scim.po
+    📄 Gettext_helpers.cmake
+    📄 LICENSE
+    📄 scim.pot
+#+end_example
+
+Next, set charset to ~UTF-8~ in ~po/de/scim.po~:
+#+begin_example
+...
+"Content-Type: text/plain; charset=UTF-8\n"
+...
+#+end_example
+
+Now you can translate the strings to German (~po/de/scim.po~), using Emacs, Poedit, ...:
+#+begin_example
+...
+msgid "Workbook"
+msgstr "Arbeitsmappe"
+...
+msgid "Pole pairs"
+msgstr "Polpaare"
+...
+#+end_example
+*** Build binary language files
+As the last step, you need to build and install the binary language file and install it to the right place.
+
+The cmake target ~update-po~ was used before to create the template file ~po/scim.pot~ and
+the language file ~po/de/scim.po~. It is also used to update these files and to create the binary
+language file ~po/de/scim.gmo~. Therefore, use it again now:
+#+begin_example
+$ ~/intens-training/scim/build: make update-po
+#+end_example
+
+Finally, you need to install the binary language file to the path where it is found by INTENS.
+
+When the application is started from the shell using
+#+begin_example
+$ ~/intens-training/scim/build: ./scripts/scim
+#+end_example
+the path is ~share/locale/de/LC_MESSAGES/scim.mo~.
+
+Use the following install command to create it:
+#+begin_example
+$ build: cmake --install . --prefix . --component translation
+#+end_example
+
+*** Start the translated application
+INTENS needs to know the language you want to be used. This is done using
+the environment variable ~LC_MESSAGES~ (Linux) or ~LANG~ (Windows).
+
+Set value of that variable to an available locale.
+To get a list of available German locales, type:
+#+begin_example
+$ ~/intens-training/scim/build: locale -a | grep de
+#+end_example
+
+Set the language in the start script ~scripts/scim~
+#+begin_example
+if [ $OSTYPE == "linux-gnu" ]; then
+  export LC_MESSAGES=de_CH.utf8
+else
+  LANG="de
+fi
+#+end_example
+Now, start scim with German translations:
+#+begin_example
+$ ~/intens-training/scim/build: make && ./scripts/scim
+#+end_example
+
+** Keycloak group and active_group mappers
+
+By default, groups aren't mapped to a token and active_group is a custom property which also needs mapping.
+
+First we need to add the active_group attribute to our user profile.
+You can find the attributes of a user profile in *Realm settings > User profile*. Here you add the attribute activeGroup.
+
+The Active Group attribute is defined as follows:
+#+CAPTION: Active Group attribute
+#+NAME:   fig:keycloak-active-group-attribute
+#+ATTR_HTML: :width 300px :align center
+[[./images/screenshots/scim-keycloak4.png]]
+
+This attribute must be set for each user, but we still need the scopes and mappers to include them in the token.
+To map groups into a token, we need to create a new client scope:
+
+#+CAPTION: Creating a groups client scope
+#+NAME:   fig:keycloak-scim-client-scope-groups
+#+ATTR_HTML: :width 250px :align center
+[[./images/screenshots/scim-keycloak5.png]]
+
+With this scope created, we need to configure some mappers.
+First we want to create one for the groups. Go to the newly created scope's mappers tab and click "Configure a new mapper".
+
+In the opened dialog window, select *Group Membership* as the type and configure it as follows:
+#+CAPTION: Group mapper
+#+NAME:   fig:keycloak-scim-client-scope-groups-mapper
+#+ATTR_HTML: :width 250px :align center
+[[./images/screenshots/scim-keycloak6.png]]
+
+After that, create another mapper (*By configuration*), select *User Attribute* as its type and configure it as follows:
+#+CAPTION: Active group mapper
+#+NAME:   fig:keycloak-scim-client-scope-activegroups-mapper
+#+ATTR_HTML: :width 250px :align center
+[[./images/screenshots/scim-keycloak7.png]]
+
+You should now have two mappers. Next you need to activate those in your client.
+Open your client's settings and go to "Client scopes".
+In that menu, add your newly created scope and put its assigned type as "Default".
+#+CAPTION: SCIM client scopes
+#+NAME:   fig:keycloak-scim-client-scopes
+#+ATTR_HTML: :width 500px :align center
+[[./images/screenshots/scim-keycloak8.png]]

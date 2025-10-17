@@ -1,0 +1,7 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Messagebar {
+  GuiElement base = 1;
+}

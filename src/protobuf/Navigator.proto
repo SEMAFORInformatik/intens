@@ -1,0 +1,65 @@
+syntax = "proto3";
+import "GuiElement.proto";
+import "IndexMenu.proto";
+package in_proto;
+
+message Navigator {
+  GuiElement base = 1;
+  string full_name = 2;
+  string action = 3;
+  uint32 width = 4;
+  uint32 height = 5;
+  bool expandable = 6;
+  NavigatorNode root = 7;
+  repeated NavigatorColumn columns = 8;
+  PopupMenu popup_menu = 9;
+  double diagram_connection_ratio = 10;
+  repeated Connection connections = 11;
+  repeated ConnectionAttr connection_attrs = 12;
+  repeated string select_items = 13;
+  bool scrollable = 14;
+}
+
+message Connection {
+  string a = 1;
+  string b = 2;
+}
+
+message ConnectionAttr {
+  uint32 line_width = 1;
+  string line_style = 2;
+  string line_color = 3;
+  repeated Position line_vectors = 4;
+}
+
+message NavigatorNode {
+  string name = 1;
+  PopupMenu popup_menu = 2;
+  uint32 new_count = 3;
+  bool visible = 4;
+  bool folder = 5;
+  string tooltip = 6;
+  string full_name = 7;
+
+  repeated NavigatorNode nodes = 8;
+  string icon = 9;
+
+  string action = 10;
+  string node_name = 11;
+  Position position = 12;
+  repeated string labels = 13;
+  string fgcolor = 14;
+}
+
+message Position {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message NavigatorColumn {
+  string tag = 1;
+  uint32 width = 2;
+  double scale = 3;
+  uint32 style = 4;
+  string label = 5;
+}

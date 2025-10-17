@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# call this script from a build directory
+
+BASEDIR=$(dirname "$0")
+
+if [ "@@{OSTYPE}" = "msys" -o "@@{OSTYPE}" = "cygwin" ]; then
+    cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -S @@{BASEDIR}
+else
+    cmake -S @@{BASEDIR}
+fi

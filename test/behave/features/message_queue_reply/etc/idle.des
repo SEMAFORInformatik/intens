@@ -1,0 +1,22 @@
+DESCRIPTION "Simple UI";
+
+DATAPOOL
+STRING status {LABEL="Empty Status"};
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP
+  test_fg {FRAME, "A fieldgroup"} (
+    LABEL(status) status:20 { COLSPAN=2 }
+    )
+  ;
+
+  FORM
+    main_form {
+      MAIN
+    } (
+      test_fg
+    )
+  ;
+END UI_MANAGER;
+END.

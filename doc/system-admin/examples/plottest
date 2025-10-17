@@ -1,0 +1,47 @@
+DESCRIPTION "Plot Example";
+
+DATAPOOL
+
+  a,b,c,d,e,f,x  : REAL{EDITABLE};
+
+END DATAPOOL;
+
+UI_MANAGER
+
+FIELDGROUP
+    input {TABLESIZE = 10}
+      (
+        "a"      a
+      , "b"      b
+      , "c"      c
+      , "d"      d
+      , "e"      e
+      , "f"      f
+      , "x"      x
+      )
+   ;
+PLOTGROUP  
+    curve_plot{"Plot" }
+      ( ( plot1 {"Induction Motor"
+	        , XAXIS=x{"X"}
+                , SAME_YRANGE
+                }
+          ( a{"[A]", MIN = 0, MAX = 10 }
+          , b{"[B]", LINESTYLE = LINEAR }
+          , c{"[C]", LINESTYLE = DISCRETE }
+          )
+        )
+      )
+   ;
+FORM
+    main
+      ( (input)
+      )
+  , curve_form
+      (
+        (curve_plot)
+      )
+  ;
+END UI_MANAGER;
+
+END.

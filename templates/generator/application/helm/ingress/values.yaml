@@ -1,0 +1,9 @@
+webtensService: ${application}-webtens
+workbookService: workbook
+
+ingress:
+  # className: ""
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+  host: ${application}.k8s.semafor.ch
+  path: /

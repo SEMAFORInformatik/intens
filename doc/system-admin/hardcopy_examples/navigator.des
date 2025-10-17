@@ -1,0 +1,85 @@
+// SEMAFOR Informatik & Energie AG
+// Basel, Switzerland
+//
+
+DESCRIPTION "NAVIGATOR docu example";
+
+DATAPOOL
+  STRUCT
+    STRU_1 {
+      STRING {EDITABLE}
+        name		{TAG = (tag_name)};
+      STRING {EDITABLE}
+        data_item_1	{TAG = (tag_data1)},
+        data_item_2	{TAG = (tag_data2)}
+      ;
+    };
+  STRUCT
+    STRU_2 {
+      STRING {EDITABLE}
+        name		{TAG = (tag_name)};
+      STRING {EDITABLE}
+        data_item_1	{TAG = (tag_data1)},
+        data_item_2	{TAG = (tag_data2)}
+      ;
+    };
+  STRUCT
+    STRU_MAIN {
+      STRING {EDITABLE}
+        name		{TAG = (tag_name)};
+      STRU_1
+        stru_1;
+      STRU_2
+        stru_2;
+    };
+  STRU_MAIN
+    stru_main
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  NAVIGATOR
+    navigator_identifier
+    { COL ("Label 1" tag_name:20, "Label 2" tag_data1:10, "Label 3" tag_data2:10),
+      SIZE(400,300)
+    }
+    (
+      stru_main[*] = "String 1"
+    )
+  ;
+  FIELDGROUP
+    fieldgroup_identifier
+    ( "@title@Structure Main:  (stru_main)",
+      "    Name:"       stru_main.name:15,
+      VOID "@title@Sub Structure 1:  (stru_1)",
+      VOID "      Name:"       stru_main.stru_1.name:15,
+      VOID "      DataItem 1:" stru_main.stru_1.data_item_1,
+      VOID "      DataItem 2:" stru_main.stru_1.data_item_2,
+      VOID "@title@Sub Structure 2[0]:  (stru_2)",
+      VOID "      Name:"       stru_main.stru_2[0].name:15,
+      VOID "      DataItem 1:" stru_main.stru_2[0].data_item_1,
+      VOID "      DataItem 2:" stru_main.stru_2[0].data_item_2,
+      VOID "@title@Sub Structure 2[1]:  (stru_2)",
+      VOID "      Name:"       stru_main.stru_2[1].name:15,
+      VOID "      DataItem 1:" stru_main.stru_2[1].data_item_1,
+      VOID "      DataItem 2:" stru_main.stru_2[1].data_item_2,
+      VOID "@title@Sub Structure 2[2]:  (stru_2)",
+      VOID "      Name:"       stru_main.stru_2[2].name:15,
+      VOID "      DataItem 1:" stru_main.stru_2[2].data_item_1,
+      VOID "      DataItem 2:" stru_main.stru_2[2].data_item_2
+    )
+  ;
+  FORM
+    form_identifier {MAIN}
+    (
+      ( fieldgroup_identifier, navigator_identifier )
+    )
+  ,
+    form_2
+    (
+      ( STD_WINDOW, LOG_WINDOW )
+    )
+  ;
+END UI_MANAGER;
+
+END.

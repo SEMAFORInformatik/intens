@@ -1,0 +1,66 @@
+syntax = "proto3";
+import "GuiElement.proto";
+package in_proto;
+
+message Plot2D {
+  GuiElement base = 1;
+  uint32 fixed_width = 2;
+  uint32 fixed_height = 3;
+
+  string header_text = 4;
+  string footer_text = 5;
+  string menu_label = 6;
+
+  message Axis {
+    string title = 1;
+
+    bool logarithmic = 2;
+    double min = 3;
+    double max = 4;
+    string style = 5;
+  }
+  Axis axis_x = 7;
+  Axis axis_y1 = 8;
+  Axis axis_y2 = 9;
+
+  message PlotItem {
+    string label = 1;
+    string axis = 2;
+    bool is_marker = 3;
+    bool legend = 4;
+    string line_color = 5;
+    string symbol_color = 6;
+    string line_style = 7;
+    string symbol_style = 8;
+    uint32 symbol_size = 9;
+
+    repeated double x = 10;
+    repeated double y = 11;
+
+    message Marker {
+      string background = 1;
+      string foreground = 2;
+      string label = 3;
+    }
+    repeated Marker marker_labels = 12;
+
+    double min_x = 13;
+    double max_x = 14;
+    double min_y = 15;
+    double max_y = 16;
+  }
+  repeated PlotItem plot_items = 10;
+
+  message Annotation {
+    double pos = 1;
+    string label = 2;
+  }
+  repeated Annotation x_annotation = 11;
+
+  double min_x = 12;
+  double max_x = 13;
+  double min_y = 14;
+  double max_y = 15;
+
+  string action = 16;
+}

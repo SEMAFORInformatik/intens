@@ -1,0 +1,504 @@
+#!/usr/bin/env python
+#
+# Intens Application and Component Structure Generator
+#
+# Generate files and directories for a new Intens application (or component)
+# on the basis of a couple of template files (see directory templates/generator)
+#
+import logging
+import optparse
+import pathlib
+import os
+import sys
+import codecs
+import shutil
+import mako.lookup
+import fileinput
+import re
+
+# default content of .gitignore:
+gitignore = """
+build/
+**/__pycache__/
+*.pyc
+"""
+
+def contentMatch(filename, pattern):
+    """return true if file contains pattern, false otherwise"""
+    with open(filename) as f:
+        try:
+            for line in f.readlines():  # scan the file
+                if pattern.search(line):
+                    return True
+        except:
+            pass
+    return False
+
+
+class Wizard:
+    """generate intens application or add a component or variant"""
+
+    def __init__(self, dataroot_dir, templateDirectory, options):
+        self.templateDirectory = templateDirectory
+        self.options = options
+        self.dataroot_dir = dataroot_dir
+
+        ret = self.createFiles()
+
+        if ret and self.options["mode"] in ("component", "variant"):
+            self.insertComponentBlocks()
+
+    def _create_variant_comp_uiManager(self, destpath):
+        destfile = pathlib.Path(destpath) / (self.options["identifier"]
+                                             + '_uiManager.inc')
+        ident = self.options['identifier']
+        tname = self.options['componentType']
+        destfile.write_text('\n'.join([
+            f"FIELDGROUP {ident}_properties_fg(",
+            "  VOID", ");", "",
+            "FORM %s_form {_(\"%s properties\")}(" % (ident,tname),
+            f"  {ident}_properties_fg",
+            f");", ""]))
+
+    def _create_variant_comp_functions(self, destpath):
+        destfile = pathlib.Path(destpath) / (self.options["identifier"]
+                                             + '_functions.inc')
+        ident = self.options['identifier']
+        destfile.write_text('\n'.join([
+            "FUNC %s_map_func{" % ident,
+            f"  MAP({ident}_form);",
+            "};", "",
+            "FUNC %s_variant_func{" % ident,
+            "  IF(REASON_ACTIVATE){",
+            f"    RUN({ident}_map_func);",
+            "  }",
+            "};", ""]))
+
+    def createFiles(self):
+        if self.options["verbose"]:
+            print("***********************")
+            print("create files for %s %s"
+                % (self.options["mode"], self.options["identifier"]))
+            print("***********************")
+
+        for root, dirs, files in os.walk(self.templateDirectory):
+            relpath = os.path.relpath(root, self.templateDirectory)
+            if (self.options["mode"] in ("component", "variant")
+                and os.path.basename(relpath) == "component"):
+                # 'component' directory is renamed to identifier
+                relpath = os.path.join(
+                    os.path.dirname(relpath), self.options["identifier"])
+            destpath = os.path.abspath(
+                os.path.join(self.options["destinationDirectory"], relpath))
+
+            # ignore .svn, .git and automake directories
+            ignore = (".svn", ".git", ".gitignore" "autom4te.cache")
+            dirs[:] = [dn for dn in dirs if dn not in ignore]
+
+            # create directory
+            if not os.path.isdir(destpath):
+                os.mkdir(destpath)
+                if (self.options["mode"] == "variant" and
+                   os.path.basename(destpath) == self.options["identifier"]):
+                    self._create_variant_comp_uiManager(destpath)
+                    self._create_variant_comp_functions(destpath)
+                    continue
+
+            shutil.copymode(root, destpath)
+
+            for dir in dirs:
+                src_filename = os.path.join(root, dir)
+                if not os.path.islink(src_filename):
+                    continue
+
+                destinationFilename = os.path.join(destpath, dir)
+                shutil.copyfile(src_filename, destinationFilename, follow_symlinks=False)
+
+            # create files
+            for filename in files:
+                if filename.endswith("~"):  # ignore file
+                    continue
+                templateFilename = os.path.join(root, filename)
+                mode = self.options["mode"]
+                if self.options["mode"] == "variant":
+                    mode = "component"
+                if filename.startswith(mode) and not (
+                        filename.split(".")[-1] in ("properties", "yaml", "yml") and
+                        relpath.startswith("db")):
+                    destinationFilename = os.path.join(
+                        destpath,
+                        filename.replace(mode, self.options["identifier"]),
+                    )
+                else:
+                    destinationFilename = os.path.join(destpath, filename)
+                if os.path.isfile(destinationFilename):  # ignore file
+                    print("File exists '%s', assume you have already created this component."
+                          % destinationFilename)
+                    return False
+                if self.options["verbose"]:
+                    print("%s -> " % (os.path.relpath(templateFilename,
+                                                      self.templateDirectory)))
+                    print("%s\n" % (os.path.relpath(
+                        destinationFilename,
+                        self.options["destinationDirectory"],)))
+
+                reldirs = relpath.split("/")
+                ignore_mako = reldirs[0] in ("webtens", "nsis")
+
+                # png
+                if (
+                    filename.endswith(".png")
+                    or filename.endswith(".mako")
+                    or filename.endswith(".tar.gz")
+                    or filename.endswith(".ico")
+                ):
+                    ignore_mako = True
+
+                if ignore_mako:
+                    shutil.copy(templateFilename, destinationFilename)
+
+                # other files
+                else:
+                    # mytemplate = self.lookup.get_template('/' + filename)
+                    mytemplate = None
+                    try:
+                        mytemplate = mako.lookup.Template(
+                            filename=templateFilename,
+                            input_encoding="utf-8",
+                            output_encoding="utf-8",
+                        )
+                    except:
+                        print("Encoding-Problems in '{}'?".format(templateFilename))
+                        exit(1)
+
+                    f = codecs.open(destinationFilename, encoding="utf8", mode="w")
+                    try:
+                        if self.options["mode"] == "application":
+                            f.write(
+                                mytemplate.render_unicode(
+                                    application=self.options["identifier"],
+                                    applicationName=self.options["name"],
+                                    dataroot_dir=self.dataroot_dir,
+                                    applicationShortName=self.options["shortName"],
+                                ).replace("@@", "$")
+                            )
+                        else:  # component, variant
+                            f.write(
+                                mytemplate.render_unicode(
+                                    component=self.options["identifier"],
+                                    componentType=self.options["componentType"],
+                                    dataroot_dir=self.dataroot_dir,
+                                    componentTypeName=self.options["name"],
+                                    componentTypeShortName=self.options["shortName"],
+                                    dollar="$",
+                                )
+                            )
+                    except NameError as e:
+                        print("in template file {}:".format(templateFilename))
+                        raise e
+                    else:
+                        f.close()
+                        shutil.copymode(templateFilename, destinationFilename)
+        if self.options["mode"] == "application":
+            p = pathlib.Path(self.options["destinationDirectory"]) / '.gitignore'
+            p.write_text(gitignore)
+        return True
+
+    def insertComponentBlocks(self):
+        """
+        look for COMPONENT BLOCKS in the destination directory
+        and insert one for the added component.
+        """
+        substitute = {}
+        substitute["<component>"] = self.options["identifier"]
+        substitute["<componentType>"] = self.options["componentType"]
+        if self.options["mode"] == "component":
+            substitute["<baseType>"] = ": VariantComponent"
+        else:
+            substitute["<baseType>"] = ""
+        substitute["<componentTypeName>"] = self.options["name"]
+        substitute["<componentTypeShortName>"] = self.options["shortName"]
+
+        if self.options["verbose"]:
+            print("***********************")
+            print("process Component Blocks for %s" % (self.options["identifier"]))
+            print("***********************")
+
+        # pattern
+        begin_block_component_pattern = re.compile(
+            r"""
+        ^  # beginning of line
+        (?P<comment>[^ ]+)  # comment: i.E. // or #
+        \ BEGIN\ BLOCK\ COMPONENT
+        $  # end of line
+        """,
+            re.VERBOSE,
+        )
+
+        end_block_component_pattern = re.compile(
+            r"""
+        ^  # beginning of line
+        (?P<comment>[^ ]+)  # comment: i.E. // or #
+        \ END\ BLOCK\ COMPONENT
+        $  # end of line
+        """,
+            re.VERBOSE,
+        )
+
+        for root, dirs, files in os.walk(self.options["destinationDirectory"]):
+            # ignore .svn, .git and build directories
+            ignore = [".svn", ".git", ".gitignore", "build"]
+            dirs[:] = [dn for dn in dirs if dn not in ignore]
+
+            for filename in files:
+                if (self.options["mode"] == "variant" and
+                    filename == 'common_functions.inc'):
+                    continue
+                fname = os.path.join(root, filename)
+                logging.debug("Processing %s", filename)
+                if contentMatch(fname, begin_block_component_pattern):
+                    status = None
+                    block = ""
+                    comment = ""
+                    for line in fileinput.input(fname, inplace=1):
+                        print(line, end="")
+
+                        if begin_block_component_pattern.search(line):
+                            m = begin_block_component_pattern.match(line)
+                            status = "BLOCK COMPONENT"
+                            comment = m.groupdict()["comment"]
+
+                        elif end_block_component_pattern.search(line):
+                            # substitute keywords
+                            for k, v in substitute.items():
+                                block = block.replace(k, v)
+                            if not(self.options["mode"] == "variant" and
+                                   (block.find('_datapool.inc') > 1 or
+                                    block.find('_streamer.inc') > 1 or
+                                    block.find('_operator.inc') > 1)):
+                                # print component block
+                                print(block, end="")
+
+                            # reset status and block
+                            status = None
+                            block = ""
+                            comment = ""
+
+                        elif status == "BLOCK COMPONENT":
+                            block += re.sub(
+                                "^" + comment, "", line
+                            )  # collect block, uncomment
+
+
+def getOptions(dataroot_dir):
+    usage = """usage: %prog [options]"""
+
+    # -----------
+    # ARGUMENTS
+    # -----------
+    parser = optparse.OptionParser(usage=usage, version="%prog 1.0")
+    parser.add_option(
+        "-c", "--create", dest="mode", help="Create : 'application', 'component', 'variant'",
+        choices=('application', 'component', 'variant'),
+    )
+    parser.add_option(
+        "-w",
+        "--wizard",
+        dest="wizardType",
+        help="Type : 'generator' (default)",
+        default="generator",
+        choices=('generator',)
+    )
+    parser.add_option(
+        "-i",
+        "--identifier",
+        dest="identifier",
+        help="Identifier of the application or component, variant (without blanks)",
+    )
+    parser.add_option(
+        "-t",
+        "--componentType",
+        dest="componentType",
+        help="component type (without blanks)",
+    )
+    parser.add_option(
+        "-n", "--name", dest="name", help="application title or component/variant type label"
+    )
+    parser.add_option(
+        "-s",
+        "--shortName",
+        dest="shortName",
+        help="application short title or component/variant type short name",
+    )
+    parser.add_option(
+        "-d",
+        "--destinationDirectory",
+        dest="destinationDirectory",
+        help="Destination directory of the application",
+    )
+    parser.add_option(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        help="make lots of noise",
+    )
+    parser.add_option(
+        "-q",
+        "--quiet",
+        action="store_false",
+        dest="verbose",
+        default=False,
+        help="be very quiet [default]",
+    )
+
+    (options, args) = parser.parse_args()
+    if len(args) != 0:
+        parser.error("incorrect number of arguments")
+
+    wizardType = options.wizardType
+    dir = "{0}/templates/{1}".format(dataroot_dir, wizardType)
+    while not os.path.exists(dir):
+        wizardType = input(
+            "Wizard type (generator,) [generator] : "
+        ).strip()
+        wizardType = wizardType or "generator"
+        dir = "{0}/templates/{1}".format(dataroot_dir, wizardType)
+
+    # creation mode
+    mode = None
+    if options.mode:
+        mode = options.mode
+    #    try: input = raw_input ## python 2 hack
+    #    except NameError: pass
+    while mode not in ["application", "component", "variant"]:
+        mode = input(
+            "Wizard mode (application or component or variant) [application] : ").strip()
+        mode = mode or "application"
+    modeType = " title"
+    if mode in ("component", "variant"):
+        modeType = " type label"
+
+    # identifier
+    identifier = None
+    if options.identifier:
+        identifier = options.identifier
+    while not identifier or " " in identifier:
+        identifier = input("Identifier of the %s (without blanks): " % (mode)).strip()
+
+    # componentType
+    componentType = None
+    if options.componentType:
+        componentType = options.componentType
+    else:
+        default = ''.join([n[0].upper()+n[1:]
+                           for n in identifier.lower().split('_')])
+    while not componentType and mode in ("component", "variant"):
+        componentType = input(
+            "component type (without blanks) [%s]: " % (default)
+        ).strip()
+        componentType = componentType or default
+
+    # name
+    name = None
+    if options.name:
+        name = options.name
+    else:
+        # insert space after each word
+        default = re.sub(
+            "([A-Z][0-9a-z]+)", lambda x: x.group(1) + " ", componentType or identifier
+        ).strip()
+    while not name:
+        name = input("%s%s [%s]: " % (mode, modeType, default)).strip()
+        name = name or default
+
+    # shortName
+    shortName = None
+    if options.shortName:
+        shortName = options.shortName
+    else:
+        if componentType:
+            il = identifier.lower().split('_')
+            if len(il) > 1:
+                default = ''.join([n[0].upper() for n in il])
+            else:
+                default = componentType[:2].upper()
+        else:
+            default = identifier.upper()
+    while not shortName:
+        shortName = input("%s%s short name [%s]: " % (mode, modeType, default)).strip()
+        shortName = shortName or default
+
+    # destinationDirectory
+    dirCheck = ""
+    default = os.getcwd()
+    if mode == "application":
+        dirCheck = "/.."
+        default = default + "/" + identifier
+    destinationDirectory = None
+    if options.destinationDirectory:
+        destinationDirectory = options.destinationDirectory
+    while not (
+        destinationDirectory
+        and os.path.isdir(os.path.abspath(destinationDirectory + dirCheck))
+    ):
+        destinationDirectory = input(
+            "Destination directory of the application [%s]: " % (default)
+        ).strip()
+        destinationDirectory = destinationDirectory or default
+    destinationDirectory = os.path.abspath(destinationDirectory)
+    if mode == "application":
+        if os.path.isdir(destinationDirectory):
+            print("The destination directory '{}' already exists."
+                  .format(destinationDirectory))
+            action = input("Continue (c), clear directory (r) or abort (a)? [c] ")
+            action = action or "c"
+            if action in ["r", "R"]:
+                shutil.rmtree(destinationDirectory)
+            elif action not in ('c', 'C'):
+                exit(1)
+
+    # verbose
+    verbose = options.verbose
+
+    return {
+        "mode": mode,
+        "wizardType": wizardType,
+        "identifier": identifier,
+        "componentType": componentType,
+        "name": name,
+        "shortName": shortName,
+        "destinationDirectory": destinationDirectory,
+        "verbose": verbose,
+    }
+
+
+def main():
+    parent = os.path.split(
+        os.path.dirname(sys.argv[0]))[0]
+    dataroot_dir = ''
+    for d in os.path.join(parent, 'share'), '/usr/share/intens', parent:
+        if os.path.exists(d):
+            dataroot_dir = d
+    assert dataroot_dir
+    options = getOptions(dataroot_dir)
+    mode = options["mode"]
+    if mode == "variant":
+        mode = "component"
+    path = "{0}/templates/{1}/{2}".format(
+        dataroot_dir, options["wizardType"], mode
+    )
+    templateDirectory = os.path.abspath(path)
+    if options["verbose"]:
+        print("templateDirectory = " + templateDirectory)
+
+    Wizard(dataroot_dir, templateDirectory, options)
+
+
+if __name__ == "__main__":
+    FORMAT = "%(asctime)s %(levelname)s: %(message)s"
+    logging.basicConfig(level=logging.INFO, format=FORMAT)
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(sys.argv[0], "interrupted")

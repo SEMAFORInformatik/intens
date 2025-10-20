@@ -1602,10 +1602,10 @@ void GuiQtTableViewBase::copy(bool all) {
   long nRows = model()->rowCount();
   long nCols = model()->columnCount();
   std::ostringstream values;
-  std::ostringstream hvalues;
-  std::ostringstream vvalues;
   std::string sep_char( 1, GuiFactory::Instance()->getDelimiter());
+  QLocale loc;
   bool with_headers( false );
+  values << std::setprecision(17);
 
   // get all selected Cells
   if (!all) {
@@ -1639,6 +1639,7 @@ void GuiQtTableViewBase::copy(bool all) {
       // data
       for (long i = 0; i < selIdxs.size(); ++i) {
         if (isColumnHidden( selIdxs.at(i).column() ) || columnWidth( selIdxs.at(i).column() ) == 0) continue;
+        GuiTableItem *item = m_table->getTableItem( selIdxs.at(i).row(), selIdxs.at(i).column() );
 
         if (old_row != selIdxs.at(i).row()) {
           if (old_row>=0)
@@ -1650,16 +1651,30 @@ void GuiQtTableViewBase::copy(bool all) {
                     << "\"" << sep_char;
           }
 
-          values << selIdxs.at(i).data().toString().trimmed().toStdString();
+          if (selIdxs.at(i).data().metaType() == QMetaType(QMetaType::Double)) {
+            double d;
+            double fac = item->getDataField()->getScalefactor()->getValue();
+            if (!item->getDataField()->getValue(d))
+              continue;
+            if (!std::isnan(fac)){
+              values << (i? sep_char:"");
+              d *= fac;
+            }
+            values << (i? sep_char : "") << loc.toString(d, 'g', 17).toStdString();
+          } else
+            values << selIdxs.at(i).data().toString().trimmed().toStdString();
           old_row=selIdxs.at(i).row();
         } else
-#if QT_VERSION >= 0x060000
           if (selIdxs.at(i).data().metaType() == QMetaType(QMetaType::Double)) {
-#else
-          if (selIdxs.at(i).data().type() == QVariant::Double) {
-#endif
-            QLocale loc;
-            values << (i? sep_char : "") << loc.toString(selIdxs.at(i).data().toDouble()).toStdString();
+            double d;
+            double fac = item->getDataField()->getScalefactor()->getValue();
+            if (!item->getDataField()->getValue(d))
+              continue;
+            if (!std::isnan(fac)){
+              values << (i? sep_char:"");
+              d *= fac;
+            }
+            values << (i? sep_char : "") << loc.toString(d, 'g', 17).toStdString();
           } else
             values << (i? sep_char : "") << selIdxs.at(i).data().toString().trimmed().toStdString();
       }
@@ -1701,6 +1716,15 @@ void GuiQtTableViewBase::copy(bool all) {
           bSep=true;
         }
         for (long c = 0; c < nCols; ++c) {
+          GuiTableItem *item = m_table->getTableItem( r, c );
+          double d;
+          double fac = item->getDataField()->getScalefactor()->getValue();
+          if (!item->getDataField()->getValue(d))
+            continue;
+          if (!std::isnan(fac)){
+            values << (c>1 ? sep_char:"");
+            d *= fac;
+          }
           long cIdx=c;
           if (m_table->getVLineList().size() &&
               m_table->getVertLinePlacement() == GuiElement::align_Right) {
@@ -1711,7 +1735,7 @@ void GuiQtTableViewBase::copy(bool all) {
               cIdx-=(nCols-m_table->getVLineList().size());
           }
           if (isColumnHidden(cIdx) || columnWidth(cIdx) == 0) continue;
-          values << (bSep?sep_char:"") << model()->index(rIdx, cIdx).data().toString().trimmed().toStdString();
+          values << (bSep?sep_char:"") << loc.toString(d, 'g', 17).toStdString();
           bSep=true;
         }
         values << std::endl;
@@ -1720,13 +1744,17 @@ void GuiQtTableViewBase::copy(bool all) {
     else {
       for (long r = 0; r < nRows; ++r) {
         for (long c = 1; c < nCols; ++c) {
-#if QT_VERSION >= 0x060000
+          GuiTableItem *item = m_table->getTableItem( r, c );
+          double d;
+          double fac = item->getDataField()->getScalefactor()->getValue();
+          if (!item->getDataField()->getValue(d)){
+            values << (c>1 ? sep_char:"");
+            continue;
+          }
+          if (!std::isnan(fac))
+            d *= fac;
           if (model()->index(r, c).data().metaType() == QMetaType(QMetaType::Double)) {
-#else
-            if (model()->index(r, c).data().type() == QVariant::Double) {
-#endif
-            QLocale loc;
-            values << (c>1 ? sep_char:"") << loc.toString(model()->index(r, c).data().toDouble()).toStdString();
+            values << (c>1 ? sep_char:"") << loc.toString(d, 'g', 17).toStdString();
           } else
             values << (c>1 ? sep_char:"") << model()->index(r, c).data().toString().trimmed().toStdString();
         }

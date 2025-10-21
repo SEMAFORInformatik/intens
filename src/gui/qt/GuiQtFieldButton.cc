@@ -856,6 +856,7 @@ bool GuiQtFieldButton::serializeProtobuf(in_proto::ElementList* eles, bool onlyU
       element->set_icon("unchanged");
     } else {
       element->set_icon(content);
+      element->mutable_field()->set_icon(content);
     }
   }
   return GuiQtDataField::serializeProtobuf(element->mutable_field(), onlyUpdated);

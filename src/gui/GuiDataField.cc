@@ -875,11 +875,12 @@ bool GuiDataField::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
   std::string label = attr->Label( item->Data() );
   // special case button
   if (getElement()->Type() == GuiElement::type_FieldButton) {
-    if (!jsonObj.isMember("icon") &&
-       attr->Label(m_param->Data()) == m_param->Data()->nodeName()) {
+    if (attr->Label(m_param->Data()) == m_param->Data()->nodeName()) {
       m_param->getFormattedValue( label );
       BUG_INFO("nodeName: " << m_param->Data()->nodeName() << ", gotLabel:" << label);
-      if (label.empty()) jsonObj["visible"] = false;
+    }
+    if (!jsonObj.isMember("icon") && label.empty()) {
+      jsonObj["visible"] = false;
     }
   }
   if (!label.empty() ) {
@@ -988,11 +989,12 @@ bool GuiDataField::serializeProtobuf(in_proto::DataField* field, bool onlyUpdate
   std::string label = attr->Label( item->Data() );
  //  // special case button
   if (getElement()->Type() == GuiElement::type_FieldButton) {
-    if (field->icon().length() == 0 &&
-      	attr->Label(m_param->Data()) == m_param->Data()->nodeName()) {
+    if (attr->Label(m_param->Data()) == m_param->Data()->nodeName()) {
       m_param->getFormattedValue( label );
       BUG_INFO("nodeName: " << m_param->Data()->nodeName() << ", gotLabel:" << label);
-      if (label.empty()) field->set_visible(false);
+    }
+    if (field->icon().length() == 0 && label.empty()) {
+      field->set_visible(false);
     }
   }
   if (!label.empty() ) {

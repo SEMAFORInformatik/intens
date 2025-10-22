@@ -286,7 +286,14 @@ std::string convertToISODate(double julianDate, const UserAttr::STRINGtype type)
 
 std::string Date::currentIsoTime() {
   #ifdef HAVE_QT
-  return QTime::currentTime().toString(ISO_DATE_FORMAT).toStdString();
+  int minutesOffset;
+  if (getenv("INTENS_UTC_MINUTES_OFFSET") == NULL) {
+    minutesOffset = 0;
+  } else {
+    minutesOffset = std::stoi(getenv("INTENS_UTC_MINUTES_OFFSET"));
+  }
+  auto time = QTime::currentTime();
+  return time.addSecs(minutesOffset*60).toString(ISO_DATE_FORMAT).toStdString();
   #else
   return ""; // TODO
   #endif
@@ -302,7 +309,14 @@ std::string Date::currentIsoDate() {
 
 std::string Date::currentIsoDateTime() {
   #ifdef HAVE_QT
-  return QDateTime::currentDateTime().toString(ISO_DATE_FORMAT).toStdString();
+  int minutesOffset;
+  if (getenv("INTENS_UTC_MINUTES_OFFSET") == NULL) {
+    minutesOffset = 0;
+  } else {
+    minutesOffset = std::stoi(getenv("INTENS_UTC_MINUTES_OFFSET"));
+  }
+  auto time = QDateTime::currentDateTime();
+  return time.addSecs(minutesOffset*60).toString(ISO_DATE_FORMAT).toStdString();
   #else
   return ""; // TODO
   #endif

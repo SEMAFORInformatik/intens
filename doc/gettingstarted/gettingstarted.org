@@ -99,7 +99,7 @@ following packages installed:
 - MinGW/MSys (on Windows only, see appendix [[*Installation on Windows]])
 
 The installation process for these packages on Linux/Unix systems is
-straightforward. For Windows see appendix [[*Installation on Windows]]).
+straightforward. (see appendix [[*Installation on Linux]]).
 
 In addition to the above listed software the
 database service must be installed and started
@@ -1812,6 +1812,30 @@ java -version
 (Note: version 17 or newer is required). Download a Java/JRE installer
 if no such version is installed. There are multiple providers such as:
 [[https://adoptium.net/temurin/releases]]
+
+** Installation on Linux
+For debian/ubuntu based systems:
+
+- Download the DEB-File and install Intens:
+  #+begin_example
+  sudo apt-get install ./semafor-intens-5.3.4dev-ubuntu-24.04-x86-64.deb
+  #+end_example
+  This will install the files in /usr/local/intens.
+- Add the intens bin directory to your PATH:
+  #+begin_example
+  PATH=/usr/local/intens/5.3.4dev/bin:$PATH
+  #+end_example
+- Install the development packages
+  #+begin_example
+  sudo apt-get install build-essential cmake python3-mako python3-venv \
+    python-is-python3 default-jdk gettext
+  #+end_example
+- If you're working with Emacs add the following lines to your
+    emacs config:
+  #+begin_example
+    (add-to-list 'load-path "/usr/local/intens/5.3.4dev/etc")
+    (require 'intens-ts-mode)
+  #+end_example
 
 ** Coding Conventions
 To improve the readability of the source code and

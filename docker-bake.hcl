@@ -1,4 +1,4 @@
-variable "TAG_NAME" {
+variable "GITHUB_REF_NAME" {
   default = "latest"
 }
 
@@ -12,9 +12,9 @@ target "default" {
   args = {
     CMAKE_BUILD_TYPE = "Release"
   }
-  tags = ["hub.semafor.ch/semafor/intens:${TAG_NAME}", "hub.semafor.ch/semafor/intens:latest"]
-  # cache-to = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/intens:latest"]
-  # cache-from = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/intens:latest"]
+  tags = ["ghcr.io/semaforinformatik/intens:${GITHUB_REF_NAME}", "ghcr.io/semaforinformatik/intens:latest"]
+  cache-from = ["type=gha,scope=intens"]
+  cache-to = ["type=gha,mode=max,scope=intens"]
 }
 
 target "dev" {
@@ -24,9 +24,9 @@ target "dev" {
     CMAKE_BUILD_TYPE = "Debug"
     EXTRA_PACKAGES = "gdb"
   }
-  tags = ["hub.semafor.ch/semafor/intens/dev:${TAG_NAME}", "hub.semafor.ch/semafor/intens/dev:latest"]
-  # cache-to = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/intens/dev:latest"]
-  # cache-from = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/intens/dev:latest"]
+  tags = ["ghcr.io/semaforinformatik/intens/dev:${GITHUB_REF_NAME}", "ghcr.io/semaforinformatik/intens/dev:latest"]
+  cache-from = ["type=gha,scope=intens-dev"]
+  cache-to = ["type=gha,mode=max,scope=intens-dev"]
 }
 
 target "citest" {
@@ -36,7 +36,5 @@ target "citest" {
     CMAKE_BUILD_TYPE = "Debug"
     EXTRA_PACKAGES = "make cmake g++ python3-venv"
   }
-  tags = ["hub.semafor.ch/semafor/intens/citest:${TAG_NAME}", "hub.semafor.ch/semafor/intens/citest:latest"]
-  # cache-to = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/intens/citest:latest"]
-  # cache-from = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/intens/citest:latest"]
+  tags = ["ghcr.io/semaforinformatik/intens/citest:${GITHUB_REF_NAME}", "ghcr.io/semaforinformatik/intens:latest"]
 }

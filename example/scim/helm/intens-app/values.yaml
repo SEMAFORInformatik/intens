@@ -5,14 +5,14 @@ apiGatewayReplicaCount: 1
 app:
   restServiceBase: http://workbook:8080/workbook
   image:
-    repository: hub.semafor.ch/semafor/scim
+    repository: ghcr.io/semaforinformatik/scim
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
 
 apiGateway:
   image:
-    repository: hub.semafor.ch/semafor/scim/api-gateway
+    repository: ghcr.io/semaforinformatik/scim/api-gateway
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
@@ -41,6 +41,6 @@ otel:
 existingImageCredentials:
 
 imageCredentials:
-  registry: hub.semafor.ch
+  registry:
   username:
   password:

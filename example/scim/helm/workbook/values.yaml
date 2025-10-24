@@ -1,12 +1,7 @@
 image:
-  repository: hub.semafor.ch/semafor/generic-workbook
+  repository: ghcr.io/semaforinformatik/workbook
   pullPolicy: IfNotPresent
-  tag: "3.3-SNAPSHOT"
-
-imageCredentials:
-  registry: hub.semafor.ch
-  username: gitlab+deploy-token-41
-  password: 5FRWoky79_-f_gFd7vjQ
+  tag: "3.4"
 
 nameOverride: ""
 fullnameOverride: ""

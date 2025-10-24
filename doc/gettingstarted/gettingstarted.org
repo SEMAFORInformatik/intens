@@ -1326,7 +1326,7 @@ Follow these steps to setup up and to run a INTENS application in docker:
   is installed on your system.)
 
 1. In the build folder execute ~make docker-image~. (This builds the docker image
-   "hub.semafor.ch/semafor/scim".)
+   "ghcr.io/semaforinformatik/scim".)
    Next change to the docker folder in the main project folder and execute the
    ~docker compose up~ command.
    Make sure no other rest service or other process is running on port 8080.
@@ -1383,7 +1383,7 @@ Follow these steps to setup up and to run a INTENS application in docker:
   After that you have to set the environment variables ~CUSTOM_STYLES~ or ~CUSTOM_SCRIPTS~ to their path relative of the public folder.
   #+begin_example
   webtens:
-    image: hub.semafor.ch/semafor/webtens-vue:latest
+    image: ghcr.io/semaforinformatik/webtens:latest
     expose:
       - 8000
     environment:

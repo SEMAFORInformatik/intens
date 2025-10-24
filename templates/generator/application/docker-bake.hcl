@@ -8,16 +8,12 @@ group "default" {
 
 target "${application}" {
   dockerfile = "docker/Dockerfile"
-  tags = ["hub.semafor.ch/semafor/${application}:@@{TAG_NAME}", "hub.semafor.ch/semafor/${application}:latest"]
-  cache-to = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/${application}:latest"]
-  cache-from = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/${application}:latest"]
+  tags = ["ghcr.io/semaforinformatik/${application}:@@{TAG_NAME}", "ghcr.io/semaforinformatik/${application}:latest"]
 }
 
 target "api-gateway" {
   context = "api-gateway"
   dockerfile = "Dockerfile"
-  tags = ["hub.semafor.ch/semafor/${application}/api-gateway:@@{TAG_NAME}", "hub.semafor.ch/semafor/${application}/api-gateway:latest"]
-  cache-to = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/${application}/api-gateway:latest"]
-  cache-from = ["type=registry,image-manifest=true,ref=hub-cache.semafor.ch/semafor/${application}/api-gateway:latest"]
+  tags = ["ghcr.io/semaforinformatik/${application}/api-gateway:@@{TAG_NAME}", "ghcr.io/semaforinformatik/${application}/api-gateway:latest"]
 }
 

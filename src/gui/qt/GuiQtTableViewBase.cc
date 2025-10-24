@@ -67,7 +67,8 @@ void QtStandardItemModel::beginResetModel() { QStandardItemModel::beginResetMode
 void QtStandardItemModel::endResetModel() { QStandardItemModel::endResetModel(); }
 
 void QtStandardItemModel::signalDataChanged(const QModelIndex& tl, const QModelIndex& br) {
-  emit dataChanged(tl, br);
+  if (br.isValid())
+    emit dataChanged(tl, br);
 }
 QVariant QtStandardItemModel::data( const QModelIndex& index, int role) const {
   // is called with role:
@@ -1722,7 +1723,6 @@ void GuiQtTableViewBase::copy(bool all) {
           if (!item->getDataField()->getValue(d))
             continue;
           if (!std::isnan(fac)){
-            values << (c>1 ? sep_char:"");
             d *= fac;
           }
           long cIdx=c;
@@ -1841,11 +1841,21 @@ void GuiQtTableViewBase::paste() {
         BUG_DEBUG("  no item line["<<line+row<<"] idx["<<idx+col<<"]");
         continue;
       }
-      // replace "," to "."
+      // remove thousand sep
       std::string s(sline.at(idx).toStdString());
-      if (AppData::Instance().HeadlessWebMode() &&
-          item->getDataField() && item->getDataField()->getDataType() == DataDictionary::type_Real) {
-        replaceAll(s, ",", ".");
+      if (item->getDataField() && item->getDataField()->getDataType() == DataDictionary::type_Real) {
+        std::string::size_type posPt =  s.find(".");
+        std::string::size_type posC =  s.find(",");
+        std::string::size_type posQ =  s.find("'");
+        if (posPt != std::string::npos && posC != std::string::npos){
+          replaceAll(s,
+                     posC < posPt ? "," : ".", "");
+        }
+        if (posPt != std::string::npos && posQ != std::string::npos){
+          replaceAll(s,
+                     posQ < posPt ? "'" : ".", "");
+        }
+        if (AppData::Instance().HeadlessWebMode()) replaceAll(s, ",", ".");
       }
 
       // add to temporary  paste object list

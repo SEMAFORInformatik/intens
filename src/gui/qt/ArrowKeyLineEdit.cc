@@ -81,9 +81,8 @@ void ArrowKeyLineEdit::keyPressEvent(QKeyEvent* e) {
   switch (e->key()) {
   case Qt::Key_Up:
     {
-      if (m_textfield) {
-        if (m_textfield->getLength() < text().size())
-          break;
+      if (m_textfield && m_textfield->getLength() < text().size()){
+        break;
       }
       if ( processCursorStep(true) )
         e->accept();
@@ -93,9 +92,8 @@ void ArrowKeyLineEdit::keyPressEvent(QKeyEvent* e) {
     }
   case Qt::Key_Down:
     {
-      if (m_textfield) {
-        if (m_textfield->getLength() < text().size())
-          break;
+      if (m_textfield && m_textfield->getLength() < text().size()){
+        break;
       }
       if ( processCursorStep(false) )
         e->accept();
@@ -177,7 +175,7 @@ bool ArrowKeyLineEdit::makeValidatorCheck() {
  * ArrowKeyLineEdit::focusInEvent                                              *
  * --------------------------------------------------------------------------- */
 void ArrowKeyLineEdit::focusInEvent ( QFocusEvent *e) {
-  m_textfield->startFocusFunction(true);
+  if( m_textfield ) m_textfield->startFocusFunction(true);
   QLineEdit::focusInEvent(e);
 }
 /* --------------------------------------------------------------------------- *
@@ -187,9 +185,8 @@ void ArrowKeyLineEdit::focusOutEvent ( QFocusEvent *e) {
   // da das signal editingFinished nur ausgeloest wird, wenn die Validator-Methode
   // QValidator::Acceptable zurueckgibt, machen wir den fehlenden slot(lostFocus) selber
   // und wenn nicht, setzen wir den alten Wert wieder (Conversion error.)
-  if( m_textfield ) {
-    if (makeValidatorCheck())
-        m_textfield->startFocusFunction(false);
+  if( m_textfield && makeValidatorCheck()){
+    m_textfield->startFocusFunction(false);
   }
   QLineEdit::focusOutEvent(e);
 }
@@ -202,7 +199,7 @@ bool ArrowKeyLineEdit::processCursorStep(bool up) {
     return false;
   }
   if (text().isEmpty()) return false;
-  if ( !m_textfield->isArrowKeyAllowed() ) {
+  if ( m_textfield && !m_textfield->isArrowKeyAllowed() ) {
     std::cerr << "WARNING::  Arrow Key are disabled!!!\n"<<std::flush;
     return false;
   }
@@ -353,17 +350,16 @@ bool ArrowKeyLineEdit::processCursorStep(bool up) {
 
     }
     if ( status != XferParameter::status_Bad) {
-      if( m_textfield ) {
-        if (m_textfield->getLength() < qstr.size())
-          return false;
+      if( m_textfield && m_textfield->getLength() < qstr.size()){
+        return false;
       }
       int p=0;
       // validator check
       if (validator()) {
-	QValidator::State ret = validator()->validate(qstr, p);
-	if (ret != QValidator::Acceptable) {
-	  return false;
-	}
+        QValidator::State ret = validator()->validate(qstr, p);
+        if (ret != QValidator::Acceptable) {
+          return false;
+        }
       }
       setText( qstr );
       if (m_saveInDataPool) {

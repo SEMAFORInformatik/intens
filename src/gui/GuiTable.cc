@@ -764,7 +764,7 @@ void GuiTable::getTableVerticalSize(int &numRows, int &numCols, SizeType size_ty
 /* isTableVerticalFixed --                                                     */
 /* --------------------------------------------------------------------------- */
 bool GuiTable::isTableVerticalFixed() {
-  if (getOrientation() == GuiElement::orient_Horizontal ||
+  if ((!getTableMatrix() && getOrientation() == GuiElement::orient_Horizontal) ||
       getTableRowRangeTo() &&
       (getTableRowRangeTo() - getTableRowRangeFrom() + 1) <= getTableRows()) {
     return true;
@@ -776,7 +776,7 @@ bool GuiTable::isTableVerticalFixed() {
 /* isTableHorizontalFixed --                                                   */
 /* --------------------------------------------------------------------------- */
 bool GuiTable::isTableHorizontalFixed() {
-  if (getOrientation() == GuiElement::orient_Vertical ||
+  if ((!getTableMatrix() && getOrientation() == GuiElement::orient_Vertical) ||
       getTableColRangeTo() &&
       (getTableColRangeTo() - getTableColRangeFrom() + 1) <= getTableCols()) {
     return true;

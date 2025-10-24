@@ -5,8 +5,6 @@ repositories:
 releases:
   - chart: semafor/config-controller
     name: config-controller
-    values:
-      - config-controller.yaml
 
   - chart: ./workbook
     name: workbook

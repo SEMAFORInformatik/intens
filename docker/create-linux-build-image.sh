@@ -16,7 +16,7 @@ VCS_REV=$(git describe --dirty)
 
 IMG_VERSION=$IMG_TAG
 
-IMG_NAME=hub.semafor.ch/semafor/intens/linux-build
+IMG_NAME=ghcr.io/semaforinformatik/intens/linux-build
 docker build \
        --label "org.label-schema.name=intens-$(basename $IMG_NAME)" \
        --label "org.label-schema.version=$IMG_VERSION" \

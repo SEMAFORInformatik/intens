@@ -8,7 +8,7 @@ services:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
 
   config-service:
-    image: hub.semafor.ch/semafor/config-controller:1.5.0
+    image: ghcr.io/semaforinformatik/config-controller:1.5.1
     environment:
       - LABEL_KEY=app
       - DOCKER=true
@@ -19,7 +19,7 @@ services:
       - ./config-controller:/etc/config-controller
 
   api-gw:
-    image: hub.semafor.ch/semafor/scim/api-gateway:latest
+    image: ghcr.io/semaforinformatik/scim/api-gateway:latest
     build:
         context: ../api-gateway
     expose:
@@ -27,7 +27,7 @@ services:
       - 15574
 
   webtens:
-    image: hub.semafor.ch/semafor/webtens-vue:latest
+    image: ghcr.io/semaforinformatik/webtens:latest
     expose:
       - 8000
     environment:
@@ -42,7 +42,7 @@ services:
       - "traefik.http.services.webtens-service.loadbalancer.server.port=8000"
 
   workbook:
-    image: hub.semafor.ch/semafor/generic-workbook:3.3-SNAPSHOT
+    image: ghcr.io/semaforinformatik/workbook:3.4
     expose:
       - 8080
     environment:

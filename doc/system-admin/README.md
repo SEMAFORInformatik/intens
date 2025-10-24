@@ -15,10 +15,10 @@ The following steps build the file sysadmin.pdf:
 
   latexmk sysadmin
 
-The docker image hub.semafor.ch/semafor/intens/ebnf-latex
+The docker image ghcr.io/semaforinformatik/intens/ebnf-latex
 includes the required packages:
 
   docker run --rm -it -v $(pwd)/../..:/work -u $UID:$GID \
-     hub.semafor.ch/semafor/intens/ebnf-latex:latest make
+     ghcr.io/semaforinformatik/intens/ebnf-latex:latest make
 
 (see build.sh)

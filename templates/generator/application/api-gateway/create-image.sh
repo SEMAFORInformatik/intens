@@ -15,7 +15,7 @@ pushd $path
 
 IMG_VERSION=$IMG_TAG
 
-IMG_NAME=hub.semafor.ch/semafor/${application}/api-gateway
+IMG_NAME=ghcr.io/semaforinformatik/${application}/api-gateway
 docker build --no-cache=true \
        --label "org.label-schema.name=$(basename $IMG_NAME)" \
        --label "org.label-schema.version=$IMG_VERSION" \

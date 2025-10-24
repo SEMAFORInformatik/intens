@@ -3,7 +3,7 @@
 app:
   restServiceBase: http://workbook:8080/workbook
   image:
-    repository: hub.semafor.ch/semafor/${application}
+    repository: ghcr.io/semaforinformatik/${application}
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
@@ -11,7 +11,7 @@ app:
 apiGateway:
   replicaCount: 1
   image:
-    repository: hub.semafor.ch/semafor/${application}/api-gateway
+    repository: ghcr.io/semaforinformatik/${application}/api-gateway
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
@@ -38,6 +38,6 @@ otel:
 existingImageCredentials:
 
 imageCredentials:
-  registry: hub.semafor.ch
+  registry:
   username:
   password:

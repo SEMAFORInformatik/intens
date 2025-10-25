@@ -596,7 +596,7 @@ JobElement::OpStatus RestService::login( const std::string &baseUrl,
     // TODO JWT: urlQuote or urlQuote_extendedAscii?
     m_dataData = value2string(data);
 
-    // amg 2023-01-18 to keep ldpem/bemess autologon runnning TODO
+    // amg 2023-01-18 to keep some applications autologon runnning TODO
     setPassword(password);
 
     set_post_curl_options();
@@ -953,7 +953,7 @@ JobElement::OpStatus RestService::perform( BaseUrl& baseUrl,
       } else {
         writeToResponseStream(m_responseData);
       }
-      mysetenv( "REST_SERVICE_BASE", m_base.c_str() );  // for apps (e.g. LDPEM) which used this env
+      mysetenv( "REST_SERVICE_BASE", m_base.c_str() );  // for applications that use this env
       // set db timestamp in m_dataStream if requested (PUT with SET_DB_TIMESTAMP)
       if ( m_setDbTimestamp && m_dataStream ) {
         m_dataStream->setDbItemsNotModified();
@@ -1124,7 +1124,7 @@ JobElement::OpStatus RestService::conflict() {
       GuiManager::Instance().attachEventLoopListener( loopcontrol );
 
       std::string compType = componentType();
-      // Hack for LDPEM (modifiy dialog w/o New Button)
+      // Hack for some applications (modifiy dialog w/o New Button)
       // TODO: move it to Intens-Db-Service, or let the app decide
       if ( compType == "Variant" or compType == "Project" or
            response.get("useNameRevisionAsIdentifier", false).asBool() // only one component with same name/rev is allowed -> don't show new button
@@ -1753,7 +1753,7 @@ void RestService::setPassword( const std::string& password ) {
 	       realmPlain.size(), realmPlainBase64, false);
   std::string authorization = "Basic " + realmPlainBase64;
 
-  // to keep ldpem/bemess autologon runnning TODO
+  // to keep some applications autologon runnning TODO
   if ( m_authorization == "jwt" ) {
     mysetenv( "REST_SERVICE_AUTHHEADER", authorization.substr(6).c_str() );
   } else {
@@ -1826,7 +1826,7 @@ void RestService::setHeaders( const std::string& authorization ) {
   }
   // write settings
   if(authorization.size())      {
-    mysetenv( "REST_SERVICE_BASE", m_base.c_str() );  // for apps (e.g. LDPEM) which used this env
+    mysetenv( "REST_SERVICE_BASE", m_base.c_str() );  // for applications that use this env
 
     std::string realmPlainBase64;
     std::string s(authorization.substr(7));

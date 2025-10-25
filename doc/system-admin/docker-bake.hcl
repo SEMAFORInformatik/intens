@@ -5,5 +5,5 @@ group "default" {
 target "ebnf-latex" {
   context = "."
   dockerfile = "Dockerfile"
-  tags = ["hub.semafor.ch/semafor/intens/ebnf-latex:latest"]
+  tags = ["ghcr.io/semaforinformatik/intens/ebnf-latex:latest"]
 }

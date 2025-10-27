@@ -75,6 +75,8 @@ RUN set -eux; \
     wget \
     wine \
     xz-utils \
+    xvfb \
+    xauth \
     python3-mako libopengl-dev \
     libgl1-mesa-dev libglu1-mesa-dev \
     yarnpkg \
@@ -85,7 +87,9 @@ RUN set -eux; \
   dpkg --add-architecture i386 && \
   apt-get update && \
   apt-get install -y wine32 && \
+  wine reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentVersion /d 10.0 /f && \
   wine hostname && \
+  yarnpkg global add tree-sitter-cli && \
   rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
@@ -103,11 +107,11 @@ RUN set -eux; \
   echo "MXE_TARGETS := ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD} ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}" > settings.mk && \
   echo "MXE_USE_CCACHE :="                                         >> settings.mk && \
   echo "MXE_PLUGIN_DIRS := plugins/gcc14"                          >> settings.mk && \
-  echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 qwt zlib flex log4cplus"  >> settings.mk && \
+  echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 qwt zlib flex log4cplus treesitter"  >> settings.mk && \
   echo ".DEFAULT local-pkg-list:"                                  >> settings.mk && \
   echo "local-pkg-list: \$(LOCAL_PKG_LIST)"                        >> settings.mk
 
-COPY flex.mk libxslt.mk qwt.mk log4cplus.mk /usr/src/mxe/src
+COPY flex.mk libxslt.mk qwt.mk log4cplus.mk treesitter.mk /usr/src/mxe/src
 #COPY gcc-14.3.0.tar.xz /usr/src/mxe/pkg/
 #
 # Build MXE
@@ -193,6 +197,15 @@ RUN cd /tmp && \
     make -j${nproc} && \
     make install && \
     rm -rf /tmp/qtnetworkauth*
+
+ENV WINEDLLOVERRIDES='winemenubuilder.exe,mscoree,mshtml=d'
+
+RUN wget https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe -O python.exe \
+    && rm -rf /tmp/wine \
+    && xvfb-run sh -c "wine reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentVersion /d 10.0 /f; wineserver -w" \
+    && xvfb-run sh -c "wine python.exe /quiet TargetDir=C:\\Python Include_doc=0 InstallAllUsers=1 PrependPath=1 Include_launcher=0 Include_tcltk=0 Include_test=0 Include_tools=0 Shortcuts=0 Include_debug=0 Include_dev=0; wineserver -w" \
+    && rm -rf /tmp/wine/wineserver /tmp/wine-*
+
 
 WORKDIR /work
 

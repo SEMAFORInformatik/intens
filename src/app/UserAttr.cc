@@ -257,6 +257,7 @@ void UserAttr::setColorPicker() { m_colorpicker = true; }
 void UserAttr::setNoColorBit() { m_isColorBit = false; }
 void UserAttr::SetButton()                         { m_gui_type = gui_kind_button; }
 void UserAttr::SetSlider()                         { m_gui_type = gui_kind_slider; }
+void UserAttr::SetProgress()                       { m_gui_type = gui_kind_progress; }
 void UserAttr::SetToggle()                         { m_gui_type = gui_kind_toggle; }
 void UserAttr::SetRadioButton()                    { m_gui_type = gui_kind_radiobutton; }
 void UserAttr::SetCombobox()                       { m_gui_type = gui_kind_combobox; }

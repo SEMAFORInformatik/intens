@@ -645,6 +645,9 @@ GuiDataField* GuiQtFactory::createDataField  ( GuiElement *parent, XferDataItem 
   case UserAttr::gui_kind_slider:
     field = new GuiQwtSlider( parent );
     break;
+  case UserAttr::gui_kind_progress:
+    field = new GuiQtProgressBar(parent);
+    break;
   case UserAttr::gui_kind_toggle:
     field = new GuiQtToggle( parent );
     break;

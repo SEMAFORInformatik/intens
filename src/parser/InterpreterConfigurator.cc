@@ -1483,14 +1483,21 @@ bool InterpreterConfigurator::setDictItemHelpText( const std::string &helpText )
 //======================================================================//
 bool InterpreterConfigurator::setDictItemButton(){
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetButton();
-  return false;
+  return true;
 }
 //======================================================================//
 // - setDictItemSlider
 //======================================================================//
 bool InterpreterConfigurator::setDictItemSlider(){
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetSlider();
-  return false;
+  return true;
+}
+//======================================================================//
+// - setDictItemProgress
+//======================================================================//
+bool InterpreterConfigurator::setDictItemProgress(){
+  static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetProgress();
+  return true;
 }
 //======================================================================//
 // - setDictItemToggle
@@ -1501,7 +1508,7 @@ bool InterpreterConfigurator::setDictItemToggle(){
     return false;
   }
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetToggle();
-  return false;
+  return true;
 }
 //======================================================================//
 // - setDictItemRadio
@@ -1512,21 +1519,21 @@ bool InterpreterConfigurator::setDictItemRadio(){
     return false;
   }
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetRadioButton();
-  return false;
+  return true;
 }
 //======================================================================//
 // - setDictItemCombobox
 //======================================================================//
 bool InterpreterConfigurator::setDictItemCombobox(){
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetCombobox();
-  return false;
+  return true;
 }
 //======================================================================//
 // - setDictItemLabelType
 //======================================================================//
 bool InterpreterConfigurator::setDictItemLabelType(){
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetLabelType();
-  return false;
+  return true;
 }
 //======================================================================//
 // - setDictItemClassName

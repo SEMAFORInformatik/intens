@@ -8,7 +8,7 @@
 #
 path=$(dirname "$(realpath $0)")
 
-DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:2025-09
+DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:treesitterunified
 TARGET_DIR=/work/build-windows-shared-x64
 if [ "$1" = static ]; then
   echo "Static"
@@ -23,8 +23,9 @@ _GID=$(id -g )
 DOCKCROSS="docker run --rm --name dockcross-$$RANDOM \
 -v ${SOURCE_DIR}:/work \
 -u ${_UID}:${_GID} \
+-e WINEPREFIX=/tmp/wineuser
 ${DOCKCROSS_IMAGE}"
 
 # NOTE: -DUSE_LSP is off, cannot use matlab in shared config
-${DOCKCROSS} bash -c "cmake${PLATFORM_EXT} -DUSE_OAUTH=True -B ${TARGET_DIR} -S . && \
+${DOCKCROSS} bash -c "cp -r /tmp/wine /tmp/wineuser && cmake${PLATFORM_EXT} -DUSE_OAUTH=True -DUSE_LSP=ON -B ${TARGET_DIR} -S . && \
     cmake${PLATFORM_EXT} --build $TARGET_DIR -j8 && (cd ${TARGET_DIR}; cpack${PLATFORM_EXT})"

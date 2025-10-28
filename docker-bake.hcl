@@ -38,3 +38,9 @@ target "citest" {
   }
   tags = ["ghcr.io/semaforinformatik/intens/citest:${GITHUB_REF_NAME}", "ghcr.io/semaforinformatik/intens:latest"]
 }
+
+target "dockcross" {
+  context = "dockcross"
+  dockerfile = "Dockerfile"
+  tags = ["ghcr.io/semaforinformatik/intens/dockcross:latest"]
+}

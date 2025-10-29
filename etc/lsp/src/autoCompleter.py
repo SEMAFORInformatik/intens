@@ -158,7 +158,7 @@ def create_completion_item(comp):
 
 
 class AutoCompleter:
-    def __init__(self, server: pygls.server.LanguageServer):
+    def __init__(self, server: pygls.lsp.server.LanguageServer):
         self.server = server
         # first load the .so/.dll file for the grammar
         grammar_name = '/libtree-sitter-intens' + \
@@ -209,10 +209,10 @@ class AutoCompleter:
         completions = variables
         # check if we got any function-local variables to add to the completion
         if not ui_eles_only and locals in workspace_symbols['locals']:
-            self.server.show_message_log(str(len(completions)))
+            self.server.window_log_message(types.LogMessageParams(message=str(len(completions)), type=types.MessageType.Log))
             completions = workspace_symbols['locals'][locals].findall(
                 './ITEM') + completions
-            self.server.show_message_log(str(len(completions)))
+            self.server.window_log_message(types.LogMessageParams(message=str(len(completions)), type=types.MessageType.Log))
 
         # if we got a parent, we just want to return the completions of said parent
         if parent is not None:
@@ -263,7 +263,7 @@ class AutoCompleter:
             if node is not None:
                 item_type = self.token_triggers.get(node.type, '')
 
-        self.server.show_message_log(item_type)
+        self.server.window_log_message(types.LogMessageParams(message=item_type, type=types.MessageType.Log))
         # get completions of that item type
         completions = self.get_full_completions(item_type)
 

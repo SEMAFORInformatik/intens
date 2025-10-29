@@ -1,4 +1,4 @@
-pygls
+pygls==2.0.0
 lsprotocol
 PyYAML
 tree-sitter

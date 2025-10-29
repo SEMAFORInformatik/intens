@@ -8,7 +8,7 @@
 (add-to-list 'treesit-extra-load-path intens-lib-dir)
 (add-to-list 'treesit-extra-load-path intens-lib64-dir)
 
-(defun intens-ts-mode ()
+(define-derived-mode intens-ts-mode prog-mode ""
   "Major mode for editing INTENS with tree-sitter."
   (interactive)
   ; :syntax-table sgml-mode-syntax-table
@@ -17,7 +17,6 @@
   (when (treesit-ready-p 'intens)
     (treesit-parser-create 'intens)
     (intens-ts-setup))
-  (setq major-mode 'intens-ts-mode)
   (setq mode-name "INTENS-TS")
   (eglot-ensure)
 )

@@ -1290,8 +1290,16 @@ void GuiElement::lspWrite( std::ostream &ostr ){
 /* --------------------------------------------------------------------------- */
 
 GuiElement *GuiElement::findElementId(const std::string &id){
+  int num_id = -1;
+  try {
+    num_id = std::stoi(id);
+  } catch (const std::exception& e) {
+    // string wasn't a number
+  }
   GuiElementList::const_iterator el;
   for( el = s_elementList.begin(); el != s_elementList.end(); ++el ){
+    if (num_id != -1 && (*el)->getElementIntId() == num_id)
+      return (*el);
     if ((*el)->getElementId() == id)
       return (*el);
   }

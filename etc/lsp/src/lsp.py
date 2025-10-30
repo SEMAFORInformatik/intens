@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from pygls.server import LanguageServer
+from pygls.lsp.server import LanguageServer
 import os
 import urllib
 import urllib.request
@@ -79,8 +79,8 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     """
     global unimplemented_funcs, build_dirs, workspace_symbols
     unimplemented_funcs = []
-    server_configuration = await server.get_configuration_async(
-        types.WorkspaceConfigurationParams(
+    server_configuration = await server.workspace_configuration_async(
+        types.ConfigurationParams(
             items=[
                 types.ConfigurationItem(
                     scope_uri=folder.uri, section='intens'),
@@ -150,8 +150,8 @@ async def build_and_validate(folder: types.WorkspaceFolder):
             # so we prefix the root scope
             f = '[root]\n' + config_file.source
         except:
-            server.show_message('File ' + BUILD_CONFIG_FILE +
-                                ' does not exist in project', types.MessageType.Error)
+            server.window_show_message(types.ShowMessageParams(message='File ' + BUILD_CONFIG_FILE +
+                                       ' does not exist in project', type=types.MessageType.Error))
             return
     config.read_string(f)
 
@@ -163,8 +163,8 @@ async def build_and_validate(folder: types.WorkspaceFolder):
 
     cmake = shutil.which("cmake", path=sys_path)
     if not cmake:
-        server.show_message(
-            "lsp error: cmake command not found.", types.MessageType.Error)
+        server.window_show_message(types.ShowMessageParams(
+            "lsp error: cmake command not found.", types.MessageType.Error))
         return
 
     cmake_proc = subprocess.Popen(
@@ -179,10 +179,10 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     out, err = cmake_proc.communicate()
 
     if cmake_proc.returncode != 0:
-        server.show_message_log(out.decode('utf-8'), types.MessageType.Error)
-        server.show_message_log(err.decode('utf-8'), types.MessageType.Error)
-        server.show_message(
-            "Cmake error. Please check server logs", types.MessageType.Error)
+        server.window_log_message(types.LogMessageParams(message=out.decode('utf-8'), type=types.MessageType.Error))
+        server.window_log_message(types.LogMessageParams(message=err.decode('utf-8'), type=types.MessageType.Error))
+        server.window_show_message(types.ShowMessageParams(
+            message="Cmake error. Please check server logs", type=types.MessageType.Error))
         return
 
     # build the description file based on the target specified in .lspconfig
@@ -234,12 +234,13 @@ async def build_and_validate(folder: types.WorkspaceFolder):
             'locals': func_locals}
     else:
         # either make failed or intens failed to analyse the file due to a parser error
-        server.show_message_log(err, types.MessageType.Warning)
+        server.window_log_message(types.LogMessageParams(message=err, type=types.MessageType.Warning))
 
         # if the string "intens aborted" is not in the error output, the build failed elsewhere
         # and analysis of intens symbols or errors cannot be provided
-        if "intens aborted" not in err:
-            server.show_message("Build error: " + err, types.MessageType.Error)
+        if "intens aborted" not in err and ': at' not in err:
+            server.window_show_message(types.ShowMessageParams(
+                message="Build error: " + err, type=types.MessageType.Error))
             return
 
         # analyze synatx errors from output
@@ -263,7 +264,7 @@ async def build_and_validate(folder: types.WorkspaceFolder):
 
             # Line is one-indexed in the third-last part of the list
             line = int(parts[-3]) - 1
-            server.show_message_log(str(parts))
+            server.window_log_message(types.LogMessageParams(message=str(parts), type=types.MessageType.Log))
 
             # second last part contains the erroring symbol in quotes, extract it
             character = re.search('"(.*)"', parts[-2]).group(1)
@@ -272,21 +273,25 @@ async def build_and_validate(folder: types.WorkspaceFolder):
 
             # check where on the line the error happens, as we don't get that info in the message
             index = file.lines[line].find(character)
-            server.publish_diagnostics(f'{URL_ROOT}{error_file_path}', [types.Diagnostic(
-                range=types.Range(
-                    start=types.Position(
-                        line=line,
-                        character=index
+            server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
+                uri=f'{URL_ROOT}{error_file_path}',
+                diagnostics=[types.Diagnostic(
+                    range=types.Range(
+                        start=types.Position(
+                             line=line,
+                             character=index
+                             ),
+                        end=types.Position(
+                            line=line,
+                            character=index +
+                            len(character)
+                        )
                     ),
-                    end=types.Position(
-                        line=line,
-                        character=index + len(character)
-                    )
-                ),
-                severity=types.DiagnosticSeverity.Error,
-                # last part is the error message
-                message=parts[-1].strip()
-            )])
+                    severity=types.DiagnosticSeverity.Error,
+                    # last part is the error message
+                    message=parts[-1].strip()
+                )])
+            )
 
 
 @server.feature(types.TEXT_DOCUMENT_DID_SAVE)
@@ -336,7 +341,10 @@ def get_diagnostics(params):
         severity=types.DiagnosticSeverity.Warning,
         message=f'Unimplemented function {m[0]}.'
     ) for m in matches_lines]
-    server.publish_diagnostics(params.text_document.uri, diagnostics)
+    server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
+        uri=params.text_document.uri,
+        diagnostics=diagnostics
+    ))
 
 
 @server.feature(
@@ -347,9 +355,9 @@ def completion(params: types.CompletionParams):
 
     folder = get_folder_for_file(workspace_symbols.keys(), file.uri)
     if folder is None:
-        server.show_message(
-            NO_SYMBOLS_ERROR,
-            types.MessageType.Error)
+        server.window_show_message(types.ShowMessageParams(
+            message=NO_SYMBOLS_ERROR,
+            type=types.MessageType.Error))
         return
 
     return auto_completer.get_completion(
@@ -382,9 +390,9 @@ def go_to_definition(params: types.DefinitionParams):
         workspace_symbols.keys(), params.text_document.uri)
 
     if folder is None:
-        server.show_message(
-            NO_SYMBOLS_ERROR,
-            types.MessageType.Error)
+        server.window_show_message(types.ShowMessageParams(
+            message=NO_SYMBOLS_ERROR,
+            type=types.MessageType.Error))
         return
 
     workspace = workspace_symbols[folder]

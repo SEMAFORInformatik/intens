@@ -123,6 +123,7 @@ class Configurator {
   virtual bool setDictItemHelpText( const std::string &helpText ) = 0;
   virtual bool setDictItemButton() = 0;
   virtual bool setDictItemSlider() = 0;
+  virtual bool setDictItemProgress() = 0;
   virtual bool setDictItemToggle() = 0;
   virtual bool setDictItemRadio() = 0;
   virtual bool setDictItemCombobox() = 0;

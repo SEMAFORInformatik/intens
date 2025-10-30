@@ -1,6 +1,6 @@
 #! /bin/sh
 # build System Admin Manual (PDF)
-# using docker image hub.semafor.ch/semafor/intens/ebnf-latex
+# using docker image ghcr.io/semaforinformatik/intens/ebnf-latex
 #
 # Author Ronald Tanner
 #
@@ -10,7 +10,7 @@ _GID=$(id -g)
 DOCBUILD="docker run --rm --name docbuild-$$RANDOM \
 -v ${SOURCE_DIR}:/work \
 -u ${_UID}:${_GID} \
-hub.semafor.ch/semafor/intens/ebnf-latex"
+ghcr.io/semaforinformatik/intens/ebnf-latex"
 
 #echo $SOURCE_DIR
 ${DOCBUILD} bash -c "TEXMFVAR=/work/doc/system-admin/.texmf-var make"

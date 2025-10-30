@@ -95,6 +95,7 @@ class InterpreterConfigurator: public Configurator
   virtual bool setDictItemHelpText( const std::string &helpText );
   virtual bool setDictItemButton();
   virtual bool setDictItemSlider();
+  virtual bool setDictItemProgress();
   virtual bool setDictItemToggle();
   virtual bool setDictItemRadio();
   virtual bool setDictItemCombobox();

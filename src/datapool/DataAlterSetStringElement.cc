@@ -17,7 +17,7 @@ DataAlterSetStringElement::DataAlterSetStringElement()
 DataAlterSetStringElement::DataAlterSetStringElement( const std::string &value )
   : DataAlterSetElement( true )
   , m_value( value ){
-  BUG_DEBUG( "Constructor @" << this << ": Value " << value );
+  BUG_DEBUG( "Constructor @" << this << ": Value " << value.substr(0, 1000) );
 }
 
 DataAlterSetStringElement::~DataAlterSetStringElement(){
@@ -38,7 +38,7 @@ DataAlterSetStringElement::UpdateStatus DataAlterSetStringElement::setValue( Dat
   const DataUserAttr * attr = dictionary().getDataUserAttr();
   int rundung = attr != 0 ? attr->getRundung() : -1;
 
-  BUG_DEBUG( "Set String Value " << m_value );
+  BUG_DEBUG( "Set String Value " << m_value.substr(0, 1000) );
   if( el.setValue( m_value, rundung ) ){
     return ValueUpdated;
   }

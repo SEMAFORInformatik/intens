@@ -47,8 +47,8 @@ add_custom_command(
 
 if(WIN32)
   install(
-    PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/pybuild/lsp
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+    PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/pybuild/lsp.exe
+    DESTINATION bin
     RENAME intens-language-server.exe
   )
 else()

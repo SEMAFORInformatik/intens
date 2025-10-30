@@ -108,7 +108,7 @@ static XferDataItem::ParameterType parametertype;
 %token  tSORT tSORTORDER
 %token  tSET tINDEXED_SET tUNSET tOF
 %token  tEDITABLE tOPTIONAL tLOCKABLE tGLOBAL tOMIT_TTRAIL tOMIT_ACTIVATE
-%token  tCLOSE_BUTTON tBUTTON tTOGGLE tRADIO tCOMBOBOX tSLIDER
+%token  tCLOSE_BUTTON tBUTTON tTOGGLE tRADIO tCOMBOBOX tSLIDER tPROGRESS
 %token  tTAG
 %token  tEOLN
 %token  tOPERATOR
@@ -1254,6 +1254,8 @@ data_V2_item_option /* DOCUMENTATION:UNFOLD */
       { configurator -> setDictItemButton(); }
   | tSLIDER
       { configurator -> setDictItemSlider(); }
+  | tPROGRESS
+      { configurator -> setDictItemProgress(); }
   | tRANGE '(' real_value ',' real_value ')'
       {
         configurator -> setDictItemRange( $3, $5 );

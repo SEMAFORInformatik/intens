@@ -223,7 +223,7 @@ FILESTREAM
 END OPERATOR;
 
 FUNCTIONS
-  FUNC {DEADLY_SILENT} mqReply_exit_func {
+  FUNC {SILENT} mqReply_exit_func {
     STOP(mqReply_exit_timer);
     IF(mqReply_control.argument == "force" ||
        mqReply_control.argument == "FORCE"){
@@ -233,7 +233,7 @@ FUNCTIONS
     }
   };
 
-  FUNC {DEADLY_SILENT, PROTO, WEBAPI=mqReply_function_response.data} mqReply_function_func {
+  FUNC {SILENT, PROTO, WEBAPI=mqReply_function_response.data} mqReply_function_func {
     LOG(INFO, "mqReply_function_func called: ", mqReply_functionArgs);
     CLEAR(mqReply_response);
     mqReply_response.protoIndex = 1;
@@ -299,7 +299,7 @@ FUNCTIONS
     LOG(INFO, "mqReply_function_func DONE, response: ", mqReply_response);
   };
 
-  FUNC {DEADLY_SILENT, PROTO, WEBAPI=mqReply_function_response.data} mqReply_control_func {
+  FUNC {SILENT, PROTO, WEBAPI=mqReply_function_response.data} mqReply_control_func {
     CLEAR(mqReply_response);
     mqReply_response.protoIndex = 2;
     mqReply_response.protoReplyType = "WEBAPI";
@@ -461,7 +461,7 @@ FUNCTIONS
     LOG(INFO, "mqReply_control_func DONE, response: ", mqReply_response);
   };
 
-  FUNC {DEADLY_SILENT} mqReply_uimanager_func {
+  FUNC {SILENT} mqReply_uimanager_func {
     CLEAR(mqReply_response);
     mqReply_response.protoIndex = 1;
     mqReply_response.protoReplyType = "FORM";
@@ -482,7 +482,7 @@ FUNCTIONS
     LOG(DEBUG, "mqReply_uimanager_func DONE, response: ", mqReply_response);
   };
 
-  FUNC {DEADLY_SILENT, PROTO, WEBAPI=mqReply_function_response.data} mqReply_datapool_func {
+  FUNC {SILENT, PROTO, WEBAPI=mqReply_function_response.data} mqReply_datapool_func {
     CLEAR(mqReply_response);
     mqReply_response.protoIndex = 2;
     mqReply_response.protoReplyType = "WEBAPI";
@@ -522,7 +522,7 @@ FUNCTIONS
     LOG(DEBUG, "mqReply_datapool_func DONE, responseLength: ", LENGTH(mqReply_datapool_response));
   };
 
-  FUNC {DEADLY_SILENT} mqReply_info_func {
+  FUNC {SILENT} mqReply_info_func {
     LOG(INFO, "mqReply_info_func called: ", mqReply_datapool);
     CLEAR(mqReply_response);
     mqReply_response.protoIndex = 1;
@@ -616,14 +616,14 @@ FUNCTIONS
     mqReply_response.status = "OK";
   };
 
-  FUNC { DEADLY_SILENT} mqReply_dblogin_func {
+  FUNC { SILENT} mqReply_dblogin_func {
     IF (VALID(mqReply_control.argument[3])) {  // got restservice url
       mqReply_library.db_url = mqReply_control.argument[3];
     }
     RUN(mqReply_login_func);
   };
 
-  FUNC { DEADLY_SILENT} mqReply_getvalue_func {
+  FUNC { SILENT} mqReply_getvalue_func {
     CLEAR(mqReply_response);
     CLEAR(mqReply_datapool_response);
 
@@ -639,7 +639,7 @@ FUNCTIONS
     LOG(INFO, "mqReply_getvalue_func DONE, response: ", mqReply_datapool_response);
   };
 
-  FUNC { DEADLY_SILENT} mqReply_setvalue_func {
+  FUNC { SILENT} mqReply_setvalue_func {
     CLEAR(mqReply_response);
 
     IF (ASSIGN_CONSISTENCY(VAR(mqReply_datapool.varname), mqReply_datapool.data)) {
@@ -651,12 +651,12 @@ FUNCTIONS
     LOG(INFO, "mqReply_setvalue_func DONE, response: ", mqReply_response);
   };
 
-  FUNC { DEADLY_SILENT} mqReply_download_func {
+  FUNC { SILENT} mqReply_download_func {
     CLEAR(mqReply_response);
     OPEN(mqReply_file_load_fs, mqReply_file.filename);
   };
 
-  FUNC { DEADLY_SILENT} mqReply_upload_func {
+  FUNC { SILENT} mqReply_upload_func {
     CLEAR(mqReply_response);
     SAVE(mqReply_file_load_fs, mqReply_file.filename);
   };

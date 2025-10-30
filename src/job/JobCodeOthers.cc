@@ -191,9 +191,11 @@ JobElement::OpStatus JobCodeGuiElementMethod::execute( JobEngine *eng ){
     if (!elem) {
       elem = GuiElement::findElementId(s);
     }
+    if( !elem ) {
+      BUG_ERROR("GuiElement not found, named: " << s);
+      return op_FatalError;
+    }
   }
-
-  if( !elem ) return op_FatalError;
 
   // get method
   methodData->getStringValue(method);

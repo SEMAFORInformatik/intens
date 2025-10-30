@@ -3,15 +3,15 @@
 #define GUI_QT_PROGRESSBAR_H
 
 #include "gui/DialogProgressBar.h"
-#include "gui/qt/GuiQtElement.h"
+#include "gui/qt/GuiQtDataField.h"
 
-class GuiQtProgressBar : public GuiQtElement, public DialogProgressBar
+class GuiQtProgressBar : public GuiQtDataField, public DialogProgressBar
 {
   /*=============================================================================*/
   /* Constructor / Destructor                                                    */
   /*=============================================================================*/
 public:
-  GuiQtProgressBar( GuiElement *parent, const std::string &name );
+  GuiQtProgressBar( GuiElement *parent, std::string name="" );
   GuiQtProgressBar( const GuiQtProgressBar & );
   virtual ~GuiQtProgressBar();
 
@@ -42,6 +42,13 @@ public:
   /** Fragt nach der ExpandPolicy des QtElements fuer den Dialog.
    */
   virtual GuiElement::Orientation getDialogExpandPolicy();
+
+/*=============================================================================*/
+/* public member functions of ConfirmationListener                             */
+/*=============================================================================*/
+public:
+  virtual void confirmYesButtonPressed() {}
+  virtual void confirmNoButtonPressed() {}
 
 /*=============================================================================*/
 /* public DialogProgressBar functions                                          */

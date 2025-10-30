@@ -9,14 +9,14 @@ INIT_LOGGER();
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
-GuiQtProgressBar::GuiQtProgressBar(GuiElement *parent, const std::string &name)
-  : GuiQtElement( parent, name )
+GuiQtProgressBar::GuiQtProgressBar(GuiElement *parent, std::string name)
+  : GuiQtDataField( parent, name )
   , DialogProgressBar(name)
   , m_progressBar(0)
 {}
 
 GuiQtProgressBar::GuiQtProgressBar(const GuiQtProgressBar &progressbar)
-  : GuiQtElement(progressbar),
+  : GuiQtDataField(progressbar),
     DialogProgressBar(progressbar)
   , m_progressBar(0)
 {
@@ -35,6 +35,7 @@ void GuiQtProgressBar::create(){
   std::string css= "QProgressBar::chunk {background-color: #5aafe8; width: 20px; margin: 0.5px;}";
   css +="QProgressBar {border: 2px solid grey;border-radius: 5px;text-align: center;}";
   m_progressBar->setStyleSheet( QString::fromStdString(css) );
+  m_param->DataItem()->setDimensionIndizes();
 }
 
 /* --------------------------------------------------------------------------- */
@@ -52,23 +53,32 @@ QWidget* GuiQtProgressBar::myWidget(){
 void GuiQtProgressBar::update( UpdateReason reason ){
   if(m_progressBar == 0 ) return;
 
+  updateWidgetProperty();
+  bool changed = getAttributes();
   switch( reason ) {
   case reason_FieldInput:
   case reason_Process:
     if( !isDataItemUpdated( GuiManager::Instance().LastGuiUpdate() ) ){
-      return;
+      ///      return;
     }
     break;
   case reason_Cycle:
   case reason_Cancel:
   case reason_Always:
   default:
-    ResetLastWebUpdated();  // reason_Always for webtens
+    setUpdated();
+    changed = true;  // to make sure the color is set
     break;
   }
-  //  m_progressBar->setVisible(getMainPercentRate() > 0);
-  m_progressBar->setValue(getMainPercentRate());
-  QtDialogProgressBar::Instance().update(reason);
+  if(!isUpdated() && !changed){
+    return;
+  }
+
+  double value = 0.0;
+  if( m_param->DataItem()->getValue( value ) ){
+    m_progressBar->setValue(value);
+  }
+  else m_progressBar->setValue(value);
 }
 
 
@@ -77,7 +87,8 @@ void GuiQtProgressBar::update( UpdateReason reason ){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtProgressBar::manage(){
-  myWidget()->setVisible( getVisibleFlag() );  // maybe function hide this GuiElement
+  if (myWidget())
+    myWidget()->setVisible( getVisibleFlag() );  // maybe function hide this GuiElement
 }
 
 /* --------------------------------------------------------------------------- */

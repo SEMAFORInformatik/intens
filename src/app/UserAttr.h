@@ -36,6 +36,7 @@ public:
     ,gui_kind_label
     ,gui_kind_combobox
     ,gui_kind_radiobutton
+    ,gui_kind_progress
   };
   enum STRINGtype {
      string_kind_none = 0
@@ -109,6 +110,7 @@ public:
   void setNoColorBit();
   void SetButton();
   void SetSlider();
+  void SetProgress();
   void SetRange( double min, double max ){
     m_min = min;
     m_max = max;

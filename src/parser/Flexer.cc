@@ -564,6 +564,7 @@ void Flexer::initRwTabMap(){
   m_rwTabMap.insert(   "SIZE"            ,tSIZE        );
   m_rwTabMap.insert(   "SKIP"            ,tSKIP        );
   m_rwTabMap.insert(   "SLIDER"          ,tSLIDER      );
+  m_rwTabMap.insert(   "PROGRESS"        ,tPROGRESS    );
   m_rwTabMap.insert(   "SOCKET"          ,tSOCKET      );
   m_rwTabMap.insert(   "SORT"            ,tSORT        );
   m_rwTabMap.insert(   "SORTORDER"       ,tSORTORDER   );

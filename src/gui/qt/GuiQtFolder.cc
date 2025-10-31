@@ -547,12 +547,18 @@ void GuiQtFolder::hidePage( int page ){
     int tab_index = getTabIndex( page );
     folder->removeTab( tab_index );
     BUG_DEBUG("EXIT: page " << page << " with index " << tab_index << " removed");
-    //    folder->setTabEnabled( page, false ); // eine alternative!!!
+    //    folder->setTabEnabled( page, false ); // alternative!!!
+    if (m_activePage == page){
+      m_activePage = -1;
+    }
   } else {
     QStackedWidget* tabWiget = static_cast<MyQStackedWidget*>(m_folder);
-    int cur_idx = tabWiget->currentIndex();
-    if (tabWiget && page == cur_idx) {
-      tabWiget->setCurrentIndex(page || tabWiget->count() == 1 ? 0 : 1);
+    if (tabWiget){
+      int cur_idx = tabWiget->currentIndex();
+      if (page == cur_idx) {
+	tabWiget->setCurrentIndex(tabWiget->count() == 1 ? 0 : page ? page-1 : page+1);
+      }
+      m_activePage = -tabWiget->currentIndex();
     }
   }
   m_disabled_CB = false;
@@ -862,13 +868,7 @@ void GuiQtFolder::manage(){
     if( typeid( *m_folder ) == typeid( MyQTabWidget ) ){
       QTabWidget *folder = static_cast<QTabWidget*>( m_folder );
       validateTab( m_activePage );
-#if ( __GNUC__ < 5 )
-      GuiNamedElementList::iterator iter = m_elements.begin();
-      int i = 0;
-      while(i++ < m_activePage) ++iter;
-#else
       GuiNamedElementList::iterator iter = std::next(m_elements.begin(), m_activePage);
-#endif
       if ((*iter).second)
         folder->setCurrentWidget((*iter).second->getQtElement()->myWidget());
     }
@@ -970,13 +970,7 @@ void GuiQtFolder::currentChangedCB( int index ){
 
   // an diese Stelle ein GuiUpdate machen
   int currentPageIndex  = index;
-#if ( __GNUC__ < 5 )
-    GuiNamedElementList::iterator iter = m_elements.begin();
-    int i = 0;
-    while(i++ < currentPageIndex) ++iter;
-#else
   GuiNamedElementList::iterator iter = std::next(m_elements.begin(),currentPageIndex);
-#endif
 
   QSize hs = (*iter).second->getQtElement()->myWidget()->sizeHint();
   if ((*iter).second->LastGuiUpdated() == 0)

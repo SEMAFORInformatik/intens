@@ -551,7 +551,7 @@ void GuiQtFieldgroup::map(){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtFieldgroup::update( UpdateReason reason ){
-  if (!myWidget() || !myWidget()->isVisible()) return; // interessiert uns noch nicht
+  if (!myWidget()) return;
   BUG_PARA(BugGui,"GuiQtFieldgroup::update",reason );
   updateWidgetProperty();
   GuiElementList::iterator it;

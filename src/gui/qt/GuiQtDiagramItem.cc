@@ -368,8 +368,9 @@ void GuiQtDiagramConnection::updateConnectLines()
       dX +=  m_endAnchor.x() - m_startAnchor.x();
       dY +=  m_endAnchor.y() - m_startAnchor.y();
     }
+    double xFac = 0.5;
 
-    if (abs(dX) < abs(dY)) {  // VERT
+    if (xFac*abs(dX) < abs(dY)) {  // VERT
       qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : 0.5 * sBB.width();
       qreal edx = isValid(m_endAnchor) ? m_endAnchor.x() : 0.5 * eBB.width();
 
@@ -400,7 +401,7 @@ void GuiQtDiagramConnection::updateConnectLines()
     QPointF pm1(line().p1()), pm2(line().p2());
     QPointF pm0(line().p1()), pm3(line().p2());
     bool step1(false);
-    if (abs(dX) < abs(dY)) {  // VERT
+    if (xFac*abs(dX) < abs(dY)) {  // VERT
       if (connectType == HalfStep) {
         pm1.setY(line().p2().y());
       } else if (connectType == OneStep) {

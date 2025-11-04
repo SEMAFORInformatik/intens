@@ -689,6 +689,18 @@ bool GuiNavigator::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdat
     std::vector<ConnectionAttr> attr;
     std::vector<ConnectionAttr>::iterator attrIt;
     getDiagramConnections(vec0, vec1, attr);
+    // debug info
+    for (auto a: attr){
+      BUG_ERROR("lineWidth: " << a.lineWidth
+                << ", lineColor: " << a.lineColor
+                << ", lineStyle: " << a.lineStyle
+                << ", xposSize: " << a.xpos.size()
+                << ", xpos: " << a.xpos[0] << ", " << a.ypos[1]
+                << ", ypos: " << a.ypos[0] << ", " << a.ypos[1]
+                << ", xposAnchorSize:: " << a.anchor_xpos.size()
+                << ", yposAnchorSize: " << a.anchor_ypos.size()
+                << ", connectType: " << a.connectType);
+    }
     getDiagramSelectItems(select_items);
 
     // connect
@@ -696,6 +708,7 @@ bool GuiNavigator::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdat
       auto connection = element->add_connections();
       connection->set_a(*it);
       connection->set_b(*it1);
+      BUG_DEBUG("connection: " << *it << " => " << *it1);
     }
     // connect Attr
     for(attrIt = attr.begin(); attrIt != attr.end(); ++attrIt) {
@@ -703,8 +716,7 @@ bool GuiNavigator::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdat
       attr->set_line_width((*attrIt).lineWidth);
       attr->set_line_style((*attrIt).lineStyle);
       attr->set_line_color((*attrIt).lineColor);
-      if ((*attrIt).xpos.empty() || (*attrIt).ypos.empty() ||
-          (*attrIt).anchor_xpos.empty() || (*attrIt).anchor_ypos.empty())
+      if ((*attrIt).xpos.empty() || (*attrIt).ypos.empty())
         continue;
       std::vector<double>::iterator itx, ity;
       for(itx = (*attrIt).xpos.begin(), ity = (*attrIt).ypos.begin();

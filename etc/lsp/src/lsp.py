@@ -220,7 +220,7 @@ async def build_and_validate(folder: types.WorkspaceFolder):
         # parse the intens xml output and store the variable/function info
         root = ET.fromstring(out)
         variables = [a for a in root.findall(
-            XML_ITEM_QUERY) if 'internal' not in a.attrib and not a.attrib['name'].startswith('__')]
+            XML_ITEM_QUERY) if 'internal' not in a.attrib and not a.attrib['name'].startswith('__') and not '@' in a.attrib['name']]
         func_locals = {a.attrib['name']: a for a in root.findall(
             XML_ITEM_QUERY) if a.attrib['name'].startswith(LOCALS_PREFIX)}
 

@@ -29,4 +29,4 @@ The language server assumes this to be `${workspaceFolder}/.venv` by default. Sh
 
 ## Screenshot
 
-![A picture showing the extension providing syntax highlighting and autocomplete](images/example.gif)
+![A picture showing the extension providing syntax highlighting and autocomplete](etc/vscode/images/example.gif)

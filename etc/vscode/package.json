@@ -2,7 +2,7 @@
   "name": "vscode-intens",
   "displayName": "INTENS tools",
   "description": "Tooling for use with INTENS",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "SemaforInformatikundEnergieAG",
   "repository": "https://github.com/SEMAFORInformatik/Intens",
   "license": "Apache-2.0",

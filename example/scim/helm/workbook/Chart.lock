@@ -1,6 +1,6 @@
 dependencies:
 - name: workbook-lib
   repository: https://charts.semafor.ch
-  version: 0.4.0
-digest: sha256:5847ca8f4428c5200b967d110ebe17e71dcc669464741d426ff51993fdb856e3
-generated: "2025-10-24T10:46:22.257615299+02:00"
+  version: 0.4.1
+digest: sha256:ea31296f8503a9c3b6e4ee7e376dfc9ec9c347c36baae7e93054a7959aec961c
+generated: "2025-11-06T10:59:51.774426141+01:00"

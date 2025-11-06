@@ -8,8 +8,8 @@ fullnameOverride: ""
 
 datasource:
   url: jdbc:h2:file:/tmp/db/data
-  username:
-  password:
+  username: user
+  password: pass
 
 metrics:
   enabled: false

@@ -90,7 +90,27 @@ GuiElement::ButtonType QtDialogConfirmation::showDialog( GuiElement *element
 			QtMessageBox::getParentWidget(element)
 			);
     result =  mb.exec();
-    result = QMessageBox::Yes; // TODO
+
+    // QMessageBox::ButtonRole => GuiElement::ButtonType
+    switch(result) {
+    case QMessageBox::Yes:
+      return GuiElement::button_Yes;
+    case QMessageBox::Save:
+      return GuiElement::button_Save;
+    case QMessageBox::Discard:
+      return GuiElement::button_Discard;
+    case QMessageBox::Apply:
+      return GuiElement::button_Apply;
+    case QMessageBox::Open:
+      return GuiElement::button_Open;
+    case QMessageBox::Cancel:
+      return GuiElement::button_Cancel;
+    case QMessageBox::Abort:
+      return GuiElement::button_Abort;
+    default:
+      std::cerr << "Unknown Button pushed: " << result << std::endl;
+      return GuiElement::button_Cancel;
+    }
   } else {
     QtMessageBox mb( QtMultiFontString::getQString(mytitle),
                      QtMultiFontString::getQString(message),
@@ -175,55 +195,38 @@ GuiElement::ButtonType QtDialogConfirmation::showDialog( GuiElement *element
 
   loopcontrol->goAway();
 
-  if( listener ){
-    if (pushed == okButton || pushed == yesButton || pushed == saveButton ||
-        pushed == applyButton ||pushed == openButton)
+  if( listener){
+    if (pushed &&
+        (pushed == okButton || pushed == yesButton || pushed == saveButton ||
+         pushed == applyButton ||pushed == openButton))
       listener->confirmYesButtonPressed();
     else
-      if (pushed == noButton)
+      if (pushed && pushed == noButton)
         listener->confirmNoButtonPressed();
       else
         listener->confirmCancelButtonPressed();
   }
 
-  // return
-  if (pushed == okButton)
-    return GuiElement::button_Ok;
-  if (pushed == yesButton)
-    return GuiElement::button_Yes;
-  if (pushed == saveButton)
-    return GuiElement::button_Save;
-  if (pushed == noButton)
-    return GuiElement::button_No;
-  if (pushed == applyButton)
-    return GuiElement::button_Apply;
-  if (pushed == openButton)
-    return GuiElement::button_Open;
-  if (pushed == cancelButton)
-    return GuiElement::button_Cancel;
-  if (pushed == abortButton)
-    return GuiElement::button_Abort;
-  if (pushed == discardButton)
-    return GuiElement::button_Discard;
-
-  // old handling, TODO remove it
-  switch(result) {
-  case QMessageBox::Yes:
-    return GuiElement::button_Yes;
-  case QMessageBox::Save:
-    return GuiElement::button_Save;
-  case QMessageBox::Discard:
-    return GuiElement::button_Discard;
-  case QMessageBox::Apply:
-    return GuiElement::button_Apply;
-  case QMessageBox::Open:
-    return GuiElement::button_Open;
-  case QMessageBox::Cancel:
-    return GuiElement::button_Cancel;
-  case QMessageBox::Abort:
-    return GuiElement::button_Abort;
-  default:
-    std::cerr << "Unknown Button pushed: " << result << std::endl;
-    return GuiElement::button_Cancel;
+  // clickedButton => GuiElement::ButtonType
+  if (pushed){
+    if (pushed == okButton)
+      return GuiElement::button_Ok;
+    if (pushed == yesButton)
+      return GuiElement::button_Yes;
+    if (pushed == saveButton)
+      return GuiElement::button_Save;
+    if (pushed == noButton)
+      return GuiElement::button_No;
+    if (pushed == applyButton)
+      return GuiElement::button_Apply;
+    if (pushed == openButton)
+      return GuiElement::button_Open;
+    if (pushed == cancelButton)
+      return GuiElement::button_Cancel;
+    if (pushed == abortButton)
+      return GuiElement::button_Abort;
+    if (pushed == discardButton)
+      return GuiElement::button_Discard;
   }
+  return GuiElement::button_Cancel;
 }

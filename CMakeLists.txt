@@ -289,14 +289,14 @@ add_custom_target(
   docker-image
   COMMENT "build docker image"
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND "TAG_NAME=${PACKAGE_VERSION}" "docker" "buildx" "bake"
+  COMMAND "GITHUB_REF_NAME=${PACKAGE_VERSION}" "docker" "buildx" "bake"
   )
 
 add_custom_target(
   docker-dev-image
   COMMENT "build dev docker image"
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND "TAG_NAME=${PACKAGE_VERSION}" "docker" "buildx" "bake" "dev"
+  COMMAND "GITHUB_REF_NAME=${PACKAGE_VERSION}" "docker" "buildx" "bake" "dev"
   )
 
 add_custom_target(

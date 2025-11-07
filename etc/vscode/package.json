@@ -2,7 +2,7 @@
   "name": "vscode-intens",
   "displayName": "INTENS tools",
   "description": "Tooling for use with INTENS",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "publisher": "SemaforInformatikundEnergieAG",
   "repository": "https://github.com/SEMAFORInformatik/Intens",
   "license": "Apache-2.0",
@@ -63,6 +63,11 @@
           "type": "string",
           "markdownDescription": "The python virtual environment required to build current workspace."
         }
+      }
+    },
+    "configurationDefaults": {
+      "files.associations": {
+        ".intensproj": "ini"
       }
     },
     "languages": [

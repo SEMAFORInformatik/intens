@@ -8,7 +8,7 @@
 #
 path=$(dirname "$(realpath $0)")
 
-DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:treesitterunified
+DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:2025-10
 TARGET_DIR=/work/build-windows-shared-x64
 if [ "$1" = static ]; then
   echo "Static"

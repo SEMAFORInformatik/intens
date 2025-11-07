@@ -351,6 +351,10 @@ private:
   static std::string m_stylesheetApply;
   static std::string m_prevSettingFileVersion;
 
+  static const std::string STYLESHEET_APPLY_INIT;
+  static const std::string STYLESHEET_APPLY_SHOWN;
+  static const std::string STYLESHEET_APPLY_BOTH;
+
 private:
   QWidget *m_waitingWidget;
   bool     m_waitingModalDialog;

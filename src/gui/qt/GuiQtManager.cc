@@ -534,8 +534,12 @@ const std::string& GuiQtManager::stylesheetName() { return m_stylesheetName; }
 const int& GuiQtManager::navItemBorderWidth() { return m_navItemBorderWidth; }
 const int& GuiQtManager::listItemHeight() { return m_listItemHeight; }
 
+const std::string GuiQtManager::STYLESHEET_APPLY_INIT = "init";
+const std::string GuiQtManager::STYLESHEET_APPLY_SHOWN = "shown";
+const std::string GuiQtManager::STYLESHEET_APPLY_BOTH = "both";
+
 std::string GuiQtManager::m_stylesheetName;
-std::string GuiQtManager::m_stylesheetApply("init");
+std::string GuiQtManager::m_stylesheetApply(GuiQtManager::STYLESHEET_APPLY_INIT);  // default
 std::string GuiQtManager::m_prevSettingFileVersion;
 
 /* --------------------------------------------------------------------------- */
@@ -781,9 +785,9 @@ void GuiQtManager::timerEvent( QTimerEvent *event ) {
     killTimer( m_updateStylesheet );
     m_updateStylesheet = -1;
     BUG_INFO("timerEvent,  m_stylesheetApply: " << m_stylesheetApply);
-    if (m_stylesheetApply == "both"){
+    if (m_stylesheetApply == STYLESHEET_APPLY_BOTH){
       GuiQtManager::Instance().myWidget()->setStyleSheet(qApp->styleSheet());  // only mainwindow
-    } else if (m_stylesheetApply == "shown"){
+    } else if (m_stylesheetApply == STYLESHEET_APPLY_SHOWN){
       BUG_INFO("timerEvent,  m_stylesheetName: " << m_stylesheetName);
       GuiQtManager::Instance().setStylesheetName( m_stylesheetName );
     }
@@ -971,7 +975,6 @@ void GuiQtManager::writeSettings() {
   // write Settings
   m_settings->setValue("Intens.VersionString", QString::fromStdString(AppData::Instance().VersionString()));
   m_settings->setValue("Intens/Stylesheet", QString::fromStdString(m_stylesheetName));
-  m_settings->setValue("Intens/StylesheetApply", QString::fromStdString(m_stylesheetApply));  // [init, shown, both]
 
   // write main Settings
   GuiElementList elist;
@@ -1568,7 +1571,15 @@ bool GuiQtManager::loadResourceFile( const std::string &resfilename ){
   m_stylesheetName = m_settings->value( "Intens/Stylesheet", "default").toString().remove(".qss").toStdString();
   // StylesheetApply
   m_stylesheetApply = m_settings->value( "Intens/StylesheetApply", QString::fromStdString(m_stylesheetApply)).toString().toStdString();
-  if (m_stylesheetApply == "init" || m_stylesheetApply == "both")
+  //   validate the value from the resources
+  if (!(m_stylesheetApply == GuiQtManager::STYLESHEET_APPLY_INIT ||
+        m_stylesheetApply == GuiQtManager::STYLESHEET_APPLY_SHOWN ||
+        m_stylesheetApply == GuiQtManager::STYLESHEET_APPLY_BOTH)
+      ){
+    // unexpected value, use default instead
+    m_stylesheetApply = GuiQtManager::STYLESHEET_APPLY_INIT;
+  }
+  if (m_stylesheetApply == STYLESHEET_APPLY_INIT || m_stylesheetApply == STYLESHEET_APPLY_BOTH)
     GuiQtManager::Instance().setStylesheetName( m_stylesheetName );
   BUG_INFO("read qss styleseheet : " << m_stylesheetName << ", styleseheetApply: " << m_stylesheetApply);
 

@@ -70,6 +70,11 @@ public:
    */
   void timerEvent ( QTimerEvent * event );
 
+  inline void setFileName( std::string name ) { m_fileName = name; }
+  inline void setLineNo( int lineno ) { m_lineNo = lineno; }
+  inline std::string Filename() { return m_fileName; }
+  inline int LineNo() { return m_lineNo; }
+
   Q_OBJECT
 private slots:
   void slot_error(const std::string& messageShort, const std::string& messageLong);
@@ -86,6 +91,8 @@ private:
   MessageQueueRequestThread* m_requestThread;
   int           m_defaultTimeout;
   std::string   m_errMsg;
+  int           m_lineNo;
+  std::string   m_fileName;
 
 };
 

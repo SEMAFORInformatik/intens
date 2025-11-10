@@ -34,19 +34,20 @@ public:
   MessageQueueRequest* createRequest(const std::string &name,
 				     const std::string& host,
                                      int port,
-				     int defaultTimeout);
+				     int defaultTimeout, int lineNo = 0, std::string filename = "");
   MessageQueueSubscriber* createSubscriber(const std::string &name,
 					   const std::string& host,
-					   int port);
+					   int port, int lineNo = 0, std::string filename = "");
   MessageQueueReply* createReply(const std::string &name,
 				 const std::string& host,
                                  int port,
                                  const std::vector<Stream*>& default_in_streams,
                                  const std::vector<Stream*>& default_out_streams,
-                                 JobFunction *default_func);
+                                 JobFunction *default_func,
+                                 int lineNo = 0, std::string filename = "");
   MessageQueuePublisher* createPublisher(const std::string &name,
 					 const std::string& host,
-                                         int port);
+                               int port, int lineNo = 0, std::string filename = "");
   static void parseIncludeFile();
   static void initialise();
 
@@ -56,6 +57,7 @@ public:
 
   void addHeader( std::string header, std::vector<Stream*>& in,
                   std::vector<Stream*>& out, std::vector<Plugin*> plugins, JobFunction* func);
+  void lspWrite( std::ostream &ostr );
 
   /** terminate all request threads */
   static void terminateAllRequestThreads();

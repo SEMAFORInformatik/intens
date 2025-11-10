@@ -5987,6 +5987,8 @@ bool InterpreterConfigurator::addPlot2dMenuEntry( const std::string &entry ){
 // - newMsgQueue
 //======================================================================//
 bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
+  int lineNo;
+  std::string filename;
   if( !IdManager::Instance().registerId( id, IdManager::id_MessageQueue ) ){
     ParserError( compose(_("Identifier '%1' is already declared."), id) );
   }
@@ -6025,6 +6027,14 @@ bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
     }
   }
 
+  if (AppData::Instance().LspWorker()) {
+    filename = App::Instance().getFlexer()->getCurrentFilename();
+    if (filename.ends_with('"')) {
+      filename.pop_back();
+    }
+    lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
+  }
+
   // create message queue
   int p = m_rep->transferData.portRequest;
 
@@ -6037,7 +6047,7 @@ bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
   //
   if (m_rep->transferData.type == MessageQueue::type_Request) {
     MessageQueue::Instance().createRequest(id, m_rep->transferData.host,
-                                           m_rep->transferData.portRequest, m_rep->transferData.timeout);
+                                           m_rep->transferData.portRequest, m_rep->transferData.timeout, lineNo, filename);
   }
   //
   // Subscriber
@@ -6046,7 +6056,7 @@ bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
     MessageQueueSubscriber *subscriber;
     subscriber = MessageQueue::Instance().createSubscriber(id,
 							   m_rep->transferData.host,
-							   m_rep->transferData.port);
+							   m_rep->transferData.port, lineNo, filename);
     // neuer SocketServer mit Header(n)
     if( m_rep->msgQueueHeader.size()){
       while (m_rep->msgQueueHeader.readBack()) {
@@ -6069,7 +6079,7 @@ bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
                                                  m_rep->transferData.portRequest,
                                                  m_rep->transferData.in_streamVector,
                                                  m_rep->transferData.out_streamVector,
-                                                 m_rep->transferData.func);
+                                                 m_rep->transferData.func, lineNo, filename);
     // neuer SocketServer mit Header(n)
     if( m_rep->msgQueueHeader.size()){
       while (m_rep->msgQueueHeader.readBack()) {
@@ -6088,7 +6098,7 @@ bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
   //
   else if (m_rep->transferData.type == MessageQueue::type_Publisher) {
     MessageQueue::Instance().createPublisher(id, m_rep->transferData.host,
-                                             m_rep->transferData.port);
+                                             m_rep->transferData.port, lineNo, filename);
   }
   m_rep->transferData.clear();
   return true;

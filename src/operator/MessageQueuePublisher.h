@@ -50,6 +50,12 @@ public:
   virtual void confirmYesButtonPressed();
   virtual void confirmNoButtonPressed();
 
+  inline void setFileName( std::string name ) { m_fileName = name; }
+  inline void setLineNo( int lineno ) { m_lineNo = lineno; }
+  inline std::string Filename() { return m_fileName; }
+  inline int LineNo() { return m_lineNo; }
+
+
   /* void processSubscribe(MessageQueue::HeaderData* subsType, const std::vector<std::string>& dataList ); */
 
   Q_OBJECT
@@ -91,6 +97,8 @@ private:
 private:
   std::string   m_host;
   int           m_port;
+  int           m_lineNo;
+  std::string   m_fileName;
   zmq::socket_t* m_publisher;
   Timer                 *m_timer;
   TimerTask             *m_task;

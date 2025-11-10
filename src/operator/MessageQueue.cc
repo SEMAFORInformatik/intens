@@ -50,7 +50,7 @@ MessageQueue &MessageQueue::Instance(){
 /* createRequest --                                                            */
 /* --------------------------------------------------------------------------- */
 
-MessageQueueRequest* MessageQueue::createRequest(const std::string &name, const std::string& host, int port, int defaultTimeout) {
+MessageQueueRequest* MessageQueue::createRequest(const std::string &name, const std::string& host, int port, int defaultTimeout, int lineNo, std::string filename) {
   MessageQueueRequest* request = new MessageQueueRequest(host, port, defaultTimeout);
   // add to static request map
   if (port > 0) {
@@ -58,6 +58,8 @@ MessageQueueRequest* MessageQueue::createRequest(const std::string &name, const 
     if( iter ==  s_requestMap.end() )
       s_requestMap.insert( RequestMap::value_type( name, request ) );
   }
+  request->setLineNo(lineNo);
+  request->setFileName(filename);
   return request;
 }
 
@@ -67,12 +69,14 @@ MessageQueueRequest* MessageQueue::createRequest(const std::string &name, const 
 
 MessageQueueSubscriber* MessageQueue::createSubscriber(const std::string &name,
 						       const std::string& host,
-						       int port) {
+						       int port, int lineNo, std::string filename) {
   MessageQueueSubscriber* subscriber = new MessageQueueSubscriber(name, host, port);
   SubscriberMap::iterator iter =  s_subscriberMap.find( name );
   if( iter ==  s_subscriberMap.end() ){
     s_subscriberMap.insert( SubscriberMap::value_type( name, subscriber ) );
   }
+  subscriber->setLineNo(lineNo);
+  subscriber->setFileName(filename);
 
   return subscriber;
 }
@@ -86,11 +90,13 @@ MessageQueueReply* MessageQueue::createReply( const std::string &name,
                                               int port,
                                               const std::vector<Stream*>& default_in_streams,
                                               const std::vector<Stream*>& default_out_streams,
-                                              JobFunction *default_func ) {
+                                              JobFunction *default_func, int lineNo, std::string filename) {
   MessageQueueReply* reply = new MessageQueueReply(name, host, port,
                                                    default_in_streams,
                                                    default_out_streams,
                                                    default_func);
+  reply->setLineNo(lineNo);
+  reply->setFileName(filename);
   return reply;
 }
 
@@ -100,7 +106,7 @@ MessageQueueReply* MessageQueue::createReply( const std::string &name,
 
 MessageQueuePublisher* MessageQueue::createPublisher( const std::string &name,
                                                       const std::string& host,
-                                                      int port ) {
+                                                      int port, int lineNo, std::string filename ) {
   MessageQueuePublisher* publisher;
   publisher =  new MessageQueuePublisher(name, host, port);
   // add to static publisher map
@@ -109,6 +115,8 @@ MessageQueuePublisher* MessageQueue::createPublisher( const std::string &name,
     if( iter ==  s_publisherMap.end() )
       s_publisherMap.insert( PublisherMap::value_type( name, publisher ) );
   }
+  publisher->setLineNo(lineNo);
+  publisher->setFileName(filename);
   return publisher;
 }
 
@@ -269,6 +277,26 @@ void MessageQueue::addHeader( std::string header,
     m_headerData[header]->m_outVectorListener = out;
     m_headerData[header]->m_pluginVector      = plugins;
     m_headerData[header]->m_function          = func;
+  }
+}
+
+void MessageQueue::lspWrite( std::ostream &ostr ){
+  #define SOCKET_SERIALIZE_FUNC \
+    ostr << "<ITEM name=\"" << socket.first << "\""; \
+    ostr << " mq=\"1\""; \
+    ostr << " file=\"" << socket.second->Filename() << "\""; \
+    ostr << " line=\"" << socket.second->LineNo() << "\""; \
+    ostr << ">" << std::endl; \
+    ostr << "</ITEM>" << std::endl;
+
+  for (auto socket : s_subscriberMap) {
+    SOCKET_SERIALIZE_FUNC 
+  }
+  for (auto socket : s_publisherMap) {
+    SOCKET_SERIALIZE_FUNC 
+  }
+  for (auto socket : s_requestMap) {
+    SOCKET_SERIALIZE_FUNC 
   }
 }
 

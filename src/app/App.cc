@@ -1,6 +1,7 @@
 
 #include "gui/GuiElement.h"
 #include "gui/GuiFolderGroup.h"
+#include "operator/MessageQueue.h"
 #ifdef __MINGW32__
 #include <winsock2.h>
 #endif
@@ -646,6 +647,7 @@ int App::run(){
     GuiFolderGroup::lspWrite( std::cout );
     DataPoolIntens::Instance().lspWrite( std::cout );
     StreamManager::Instance().lspWrite( std::cout );
+    MessageQueue::Instance().lspWrite( std::cout );
     JobManager::Instance().serializeFunctions( std::cout, AppData::serialize_XML);
     std::cout << "</DICT>" << std::endl;
     return 0;

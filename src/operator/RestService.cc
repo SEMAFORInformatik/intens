@@ -265,7 +265,8 @@ void RestService::showDialogUserPassword(){
   setUsernameList();
   clearAuthHeader();
   std::string& connect = m_base_list.empty() ? m_base : m_base_list;
-  std::string& username = m_username_list.empty() ? m_username : m_username_list;
+  auto settingsUser = GuiQtManager::Settings()->value("Authentification/user", "").toString().toStdString();
+  std::string& username = m_username_list.empty() ? settingsUser.empty() ? m_username : settingsUser : m_username_list;
   BUG_INFO("-- showDialogUserPassword --");
 
   GuiFactory::Instance()->showDialogUserPassword( connect,

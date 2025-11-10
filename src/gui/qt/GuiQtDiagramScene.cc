@@ -28,12 +28,8 @@ GuiQtDiagramScene::GuiQtDiagramScene(const QRectF& rect, QObject *parent)
 void GuiQtDiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   BUG( BugGui, "GuiQtDiagramScene::mousePressEvent");
 
-#if QT_VERSION < 0x050000
-  QGraphicsItem* pItemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y());
-#else
   QTransform transform;
   QGraphicsItem* pItemUnderMouse = itemAt(event->scenePos(), transform);
-#endif
   if (!pItemUnderMouse)
     views ().first()->setDragMode(QGraphicsView::RubberBandDrag);
   else
@@ -41,12 +37,8 @@ void GuiQtDiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
   if (event->modifiers() == Qt::ControlModifier &&
       event->button() == Qt::LeftButton) {
-#if QT_VERSION < 0x050000
-    QGraphicsItem* pItemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y());
-#else
     QTransform transform;
     QGraphicsItem* pItemUnderMouse = itemAt(event->scenePos(), transform);
-#endif
 
     if (pItemUnderMouse &&
 	pItemUnderMouse->isEnabled() &&

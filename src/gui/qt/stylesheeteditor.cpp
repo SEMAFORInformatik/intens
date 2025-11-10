@@ -86,11 +86,9 @@ void StyleSheetEditor::on_styleTextEdit_textChanged()
 
 void StyleSheetEditor::on_applyButton_clicked()
 {
-#if  QT_VERSION >= 0x040200
     qApp->setStyleSheet(ui.styleTextEdit->toPlainText());
     ui.applyButton->setEnabled(false);
     GuiManager::Instance().update( GuiElement::reason_Always );
-#endif
 }
 
 void StyleSheetEditor::loadStyleSheet(const QString &sheetName)
@@ -98,7 +96,6 @@ void StyleSheetEditor::loadStyleSheet(const QString &sheetName)
   std::string sname = GuiManager::Instance().setStylesheetName( sheetName.toStdString() );
   if (sname.size() == 0) return;
   
-#if  QT_VERSION >= 0x040200
   QFile file( QString::fromStdString(sname) );
   if (file.exists()) {
     file.open(QFile::ReadOnly);
@@ -109,5 +106,4 @@ void StyleSheetEditor::loadStyleSheet(const QString &sheetName)
     file.close();
   }
   GuiManager::Instance().update( GuiElement::reason_Always );
- #endif
 }

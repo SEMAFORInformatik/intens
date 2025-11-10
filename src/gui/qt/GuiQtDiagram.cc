@@ -1062,11 +1062,7 @@ GuiQtDiagram::ScaleListener::ScaleListener( GuiQtDiagram *diagram, double fac )
 /* --------------------------------------------------------------------------- */
 
 void GuiQtDiagram::ScaleListener::ButtonPressed(){
-#if QT_VERSION < 0x050000
-  qreal old_scale =  sqrt(m_diagram->matrix().det()) ;
-#else
   qreal old_scale =  sqrt(m_diagram->transform().determinant()) ;
-#endif
   if (m_max < (old_scale *  m_fac))
     return;
   if (m_min > (old_scale *  m_fac))
@@ -1084,11 +1080,7 @@ void GuiQtDiagram::ScaleListener::ButtonPressed(){
 
   // refresh scene rect
   ir.setTopLeft(QPointF(0,0));
-#if QT_VERSION < 0x050000
-  qreal new_scale =  sqrt(m_diagram->matrix().det()) ;
-#else
   qreal new_scale =  sqrt(m_diagram->transform().determinant()) ;
-#endif
   if (new_scale < 1.) {
     m_diagram->setSceneRect(0,0, delta+ir.width()/new_scale, delta+ir.height()/new_scale);
   } else {
@@ -1104,11 +1096,7 @@ void GuiQtDiagram::ScaleListener::ButtonPressed(){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtDiagram::ScaleListener::validateState(){
-#if QT_VERSION < 0x050000
-  qreal old_scale =  sqrt( m_diagram->matrix().det()  );
-#else
   qreal old_scale =  sqrt( m_diagram->transform().determinant()  );
-#endif
 
   if (m_max < (old_scale *  m_fac) ||
       m_min > (old_scale *  m_fac) ) {

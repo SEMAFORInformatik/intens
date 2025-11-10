@@ -96,7 +96,7 @@ void MyQPrintDialog::init() {
   QFont font = QPrintDialog::font();
   setFont( QtMultiFontString::getQFont( "@print@", font ) );
 
-#if QT_VERSION >= 0x040300 && defined Q_OS_UNIX
+#if defined Q_OS_UNIX
   QGroupBox *grBox = findChild<QGroupBox *>();
   QGridLayout* grLayout = dynamic_cast<QGridLayout* >(grBox->layout());
   QBoxLayout* boxLayout = dynamic_cast<QBoxLayout* >(grBox->layout());
@@ -110,11 +110,7 @@ void MyQPrintDialog::init() {
   m_expBtn= new QToolButton();
   m_expBtn->setText( _("Export") );
   m_expBtn->setToolTip( _("Export") );
-#if QT_VERSION < 0x050000
-  m_expBtn->setIcon(QIcon(print_xpm));
-#else
   m_expBtn->setIcon(QIcon(QString::fromStdString((const char*) print_xpm)));
-#endif
   m_expBtn->setToolButtonStyle(Qt::ToolButtonTextOnly);
   connect(m_expBtn, SIGNAL(clicked(bool)), SLOT(slot_exportFile(bool)));
   m_expLabel = new QLabel( _("Graphic Format:") );
@@ -220,7 +216,7 @@ void MyQPrintDialog::slot_preview(bool state) {
 // ******************************************************
 
 void MyQPrintDialog::setFileFormatList(HardCopyListener* hcl) {
-#if QT_VERSION >= 0x040300 && defined Q_OS_UNIX
+#if defined Q_OS_UNIX
   if (!m_combo)  return;
   m_combo->clear();
   // # 229 Postscript format is not supported anymore

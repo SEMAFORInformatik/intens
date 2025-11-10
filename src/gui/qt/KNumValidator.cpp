@@ -430,11 +430,6 @@ QValidator::State KDoubleValidator::validate( QString & input, int & p ) const {
       return Invalid;
     }
 
-#if QT_VERSION < 0x050000
-    if ( !d.isEmpty() && d != "." )
-      for ( int idx = s.indexOf( d ) ; idx >= 0 ; idx = s.indexOf( d, idx + 1 ) )
-	s.replace( idx, d.length(), ".");
-#endif
 
     if ( !n.isEmpty() && n != "-" )
       for ( int idx = s.indexOf( n ) ; idx >= 0 ; idx = s.indexOf( n, idx + 1 ) )

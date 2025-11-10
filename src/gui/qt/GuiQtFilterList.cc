@@ -135,9 +135,7 @@ void GuiQtFilterList::create() {
   m_listWidget->setEditTriggers( QAbstractItemView::NoEditTriggers );
   m_listWidget->setSelectionMode( QTableView::SingleSelection );
   m_listWidget->setSelectionBehavior ( QAbstractItemView::SelectRows );
-#if  QT_VERSION >= 0x040200
   m_listWidget->setSortingEnabled ( true );
-#endif
   m_listWidget->setAlternatingRowColors ( true );
 
   vboxlayout->addWidget( m_listWidget, 1000);

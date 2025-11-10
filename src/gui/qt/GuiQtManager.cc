@@ -164,11 +164,7 @@ bool appendEvent(QObject * receiver, QEvent * event ){
   if (m_receiver && m_receiver != receiver) {
     return false;
   }
-#if QT_VERSION < 0x040700
-  int timeDiff = m_eventGrabTime.time().msecsTo ( QDateTime::currentDateTime().time() );
-#else
   qint64 timeDiff = m_eventGrabTime.msecsTo ( QDateTime::currentDateTime() );
-#endif
   if (timeDiff > 100) { // more than 0.1 seconds since last grabEvent => ignore
     // std::cout << "  This Event is too late!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
     return false;

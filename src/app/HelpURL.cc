@@ -2,9 +2,6 @@
 #include <qobject.h>
 #include <qfile.h>
 #include <qurl.h>
-#if QT_VERSION < 0x050000
-#include <qhttp.h>
-#endif
 #include "gui/qt/HelpWindow.h"
 
 #include "app/HelpURL.h"

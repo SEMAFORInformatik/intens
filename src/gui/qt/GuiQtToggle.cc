@@ -380,7 +380,6 @@ void GuiQtToggle::MyQCheckBox::leaveEvent ( QEvent *e )
 // dies ist eine Kopie der orginal Methode mit der Ausnahme, dass
 // bei der drawControl Methode als Argument ein PushButton ist
 void GuiQtToggle::MyQCheckBox::paintEvent ( QPaintEvent *e ) {
-#if QT_VERSION   >= 0x040300 // erst ab 4.4
   if (m_element->Type() == GuiElement::type_Toggle)
     QCheckBox::paintEvent(e);
   else {
@@ -390,7 +389,4 @@ void GuiQtToggle::MyQCheckBox::paintEvent ( QPaintEvent *e ) {
     p.drawControl(QStyle::CE_RadioButton, opt);
     // Originalaufruf   p.drawControl(QStyle::CE_CheckBox, opt);
   }
-#else
-    QCheckBox::paintEvent(e);
-#endif
 }

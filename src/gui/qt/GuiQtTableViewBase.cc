@@ -482,14 +482,6 @@ void SpreadSheetDelegate::setModelData(QWidget *editor, QAbstractItemModel *mode
 }
 
 QString SpreadSheetDelegate::displayText(const QVariant &value, const QLocale &locale) const {
-#if QT_VERSION < 0x050000
-  if (m_list) {
-    if (value.userType() == QVariant::Double  && m_countDecimalPlace > 0) {
-      // Sorting der Liste auch bei decimalPoint gleich Komma möglich
-      return locale.toString(value.toDouble(), 'f', m_countDecimalPlace);
-    }
-  }
-#endif
   return QStyledItemDelegate::displayText( value, locale);
 }
 

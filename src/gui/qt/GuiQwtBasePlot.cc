@@ -71,15 +71,9 @@ void GuiQwtBasePlot::showSpectrogram(bool on)
    } else {
      QPrinter printer;
      printer.setPageOrientation(QPageLayout::Landscape);
- #if QT_VERSION < 0x040000
-     printer.setColorMode(QPrinter::Color);
-     printer.setOutputFileName("/tmp/spectrogram.ps");
-     if (printer.setup())
- #else
      printer.setOutputFileName("/tmp/spectrogram.pdf");
      QPrintDialog dialog(&printer);
      if ( dialog.exec() )
- #endif
      {
 #if QWT_VERSION >= 0x060000
        QPainter painter;

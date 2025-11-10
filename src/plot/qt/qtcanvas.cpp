@@ -1001,11 +1001,7 @@ void QtCanvas::setAllChanged()
 */
 void QtCanvas::setChanged(const QRect& area)
 {
-#if QT_VERSION < 0x050000
-    QRect thearea = area.intersect(QRect(0, 0, width(), height()));
-#else
     QRect thearea = area.intersected(QRect(0, 0, width(), height()));
-#endif
 
     int mx = (thearea.x()+thearea.width()+chunksize)/chunksize;
     int my = (thearea.y()+thearea.height()+chunksize)/chunksize;
@@ -2003,11 +1999,7 @@ bool qt_testCollision(const QtCanvasSprite* s1, const QtCanvasSprite* s2)
 
     QRect s1area = s1->boundingRectAdvanced();
 
-#if QT_VERSION < 0x050000
-    QRect ourarea = s1area.intersect(cyourarea);
-#else
     QRect ourarea = s1area.intersected(cyourarea);
-#endif
 
     if (ourarea.isEmpty())
         return false;
@@ -3592,11 +3584,7 @@ public:
     {
         QRect pixelbounds = pa.boundingRect();
         int cs = canvas->chunkSize();
-#if QT_VERSION < 0x050000
-        QRect canvasbounds = pixelbounds.intersect(canvas->rect());
-#else
         QRect canvasbounds = pixelbounds.intersected(canvas->rect());
-#endif
         bounds.setLeft(canvasbounds.left()/cs);
         bounds.setRight(canvasbounds.right()/cs);
         bounds.setTop(canvasbounds.top()/cs);

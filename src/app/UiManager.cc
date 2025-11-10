@@ -169,13 +169,6 @@ void UImanager::createFileMenu( GuiMenubar *menubar ){
   m_file_menu->attach( m_print_menu->getElement() );
   m_print_menu->setAlways();
 
-#if defined HAVE_QT && QT_VERSION < 0x040300 && !defined Q_OS_UNIX
-  // preview menu Button of File menu
-  m_preview_menu = factory->createPulldownMenu( m_file_menu->getElement(), "Preview" );
-  m_preview_menu->setLabel( _("&Preview") );
-  m_file_menu->attach( m_preview_menu->getElement() );
-  m_preview_menu->setAlways();
-#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1171,9 +1164,6 @@ void UImanager::createApplication(){
   createOpenMenuButtons();
   createSaveMenuButtons();
   createPrintMenuButtons();
-#if defined HAVE_QT && QT_VERSION < 0x040300 && !defined Q_OS_UNIX
-  createPreviewMenuButtons();
-#endif
   if (!AppData::Instance().HeadlessWebMode() || getenv("WEBTENS_SHOW_FORM_MENU") != NULL) {
     GuiManager::Instance().createFormMenu( m_form_menu );
   }

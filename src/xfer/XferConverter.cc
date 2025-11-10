@@ -74,9 +74,6 @@ void RealConverter::resetDecimalPoint() {
 
 char RealConverter::defaultDecimalPoint() {
 #ifdef HAVE_QT
-#if QT_VERSION < 0x050000
-  return  QApplication::keyboardInputLocale().decimalPoint().toAscii();
-#else
   if (AppData::Instance().HeadlessWebMode()) {
 #if QT_VERSION >= 0x060000
     return QLocale().decimalPoint().toLatin1().back();
@@ -90,7 +87,6 @@ char RealConverter::defaultDecimalPoint() {
     return QGuiApplication::inputMethod()->locale().system().decimalPoint().toLatin1();
 #endif
   }
-#endif
 #endif
   return  '.';
 }

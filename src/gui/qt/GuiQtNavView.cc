@@ -108,11 +108,7 @@ void GuiQtNavigator::NavigatorView::startDrag(Qt::DropActions supportedActions) 
   mimeData->setText( QString::fromStdString( ch_semafor_intens::JsonUtils::value2string(dragJson, true) ) );
   BUG_MSG( "dragTextJson: " <<  ch_semafor_intens::JsonUtils::value2string(dragJson, true) );
   drag->setMimeData(mimeData);
-#if  QT_VERSION < 0x040300
-  drag->start(Qt::CopyAction);
-#else
   drag->exec(Qt::CopyAction);
-#endif
 }
 
 bool GuiQtNavigator::NavigatorView::event ( QEvent * event ) {

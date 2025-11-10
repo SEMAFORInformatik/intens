@@ -11,11 +11,7 @@
 #include <QString>
 #include <QTimeZone>
 
-#if QT_VERSION < 0x050000
-#define ISO_DATE_FORMAT Qt::ISODate
-#else
 #define ISO_DATE_FORMAT Qt::ISODateWithMs
-#endif
 
 #endif
 
@@ -167,14 +163,6 @@ std::string convertFromISODate( const std::string& iso,
       QString localDateTimeFormat = localDateFormat + " " + localTimeFormat;
       BUG_DEBUG("--> DateTimeFormat = " << localDateTimeFormat.toStdString() );
 
-#if QT_VERSION < 0x050000
-      // qt4 does not convert timezones (correctly)
-      // the following code helps qt4 to convert utc to localtime
-      if(QString::fromStdString(iso).endsWith("+0000")) {
-        BUG_DEBUG("utc to localtime");
-        datetime.setTimeSpec(QTimeZone(Qt::UTC));
-      }
-#endif
       std::string rslt = datetime.toLocalTime().toString(localDateTimeFormat).toStdString();
       BUG_DEBUG("Result: DateTime [" << rslt << "]");
       return rslt;

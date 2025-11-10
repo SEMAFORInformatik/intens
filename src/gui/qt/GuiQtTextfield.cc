@@ -326,11 +326,9 @@ void GuiQtTextfield::create() {
   	       this, SLOT(dateChanged()) );
        connect( static_cast<MyQDateEdit*>(m_dateEdit)->lineEdit(),
   	       SIGNAL(selectionChanged()), this, SLOT(dateSelectionChanged()));
-#if QT_VERSION >= 0x040400 // erst ab 4.4
        connect( static_cast<MyQDateEdit*>(m_dateEdit)->calendarWidget(),
 		SIGNAL(clicked(const QDate&)), this, SLOT(dateSelected(const QDate&)));
        static_cast<MyQDateEdit*>(m_dateEdit)->calendarWidget()->setSelectedDate( QDate::currentDate() );
-#endif
       break;
     case UserAttr::string_kind_time:
       connect( m_dateEdit, SIGNAL(editingFinished()),
@@ -1230,9 +1228,7 @@ void GuiQtTextfield::dateChanged() {
     static_cast<MyQDateEdit*>(m_dateEdit)->setEditMode();
   m_textChanged = true;
   if (m_dateEdit->hasFocus()
-#if QT_VERSION >= 0x040400 // erst ab 4.4
       || static_cast<MyQDateEdit*>(m_dateEdit)->calendarWidget()->isVisible()
-#endif
       ) {
     return;
   }

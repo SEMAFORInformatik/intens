@@ -167,9 +167,7 @@ void GuiQtList::create() {
   m_tablewidget->setSelectionMode(
 	  (isMultipleSelection() ? QTableView::ExtendedSelection : QTableView::SingleSelection) );
   m_tablewidget->setSelectionBehavior ( QAbstractItemView::SelectRows );
-#if  QT_VERSION >= 0x040200
   m_tablewidget->setSortingEnabled ( sortEnabled() );
-#endif
   if (!GuiQtManager::Instance().isWindowsInDarkMode()) {
     m_tablewidget->setAlternatingRowColors ( true );
   }
@@ -763,7 +761,6 @@ void GuiQtList::rowUnselect(const QModelIndex& index) {
 /* --------------------------------------------------------------------------- */
 int GuiQtList::sortOrder(){
 
-#if  QT_VERSION >= 0x040200
   if( m_tablewidget && m_tablewidget->isSortingEnabled() && m_tablewidget->horizontalHeader()) {
      int column = m_tablewidget->horizontalHeader()->sortIndicatorSection();
      m_sort_column = (m_tablewidget->horizontalHeader()->sortIndicatorOrder() == Qt::AscendingOrder) ? column : -column;
@@ -775,7 +772,6 @@ int GuiQtList::sortOrder(){
      }
 
   }
-#endif
   return m_sort_column;
 }
 

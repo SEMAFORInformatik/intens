@@ -9,10 +9,6 @@
 // #else
 #include <QtWebEngineWidgets/QWebEngineView>
 // #endif
-#elif QT_VERSION   >= 0x040600 // erst ab 4.4
-#include <QWebView>
-#else
-#include "gui/qt/HelpWindow.h"
 #endif
 #endif
 
@@ -69,7 +65,6 @@ void HelpHTML::helpBrowserCmd( std::string &cmd, const std::string &keyName, boo
 void HelpHTML::help( const std::string &keyName, const int chapterNo){
 
 #if QT_WEBENGINE
-#if QT_VERSION   >= 0x040600 // erst ab 4.4
 #if QT_VERSION < 0x050900 || defined(Q_OS_WIN) || defined(Q_OS_CYGWIN)
   QWebView* view = new QWebView();
 #else
@@ -77,14 +72,5 @@ void HelpHTML::help( const std::string &keyName, const int chapterNo){
 #endif
   view->load(QUrl(QString::fromStdString(m_FileName)));
   view->show();
-#elif defined HAVE_QT
-  std::string parameter = m_FileName.c_str();
-  if (keyName != "") parameter = parameter + '#' + keyName;
-
-  HelpWindow  *_helpwindow = new HelpWindow(parameter.c_str(), ".");
-  _helpwindow->show();
-#else
-// TODO
-#endif
 #endif
 }

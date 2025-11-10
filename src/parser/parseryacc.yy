@@ -4892,6 +4892,9 @@ ui_folder_button_option /* DOCUMENTATION:UNFOLD */
   | tHIDDEN '=' string_constant {
       configurator -> setFolderTabHidden( (*$3) );
   }
+  | tHIDDEN '=' tINT_CONSTANT {
+      configurator -> setFolderTabHidden( std::to_string($3) );
+  }
   ;
 
 opt_ui_folder_group /* DOCUMENTATION:UNFOLD */

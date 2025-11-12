@@ -1,0 +1,24 @@
+name: build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      -
+        name: Create build image
+        run: ./docker/create-linux-build-image.sh
+
+      -
+        name: Build
+        run: docker run -v $(pwd):/work --rm ghcr.io/semaforinformatik/intens/linux-build:latest
+              sh -c "cmake -B build-linux-x64 . -DCMAKE_EXPORT_COMPILE_COMMANDS=on -DUSE_LSP=ON &&
+              cmake --build build-linux-x64 -j9 && cd build-linux-x64 && PATH=/work/build-linux-x64/src:\$PATH QT_QPA_PLATFORM=offscreen ctest -V --output-junit testRes.xml"
+

@@ -12,7 +12,6 @@ DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:2025-10
 TARGET_DIR=/work/build-windows-shared-x64
 if [ "$1" = static ]; then
   echo "Static"
-  DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:2025-09
   TARGET_DIR=/work/build-windows-static-x64
   PLATFORM_EXT="-static"
 fi

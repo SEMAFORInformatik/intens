@@ -2,7 +2,7 @@
   "name": "vscode-intens",
   "displayName": "INTENS tools",
   "description": "Tooling for use with INTENS",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "SemaforInformatikundEnergieAG",
   "repository": "https://github.com/SEMAFORInformatik/Intens",
   "license": "Apache-2.0",
@@ -79,6 +79,7 @@
         ],
         "extensions": [
           ".des",
+          ".des.in",
           ".inc"
         ],
         "configuration": "./language-configuration.json"

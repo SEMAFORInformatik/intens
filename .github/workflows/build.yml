@@ -22,3 +22,10 @@ jobs:
               sh -c "cmake -B build-linux-x64 . -DCMAKE_EXPORT_COMPILE_COMMANDS=on -DUSE_LSP=ON &&
               cmake --build build-linux-x64 -j9 && cd build-linux-x64 && PATH=/work/build-linux-x64/src:\$PATH QT_QPA_PLATFORM=offscreen ctest -V --output-junit testRes.xml"
 
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        if: ${{ !cancelled() }}       # run this step even if previous step failed
+        with:
+          name: CTest Tests            # Name of the check run which will be created
+          path: build-linux-x64/testRes.xml    # Path to test results
+          reporter: jest-junit        # Format of test results

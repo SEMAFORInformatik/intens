@@ -1272,8 +1272,8 @@ void DataPoolIntens::lspWrite( std::ostream &ostr ){
 
     ostr << "<ITEM name=\"" << name << "\"";
     ostr << " set=\"1\"";
-    ostr << " file=\"" << set->Filename() << "\"";
-    ostr << " line=\"" << set->Lineno() << "\"";
+    ostr << " file=\"" << set->LSPFilename() << "\"";
+    ostr << " line=\"" << set->LSPLineno() << "\"";
     ostr << ">" << std::endl;
     ostr << "</ITEM>" << std::endl;
   }
@@ -1283,8 +1283,8 @@ void DataPoolIntens::lspWrite( std::ostream &ostr ){
 
     ostr << "<ITEM name=\"" << name << "\"";
     ostr << " colorset=\"1\"";
-    ostr << " file=\"" << set->Filename() << "\"";
-    ostr << " line=\"" << set->Lineno() << "\"";
+    ostr << " file=\"" << set->LSPFilename() << "\"";
+    ostr << " line=\"" << set->LSPLineno() << "\"";
     ostr << ">" << std::endl;
     ostr << "</ITEM>" << std::endl;
   }

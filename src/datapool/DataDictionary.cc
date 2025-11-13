@@ -1118,8 +1118,8 @@ DataDictionary *DataDictionary::writeDD( std::ostream &ostr, int i ){
 
   ostr << " idnr=\"" << GetItemIndex() << "\"";
   ostr << " type=\"" << getDataType() << "\"";
-  ostr << " line=\"" << Lineno() << "\"";
-  auto filename = Filename();
+  ostr << " line=\"" << LSPLineno() << "\"";
+  auto filename = LSPFilename();
   std::replace(filename.begin(), filename.end(), '"', '\'');
   ostr << " file=\"" << filename << "\"";
   if( ItemIsGlobal() ){

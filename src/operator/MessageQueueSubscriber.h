@@ -5,6 +5,7 @@
 #include <string>
 #include <QtCore/QObject>
 
+#include "app/LSPItem.h"
 #include "job/JobStarter.h"
 #include "job/JobFunction.h"
 #include "operator/MessageQueue.h"
@@ -14,9 +15,9 @@ class JobFunction;
 class MessageQueueRequestThread;
 
 #ifdef HAVE_QT
-class MessageQueueSubscriber : public QObject
+class MessageQueueSubscriber : public QObject, public LSPItem
 #else
-class MessageQueueSubscriber
+class MessageQueueSubscriber : public LSPItem
 #endif
 {
 public:
@@ -57,11 +58,6 @@ public:
   /** timer event for GuiUpdates
    */
   void timerEvent ( QTimerEvent * event );
-  inline void setFileName( std::string name ) { m_fileName = name; }
-  inline void setLineNo( int lineno ) { m_lineNo = lineno; }
-  inline std::string Filename() { return m_fileName; }
-  inline int LineNo() { return m_lineNo; }
-
 
   Q_OBJECT
 private slots:
@@ -109,8 +105,6 @@ private:
   std::string   m_host;
   int           m_port;
   int           m_timerId;
-  int           m_lineNo;
-  std::string   m_fileName;
 
   static std::vector<SubscriberData*> s_procSubsVec;
   static bool s_triggerStarted;

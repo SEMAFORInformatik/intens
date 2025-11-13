@@ -2,6 +2,7 @@
 #if !defined(GUI_FOLDERGROUP_INCLUDED_H)
 #define GUI_FOLDERGROUP_INCLUDED_H
 
+#include "app/LSPItem.h"
 #include "job/JobStarter.h"
 #include "job/JobFunction.h"
 #include "gui/GuiElement.h"
@@ -10,7 +11,7 @@
 class GuiFolder;
 class JobFunction;
 
-class GuiFolderGroup
+class GuiFolderGroup : public LSPItem
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -51,8 +52,6 @@ public:
   void startFunction();
   void endFunction( bool error );
   void serializeXML(std::ostream &os, bool recursive = false);
-  int Lineno() const { return m_lineno; };
-  std::string Filename() const { return m_filename; };
 
 /*=============================================================================*/
 /* public static member functions                                              */
@@ -108,8 +107,6 @@ private:
   int               m_running_key;
 
   static GuiFolderGroupList    m_foldergrouplist;
-  std::string       m_filename;
-  int               m_lineno;
 };
 
 #endif

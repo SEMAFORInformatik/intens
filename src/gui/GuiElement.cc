@@ -87,11 +87,11 @@ GuiElement::GuiElement( GuiElement *parent, const std::string &name )
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_filename = filename;
+    setLSPFilename(filename);
     // m_rep->dictitem->setFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
     // m_rep->dictitem->setLineno(lineNo);
-    m_lineno = lineNo;
+    setLSPLineno(lineNo);
   }
 }
 
@@ -1278,8 +1278,8 @@ void GuiElement::lspWrite( std::ostream &ostr ){
     auto ele = pair.second;
     ostr << "<ITEM name=\"" << name << "\"";
     ostr << " uiele=\"1\"";
-    ostr << " file=\"" << ele->Filename() << "\"";
-    ostr << " line=\"" << ele->Lineno() << "\"";
+    ostr << " file=\"" << ele->LSPFilename() << "\"";
+    ostr << " line=\"" << ele->LSPLineno() << "\"";
     ostr << ">" << std::endl;
     ostr << "</ITEM>" << std::endl;
   }

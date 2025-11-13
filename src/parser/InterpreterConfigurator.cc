@@ -999,9 +999,9 @@ bool InterpreterConfigurator::newDataSet( const std::string &id ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->dataset->setFilename(filename);
+    m_rep->dataset->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->dataset->setLineno(lineNo);
+    m_rep->dataset->setLSPLineno(lineNo);
   }
   return true;
 }
@@ -1069,9 +1069,9 @@ bool InterpreterConfigurator::newColorSet( const std::string &id ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->colorset->setFilename(filename);
+    m_rep->colorset->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->colorset->setLineno(lineNo);
+    m_rep->colorset->setLSPLineno(lineNo);
   }
   return true;
 }
@@ -1338,9 +1338,9 @@ bool InterpreterConfigurator::addDataVariable( const std::string &id ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->dictitem->setFilename(filename);
+    m_rep->dictitem->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->dictitem->setLineno(lineNo);
+    m_rep->dictitem->setLSPLineno(lineNo);
   }
   return true;
 }
@@ -1670,9 +1670,9 @@ bool InterpreterConfigurator::addStructureVariable( const std::string &id ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->dictitem->setFilename(filename);
+    m_rep->dictitem->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->dictitem->setLineno(lineNo);
+    m_rep->dictitem->setLSPLineno(lineNo);
   }
   return true;
 }
@@ -1704,9 +1704,9 @@ bool InterpreterConfigurator::addStructureDefinition( const std::string &id ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->dictitem->setFilename(filename);
+    m_rep->dictitem->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->dictitem->setLineno(lineNo);
+    m_rep->dictitem->setLSPLineno(lineNo);
   }
 
   return true;
@@ -1826,9 +1826,9 @@ Stream * InterpreterConfigurator::newStream( const std::string &id ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->stream->setDefinitionFilename(filename);
+    m_rep->stream->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->stream->setLineno(lineNo);
+    m_rep->stream->setLSPLineno(lineNo);
   }
   return m_rep -> stream;
 }
@@ -7344,9 +7344,9 @@ bool InterpreterConfigurator::newFunction( const std::string &id, bool registerI
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->function->setFilename(filename);
+    m_rep->function->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->function->setLineno(lineNo);
+    m_rep->function->setLSPLineno(lineNo);
   }
   if( setNamespace ){
     DataPoolIntens::Instance().setNamespace( id );
@@ -7647,9 +7647,9 @@ bool InterpreterConfigurator::newTask( const std::string &id, bool registerId ){
     if (filename.ends_with('"')) {
       filename.pop_back();
     }
-    m_rep->task->setFilename(filename);
+    m_rep->task->setLSPFilename(filename);
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    m_rep->task->setLineno(lineNo);
+    m_rep->task->setLSPLineno(lineNo);
   }
   return true;
 }

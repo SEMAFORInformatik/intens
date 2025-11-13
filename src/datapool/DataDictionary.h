@@ -8,6 +8,7 @@
 #include <complex>
 #include <assert.h>
 
+#include "app/LSPItem.h"
 #include "datapool/DataGlobals.h"
 #include "datapool/DataDebugger.h"
 
@@ -19,7 +20,7 @@ class DataUserAttr;
 /** Der Baum aus DataDictionary-Objekten ergibt die logische Struktur des DataPool.
     @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
  */
-class DataDictionary : public DataGlobals
+class DataDictionary : public DataGlobals, public LSPItem
 {
 /*=============================================================================*/
 /* Datendefinitionen                                                           */
@@ -320,8 +321,6 @@ public:
       \param yes true => das Attribut wird gesetzt
    */
   inline void setItemGlobal( bool yes=true ) { m_ItemIsGlobal = yes; }
-  inline void setFilename( std::string name ) { m_Filename = name; }
-  inline void setLineno( int lineno ) { m_Lineno = lineno; }
 
   /** Die Funktion zeigt an, ob die Variable als 'global' definiert worden ist.
       (siehe auch Funktion setItemGlobal() )
@@ -365,9 +364,6 @@ public:
       \return true => für die Variable wird kein TTrail-Protokoll geführt.
    */
   inline bool ItemIsWithoutTTrail() const { return m_ItemWithoutTTrail; }
-
-  inline std::string Filename() const { return m_Filename; }
-  inline int Lineno() const { return m_Lineno; }
 
   /** Die Funktion setzt den Pointer des Parent-Objekts.
       \param dict Pointer auf das Parent-DataDictionary-Objekt.
@@ -687,14 +683,12 @@ private:
   typedef std::vector<int> DimensionSizeList;
 
   std:: string      m_Name;               // Name des Items
-  std:: string      m_Filename;           // Name des Items
   DataUserAttr    * m_pAttributes;        // User-Attribute
   DataDictionary  * m_pNext;              // Pointer auf naechstes Element
   DataDictionary  * m_pStruct;            // Pointer auf structur-Member
   DataDictionary  * m_pParentNode;        // Parent Node
   DataType          m_DatenType;          // Typ der Daten
   int               m_ItemIndex;          // Index dieses Items
-  int               m_Lineno;          // Index dieses Items
   bool              m_ItemIsGlobal;       // Das Item ist nicht den Cycleswitches unterworfen
   bool              m_ItemIsInternal;     // Das item wird nur für interne Zwecke verwendet
   bool              m_ItemIsProtected;    // wird bei Clear-Cycle nicht angerührt

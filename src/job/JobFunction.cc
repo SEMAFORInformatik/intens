@@ -1043,8 +1043,8 @@ GuiButtonListener *JobFunction::createButtonListener(){
 
 void JobFunction::serializeXML(std::ostream &os, bool recursive){
   os << "<function name=\"" << Name() << "\" ";
-  os << " line=\"" << Lineno() << "\"";
-  auto filename = Filename();
+  os << " line=\"" << LSPLineno() << "\"";
+  auto filename = LSPFilename();
   std::replace(filename.begin(), filename.end(), '"', '\'');
   os << " file=\"" << filename << "\"";
   os << ">" << std::endl;

@@ -291,8 +291,8 @@ void StreamManager::lspWrite( std::ostream &ostr ){
 
     ostr << "<ITEM name=\"" << name << "\"";
     ostr << " stream=\"1\"";
-    ostr << " file=\"" << stream->DefinitionFilename() << "\"";
-    ostr << " line=\"" << stream->Lineno() << "\"";
+    ostr << " file=\"" << stream->LSPFilename() << "\"";
+    ostr << " line=\"" << stream->LSPLineno() << "\"";
     ostr << ">" << std::endl;
     ostr << "</ITEM>" << std::endl;
   }

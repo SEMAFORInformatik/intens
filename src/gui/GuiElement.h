@@ -13,6 +13,7 @@
 #include "GuiIndexListener.h"
 #include "GuiSerializableXml.h"
 #include "app/AppData.h"
+#include "app/LSPItem.h"
 #include "datapool/TransactionOwner.h"
 #include "utils/JsonUtils.h"
 
@@ -65,6 +66,7 @@ typedef long    TransactionNumber;    // Transactions of Datapool
 
 class GuiElement : public GuiIndexListener
                  , public TransactionOwner
+                 , public LSPItem
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -670,9 +672,6 @@ public:
     m_hidden = true;
   };
 
-  int Lineno() const { return m_lineno; };
-  std::string Filename() const { return m_filename; };
-
   /** get visible flag, runtime use */
   bool getHiddenFlag() { return m_hidden; };
 
@@ -753,9 +752,7 @@ private:
   std::string       m_stylesheet;
   std::string       m_name;
   std::string       m_classname;
-  std::string       m_filename;
   int               m_id;
-  int               m_lineno;
   bool              m_enabled;
   bool              m_drag_disabled;
 

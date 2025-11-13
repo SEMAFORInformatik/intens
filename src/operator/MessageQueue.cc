@@ -58,8 +58,8 @@ MessageQueueRequest* MessageQueue::createRequest(const std::string &name, const 
     if( iter ==  s_requestMap.end() )
       s_requestMap.insert( RequestMap::value_type( name, request ) );
   }
-  request->setLineNo(lineNo);
-  request->setFileName(filename);
+  request->setLSPLineno(lineNo);
+  request->setLSPFilename(filename);
   return request;
 }
 
@@ -75,8 +75,8 @@ MessageQueueSubscriber* MessageQueue::createSubscriber(const std::string &name,
   if( iter ==  s_subscriberMap.end() ){
     s_subscriberMap.insert( SubscriberMap::value_type( name, subscriber ) );
   }
-  subscriber->setLineNo(lineNo);
-  subscriber->setFileName(filename);
+  subscriber->setLSPLineno(lineNo);
+  subscriber->setLSPFilename(filename);
 
   return subscriber;
 }
@@ -95,8 +95,8 @@ MessageQueueReply* MessageQueue::createReply( const std::string &name,
                                                    default_in_streams,
                                                    default_out_streams,
                                                    default_func);
-  reply->setLineNo(lineNo);
-  reply->setFileName(filename);
+  reply->setLSPLineno(lineNo);
+  reply->setLSPFilename(filename);
   return reply;
 }
 
@@ -115,8 +115,8 @@ MessageQueuePublisher* MessageQueue::createPublisher( const std::string &name,
     if( iter ==  s_publisherMap.end() )
       s_publisherMap.insert( PublisherMap::value_type( name, publisher ) );
   }
-  publisher->setLineNo(lineNo);
-  publisher->setFileName(filename);
+  publisher->setLSPLineno(lineNo);
+  publisher->setLSPFilename(filename);
   return publisher;
 }
 
@@ -284,8 +284,8 @@ void MessageQueue::lspWrite( std::ostream &ostr ){
   #define SOCKET_SERIALIZE_FUNC \
     ostr << "<ITEM name=\"" << socket.first << "\""; \
     ostr << " mq=\"1\""; \
-    ostr << " file=\"" << socket.second->Filename() << "\""; \
-    ostr << " line=\"" << socket.second->LineNo() << "\""; \
+    ostr << " file=\"" << socket.second->LSPFilename() << "\""; \
+    ostr << " line=\"" << socket.second->LSPLineno() << "\""; \
     ostr << ">" << std::endl; \
     ostr << "</ITEM>" << std::endl;
 

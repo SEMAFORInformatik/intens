@@ -18,9 +18,9 @@ class JobFunction;
 class MessageQueueRequestThread;
 
 #ifdef HAVE_QT
-class MessageQueueRequest : public QObject, public RequestInterface
+class MessageQueueRequest : public QObject, public RequestInterface, public LSPItem
 #else
-class MessageQueueRequest : public RequestInterface
+class MessageQueueRequest : public RequestInterface, public LSPItem
 #endif
 {
 public:
@@ -70,10 +70,6 @@ public:
    */
   void timerEvent ( QTimerEvent * event );
 
-  inline void setFileName( std::string name ) { m_fileName = name; }
-  inline void setLineNo( int lineno ) { m_lineNo = lineno; }
-  inline std::string Filename() { return m_fileName; }
-  inline int LineNo() { return m_lineNo; }
 
   Q_OBJECT
 private slots:
@@ -91,8 +87,6 @@ private:
   MessageQueueRequestThread* m_requestThread;
   int           m_defaultTimeout;
   std::string   m_errMsg;
-  int           m_lineNo;
-  std::string   m_fileName;
 
 };
 

@@ -211,8 +211,8 @@ bool GuiFolderGroup::addFolderGroupEntry( const std::string &name
       filename.pop_back();
     }
     int lineNo = PAlineno -(*(App::Instance().getFlexer()->YYText() ) == '\n' || ! *(App::Instance().getFlexer()->YYText()));
-    grp->m_filename = filename;
-    grp->m_lineno = lineNo;
+    grp->setLSPFilename(filename);
+    grp->setLSPLineno(lineNo);
   }
   m_foldergrouplist.insert( GuiFolderGroupList::value_type( name, grp ) );
   return true;
@@ -374,8 +374,8 @@ void GuiFolderGroup::lspWrite( std::ostream &ostr ){
     ostr << "<ITEM name=\"" << name << "\"";
     ostr << " uiele=\"1\"";
     ostr << " page=\"1\"";
-    ostr << " file=\"" << ele->Filename() << "\"";
-    ostr << " line=\"" << ele->Lineno() << "\"";
+    ostr << " file=\"" << ele->LSPFilename() << "\"";
+    ostr << " line=\"" << ele->LSPLineno() << "\"";
     ostr << ">" << std::endl;
     ostr << "</ITEM>" << std::endl;
 

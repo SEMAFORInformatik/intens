@@ -1,4 +1,5 @@
 
+#include "app/LSPItem.h"
 #if !defined(MESSAGING_QUEUE_REPLY_INCLUDED_H)
 #define MESSAGING_QUEUE_REPLY_INCLUDED_H
 
@@ -22,9 +23,9 @@ class MessageQueueReplyThread;
 class ConnectionListener;
 
 #ifdef HAVE_QT
-class MessageQueueReply : public QObject, public ConfirmationListener
+class MessageQueueReply : public QObject, public ConfirmationListener, public LSPItem
 #else
-class MessageQueueReply : public ConfirmationListener
+class MessageQueueReply : public ConfirmationListener, public LSPItem
 #endif
 {
 public:
@@ -64,11 +65,6 @@ public:
   std::vector<Stream*> getDefaultOutStreams() { return m_default_out_streams; }
 
   /* void processSubscribe(MessageQueue::HeaderData* subsType, const std::vector<std::string>& dataList ); */
-  inline void setFileName( std::string name ) { m_fileName = name; }
-  inline void setLineNo( int lineno ) { m_lineNo = lineno; }
-  inline std::string Filename() { return m_fileName; }
-  inline int LineNo() { return m_lineNo; }
-
 
 #ifdef HAVE_QT
   Q_OBJECT
@@ -115,8 +111,6 @@ private:
   Timer                 *m_timer;
   TimerTask             *m_task;
   bool                   m_triggerStarted;
-  int           m_lineNo;
-  std::string   m_fileName;
 
   std::vector<Stream*>   m_default_in_streams;
   std::vector<Stream*>   m_default_out_streams;

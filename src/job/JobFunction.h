@@ -1,4 +1,5 @@
 
+#include "app/LSPItem.h"
 #if !defined(JOB_FUNCTION_INCLUDED_H)
 #define JOB_FUNCTION_INCLUDED_H
 
@@ -33,6 +34,7 @@ class XferGenericParameter;
 class JobFunction : public JobElement
                   , public JobAction
                   , public GuiListenerController
+                  , public LSPItem
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -285,11 +287,6 @@ public:
   void addParameter( const char *paramName );
 
   void serializeXML(std::ostream &os, bool recursive = false);
-  inline void setLineno( int line ) { m_line = line; }
-  inline void setFilename( std::string file ) { m_filename = file; }
-
-  inline int Lineno() const { return m_line; }
-  inline std::string Filename() const { return m_filename; }
 
 /*=============================================================================*/
 /* protected Functions                                                         */
@@ -351,8 +348,6 @@ private:
   DataReference     *m_new_this_ref;
   JobStackData      *m_old_data;
   int                m_index;
-  std::string        m_filename;
-  int                m_line;
   double             m_diagramXPos;
   double             m_diagramYPos;
   std::string        m_sortCriteria;

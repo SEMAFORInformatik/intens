@@ -2,6 +2,7 @@
 #if !defined(COLORSET_INCLUDED_H)
 #define COLORSET_INCLUDED_H
 
+#include "app/LSPItem.h"
 #include <string>
 #include <vector>
 
@@ -10,7 +11,7 @@ class XferDataItem;
 class Scale;
 class QwtLinearColorMap;
 
-class ColorSet
+class ColorSet : public LSPItem
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -34,17 +35,12 @@ public:
   void setColors( const std::string &, const std::string & );
   void setColors( XferDataItem*, XferDataItem* );
   bool isDataItemUpdated( TransactionNumber trans ) const;
-  inline void setFilename( std::string name ) { m_Filename = name; }
-  inline void setLineno( int lineno ) { m_Lineno = lineno; }
 
   ColorSetItem *getColorItem( const std::string &val );
   ColorSetItem *getColorItem( double val );
   ColorSetItem *getColorItemInvalid() const;
   ColorSetItem *getColorItemAlways() const;
   bool getInterpolatedColors( double val, std::string& background, std::string& foreground );
-  inline std::string Filename() const { return m_Filename; }
-  inline int Lineno() const { return m_Lineno; }
-
   typedef std::map<double, std::string> ColorMap;
   bool getColorMap(ColorMap& colorMap, double minValue, double maxValue, bool reverse);
   #ifdef HAVE_QT
@@ -62,10 +58,8 @@ private:
 private:
   typedef std::vector<ColorSetItem*> ColorList;
 
-  std:: string   m_Filename;
   ColorSetItem  *m_current;
   ColorList      m_list;
-  int            m_Lineno;
 };
 
 

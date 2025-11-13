@@ -2,6 +2,7 @@
 #ifndef STREAMER_BASICSTREAM_H
 #define STREAMER_BASICSTREAM_H
 
+#include "app/LSPItem.h"
 #include "datapool/DataPool.h"
 #include "operator/Channel.h"
 #include "operator/ChannelListener.h"
@@ -19,7 +20,7 @@ class BatchProcess;
 typedef std::list<BasicStream *> TargetStreamList;
 typedef std::map<BasicStream *, bool> TargetStreamMap;
 
-class BasicStream : public ChannelListener, public IntensSocketListener
+class BasicStream : public ChannelListener, public IntensSocketListener, public LSPItem
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -84,10 +85,6 @@ public:
   /** has stream no gz option
    */
   bool hasNoGzOption() const;
-  inline std::string DefinitionFilename() const { return m_definitionFile; }
-  inline int Lineno() const { return m_lineno; }
-  inline void setDefinitionFilename( std::string name ) { m_definitionFile = name; }
-  inline void setLineno( int lineno ) { m_lineno = lineno; }
   /// get file name of stream with file flag
   std::string getStreamFilename();
   /** delete all temporary file. Only used with streams with file option */
@@ -178,8 +175,6 @@ private:
   BatchProcess    *m_process;
   bool             m_appendOption;
   bool             m_noGzOption;
-  int              m_lineno;
-  std::string      m_definitionFile;
   ProcessInputChannelListener  m_preProcessInChannelListener;
   ProcessOutputChannelListener m_preProcessOutChannelListener;
   OutputChannel    m_preProcessOutChannel;

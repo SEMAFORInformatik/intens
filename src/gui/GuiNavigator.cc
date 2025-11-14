@@ -691,7 +691,7 @@ bool GuiNavigator::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdat
     getDiagramConnections(vec0, vec1, attr);
     // debug info
     for (auto a: attr){
-      BUG_ERROR("lineWidth: " << a.lineWidth
+      BUG_DEBUG("lineWidth: " << a.lineWidth
                 << ", lineColor: " << a.lineColor
                 << ", lineStyle: " << a.lineStyle
                 << ", xposSize: " << a.xpos.size()

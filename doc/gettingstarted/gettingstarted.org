@@ -1816,14 +1816,14 @@ if no such version is installed. There are multiple providers such as:
 ** Installation on Linux
 For debian/ubuntu based systems:
 
-- Download the DEB-File and install Intens:
+- Download the DEB-File from https://github.com/SEMAFORInformatik/intens/releases/ and install Intens:
   #+begin_example
-  sudo apt-get install ./semafor-intens-5.3.4dev-ubuntu-24.04-x86-64.deb
+  sudo apt-get install ./semafor-intens-6.0.2-ubuntu-24.04-x86-64.deb
   #+end_example
   This will install the files in /usr/local/intens.
 - Add the intens bin directory to your PATH:
   #+begin_example
-  PATH=/usr/local/intens/5.3.4dev/bin:$PATH
+  PATH=/usr/local/intens/6.0.2/bin:$PATH
   #+end_example
 - Install the development packages
   #+begin_example
@@ -1833,7 +1833,7 @@ For debian/ubuntu based systems:
 - If you're working with Emacs add the following lines to your
     emacs config:
   #+begin_example
-    (add-to-list 'load-path "/usr/local/intens/5.3.4dev/etc")
+    (add-to-list 'load-path "/usr/local/intens/6.0.2/etc")
     (require 'intens-ts-mode)
   #+end_example
 

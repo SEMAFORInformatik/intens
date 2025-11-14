@@ -2,10 +2,14 @@
 
 all: gettingstarted.html
 
-gettingstarted.html: gettingstarted.org init.el
+gettingstarted.html: public public gettingstarted.org init.el
 
 %.html: %.org
-	emacs $< --batch -l init.el -f org-html-export-to-html
+	./docker-org-export.sh org-html-export-to-html $<
+
+public:
+	[ -d public ] || mkdir public
+	rsync -a styles images public/
 
 clean:
-	rm *.html
+	rm -fr public

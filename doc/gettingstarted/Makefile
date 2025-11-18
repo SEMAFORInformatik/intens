@@ -2,7 +2,7 @@
 
 all: gettingstarted.html
 
-gettingstarted.html: public public gettingstarted.org init.el
+gettingstarted.html: public gettingstarted.org
 
 %.html: %.org
 	./docker-org-export.sh org-html-export-to-html $<

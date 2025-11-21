@@ -194,11 +194,11 @@ void MessageQueueSubscriber::processSubscribe(MessageQueue::HeaderData* subsType
 
       // omit some GuiUpdates if process vector has entries
       if (s_procSubsVec.size()) {
-	static int omitGuiCounter = 0;
-	if ( ++omitGuiCounter < 5 ) {
-	  trigger->setUpdateForms( false );
-	} else
-	  omitGuiCounter = 0;
+        static int omitGuiCounter = 0;
+        if ( ++omitGuiCounter < 5 ) {
+          trigger->setUpdateForms( false );
+        } else
+          omitGuiCounter = 0;
       }
 
       trigger->startJob();
@@ -219,7 +219,6 @@ void MessageQueueSubscriber::timerEvent ( QTimerEvent * event ) {
   killTimer( event->timerId() );
   m_timerId = 0;
   GuiFactory::Instance()->update( GuiElement::reason_Process, true );
-
 }
 #endif
 

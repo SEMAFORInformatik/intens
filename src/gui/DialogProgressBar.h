@@ -9,7 +9,7 @@
 class Stream;
 class JobController;
 
-class DialogProgressBar// : public BasicStream
+class DialogProgressBar
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */

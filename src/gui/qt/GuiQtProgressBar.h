@@ -2,10 +2,11 @@
 #if !defined(GUI_QT_PROGRESSBAR_H)
 #define GUI_QT_PROGRESSBAR_H
 
-#include "gui/DialogProgressBar.h"
 #include "gui/qt/GuiQtDataField.h"
 
-class GuiQtProgressBar : public GuiQtDataField, public DialogProgressBar
+class MessageQueuePublisher;
+
+class GuiQtProgressBar : public GuiQtDataField
 {
   /*=============================================================================*/
   /* Constructor / Destructor                                                    */
@@ -34,11 +35,6 @@ public:
   virtual void getCloneList(std::vector<GuiElement*>& cList) const;
 
   virtual void update( UpdateReason );
-  virtual void serializeXML(std::ostream &os, bool recursive = false);
-  virtual bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false);
-#if HAVE_PROTOBUF
-  virtual bool serializeProtobuf(in_proto::Progressbar* element, bool onlyUpdated = false);
-#endif
   /** Fragt nach der ExpandPolicy des QtElements fuer den Dialog.
    */
   virtual GuiElement::Orientation getDialogExpandPolicy();
@@ -50,18 +46,18 @@ public:
   virtual void confirmYesButtonPressed() {}
   virtual void confirmNoButtonPressed() {}
 
-/*=============================================================================*/
-/* public DialogProgressBar functions                                          */
-/*=============================================================================*/
-  virtual GuiElement* getGuiElement() { return this; }
-  virtual void execute_abort(bool callAbortedFunc=true) {}
-
+  /*=============================================================================*/
+  /* private functions                                                           */
+  /*=============================================================================*/
+private:
+  void publishData();
   /*=============================================================================*/
   /* private members                                                             */
   /*=============================================================================*/
 private:
   QProgressBar *m_progressBar;
   std::vector<GuiQtProgressBar*> m_cloned;
+  MessageQueuePublisher* m_publisher;
 };
 
 #endif

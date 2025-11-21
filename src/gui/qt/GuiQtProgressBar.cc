@@ -1,6 +1,5 @@
 #include <QProgressBar>
 #include "gui/qt/GuiQtDataField.h"
-#include "protobuf/Message.pb.h"
 #include "utils/Debugger.h"
 #include "gui/qt/GuiQtProgressBar.h"
 #include "gui/qt/QtDialogProgressBar.h"

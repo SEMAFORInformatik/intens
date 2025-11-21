@@ -1,5 +1,4 @@
 
-#include "protobuf/Message.pb.h"
 #if !defined(GUI_QT_PROGRESSBAR_H)
 #define GUI_QT_PROGRESSBAR_H
 

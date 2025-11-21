@@ -1,4 +1,6 @@
 #include <QProgressBar>
+#include "gui/qt/GuiQtDataField.h"
+#include "protobuf/Message.pb.h"
 #include "utils/Debugger.h"
 #include "gui/qt/GuiQtProgressBar.h"
 #include "gui/qt/QtDialogProgressBar.h"
@@ -129,6 +131,24 @@ void GuiQtProgressBar::getCloneList( std::vector<GuiElement*>& cList ) const {
 GuiElement::Orientation GuiQtProgressBar::getDialogExpandPolicy() {
   return (GuiElement::Orientation) 0;
 }
+
+/* --------------------------------------------------------------------------- */
+/* serializeJson --                                                            */
+/* --------------------------------------------------------------------------- */
+
+bool GuiQtProgressBar::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
+  return GuiQtDataField::serializeJson(jsonObj, onlyUpdated);
+}
+
+/* --------------------------------------------------------------------------- */
+/* serializeProtobuf --                                                            */
+/* --------------------------------------------------------------------------- */
+
+#if HAVE_PROTOBUF
+bool GuiQtProgressBar::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated){
+  return GuiQtDataField::serializeProtobuf(eles->add_data_fields(), onlyUpdated);
+}
+#endif
 
 /* --------------------------------------------------------------------------- */
 /* publishData --                                                              */

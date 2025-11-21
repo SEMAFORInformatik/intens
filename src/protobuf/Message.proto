@@ -62,6 +62,7 @@ message ElementList {
   repeated CycleButton cyclebuttons = 37;
   repeated PulldownMenu pulldown_menus = 38;
   repeated PopupMenu popup_menu = 39;
+  repeated Progressbar progress_bars = 40;
 }
 
 message WebAPIResponse {

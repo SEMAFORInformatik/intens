@@ -1,4 +1,5 @@
 
+#include "protobuf/Message.pb.h"
 #if !defined(GUI_QT_PROGRESSBAR_H)
 #define GUI_QT_PROGRESSBAR_H
 
@@ -33,6 +34,10 @@ public:
   virtual bool cloneable() { return true; }
   virtual GuiElement *clone();
   virtual void getCloneList(std::vector<GuiElement*>& cList) const;
+  virtual bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false);
+#if HAVE_PROTOBUF
+  virtual bool serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated = false);
+#endif
 
   virtual void update( UpdateReason );
   /** Fragt nach der ExpandPolicy des QtElements fuer den Dialog.

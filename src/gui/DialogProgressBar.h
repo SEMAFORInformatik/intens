@@ -119,7 +119,7 @@ public:
 
   virtual bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false);
 #if HAVE_PROTOBUF
-  virtual bool serializeProtobuf(in_proto::Progressbar* element, bool onlyUpdated = false);
+  virtual bool serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdate);
 #endif
 
  private:

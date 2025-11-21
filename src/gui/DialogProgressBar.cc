@@ -317,7 +317,8 @@ bool DialogProgressBar::serializeJson(Json::Value& jsonObj, bool onlyUpdated) {
 /* serializeProtobuf --                                                        */
 /* --------------------------------------------------------------------------- */
 #if HAVE_PROTOBUF
-bool DialogProgressBar::serializeProtobuf(in_proto::Progressbar* element, bool onlyUpdated) {
+bool DialogProgressBar::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated) {
+  auto element = eles->add_progress_bars();
   element->set_allocated_base(getGuiElement()->writeProtobufProperties());
   element->set_percent(getMainPercentRate());
   return true;

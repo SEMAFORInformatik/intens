@@ -64,7 +64,7 @@ Motor
 END DATAPOOL;
 
 FUNCTIONS
- FUNC { DEADLY_SILENT }
+ FUNC { SILENT }
   AFTER_UPDATE_FORMS {
   p = motor.p;
   psityp = motor.psityp;

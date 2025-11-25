@@ -196,11 +196,7 @@ FUNCTIONS
   FUNC
     {NS}unit_btn_func{
       SIZE({NS}appBaseUnit[*], {NS}unit_size);
-      IF ({NS}unit_size==0) {
-        {NS}current_idx = 0;
-      }ELSE{
-        {NS}current_idx = {NS}unit_size;
-      }
+      {NS}current_idx = {NS}unit_size;
       RUN({NS}unit_use_brackets_func);
       {NS}appBaseUnit[{NS}current_idx].use_set = 1;
     }
@@ -208,11 +204,7 @@ FUNCTIONS
   FUNC
     {NS}derived_unit_btn_func {
       SIZE({NS}appBaseUnit[{NS}current_idx].derived[*], {NS}unit_size);
-      IF ({NS}unit_size==0) {
-        {NS}derived_current_idx = 0;
-      }ELSE{
-        {NS}derived_current_idx = {NS}unit_size;
-      }
+      {NS}derived_current_idx = {NS}unit_size;
       RUN({NS}unit_use_brackets_func);
       {NS}appBaseUnit[{NS}current_idx].derived[{NS}derived_current_idx].use_set = 1;
     }
@@ -222,6 +214,7 @@ FUNCTIONS
       GET_SELECTION({NS}unit_list, {NS}unit_selected);
       CLEAR({NS}appBaseUnit[{NS}unit_selected]);
       PACK({NS}appBaseUnit[*]);
+      {NS}current_idx = 0;
       {NS}derived_current_idx = 0;
     }
   ;

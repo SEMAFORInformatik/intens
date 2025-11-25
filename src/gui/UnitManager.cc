@@ -221,14 +221,10 @@ void UnitManager::writeUnitData(std::ostream& os){
 /* --------------------------------------------------------------------------- */
 
 void UnitManager::readUnitData(){
-  std::string parent = "";
   for(auto &u: defaults){
     m_unit[u.name] = &u;
     if(!u.base.empty()){
-      m_unit[parent]->add_derived(u.name);
-    }
-    else{
-      parent = u.name;
+      m_unit[u.base]->add_derived(u.name);
     }
   }
   if (AppData::Instance().AppHome().empty()) return;

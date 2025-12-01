@@ -258,6 +258,7 @@ class Configurator {
   virtual bool newFieldgroup( const std::string &fieldgroupId ) = 0;
   virtual bool hideFieldgroupIndexMenu() = 0;
   virtual bool hideFieldgroupIndexLabel() = 0;
+  virtual bool setFieldgroupFunction() = 0;
   virtual bool setTitleHelpfile( const std::string &title ) = 0;
   virtual bool setTitleFieldgroup( const std::string &title, GuiElement::Alignment alignment ) = 0;
   virtual bool setTitlelist( const std::string &title, GuiElement::Alignment alignment) = 0;

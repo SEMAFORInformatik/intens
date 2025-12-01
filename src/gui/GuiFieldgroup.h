@@ -71,6 +71,8 @@ public:
   virtual BasicStream *streamableObject();
 
   virtual GuiElement * getElement() = 0;
+  JobFunction* getFunction() const { return m_function; }
+  virtual void setFunction( JobFunction *func );
 
   static GuiFieldgroup *getFieldgroup( const std::string &id );
   void serializeXML(std::ostream &os, bool recursive = false);
@@ -94,10 +96,20 @@ public:
 
   OverlayGeometry& getOverlayGeometry() { return m_overlayGeometry; }
 
-
 /*=============================================================================*/
 /* protected                                                                   */
 /*=============================================================================*/
+public:
+  class FieldgroupTrigger : public JobStarter
+  {
+    public:
+      FieldgroupTrigger(JobFunction *f)
+        : JobStarter(f){}
+
+      virtual ~FieldgroupTrigger() {}
+      virtual void backFromJobStarter(JobAction::JobResult rslt);
+  };
+
  protected:
   int getTableStep() { return m_tablestep; }
   int getMargin() { return m_margin; }
@@ -154,6 +166,8 @@ protected:
   GuiContainer            m_container;
 
  private:
+  JobFunction         *m_function;
+
   GuiIndex*               m_index;
   int                   m_tablesize;
   int                   m_tablestep;

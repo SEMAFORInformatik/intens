@@ -23,6 +23,7 @@ message FieldGroup {
   }
   OverlayGeometry overlay = 8;
   bool scrollbars = 9;
+  string action = 10;
 }
 
 message FieldGroupLine {

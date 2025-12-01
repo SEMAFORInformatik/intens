@@ -233,6 +233,7 @@ public:
   virtual bool newFieldgroup( const std::string &fieldgroupId );
   virtual bool hideFieldgroupIndexMenu();
   virtual bool hideFieldgroupIndexLabel();
+  virtual bool setFieldgroupFunction();
   virtual bool setTitleHelpfile( const std::string &title );
   virtual bool setTitleFieldgroup( const std::string &title, GuiElement::Alignment alignment );
   virtual bool setTitlelist( const std::string &title, GuiElement::Alignment alignment );

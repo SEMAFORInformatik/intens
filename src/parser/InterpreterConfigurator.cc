@@ -2880,6 +2880,14 @@ bool InterpreterConfigurator::hideFieldgroupIndexMenu(){
   return true;
 }
 //======================================================================//
+// - setFieldgroupFunction
+//======================================================================//
+bool InterpreterConfigurator::setFieldgroupFunction(){
+  if( m_rep->fieldgroup != 0 )
+    m_rep->fieldgroup->setFunction( m_rep->function );
+  return true;
+}
+//======================================================================//
 // - hideFieldgroupIndexLabel
 //======================================================================//
 bool InterpreterConfigurator::hideFieldgroupIndexLabel(){

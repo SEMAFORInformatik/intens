@@ -21,7 +21,8 @@ INIT_LOGGER();
 /*=============================================================================*/
 
 GuiFieldgroup::GuiFieldgroup( GuiElement *parent, const std::string &name )
-  : m_indexMenu( true )
+  : m_function( 0 )
+  , m_indexMenu( true )
   , m_indexLabel( true )
   , m_index_alignment( GuiElement::align_Center )
   , m_navigation( GuiElement::orient_Horizontal )
@@ -46,7 +47,8 @@ GuiFieldgroup::GuiFieldgroup( GuiElement *parent, const std::string &name )
 }
 
 GuiFieldgroup::GuiFieldgroup( const GuiFieldgroup &fg )
-  : m_indexMenu( fg.m_indexMenu )
+  : m_function(fg.m_function )
+  , m_indexMenu( fg.m_indexMenu )
   , m_indexLabel( fg.m_indexLabel )
   , m_index_alignment( fg.m_index_alignment )
   , m_navigation( fg.m_navigation )
@@ -77,6 +79,15 @@ GuiFieldgroup::~GuiFieldgroup(){
       m_index->unregisterIndexedElement( (*I) );
      }
   }
+}
+
+/* --------------------------------------------------------------------------- */
+/* setFunction --                                                              */
+/* --------------------------------------------------------------------------- */
+void GuiFieldgroup::setFunction( JobFunction *func ) {
+  assert( func != 0 );
+  m_function = func;
+  m_function->setUsed();
 }
 
 /* --------------------------------------------------------------------------- */
@@ -597,6 +608,8 @@ bool GuiFieldgroup::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpda
   element->mutable_grid_template_columns()->Assign(m_cssGridTemplateColumns_proto.begin(), m_cssGridTemplateColumns_proto.end());
   serializeContainerElements(eles, element, onlyUpdated);
   element->set_scrollbars(getElement()->withScrollbars());
+  if( m_function != 0 )
+    element->set_action(m_function->Name());
   auto overlay = element->mutable_overlay();
   overlay->set_x(m_overlayGeometry.xpos);
   overlay->set_y(m_overlayGeometry.ypos);

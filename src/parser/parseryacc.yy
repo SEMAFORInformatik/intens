@@ -2387,6 +2387,10 @@ ui_fieldgroup_option /* DOCUMENTATION:DIAGRAM */
     {
       configurator -> fieldgroupWithScrollBar();
     }
+  | tFUNC '=' job_function_pointer
+    {
+      configurator -> setFieldgroupFunction();
+    }
   ;
 
 ui_fieldgroup_spacing /* DOCUMENTATION:UNFOLD */

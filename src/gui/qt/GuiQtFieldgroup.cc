@@ -297,6 +297,14 @@ void GuiQtFieldgroup::create(){
     ++row;
   }
 
+
+  myWidget()->installEventFilter(this);
+
+  QList<QWidget*> children = myWidget()->findChildren<QWidget*>();
+  for (QWidget* w : children) {
+    w->installEventFilter(this);
+  }
+
   if (getContainerExpandPolicy() == GuiElement::orient_Default) {
     m_qgroupbox->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
   }
@@ -306,6 +314,45 @@ void GuiQtFieldgroup::create(){
     myWidget()->hide();
   }
   BUG_DEBUG( "--- end create() ---");
+}
+
+/* --------------------------------------------------------------------------- */
+/* onClicked --                                                                   */
+/* --------------------------------------------------------------------------- */
+void GuiQtFieldgroup::onClicked() {
+  if (getFunction() == 0) return;
+
+  JobStarter *starter = new FieldgroupTrigger(getFunction());
+  starter->setReason(JobElement::cll_Select);
+  starter->startJob();
+}
+
+void GuiFieldgroup::FieldgroupTrigger::backFromJobStarter(JobAction::JobResult rslt)
+{
+  return;
+}
+
+/* --------------------------------------------------------------------------- */
+/* eventFilter --                                                                   */
+/* --------------------------------------------------------------------------- */
+bool GuiQtFieldgroup::eventFilter(QObject *obj, QEvent *event)
+{
+  if (event->type() == QEvent::MouseButtonPress)
+  {
+    QWidget *target = qobject_cast<QWidget*>(obj);
+    if (!target)
+      return false;
+
+    QWidget *root = myWidget();
+
+    if (target == root || root->isAncestorOf(target))
+    {
+      onClicked();
+      return false;
+    }
+  }
+
+  return GuiQtElement::eventFilter(obj, event);
 }
 
 /* --------------------------------------------------------------------------- */

@@ -20,6 +20,8 @@ public:
   virtual ~GuiQtFieldgroup();
 private:
   GuiQtFieldgroup( const GuiQtFieldgroup &fg );
+protected:
+  bool eventFilter(QObject *obj, QEvent *event) override;
 
 /*=============================================================================*/
 /* public member functions of GuiElement                                       */
@@ -32,6 +34,7 @@ public:
   virtual void unmanage();
   virtual void map();
   virtual void unmap();
+  virtual void onClicked();
   virtual void enable();
   virtual void disable();
   virtual bool destroy();

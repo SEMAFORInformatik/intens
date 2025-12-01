@@ -9,7 +9,6 @@
 #include <QCloseEvent>
 #include <QTimerEvent>
 #if QT_VERSION >= 0x060000
-#include <QtCore5Compat/QTextCodec>
 #include <QRegularExpression>
 #else
 #include <QTextCodec>

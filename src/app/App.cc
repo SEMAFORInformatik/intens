@@ -271,7 +271,9 @@ App::App( int &argc, char **argv )
   }
 
   if (appdata.LspWorker()) {
+#if HAVE_LOG4CPLUS
     log4cplus::Logger::getRoot().shutdown();
+#endif
   }
 
   // debug info

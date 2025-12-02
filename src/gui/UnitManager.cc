@@ -102,7 +102,7 @@ void UnitManager::update_unit(UserAttr* userattr, const std::string& new_unit,
 /* --------------------------------------------------------------------------- */
 
 void UnitManager::parseIncludeFile(){
-  if (!AppData::Instance().UnitManagerFeature())
+  if (!AppData::Instance().hasUnitManagerFeature())
     return;
   std::string tokenIntensNS(App::TOKEN_INTENS_NAMESPACE);
   std::string intensNS(App::INTENS_NAMESPACE);
@@ -326,7 +326,7 @@ UnitManager::Unit* UnitManager::getUnitData(const std::string& unit) const{
 /* --------------------------------------------------------------------------- */
 const std::string UnitManager::getDbUnit(const std::string& unit) const{
   UnitManager::Unit* u = getUnitData(unit);
-  if(AppData::Instance().UnitManagerFeature() &&
+  if(AppData::Instance().hasUnitManagerFeature() &&
      u != 0 && !u->base.empty()){
       u = getUnitData(u->base);
     return u->db_unit();
@@ -395,8 +395,9 @@ std::string UnitManager::comboBoxJsonData(const std::string &unit,
       }
     }
   }
-  if(!AppData::Instance().UnitManagerAlwaysComboBox() &&
-     jsonObj["input"].size() < 2){
+  AppData::UnitManagerFeature featCB = AppData::Instance().getUnitManagerFeature();
+  if(featCB == AppData::unitManagerFeature_comboBox_hidden ||
+     (featCB == AppData::unitManagerFeature_comboBox_onlyMultiple && jsonObj["input"].size() < 2)){
     return "";
   }
   jsonObj["value"] = unitData->ui_name;
@@ -424,7 +425,7 @@ std::string UnitManager::extractValue(const std::string& json_string_or_text) {
 
 bool UnitManager::extractValue(const std::string& json_string_or_text, std::string& value) {
   value = json_string_or_text;
-  if (!AppData::Instance().UnitManagerFeature())
+  if (!AppData::Instance().hasUnitManagerFeature())
     return false;
   std::string text;
   std::string bStr("{\"input\":");
@@ -465,7 +466,7 @@ bool UnitManager::extractValue(const std::string& json_string_or_text, std::stri
 Json::Value UnitManager::extractJsonObject(const std::string& json_string_or_text,
                                            std::string& extractPreString,
                                            std::string& extractPostString) {
-  if (!AppData::Instance().UnitManagerFeature())
+  if (!AppData::Instance().hasUnitManagerFeature())
     return json_string_or_text;
   std::string text;
   std::string bStr("{\"input\":");

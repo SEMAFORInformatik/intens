@@ -231,7 +231,7 @@ void GuiQtTextfield::create() {
   m_textwidget->setObjectName( "GuiTextfield" );
 
   // unit feature: set scale from unit manager
-  if (AppData::Instance().UnitManagerFeature()) {
+  if (AppData::Instance().hasUnitManagerFeature()) {
     UnitManager::Unit* unit;
     unit = UnitManager::Instance().getUnitData(m_param->DataItem()->getUserAttr()->Unit(false));
     if (unit) {

@@ -112,7 +112,7 @@ void GuiQtLabel::create( ){
   Json::Value valueObject = UnitManager::extractJsonObject(m_label,
                                                            extractPreString,
                                                            extractPostString);
-  if (AppData::Instance().UnitManagerFeature() &&
+  if (AppData::Instance().hasUnitManagerFeature() &&
       !valueObject.isNull()) {
     // pre, post string
     bool use_layout(!extractPreString.empty() || !extractPostString.empty());

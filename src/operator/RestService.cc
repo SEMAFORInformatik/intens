@@ -1342,7 +1342,7 @@ void RestService::set_data() {
     // set HIDEtransient and unset HIDEhidden
     SerializableMask hideFlags_backup = m_dataStream->getHideFlags();
     SerializableMask hideFlags = (hideFlags_backup | HIDEtransient) & ~HIDEhidden;
-    if (AppData::Instance().UnitManagerFeature()) {
+    if (AppData::Instance().hasUnitManagerFeature()) {
       hideFlags |= APPLYdbUnit;
     }
     m_dataStream->setHideFlags( hideFlags );

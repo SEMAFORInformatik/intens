@@ -769,7 +769,7 @@ void UImanager::addOptions(){
   }
 #endif
 
-  if (AppData::Instance().UnitManagerFeature()) {
+  if (AppData::Instance().hasUnitManagerFeature()) {
     GuiMenuButton *button = factory->createMenuButton( m_option_menu->getElement(), &m_unit_manager_listener);
     button->setLabel( _("Unit Manager") );
     m_option_menu->attach( button->getElement() );

@@ -284,7 +284,7 @@ bool UserAttr::IsDbTransient()          const { return m_dbtransient; }
 const std::string &UserAttr::DbAttr()   const { return m_dbattrname; }
 const std::string &UserAttr::DbUnit()   const { return m_dbunitname; }
 const std::string UserAttr::Unit(bool unitManagerFeature, DataReference* data_ref) {
-  if (unitManagerFeature && AppData::Instance().UnitManagerFeature()) {
+  if (unitManagerFeature && AppData::Instance().hasUnitManagerFeature()) {
     std::string s(UnitManager::Instance().getComboBoxData(m_Unit, this, data_ref));
     return s.empty() ? m_Unit : s;
   }

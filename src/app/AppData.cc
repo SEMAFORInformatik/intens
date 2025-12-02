@@ -181,8 +181,7 @@ AppData::AppData()
   , m_oauthClient(0)
   , m_opentelemetry_metadata(false)
   , m_lspWorker(false)
-  , m_unitManagerFeature(false)
-  , m_unitManagerAlwaysCB(false)
+  , m_unitManagerFeature(unitManagerFeature_none)
   , m_testMode(false)
 {
   const char *a = getenv("APPHOME");
@@ -490,7 +489,6 @@ void AppData::setDefaultMessageQueueDependencies(bool b) {
 }
 void AppData::setOpenTelemetryMetadata()                 { m_opentelemetry_metadata= true; }
 void AppData::setLspWorker()                             { m_lspWorker = true; }
-void AppData::setUnitManagerFeature(bool alwaysCB)       { m_unitManagerFeature = true; m_unitManagerAlwaysCB = alwaysCB; }
 
 /* --------------------------------------------------------------------------- */
 /* addUserGroup --                                                             */
@@ -683,8 +681,13 @@ std::string AppData::OAuthToken()  {
 }
 bool AppData::OpenTelemetryMetadata() const       { return m_opentelemetry_metadata; }
 bool AppData::LspWorker() const                   { return m_lspWorker; }
-bool AppData::UnitManagerFeature() const          { return m_unitManagerFeature; }
-bool AppData::UnitManagerAlwaysComboBox() const   { return m_unitManagerAlwaysCB; }
+bool AppData::hasUnitManagerFeature() const       {
+  return m_unitManagerFeature != unitManagerFeature_none;
+}
+AppData::UnitManagerFeature AppData::getUnitManagerFeature() const { return m_unitManagerFeature; }
+void AppData::setUnitManagerFeature(UnitManagerFeature featureCB){
+  m_unitManagerFeature = featureCB;
+}
 const bool AppData::hasTestModeFunc() const       { return (m_testModeFunc.size() > 0); }
 const bool AppData::TestMode() const              { return m_testMode; }
 const bool AppData::NoInitFunc() const            { return m_noInitFunc; }
@@ -1076,15 +1079,23 @@ void AppData::getOpt(int &argc, char **argv){
       setLspWorker();
     }
     if( strcmp( long_options[option_index].name, "unitManager")==0){
-      bool alwaysCB(false);
-      if (optarg && (strcmp(optarg, "CB") == 0 ||
-                     strcmp(optarg, "1") == 0)) {
-        alwaysCB = true;
+      UnitManagerFeature featureComboBox(unitManagerFeature_comboBox_hidden);
+      if (optarg){
+        if (strcmp(optarg, "comboBox_always") == 0 || strcmp(optarg, "1") == 0) {
+          featureComboBox = unitManagerFeature_comboBox_always;
+        } else
+        if (strcmp(optarg, "comboBox_hide_single") == 0 ||
+            strcmp(optarg, "comboBox_if_choice") == 0 ||
+            strcmp(optarg, "comboBox_if_selection") == 0 ||
+            strcmp(optarg, "0") == 0) {
+          featureComboBox = unitManagerFeature_comboBox_onlyMultiple;
+        } else
+          std::cerr << "unknown argument: " << optarg << ", default 'comboBox hidden' option will be used, " << std::endl;
       }
-      setUnitManagerFeature(alwaysCB);
+      setUnitManagerFeature(featureComboBox);
     }
     if( strcmp( long_options[option_index].name, "unitManagerCB")==0){
-      setUnitManagerFeature(true);
+      setUnitManagerFeature(unitManagerFeature_comboBox_always);
     }
   }
 

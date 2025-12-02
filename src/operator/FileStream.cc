@@ -605,7 +605,7 @@ void FileStream::writeFile( const std::string &filename ){
   }
 
   // update unit manager
-  if (AppData::Instance().UnitManagerFeature() &&
+  if (AppData::Instance().hasUnitManagerFeature() &&
       UnitManager::Instance().getFilename() == filename) {
     UnitManager::Instance().reset();
     GuiManager::Instance().update(GuiElement::reason_Unit);
@@ -1011,7 +1011,7 @@ void FileStream::readFile( const std::string &filename ){
     // convert default units to json
     // from outside, it looks like we open a valid json file
     if ((!is || !(*is)) &&
-        AppData::Instance().UnitManagerFeature()){
+        AppData::Instance().hasUnitManagerFeature()){
       std::ostringstream os;
       UnitManager::Instance().writeUnitData(os);
       is = new std::istringstream(os.str());

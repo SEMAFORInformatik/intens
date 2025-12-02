@@ -28,7 +28,7 @@ TokenStreamParameter::TokenStreamParameter(const std::string &value, int length)
     m_leftAdjusted=true;
   }
   std::string text;
-  if (AppData::Instance().UnitManagerFeature()) {
+  if (AppData::Instance().hasUnitManagerFeature()) {
     if (UnitManager::Instance().extractValue(value, text)){
       m_token = text;
     }
@@ -168,7 +168,7 @@ Serializable *TokenStreamParameter::unmarshal( const std::string &element, const
 
 void TokenStreamParameter::setText( const std::string &value ){
   std::string text(value);
-  if (AppData::Instance().UnitManagerFeature()) {
+  if (AppData::Instance().hasUnitManagerFeature()) {
     if (UnitManager::Instance().extractValue(value, text)){
       m_token = text;
     }

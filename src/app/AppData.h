@@ -46,6 +46,13 @@ public:
     messageExitCode = 0,
     failureExitCode = 2
   };
+  // UnitManager FeatureComboBox
+  enum UnitManagerFeature{
+    unitManagerFeature_none = 0
+    , unitManagerFeature_comboBox_hidden = 1
+    , unitManagerFeature_comboBox_onlyMultiple = 2
+    , unitManagerFeature_comboBox_always = 3
+  };
   int getResource(const std::string& key,
 			   std::string& stringValue, double& doubleValue, int& intValue);
   void setResource(const std::string& key, std::string& stringValue);
@@ -143,7 +150,8 @@ public:
   void setOAuthAccessTokenUrl( const std::string &n );
   void setOpenTelemetryMetadata();
   void setLspWorker();
-  void setUnitManagerFeature(bool alwaysCB);
+  UnitManagerFeature getUnitManagerFeature() const;
+  void setUnitManagerFeature(UnitManagerFeature featureCB);
 
   int Debug();
   bool isWindows();
@@ -233,8 +241,7 @@ public:
   std::string OAuthToken();
   bool OpenTelemetryMetadata() const;
   bool LspWorker() const;
-  bool UnitManagerFeature() const;
-  bool UnitManagerAlwaysComboBox() const;
+  bool hasUnitManagerFeature() const;
   const bool hasTestModeFunc() const;
   const bool TestMode() const;
   const bool NoInitFunc() const;
@@ -363,8 +370,7 @@ private:
   bool              m_defaultMessageQueueDependencies;
   bool              m_opentelemetry_metadata;
   bool              m_lspWorker;
-  bool              m_unitManagerFeature;
-  bool              m_unitManagerAlwaysCB;
+  UnitManagerFeature m_unitManagerFeature;
   OAuthClient*      m_oauthClient;
 };
 

@@ -1,0 +1,99 @@
+DESCRIPTION "JSON Stream Options";
+
+DATAPOOL
+  STRUCT Data{
+    INTEGER transientN;
+    STRING {SCALAR}
+      hidden {HIDDEN}
+    , transient {TRANSIENT}
+    , ok
+    ;
+  };
+  Data data, dataInput;
+  STRING fn;
+END DATAPOOL;
+
+STREAMER
+  json_hidden_stream {
+    JSON
+  , INDENT = 4
+  , HIDDEN
+  }(
+    data
+  );
+  json_no_transient_stream {
+    JSON
+  , INDENT = 4
+  , !TRANSIENT
+  }(
+    data
+  );
+  json_default_stream {
+    JSON
+  , INDENT = 4
+//  , !HIDDEN
+//  , !TRANSIENT
+  }(
+    data
+  );
+  jsonInputstream {JSON}(
+    dataInput
+  );
+END STREAMER;
+
+OPERATOR
+  FILESTREAM jsonDefaultFs = json_default_stream {
+    "JSON"
+  , FILTER="JSON (*.json)"
+  , DIRNAME="./data/"
+  };
+  FILESTREAM jsonNoHiddenFs = json_hidden_stream {
+    "JSON"
+  , FILTER="JSON (*.json)"
+  , DIRNAME="./data/"
+  };
+  FILESTREAM jsonNoTransientFs = json_no_transient_stream {
+    "JSON"
+  , FILTER="JSON (*.json)"
+  , DIRNAME="./data/"
+  };
+
+  FILESTREAM jsonInputFs = jsonInputstream {
+    "JSON"
+  , FILTER="JSON (*.json)"
+  , DIRNAME="./data/"
+  };
+END OPERATOR;
+
+FUNCTIONS
+  FUNC INIT {
+    data.hidden = "hidden";
+    data.transient = "transient";
+    data.transientN = 212;
+    data.ok = "ok";
+    fn = "mydata.json";
+  };
+
+  FUNC test_json_default_stream_func{
+    SAVE(jsonDefaultFs, fn);
+    OPEN(jsonInputFs, fn);
+    // default stream has transient, no hidden
+    PRINT("DataInput: ", dataInput, EOLN);
+  };
+  FUNC test_json_hidden_stream_func{
+    SAVE(jsonNoHiddenFs, fn);
+    OPEN(jsonInputFs, fn);
+    // hidden stream has transient, has hidden
+    PRINT("DataInput: ", dataInput, EOLN);
+  };
+  FUNC test_json_no_transient_stream_func{
+    SAVE(jsonNoTransientFs, fn);
+    OPEN(jsonInputFs, fn);
+    // no_transient stream no transient, no hidden
+    // dataInput.transient
+    // dataInput.hidden
+    PRINT("DataInput: ", dataInput, EOLN);
+  };
+END FUNCTIONS;
+
+END.

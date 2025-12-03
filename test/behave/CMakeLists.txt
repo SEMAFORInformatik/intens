@@ -4,6 +4,7 @@ set(features
     write_text_stream.feature
     plot.feature
     read_json.feature
+    stream_json_options.feature
     operations.feature
     write_json_sparse_arrays.feature
     write_json.feature

@@ -519,13 +519,8 @@ bool GuiQtFieldButton::setLabel( const std::string &name ){
 /* --------------------------------------------------------------------------- */
 
 bool GuiQtFieldButton::setPixmap( const std::string &name, bool withLabel ){
-  // get user attr label
-  std::string label=m_param->getUserAttr()->Label(m_param->Data());
-  if (label ==  m_param->Data()->nodeName())  // hide label
-    label.clear();
-
   m_pixmap_name = name;
-  m_label_pixmap = label.empty() && m_label.empty() ? GuiElement::button_PIXMAP : GuiElement::button_TEXT_PIXMAP;
+  m_label_pixmap = m_label.empty() ? GuiElement::button_PIXMAP : GuiElement::button_TEXT_PIXMAP;
   return true;
 }
 

@@ -91,8 +91,15 @@ followed by a \verb+'>'+ or a \verb+'|'+.
 \begin{tabularx}{\textwidth}{l|X}
   attribute     & description  \\
   \hline
-\verb+string+   & TODO \\
-\PIXMAP         & display button-items picture faced \\
+\verb+string+   & With a \BUTTON: \newline
+                  show this string on the \BUTTON{} instead of its \LABEL. \newline
+                  Combine this with \PIXMAP{} to show a \PIXMAP{} and a string on a \BUTTON. \newline
+                  Examples: \newline
+                  \verb+open { _("Open") }+ \newline
+                  \verb+open { PIXMAP="open", _("Open") }+ \newline
+                  \verb+open { PIXMAP="open", LABEL(open) }+
+                  \\
+\PIXMAP         & display button-items picture faced instead of text faced. \\
 \SIZE (w, h)    & scale the \PIXMAP{} to this size (in pixel) \\
 \SCROLLBARS     & attach a scrollbar to the multiline textfield \\
 \AUTOSCROLL     & automatically scroll to the end of the multiline textfield \\

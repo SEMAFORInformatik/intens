@@ -1135,7 +1135,6 @@ data_V2_variable_attr /* DOCUMENTATION:UNFOLD */
                   }
   | tLOCKABLE     { configurator -> setUserAttrLockable(); }
   | tSCALAR       { configurator -> setUserAttrScalar(); }
-  | tMATRIX       { configurator -> setUserAttrMatrix(); }
   | tCELL         { configurator -> setUserAttrCell(); }
   | tGLOBAL       { configurator -> setDictIsGlobal( true ); }
   | tOMIT_TTRAIL  { configurator -> setDictWithoutTTrail(); }
@@ -1278,8 +1277,6 @@ data_V2_item_option /* DOCUMENTATION:UNFOLD */
       }
   | tSCALAR
       { configurator -> setDictItemScalar(); }
-  | tMATRIX
-      { configurator -> setDictItemMatrix(); }
   | tCELL
       { configurator -> setDictItemCell(); }
   | tHIDDEN

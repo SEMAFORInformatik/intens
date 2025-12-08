@@ -19,7 +19,6 @@ UserAttr::UserAttr( DataDictionary * pDict )
     , m_Optional( false )
     , m_Lockable( false )
     , m_isScalar( false )
-    , m_isMatrix( false )
     , m_isCell( false )
     , m_isHidden( false )
     , m_colorpicker( false )
@@ -44,7 +43,6 @@ UserAttr::UserAttr()
   , m_Optional( false )
   , m_Lockable( false )
   , m_isScalar( false )
-  , m_isMatrix( false )
   , m_isCell( false )
   , m_dbtransient( false )
   , m_isHidden( false )
@@ -104,7 +102,6 @@ void UserAttr::operator=( const UserAttr &attr ){
   m_stylesheet            = attr.m_stylesheet;
   m_maxOccurs             = attr.m_maxOccurs;
   m_isScalar              = attr.m_isScalar;
-  m_isMatrix              = attr.m_isMatrix;
   m_isCell                = attr.m_isCell;
   m_isHidden              = attr.m_isHidden;
   m_isPersistent          = attr.m_isPersistent;
@@ -200,8 +197,6 @@ void UserAttr::write( std::ostream &ostr, const std::vector<std::string> &attrs 
       ostr << " helptext = \"" << s << "\"";
     }else if( *iter == "scalar" && m_isScalar )
       ostr << " scalar=\"true\"";
-    else if( *iter == "matrix" && m_isMatrix )
-      ostr << " matrix=\"true\"";
     else if( *iter == "dbattr" && m_dbattrname.size()>0 )
       ostr << " dbattr = \"" << m_dbattrname << "\"";
     else if( *iter == "dbunit" ){
@@ -226,7 +221,6 @@ void UserAttr::SetEditable()                       { m_Editable = true; }
 void UserAttr::SetOptional()                       { m_Optional = true; }
 void UserAttr::SetLockable()                       { m_Lockable = true; }
 void UserAttr::SetScalar()                         { m_isScalar = true; }
-void UserAttr::SetMatrix()                         { m_isMatrix = true; }
 void UserAttr::SetCell()                           { m_isCell = true; }
 void UserAttr::SetHidden()                         { m_isHidden = true; }
 void UserAttr::SetPersistent()                     { m_isPersistent = true; }
@@ -272,7 +266,6 @@ bool UserAttr::IsEditable()             const { return m_Editable; }
 bool UserAttr::IsOptional()             const { return m_Optional; }
 bool UserAttr::IsLockable()             const { return m_Lockable; }
 bool UserAttr::IsScalar()               const { return m_isScalar; }
-bool UserAttr::IsMatrix()               const { return m_isMatrix; }
 bool UserAttr::IsCell()                 const { return m_isCell; }
 bool UserAttr::IsHidden()               const { return m_isHidden; }
 bool UserAttr::IsPersistent()           const { return m_isPersistent; }

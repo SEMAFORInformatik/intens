@@ -72,7 +72,6 @@ public:
   void SetOptional();
   void SetLockable();
   void SetScalar();
-  void SetMatrix();
   void SetCell();
   void SetHidden();
   void SetPersistent();
@@ -130,7 +129,6 @@ public:
   bool IsOptional() const;
   bool IsLockable() const;
   bool IsScalar()   const;
-  bool IsMatrix()   const;
   bool IsCell()   const;
   bool IsHidden()   const;
   bool IsPersistent() const;
@@ -209,7 +207,6 @@ private:
   std::string                 m_stylesheet;
   int                         m_maxOccurs;
   bool                        m_isScalar;
-  bool                        m_isMatrix;
   bool                        m_isCell;
   bool                        m_isHidden;      // means: do not transfer it to matlab
   bool                        m_isPersistent;  // means: this item is stored in db

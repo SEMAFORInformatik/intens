@@ -98,7 +98,6 @@ class Configurator {
   virtual bool setUserAttrClassname( const std::string &name ) = 0;
   virtual bool setUserAttrMaxOccurs( const int num ) = 0;
   virtual bool setUserAttrScalar() = 0;
-  virtual bool setUserAttrMatrix() = 0;
   virtual bool setUserAttrCell() = 0;
   virtual bool setDataType( DataDictionary::DataType type ) = 0;
   virtual bool deleteUserAttr() = 0;
@@ -131,7 +130,6 @@ class Configurator {
   virtual bool setDictItemClassName( const std::string &name ) = 0;
   virtual bool setDictItemPlaceholder( const std::string &text ) = 0;
   virtual bool setDictItemScalar() = 0;
-  virtual bool setDictItemMatrix() = 0;
   virtual bool setDictItemCell() = 0;
   virtual bool setDictItemHidden() = 0;
   virtual bool setDictItemPersistent() = 0;

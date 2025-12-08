@@ -1225,13 +1225,6 @@ bool InterpreterConfigurator::setUserAttrScalar(){
   return true;
 }
 //======================================================================//
-// - setUserAttrMatrix
-//======================================================================//
-bool InterpreterConfigurator::setUserAttrMatrix(){
-  m_rep -> userAttr -> SetMatrix();
-  return true;
-}
-//======================================================================//
 // - setUserAttrPersistent
 //======================================================================//
 bool InterpreterConfigurator::setUserAttrPersistent(){
@@ -1554,13 +1547,6 @@ bool InterpreterConfigurator::setDictItemPlaceholder( const std::string &text ){
 //======================================================================//
 bool InterpreterConfigurator::setDictItemScalar(){
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetScalar();
-  return true;
-}
-//======================================================================//
-// - setDictItemMatrix
-//======================================================================//
-bool InterpreterConfigurator::setDictItemMatrix(){
-  static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetMatrix();
   return true;
 }
 //======================================================================//

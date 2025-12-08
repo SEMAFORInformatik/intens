@@ -69,7 +69,6 @@ class InterpreterConfigurator: public Configurator
   virtual bool setUserAttrClassname( const std::string &name );
   virtual bool setUserAttrMaxOccurs( const int num );
   virtual bool setUserAttrScalar();
-  virtual bool setUserAttrMatrix();
   virtual bool setUserAttrCell();
   virtual bool setDataType( DataDictionary::DataType type );
   virtual bool deleteUserAttr();
@@ -103,7 +102,6 @@ class InterpreterConfigurator: public Configurator
   virtual bool setDictItemClassName( const std::string &name );
   virtual bool setDictItemPlaceholder( const std::string &text );
   virtual bool setDictItemScalar();
-  virtual bool setDictItemMatrix();
   virtual bool setDictItemCell();
   virtual bool setDictItemHidden();
   virtual bool setDictItemPersistent();

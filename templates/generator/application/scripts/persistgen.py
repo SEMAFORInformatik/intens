@@ -119,12 +119,6 @@ class PersistGen:
         v['type'] = node.getAttribute('type')
         v['parenttype'] = list(self.typepath)
         v['label'] = node.getAttribute('label')
-        if(node.getAttribute('matrix') == ''
-           or node.getAttribute('matrix') == 'false'):
-            v['matrix'] = ''
-        else:
-            v['matrix'] = 'MATRIX'
-
         v['unit'] = node.getAttribute('unit')
         if v['unit'] == '':
             v['unit'] = '1'

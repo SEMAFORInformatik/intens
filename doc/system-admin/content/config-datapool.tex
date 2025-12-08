@@ -173,7 +173,6 @@ Itemname    & Description \\
 \index{OPTIONAL@\OPTIONAL!datapool attributes}
 \index{LOCKABLE@\LOCKABLE!datapool attributes}
 \index{SCALAR@\SCALAR!datapool attributes}
-\index{MATRIX@\MATRIX!datapool attributes}
 \index{CELL@\CELL!datapool attribute}
 \index{GLOBAL@\GLOBAL!datapool attribute}
 \index{OMIT\_TTRAIL@\OMITTTRAIL!datapool attribute}
@@ -198,8 +197,6 @@ Attributes       & Description \\ \hline
                    instead of matrices to any Matlab function
                    (or instread of vectors to and from the database).
                    They are not written as a list in a \JSON{} \STREAM.\\
-\MATRIX          & Data items with this attribute are transferred as matrices
-                     to and from the database instead of vectors.\\
 \CELL            & The data item is transferred to the Matlab workspace as cell instead of array. \\
 \GLOBAL          & The data item is not changed by cycle operations. \\
 \OMITTTRAIL      & The data item is not handled by transactions (ABORT, UNDO, ...). \\
@@ -231,7 +228,6 @@ Attributes       & Description \\ \hline
 \index{RADIO@\RADIO!datapool item option}
 \index{CLASSNAME@\CLASSNAME!datapool item option}
 \index{SCALAR@\SCALAR!datapool item option}
-\index{MATRIX@\MATRIX!datapool item option}
 \index{CELL@\CELL!datapool item option}
 \index{HIDDEN@\HIDDEN!datapool item option}
 \index{PLACEHOLDER@\PLACEHOLDER!datapool item option}
@@ -293,8 +289,6 @@ Options          & Description \\ \hline
                       instead of matrices to the Matlab workspace
                       (or instread of vectors to and from the database).
                       They are not written as a list in a \JSON{} \STREAM.\\
-\MATRIX          & Data items with this attribute are transferred as matrices
-                     to and from the database instead of vectors.\\
 \CELL            & The data item is transferred to Matlab workspace as cell instead of array. \\
 \HIDDEN          & The data item is not transferred to Matlab.
                    It is, by default, not written in \JSON{} \STREAM{}s (see \nameref{dia:stjsonoptions} on page \pageref{dia:stjsonoptions}).

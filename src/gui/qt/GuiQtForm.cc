@@ -1284,11 +1284,6 @@ void GuiQtForm::writeSettings(){
     if (windowStates == Qt::WindowNoState) {
       settings->setValue(_tmp + ".size", getDialogWidget()->size());
       settings->setValue(_tmp + ".pos", getDialogWidget()->pos());
-#if QT_VERSION < 0x060000
-      settings->setValue(_tmp + ".screen", widget->screenNumber(getDialogWidget()));
-#else
-      settings->setValue(_tmp + ".screen", getDialogWidget()->screen()->serialNumber());
-#endif
     }
     BUG_INFO(_tmp.toStdString() << " size (settings) written: "
              << settings->value(_tmp + ".size").toString().toStdString());

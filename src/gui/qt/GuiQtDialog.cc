@@ -243,9 +243,23 @@ void GuiQtDialog::readSettings()
 
     // read position
     QPoint pt = settings->value(_tmp + ".pos", getDialogWidget()->pos()).toPoint();
-    int screen = settings->value(_tmp + ".screen", 0).toInt();
     if (pt != getDialogWidget()->pos()) {
       BUG_MSG("Set to new Position ["<<pt.x()<<", "<<pt.y()<<"]");
+      // check position if it is a valid screen position
+      bool validPosition(false);
+      if (QGuiApplication::screens().size()){
+        for (auto screen: QGuiApplication::screens()){
+          QRect screenGeometry = screen->geometry();
+          if (screenGeometry.contains(pt)) {
+            validPosition = true;
+            break;
+          }
+        }
+        if (!validPosition) {
+          pt = QGuiApplication::screens()[0]->geometry().topLeft();
+          BUG_MSG("Move to new Position ["<<pt.x()<<", "<<pt.y()<<"]");
+        }
+      }
       getDialogWidget()->move(pt);
     }
 

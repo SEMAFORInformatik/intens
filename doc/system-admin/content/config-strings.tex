@@ -16,6 +16,7 @@ They must be delimited by a double quote character (''): \\
 \index{  @Signs / Characters!\texttt{""} (double quote)!string delimiter}
 \index{  @Signs / Characters!\& (ampersand)!string concatenation}
 \index{COMPOSESTRING@\COMPOSESTRING!string composition}
+\index{RESOURCE@\RESOURCE!resource string value}
 \index{LABEL@\LABEL!string concatenation}
 \index{UNIT@\UNIT!string concatenation}
 \begin{tabularx}{\textwidth}{l|X}
@@ -26,10 +27,12 @@ character & any charachter sign, except double quote (''), at (@) and backslash 
   & at's are used to switch between fonts (see section multifont
              strings \nameref{sec:multifont} page \pageref{sec:multifont})\\
 \&  & concatenate string with strings, LABEL's or UNIT's \\
-\COMPOSESTRING & Compose string: write values into string. Needed for translatable strings. \newline
-                 The format-string (first argument) contains \%1, \%2, ... and the remaining string(s)
-                 are put in these places. \newline
-                 One format-string and up to 15 other strings are implemented. \newline
+\verb+_("...")+ & a string that can be translated (using GNU gettext) \\
+\RESOURCE      & see section \nameref{sec:resource} on page \pageref{sec:resource} \\
+\COMPOSESTRING & Compose string: write values into string. Needed for translatable strings or to use a \RESOURCE{} value in a string. \newline
+                 The format-string (first argument) contains \%1, \%2, ... and the remaining value(s)
+                 (integer or string) are put in these places. \newline
+                 One format-string with up to 3 integers or 15 strings are implemented. \newline
                  The composition is done at parse time. \\
 LABEL & returns the label defined in the datapool (section
                \nameref{dia:dataitemoptions} page \pageref{dia:dataitemoptions}). \\

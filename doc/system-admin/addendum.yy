@@ -19,6 +19,8 @@ opt_identifier_character /* DOCUMENTATION:UNFOLD */
 /* string */
 STRING_CONSTANT /* DOCUMENTATION:DIAGRAM */
   : '"' opt_character_list '"'
+  | "_(" '"' character_list '"' ")"
+  | "RESOURCE(" '"' character_list '"' ")"
   ;
 
 opt_character_list /* DOCUMENTATION:UNFOLD */
@@ -37,6 +39,7 @@ INT_CONSTANT /* DOCUMENTATION:UNFOLD */
   ;
 integer /* DOCUMENTATION:DIAGRAM */
   : "digit" opt_integer_character_list
+  | "RESOURCE(" '"' character_list '"' ")"
   ;
 opt_integer_character_list /* DOCUMENTATION:UNFOLD */
   : opt_integer_character

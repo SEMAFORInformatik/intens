@@ -15,7 +15,7 @@ clean:
 	$(RM) diagrams/*
 	latexmk -c sysadmin.tex
 
-diagrams/description.tex: eps2tex.py yacc2eps.py ../../src/parser/parseryacc.yy
+diagrams/description.tex: eps2tex.py yacc2eps.py addendum.yy ../../src/parser/parseryacc.yy
 	./yacc2eps.py ../../src/parser/parseryacc.yy diagrams
 	./eps2tex.py diagrams
 

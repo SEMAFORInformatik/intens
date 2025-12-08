@@ -1,0 +1,46 @@
+\subsubsection{Resource}
+%              ---------
+\label{sec:resource}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                            Resource                                   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\index{RESOURCE@\RESOURCE}
+
+\INTENS{} can use the value of an environment variable or of a resource property
+set in a resource file (.ini, provided with --resfile, section [Resource]).
+
+\INTENS{} reads the \RESOURCE{} at parse time. If neither environment variable nor
+resource property is found, a parser error is thrown and the application does not start.
+
+The type of a \RESOURCE{} is \INTEGER, \REAL{} or \STRING.
+The type is based on the value of the resource:
+\begin{itemize}
+\item ``123'' is an \INTEGER
+\item ``3.14'' is a \REAL{}
+\item ``123abc'' is a \STRING
+\end{itemize}
+
+Make sure the type matches the context of the \RESOURCE: a parser error is thrown
+when \RESOURCE{} is i.E. an \INTEGER{} in a context where a \STRING{} is needed.
+
+Example:
+
+\begin{boxedminipage}[t]{\linewidth}
+\begin{verbatim}
+
+MESSAGE_QUEUE mq_request{
+  REQUEST
+, HOST=RESOURCE("REPLY_HOST")
+, PORT_REQUEST=RESOURCE("REPLY_PORT")
+};
+
+\end{verbatim}
+\end{boxedminipage}
+
+With a start script that has the lines
+\begin{verbatim}
+export REPLY_HOST="localhost"
+export REPLY_PORT=12345
+\end{verbatim}
+, \INTENS{} replaces \verb+RESOURCE("REPLY_HOST")+ with the \STRING{} ``localhost'' and
+\verb+RESOURCE("REPLY_PORT")+ with the \INTEGER{} 12345.

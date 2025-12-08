@@ -54,8 +54,9 @@ __pycache__
 
 # generated doc/sysadmin files
 doc/system-admin/*.aux
-doc/system-admin/diagramme/Ebnf2ps/*.eps
-doc/system-admin/diagramme/Ebnf2ps/*.tex
+doc/system-admin/content/*.aux
+doc/system-admin/diagrams/*.eps
+doc/system-admin/diagrams/*.tex
 
 # generated
 etc/lsp/src/tree_sitter

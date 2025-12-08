@@ -554,8 +554,8 @@ string_element_compose /* DOCUMENTATION:UNFOLD */
       { $$ = new std::string(compose(*($3), $5)); }
   | tCOMPOSE_STRING '(' string_element ',' tINT_CONSTANT ',' tINT_CONSTANT ')'
       { $$ = new std::string(compose(*($3), $5, $7)); }
-  | tCOMPOSE_STRING '(' string_element ',' tINT_CONSTANT ',' tINT_CONSTANT',' tINT_CONSTANT ')'
-      { $$ = new std::string(compose(*($3), $5, $7, $9)); }
+  | tCOMPOSE_STRING '(' string_element ',' tINT_CONSTANT ',' tINT_CONSTANT',' tINT_CONSTANT ')' /* DOCUMENTATION:HIDE BEGIN */
+      { $$ = new std::string(compose(*($3), $5, $7, $9)); } /* DOCUMENTATION:HIDE END */
   | tCOMPOSE_STRING '(' string_element ',' string_element ')'
       { $$ = new std::string(compose(*($3), *($5))); }
   | tCOMPOSE_STRING '(' string_element ',' string_element ',' string_element ')'

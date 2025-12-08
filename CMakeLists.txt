@@ -306,6 +306,12 @@ add_custom_target(
   )
 
 add_custom_target(
+  docker-alma-linux-build-image
+  COMMENT "build alma-linux-build docker image"
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/docker/create-alma-linux-build-image.sh" ${PACKAGE_VERSION}
+  )
+
+add_custom_target(
   intens-windows-build
   COMMENT "compile intens for windows"
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/dockcross/build-windows-release.sh" "static"
@@ -314,6 +320,11 @@ add_custom_target(
   intens-ubuntu-build
   COMMENT "compile intens for Ubuntu"
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/dockcross/build-ubuntu.sh"
+  )
+add_custom_target(
+  intens-alma-linux-build
+  COMMENT "compile intens for AlmaLinux"
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/dockcross/build-linux-release.sh" "alma"
   )
 
 add_custom_target(

@@ -7,7 +7,7 @@ path=$(dirname "$(realpath $0)")
 
 DOCKCROSS_IMAGE=ghcr.io/semaforinformatik/intens/linux-build:latest
 if [ "$1" = alma ]; then
-    DOCKCROSS_IMAGE=ghcr.io/semaforinformatik/intens/almalinux-build:10.1
+    DOCKCROSS_IMAGE=ghcr.io/semaforinformatik/intens/almalinux-build:latest
     PLATFORM_PREFIX="alma-"
 fi
 TARGET_DIR=/work/build-${PLATFORM_PREFIX}linux-shared-x64
@@ -24,5 +24,5 @@ DOCKCROSS="docker run --rm --name dockcross-$$RANDOM \
 ${DOCKCROSS_IMAGE}"
 
 # NOTE: -DUSE_LSP is off, cannot use matlab in shared config
-${DOCKCROSS} bash -c "cmake -DUSE_OAUTH=True -DUSE_LSP=OFF -B ${TARGET_DIR} -S . && \
+${DOCKCROSS} bash -c "cmake -DUSE_OAUTH=True -B ${TARGET_DIR} -S . && \
     cmake --build $TARGET_DIR -j8 && (cd ${TARGET_DIR}; cpack)"

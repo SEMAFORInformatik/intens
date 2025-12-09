@@ -1,0 +1,80 @@
+# Basis-Image: AlmaLinux 10.1
+FROM almalinux:10.1
+
+# Metadaten
+LABEL maintainer="Günther Amsler <guenther@example.com>"
+
+# Pakete aktualisieren und notwendige Abhängigkeiten installieren
+RUN dnf update -y && \
+    dnf install -y epel-release && \
+    dnf install -y git cmake gcc-c++ make tar bzip2 wget && \
+    dnf install -y qt6-qtbase-devel qt6-qttools-devel qt6-qtbase-gui \
+    gettext-devel \
+    qt6-qtsvg-devel \
+    qt6-qtcharts-devel \
+    qt6-qtnetworkauth-devel \
+    log4cplus \
+    libcurl-devel \
+    openssl-devel \
+    cppzmq-devel \
+    libxslt-devel \
+    libxml2-devel  \
+    libtool-ltdl-devel \
+    bison \
+    flex \
+    unzip \
+    protobuf-devel \
+    protobuf-compiler \
+    python3-devel \
+    jsoncpp-devel \
+    gtest-devel \
+    nodejs-devel && \
+    dnf clean all
+
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install mako pytest behave zmq psutil flask && ln -s /usr/bin/python3 /usr/bin/python
+
+# 2025-05 qwt-qt6 package are not provided
+WORKDIR /usr/local
+RUN wget --no-check-certificate https://deac-riga.dl.sourceforge.net/project/qwt/qwt/6.3.0/qwt-6.3.0.tar.bz2 && \
+    tar xfj qwt-6.3.0.tar.bz2 && \
+    cd qwt-6.3.0 && qmake6 qwt.pro && make -j${nproc} && \
+    cp ./lib/libqwt.so* /usr/lib/ && mkdir -p /usr/include/qwt/ && cp ./src/*.h /usr/include/qwt/
+
+# Download and extract log4cplus
+RUN wget https://sourceforge.net/projects/log4cplus/files/log4cplus-stable/2.1.2/log4cplus-2.1.2.tar.xz/download -O log4cplus.tar.xz && \
+    tar -xf log4cplus.tar.xz && \
+    rm log4cplus.tar.xz && \
+    mv log4cplus-* log4cplus && \
+    mkdir -p log4cplus/build && \
+    cd log4cplus/build && \
+    cmake .. && make -j$(nproc) && make install
+
+# jsoncpp
+RUN wget https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.6.tar.gz && \
+    tar -xzf 1.9.6.tar.gz && \
+    cd jsoncpp-1.9.6 && \
+    mkdir -p build && \
+    cd build && \
+    cmake .. && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig && \
+    rm -rf /opt/1.9.6.tar.gz && \
+    cd /usr/include && ln -s . jsoncpp
+
+#
+# we need a recent version of tree-sitter
+RUN wget https://github.com/tree-sitter/tree-sitter/releases/download/v0.25.6/tree-sitter-linux-x64.gz && \
+ gunzip tree-sitter-linux-x64.gz && install -m 755 tree-sitter-linux-x64 /usr/local/bin/tree-sitter && \
+ mkdir -m 777 /.cache/
+#
+ADD https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip /opt
+
+RUN unzip /opt/sonar-scanner-cli-7.0.2.4839-linux-x64.zip -d /opt/
+ENV PATH=/opt/sonar-scanner-7.0.2.4839-linux-x64/bin:$PATH
+
+WORKDIR /work
+
+# Standardbefehl (kann angepasst werden)
+CMD ["bash"]

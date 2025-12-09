@@ -500,7 +500,11 @@ void GuiPlotDataItem::getLabelAndUnit( std::string &label, bool annotation ){
     s << annolabel;
   }
   else{
-    s << getLabel() << " " << getUnit();
+    if (getUnit().empty()) {
+      s << getLabel();
+    } else {
+      s << getLabel() << " " << getUnit();
+    }
   }
   label = s.str();
 }

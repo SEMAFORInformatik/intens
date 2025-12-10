@@ -311,7 +311,9 @@ void GuiQtText::update( UpdateReason reason ){
     m_param->getFormattedValue( text );
     BUG_DEBUG("- Value is '" << text << "'");
     QString qtext( QString::fromStdString(text) );
-    std::string mimeTypeData = FileUtilities::getDataMimeType(text);
+    std::string mimeTypeData = m_param->Data()->getMediaType();
+    if (mimeTypeData.empty())
+      mimeTypeData = FileUtilities::getDataMimeType(text);
 
 #if QT_WEBENGINE
     // is html?
@@ -367,10 +369,10 @@ void GuiQtText::update( UpdateReason reason ){
         BUG_DEBUG("MaxSizeViewPort: " << vbm.width() << ", "  << vbm.height());
         m_widgetStack->setCurrentWidget(m_svgView);
       } else if (mimeTypeData == "image/png") {
-        QByteArray bArray(text.c_str());
         QPixmap pixmap;
         pixmap.loadFromData((const uchar*) text.c_str(), text.size());
         if (!m_label) m_label = new QLabel();
+        m_label->setPixmap( pixmap );
         m_widgetStack->addWidget( m_label );
         m_widgetStack->setCurrentWidget(m_label);
       } else {

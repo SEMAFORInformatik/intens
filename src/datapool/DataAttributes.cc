@@ -190,3 +190,19 @@ bool DataAttributes::setStylesheet(const std::string &stylesheet) {
 const std::string& DataAttributes::getStylesheet() const {
   return m_stylesheet;
 }
+
+/* --------------------------------------------------------------------------- */
+/* setMediaType--                                                              */
+/* --------------------------------------------------------------------------- */
+
+void DataAttributes::setMediaType(const std::string &media_type) {
+  m_media_type = media_type;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getMediaType --                                                             */
+/* --------------------------------------------------------------------------- */
+
+const std::string DataAttributes::getMediaType() const {
+  return m_media_type;
+}

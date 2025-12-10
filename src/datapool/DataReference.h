@@ -1022,6 +1022,9 @@ public:
   /** Diese Funktion liefert das der DataReference hinterlegte Stylesheet zurück
    */
   const std::string getStylesheet(TransactionNumber t, bool& changed);
+  /** Diese Funktion liefert sofern verfügbar den Media Type der Daten zurück
+   */
+  const std::string getMediaType();
 
   /*****************************************************************************/
   /* Loesch-Funktionen                                                         */

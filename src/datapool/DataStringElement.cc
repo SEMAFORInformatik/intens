@@ -95,7 +95,8 @@ bool DataStringElement::getValue( std::string &val ) const{
 bool DataStringElement::setValue( const std::string &val, int rundung ){
   LOG_DEBUG( "val=[" << val << "]  oldVal=["<<m_value<<"]" );
   std::string value(val);
-  m_mimeType.clear();
+  std::string mimeType;
+  setMediaType("");
   if (val.substr(0, 5) == "data:") {
     size_t pos = val.find_first_of(',');
     size_t outsize = val.size() - pos;
@@ -104,8 +105,8 @@ bool DataStringElement::setValue( const std::string &val, int rundung ){
       value = std::string(output, outsize);
     }
     size_t pos2 = val.find_first_of(';');
-    m_mimeType = val.substr(5, pos2-5);
-    LOG_DEBUG("Header ["<<val.substr(0, pos)<<"] mimeType["<<m_mimeType<<"]");
+    mimeType = val.substr(5, pos2-5);
+    LOG_DEBUG("Header ["<<val.substr(0, pos)<<"] mimeType["<<mimeType<<"]");
     delete[] output;
   }
 
@@ -113,10 +114,11 @@ bool DataStringElement::setValue( const std::string &val, int rundung ){
     if( isValid() && value == m_value ){
       return false; // Es ändert sich nichts
     }
-    if (getElementType() == DataDictionary::type_CharData) {
-      m_mimeType = FileUtilities::getDataMimeType(value);
-      LOG_DEBUG("new mime type["<<m_mimeType<<"]");
+    if (mimeType.empty() && getElementType() == DataDictionary::type_CharData) {
+      mimeType = FileUtilities::getDataMimeType(value);
+      LOG_DEBUG("new mime type["<<mimeType<<"]");
     }
+    setMediaType(mimeType);
     m_value = value;
     setValid();
     setDataContainerValueUpdated( DataPool::getTransactionNumber() );
@@ -296,6 +298,7 @@ DataElement::UpdateStatus DataStringElement::setDataValue( DataValue *d ){
 
 DataElement::UpdateStatus DataStringElement::clearValue(){
   m_value.erase();
+  setMediaType("");
   return setInvalid();
 }
 
@@ -549,11 +552,11 @@ bool DataStringElement::writeJSON( std::ostream &ostr,
   if( !isValid() ){
     ostr << "null";
   } else
-  if (m_mimeType.size() && m_mimeType != "text/plain" && m_mimeType != "image/svg+xml") {
+  if (!getMediaType().empty() && getMediaType() != "text/plain" && getMediaType() != "image/svg+xml") {
     std::string sBase64;
     base64encode(reinterpret_cast<const unsigned char*>(m_value.c_str()),
                  m_value.size(), sBase64, false);
-    ostr << "\"" << "data:" << m_mimeType << ";base64," << sBase64 << "\"";
+    ostr << "\"" << "data:" << getMediaType() << ";base64," << sBase64 << "\"";
   } else {
     ostr << valueToQuotedString( m_value.c_str() );
   }

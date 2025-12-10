@@ -211,7 +211,7 @@ void MessageQueueReply::slot_error(const std::string& messageShort, const std::s
                                                     compose(_("MessageQueue Error: %1\n"),messageLong)
                                                     );
   GuiFactory::Instance()->showDialogInformation(NULL, _("MessageQueue Reply Error"),
-                                                compose(_("%1\n\n(For details see log window)"),messageShort), NULL);
+                                                compose(_("%1\n\n(Port: %2)\n(For details see log window)"),messageShort, m_portReply), NULL);
 }
 #endif
 

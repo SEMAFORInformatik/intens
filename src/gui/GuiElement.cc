@@ -695,7 +695,10 @@ void GuiElement::writeDataTypeJsonProperties(Json::Value& jsonObj, XferDataItem 
       if (item->isValid() && item->getValue(s)){
         jsonObj["value"] = s;
       }
-      jsonObj["mimetype"] = FileUtilities::getDataMimeType(s);
+      std::string mediaType(item->Data()->getMediaType());
+      if (mediaType.empty())
+        mediaType = FileUtilities::getDataMimeType(s);
+      jsonObj["mimetype"] = mediaType;
 
       // special case pixmap, value could be a file name
       if (Type() == GuiElement::type_Pixmap && s.size() < 200) {
@@ -724,16 +727,19 @@ void GuiElement::writeDataTypeJsonProperties(Json::Value& jsonObj, XferDataItem 
         std::string sBase64;
         base64encode(reinterpret_cast<const unsigned char*>(s.c_str()),
                      s.size(), sBase64, false);
-        jsonObj["mimetype"] = FileUtilities::getDataMimeType(s);
+        std::string mediaType(item->Data()->getMediaType());
+        if (mediaType.empty())
+          mediaType = FileUtilities::getDataMimeType(s);
+        jsonObj["mimetype"] = mediaType;
         if (jsonObj["mimetype"].asString().rfind("image/") == 0) {
           std::ostringstream os;
-          os << "data:" << FileUtilities::getDataMimeType(s) << ";base64," << sBase64;
+          os << "data:" << mediaType << ";base64," << sBase64;
           jsonObj["value"] = os.str();
         } else  {
           jsonObj["value"] = sBase64;
         }
-        BUG_DEBUG("CData, Mimetype["<<FileUtilities::getDataMimeType(s)<<"] size["<<sBase64.size()<<"]");
-        BUG_INFO("CData, Mimetype["<<FileUtilities::getDataMimeType(s)<<"] size["<<sBase64.size()<<"] vn["<<param->DataItem()->getFullName(true)<<"] Id["<<jsonObj["id"].asString()<<"] ");
+        BUG_DEBUG("CData, Mimetype["<<mediaType<<"] size["<<sBase64.size()<<"]");
+        BUG_INFO("CData, Mimetype["<<mediaType<<"] size["<<sBase64.size()<<"] vn["<<param->DataItem()->getFullName(true)<<"] Id["<<jsonObj["id"].asString()<<"] ");
       }
 
       // special case pixmap, value could be a file name
@@ -870,7 +876,10 @@ in_proto::ValueInfo* GuiElement::writeDataTypeProtobufProperties(XferDataItem *i
     if (item->isValid() && item->getValue(s)){
       element->set_string_value(s);
     }
-    element->set_mimetype(FileUtilities::getDataMimeType(s));
+    std::string mediaType(item->Data()->getMediaType());
+    if (mediaType.empty())
+      mediaType = FileUtilities::getDataMimeType(s);
+    element->set_mimetype(mediaType);
 
     // special case pixmap, value could be a file name
     if (Type() == GuiElement::type_Pixmap && s.size() < 200) {
@@ -893,15 +902,18 @@ in_proto::ValueInfo* GuiElement::writeDataTypeProtobufProperties(XferDataItem *i
       std::string sBase64;
       base64encode(reinterpret_cast<const unsigned char*>(s.c_str()),
                    s.size(), sBase64, false);
-      element->set_mimetype(FileUtilities::getDataMimeType(s));
+      std::string mediaType(item->Data()->getMediaType());
+      if (mediaType.empty())
+        mediaType = FileUtilities::getDataMimeType(s);
+      element->set_mimetype(mediaType);
       if (element->mimetype().rfind("image/") == 0) {
         std::ostringstream os;
-        os << "data:" << FileUtilities::getDataMimeType(s) << ";base64," << sBase64;
+        os << "data:" << mediaType << ";base64," << sBase64;
         element->set_string_value(os.str());
       } else  {
         element->set_string_value(sBase64);
       }
-      BUG_DEBUG("CData, Mimetype["<<FileUtilities::getDataMimeType(s)<<"] size["<<sBase64.size()<<"]");
+      BUG_DEBUG("CData, Mimetype["<<mediaType<<"] size["<<sBase64.size()<<"]");
     }
 
     // special case pixmap, value could be a file name

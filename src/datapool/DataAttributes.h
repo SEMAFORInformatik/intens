@@ -101,16 +101,24 @@ public:
 
   static void attributeBits( DATAAttributeMask mask, std::ostream &ostr );
 
-  /** Diese Funktion setzt das Stylesheet auf dem DataItem.
-      Ändert das Stylesheet ist der Rückgabewert true.
+  /** This function set the stylesheet of the DataItem.
+      if changed, it returns true.
       @param stylesheet
-      @return true -> Änderung des Stylesheets
+      @return true -> stylesheet has changed
    */
   bool setStylesheet(const std::string &stylesheet);
-  /** Diese Funktion gibt das Stylesheet zurück
+  /** get stylesheet
       @return Stylesheet
    */
   const std::string& getStylesheet() const;
+  /** set internet media type
+      @param internet media type
+   */
+  void setMediaType(const std::string& media_type);
+  /** get internet media type
+      @return internet media type if available
+   */
+  const std::string getMediaType() const;
 
 /*=============================================================================*/
 /* Member variables                                                            */
@@ -118,6 +126,7 @@ public:
 private:
   DATAAttributeMask m_attr_mask;
   std::string       m_stylesheet;
+  std::string       m_media_type;
 };
 
 #endif

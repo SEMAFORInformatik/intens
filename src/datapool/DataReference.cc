@@ -1091,7 +1091,7 @@ TransactionNumber DataReference::getDataTimestamp( UpdateStatus status ){
 }
 
 /* --------------------------------------------------------------------------- */
-/* setDataTimestamp --							       */
+/* setDataTimestamp --                                                         */
 /* --------------------------------------------------------------------------- */
 
 bool DataReference::setDataTimestamp( bool set, UpdateStatus status ){
@@ -1102,7 +1102,7 @@ bool DataReference::setDataTimestamp( bool set, UpdateStatus status ){
 
 
 /* --------------------------------------------------------------------------- */
-/* setStylesheet --							       */
+/* setStylesheet --                                                            */
 /* --------------------------------------------------------------------------- */
 
 bool DataReference::setStylesheet(const std::string& stylesheet) {
@@ -1111,7 +1111,7 @@ bool DataReference::setStylesheet(const std::string& stylesheet) {
 }
 
 /* --------------------------------------------------------------------------- */
-/* getStylesheet --							       */
+/* getStylesheet --                                                            */
 /* --------------------------------------------------------------------------- */
 
 const std::string DataReference::getStylesheet(TransactionNumber t, bool& changed) {
@@ -1120,6 +1120,14 @@ const std::string DataReference::getStylesheet(TransactionNumber t, bool& change
   alterData(sObj);
 
   return sObj.get(changed);
+}
+
+/* --------------------------------------------------------------------------- */
+/* getMediaType --                                                             */
+/* --------------------------------------------------------------------------- */
+
+const std::string DataReference::getMediaType(){
+  return getElement() ? getElement()->getMediaType() : "";
 }
 
 /*******************************************************************************/

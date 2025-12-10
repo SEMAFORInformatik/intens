@@ -240,21 +240,21 @@ void GuiQtPixmap::update( UpdateReason reason ){
     else {
       // other pixmaps load via filename
       if( pixName.size() ) {
-	// is pixmap name size > 1K => pixmap data
-	if (pixName.size() > 1000) {
-	  QByteArray bArray(pixName.c_str());
-	  pixmap.loadFromData((const uchar*) pixName.c_str(), pixName.size());
-    if (m_width && !pixmap.isNull()) {
-      pixmap = pixmap.scaled(m_width, m_height);
-    }
-  }
-	else {
-	  QtIconManager::Instance().getPixmap( pixName, pixmap, m_width, m_height );
-	}
-	m_myLabel->setPixmap( pixmap );
+        // is pixmap name size > 1K => pixmap data
+        if (pixName.size() > 1000) {
+          QByteArray bArray(pixName.c_str());
+          pixmap.loadFromData((const uchar*) pixName.c_str(), pixName.size());
+          if (m_width && !pixmap.isNull()) {
+            pixmap = pixmap.scaled(m_width, m_height);
+          }
+        }
+        else {
+          QtIconManager::Instance().getPixmap( pixName, pixmap, m_width, m_height );
+        }
+        m_myLabel->setPixmap( pixmap );
       }
       else {
-	m_myLabel->setPixmap( pixmap );
+        m_myLabel->setPixmap( pixmap );
       }
       m_widgetStack->setCurrentWidget(m_myLabel);
     }

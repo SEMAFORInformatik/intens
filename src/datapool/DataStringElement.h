@@ -255,7 +255,6 @@ public:
 /*=============================================================================*/
 private:
   std::string       m_value;
-  std::string       m_mimeType;
   DataDictionary::DataType m_dataType;
 
 };

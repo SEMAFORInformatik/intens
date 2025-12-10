@@ -740,25 +740,4 @@ OPERATOR
     }
   ;
 
-  MESSAGE_QUEUE
-    mqReply_reply_ctrl_mq {
-      REPLY  // MessageQueue Pattern
-    , PORT_REQUEST=15562   //* Request Port of Reply MesssageQueue
-    , NO_DEPENDENCIES
-    , ( HEADER="ProgressDialogAbortCommand"
-      , RESPONSE(mqReply_response_stream)
-      , REQUEST(mqReply_control_request_stream)
-      )
-    }
-  ;
-
-  // publish progress data
-  MESSAGE_QUEUE
-    mqReply_publisher_mq {
-      PUBLISH                             // MessageQueue Pattern
-    , HOST="localhost"                    // Hostname
-    , PORT=__PORT_PUBLISH__               // Publisher Port
-    }
-  ;
-
 END OPERATOR;

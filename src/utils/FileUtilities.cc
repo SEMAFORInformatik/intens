@@ -486,6 +486,13 @@ std::string FileUtilities::getSuffix(const std::string & fName) {
 /* --------------------------------------------------------------------------- */
 
 std::string FileUtilities::getDataMimeType(const std::string& data){
+  if (data.substr(0, 5) == "data:"){
+    size_t pos = data.find_first_of(',');
+    size_t pos2 = data.find_first_of(';');
+    if (pos2 < 50 && pos < 100){
+      return data.substr(5, pos2-5);
+    }
+  }
   if (data.find("<svg") >= 0 && data.find("svg>") != std::string::npos)
     return "image/svg+xml";
   if (data.find("<html ") != std::string::npos && data.find("html>") != std::string::npos)

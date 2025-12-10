@@ -82,10 +82,6 @@ item_options:
         matrices to the Matlab workspace (or instread of vectors to and
         from the database). They are not written as a list in a `JSON
         STREAM`.
-    - token: MATRIX
-      doc: |
-        Data items with this attribute are transferred as matrices to and
-        from the database instead of vectors.
     - token: CELL
       doc: |
         The data item is transferred to Matlab workspace as cell instead

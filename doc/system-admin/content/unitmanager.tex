@@ -3,15 +3,93 @@
 The Unit Manager is an INTENS component that handles the automatic
 scaling of values in the user interface.
 
-\begin{figure}[h]\label{fig:unitmanager}
+We recommend having values in their base units in the datapool, and then
+scale them for the user interface. This way, the values passed
+to calculation programs, stored in the database or in files are
+in base units. They are only scaled for the user interface.
+
+\subsection{Example}
+Throughout this section, let's use an example variable motor.Lls
+that was defined this way:
+
+\begin{lstlisting}
+DATAPOOL
+  STRUCT Motor: Component {
+    ...
+    REAL {EDITABLE, SCALAR}
+      Lls {
+        LABEL=_("Stator Leakage"),
+        HELPTEXT=_("Stator leakage inductance"),
+        UNIT="mH"
+      },
+    ...
+  };
+  Motor
+    motor {
+      LABEL=_("Motor"),
+      PERSISTENT, SCALAR
+    }
+  ;
+\end{lstlisting}
+
+It has the value 0.001 H, shown as 1 mH in the user interface.
+
+\begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.7\linewidth]{xfig/unitmanager}
+    \includegraphics[width=0.35\linewidth]{images/unitmanager-test-application-default}
   \end{center}
-  \caption{Automatic Scaling}
+  \caption{Test application using Unit Manager}\label{fig:unitmanager-test-application-default}
 \end{figure}
 
-The units can be configured. In INTENS included is a set of
-standard units. For example
+\subsection{Without Unit Manager}
+Without the Unit Manager, the variable motor.Lls needs a scale
+factor *1e3 when shown in the user interface:
+
+\begin{lstlisting}[escapeinside={(*}{*)}]
+FIELDGROUP motor_properties_fg(
+  ...
+  LABEL(motor.Lls)      motor.Lls(*\textbf{*1e3}*)   UNIT(motor.Lls),
+  ...
+);
+\end{lstlisting}
+
+INTENS reads the value motor.Lls (0.001), multiplies it by 1000 (1.0)
+and shows this in the user interface. When the user enters a value,
+INTENS takes that value (1.0), divides it by 1000 (0.001) and stores it.
+See figure \ref{fig:unitmanager-scaling} on page \pageref{fig:unitmanager-scaling}.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.7\linewidth]{xfig/unitmanager-scaling}
+  \end{center}
+  \caption{Unit Scaling}\label{fig:unitmanager-scaling}
+\end{figure}
+
+That brings the risk of forgetting to provide the (correct)
+scale factors in the UI\_MANAGER, while the UNIT is defined in the
+DATAPOOL. This is where the Unit Manager comes in.
+
+\subsection{With Unit Manager}
+You activate the Unit Manager using the INTENS
+commandline option \texttt{--}unitManager.
+
+As mentioned, the Unit Manager handles the automatic scaling of values
+in the user interface.
+
+You no longer provide the scale factor:
+\begin{lstlisting}
+FIELDGROUP motor_properties_fg(
+  ...
+  LABEL(motor.Lls)      motor.Lls   UNIT(motor.Lls),
+  ...
+);
+\end{lstlisting}
+
+As you defined the UNIT ``mH'' in the variable definition, INTENS
+knows that you want to see motor.Lls in ``mH''.
+
+\subsection{Configuring the Units}
+INTENS knows a set of standard units. For example
 \begin{lstlisting}[language=json, escapeinside={(*}{*)}]
 [...,
  {"name": "H", "factor": 1.0,
@@ -22,10 +100,38 @@ standard units. For example
  ...
 ]
 \end{lstlisting}
-This produces a set (combobox) with 3 entries: H, mh, $\mu$H
-and H as the base unit (ie. the unit of the values in the datapool).
 
-If a single value ``mH'' is preferred the following configuration
+``H'' is the base unit. It has the scale factor 1.0 - as most
+base units do.
+And there are two derived units, ``mH'' and ``$\mu$H'', with their
+scaling factors.
+That information is enough for INTENS to automatically show
+motor.Lls (0.001 H) as 1 mH.
+
+Now, your application likely needs more units than the small set of
+units known by INTENS.
+You can extend or change the units for the application using the built in
+Unit Manager form (menu Options > Unit Manager, see figure
+\ref{fig:unitmanager-editor} on page \pageref{fig:unitmanager-editor}.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\linewidth]{images/unitmanager-editor}
+  \end{center}
+  \caption{Unit Manager: Editor}\label{fig:unitmanager-editor}
+\end{figure}
+
+You can add new base units and / or derived units as needed.
+When you close the form, the information is stored in the file
+<APPHOME>/etc/application\_unit.json.
+You can also extend or change the units for the application by modifying
+this file directly. Just keep in mind that the file is read when the application
+starts, so you need to restart the application to see the effect of your
+modifications.
+All of this is normally done during the application development.
+Remember to distribute the file etc/application\_unit.json with your application.
+
+If a single value ``mH'' is preferred (i.e. no combobox for inductance units), the following configuration
 can be written to the file
 
 \verb+etc/application_unit.json+:
@@ -37,4 +143,56 @@ can be written to the file
 \end{lstlisting}
 The value ``\verb+use_set+'' controls the content of the set.
 Only units with ``\verb+use_set+'' value 1 (which is default)
-are included.
+are included. use\_set is labelled ``Use'' in the Unit Manager form.
+
+\subsection{Dynamically changing a Unit}
+Maybe a user wants to see different units in the user interface?
+%
+You can tell INTENS to show the units as comboboxes instead of
+as labels.
+%
+To do so, provide one of two values to the commandline option unitManager:
+\begin{itemize}
+\item \texttt{--}unitManager=comboBox\_hide\_single
+\item \texttt{--}unitManager=comboBox\_always
+\end{itemize}
+
+As mentioned above, there are two derivates, ``mH'' and ``$\mu$H'',
+for the base unit ``H''. So, INTENS will show a combobox with the
+three entries: H, mh, $\mu$H,
+and H as the base unit (ie. the unit of the values in the DATAPOOL).
+
+``mH'' will be selected by default, as that is what you defined in the
+variable definition.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.75\linewidth]{images/unitmanager-test-application-hide-single}
+  \end{center}
+  \caption{--unitManager=comboBox\_hide\_single}\label{fig:unitmanager-test-application-hide-single}
+\end{figure}
+
+When you select a different unit, INTENS knows the new unit name and
+its scale factor and now shows motor.Lls as 0.001 H or 1000 $\mu$H.
+
+This choice is remembered for you and when you start the INTENS
+application the next time, motor.Lls will be shown in the chosen unit.
+%
+(INTENS stores these choices in the user resource file.)
+
+If you prefer to see a combobox for all (known) units, use the commandline
+option \newline
+\texttt{--}unitManager=comboBox\_always (see figure
+\ref{fig:unitmanager-test-application-always} on page \pageref{fig:unitmanager-test-application-always}.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.35\linewidth]{images/unitmanager-test-application-always}
+  \end{center}
+  \caption{--unitManager=comboBox\_always}\label{fig:unitmanager-test-application-always}
+\end{figure}
+
+Now, the unit ``Vs'' is also shown as a combobox, even though there is no other choice.
+The unit ``Ω'' is still shown as a label, because this unit is not configured yet.
+
+You can use this mode if you prefer the look or to see what units you have not yet defined.

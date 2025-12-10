@@ -52,7 +52,7 @@ INIT_LOGGER();
 
 // #ifdef HAVE_QT
 static struct option long_options[] = {
-  { "geometry",     required_argument, 0,  0}
+   {"geometry",     required_argument, 0,  0}
   ,{"name",         required_argument, 0,  0}
   ,{"display",      required_argument, 0,  0}
   ,{"matlabnode",   required_argument, 0,  0}
@@ -123,7 +123,6 @@ static struct option long_options[] = {
   ,{"opentelemetryMetadata", no_argument,  0,  0}
   ,{"lspWorker", no_argument,  0,  0}
   ,{"unitManager", optional_argument,  0,  0}
-  ,{"unitManagerCB", no_argument,  0,  0}
   // Do not ever remove this last line. If you do, then something very horrible will happen!
   ,{0,              0,                 0,  0}
 };
@@ -1094,9 +1093,6 @@ void AppData::getOpt(int &argc, char **argv){
       }
       setUnitManagerFeature(featureComboBox);
     }
-    if( strcmp( long_options[option_index].name, "unitManagerCB")==0){
-      setUnitManagerFeature(unitManagerFeature_comboBox_always);
-    }
   }
 
   // argv[optind++] is the filename of the description file
@@ -1146,7 +1142,11 @@ void AppData::displayHelp(){
     if( long_options[i].name != 0 ){
       std::cout <<"  ";
       std::cout <<"--" << long_options[i].name;
-      std::cout <<" " << (long_options[i].has_arg==1? "<argument>":"");
+      if(long_options[i].has_arg==2){
+        std::cout << "[=<argument>]";
+      } else {
+        std::cout <<" " << (long_options[i].has_arg==1? "<argument>":"");
+      }
       std::cout << std::endl << std::flush;
     }
     ++i;

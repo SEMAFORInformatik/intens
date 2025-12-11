@@ -1,0 +1,25 @@
+DESCRIPTION "VALID(array)";
+
+DATAPOOL
+  INTEGER {EDITABLE}
+    array
+  , valid
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP fg (
+    LABEL(array) array[0] array[1]
+  , LABEL(valid) valid
+  );
+
+  FORM form {MAIN} (fg);
+END UI_MANAGER;
+
+OPERATOR
+  TASK valid_task {"VALID"} {
+    valid = VALID(array);
+  };
+END OPERATOR;
+
+END.

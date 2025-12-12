@@ -1,10 +1,6 @@
-
 \subsubsection{Multifont Strings}
 %              -----------------
 \label{sec:multifont}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                             Description                               %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Any string can be displayed with multiple fonts referenced by font name aliases.
 %%Font names are defined in a X11 resource file named Intens (see specification
 %%example in section \nameref{sec:x-resources} page \pageref{sec:x-resources}).
@@ -60,9 +56,8 @@ fontname   & name of a font \\ %%must correspond to a previously declared alias 
 
 Example:
 
-
 \begin{boxedminipage}[t]{\linewidth}
-\begin{verbatim}
+\begin{intens}
 DESCRIPTION "Multifont strings";
 UI_MANAGER
   FIELDGROUP
@@ -78,7 +73,7 @@ UI_MANAGER
     form_identifier {MAIN} ((fieldgroup_identifier));
 END UI_MANAGER;
 END.
-\end{verbatim}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}

@@ -14,27 +14,27 @@ Fortran programs. An example is given in figure \nameref{fig:uniplot}.
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example UNIPLOT";
+\begin{intens}
+DESCRIPTION "Example UNIPLOT";
   ... STUFF HERE ...
-\UIMANAGER
-  \UNIPLOT
-    mech_plot\{ "Plot Mech" \};
-  \FORM
-    Form_Uniplot \{"Plot Mech", \HELPKEY "Mech_Plot", \HIDECYCLE\}
+UI_MANAGER
+  UNIPLOT
+    mech_plot{ "Plot Mech" };
+  FORM
+    Form_Uniplot {"Plot Mech", HELPKEY "Mech_Plot", HIDECYCLE}
       ( ( mech_plot ) );
-\END \UIMANAGER;
+END UI_MANAGER;
 
-\OPERATOR
-  \PROCESS  plot_mech_proc : BATCH \{"plotproc"\};
-  \PROCESSGROUP
-    mech_prog \{"Mech"\}(output_stream \{\DISPLAY=\NONE\},
+OPERATOR
+  PROCESS  plot_mech_proc : BATCH {"plotproc"};
+  PROCESSGROUP
+    mech_prog {"Mech"}(output_stream {DISPLAY=NONE},
                        mech_plot[mechuni] = plot_mech_proc( input_stream );
                      );
-\END \OPERATOR;
+END OPERATOR;
   ... STUFF HERE ...
-\END.
-\end{alltt}
+END.
+\end{intens}
 \end{boxedminipage}
 
 

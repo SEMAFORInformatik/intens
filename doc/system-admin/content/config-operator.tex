@@ -58,17 +58,17 @@ Example:
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \PROCESS
-     mech_proc : \BATCH \{
-        "/tracomo/OSF1-V4.0-alpha/cmech"
+\begin{intens}
+  PROCESS
+     mech_proc : BATCH {
+        "/tracomo/alpha/cmech"
        ," ", "1"
        ," ", mechres
        ," ", mechdyn
        ," ", "/home/tar/intens/tracomo/tp/who"
-       \}
+       }
  ;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -191,21 +191,21 @@ fifo name         & description \\
 Example:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \PROCESSGROUP
-     inmo_prog \{"Inmo"\} (
-        jobinfo_stream \{\DISPLAY=\NONE\} =
+\begin{intens}
+  PROCESSGROUP
+     inmo_prog {"Inmo"} (
+        jobinfo_stream {DISPLAY=NONE} =
            seq_proc( dummy_in_stream );
 
-        plot_result_stream \{\DISPLAY=\NONE\} =
+        plot_result_stream {DISPLAY=NONE} =
            mech_inmo_proc( mech_in_stream );
 
-        dummy_out_stream \{\DISPLAY=Listing_Inmo\},
+        dummy_out_stream {DISPLAY=Listing_Inmo},
         res_inmo_stream[inmores] =
            inmo_proc( inmo_in_stream );
      )
  ;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -253,16 +253,15 @@ reportstream options & description \\ \hline
 
 Example:
 
-
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \REPORTSTREAM
-      print_motor_16 = motor_stream_16 \{
+\begin{intens}
+  REPORTSTREAM
+      print_motor_16 = motor_stream_16 {
          "Motor V1.6"
-        ,\LATEX
-        \}
+        ,LATEX
+        }
  ;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -302,13 +301,13 @@ Example:
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \LATEXREPORT
-      print_motor_16 = motor_stream_16 \{
+\begin{intens}
+  LATEXREPORT
+      print_motor_16 = motor_stream_16 {
          "Motor V1.6"
-        \}
+        }
  ;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -365,15 +364,15 @@ Example:
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \FILESTREAM
-      get_motor_16 = open_motor_stream_16 \{
+\begin{intens}
+  FILESTREAM
+      get_motor_16 = open_motor_stream_16 {
          "Motor V1.6"
-        ,\PROCESS="/home/tar/intens/tracomo/tp/inmo/pmotor"
-        ,\READONLY, \RESET, \FILTER="*.inm"
+        ,PROCESS="/home/tar/intens/tracomo/tp/inmo/pmotor"
+        ,READONLY, RESET, FILTER="INM (*.inm)"
         \}
  ;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -432,16 +431,16 @@ Example:
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\OPERATOR
- \TASK
-    task_identifier \{"button label"\}(
-      \RUN processgroup_id_1;
-      \RUN processgroup_id_2;
+\begin{intens}
+OPERATOR
+ TASK
+    task_identifier {"button label"}(
+      RUN processgroup_id_1;
+      RUN processgroup_id_2;
    )
   ;
-END \OPERATOR ;
-\end{alltt}
+END OPERATOR ;
+\end{intens}
 \end{boxedminipage}
 
 
@@ -478,18 +477,18 @@ Example:
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\OPERATOR
- \MENU
-    Process \{\FORM = Form_1, "Calculations" \}(
-      \PROCESS Process_1,
-      \PROCESS Process_2,
-      \SEPARATOR,
-      \MENU "more Processes" (
-         \PROCESS Process_3
+\begin{intens}
+OPERATOR
+ MENU
+    Process {FORM = Form_1, "Calculations" }(
+      PROCESS Process_1,
+      PROCESS Process_2,
+      SEPARATOR,
+      MENU "more Processes" (
+         PROCESS Process_3
       )
    )
   ;
-END \OPERATOR ;
-\end{alltt}
+END OPERATOR ;
+\end{intens}
 \end{boxedminipage}

@@ -187,13 +187,13 @@ an output operation and divided by the scale factor on an input operation. \\
 \vspace{0.5cm}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 STREAMER
   streamer_identifier_1 (data_item_identifier_1);
   streamer_identifier_2 (#, data_item_identifier_2[#]);
   streamer_identifier_3 (#1, (#2, data_id_1[#1], data_id_2[#2]));
 END STREAMER;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}
@@ -227,11 +227,11 @@ field conversion   & description \\
 \vspace{0.5cm}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 STREAMER
   frequency_stream (frequency:10:2:TSEP);
 END STREAMER;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 gives the following stream:\\[2ex]
@@ -295,18 +295,18 @@ xml format option & description \\
 \vspace{0.5cm}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\STREAMER
-  xml_stream_1 \{\XML \{ \ATTRS ( \UNIT ) \} \} (data_item_identifier);
-  xml_stream_2 \{\XML\} (\DATAPOOL);
-\END \STREAMER;
+\begin{intens}
+STREAMER
+  xml_stream_1 {XML { ATTRS ( UNIT ) } } (data_item_identifier);
+  xml_stream_2 {XML} (DATAPOOL);
+END STREAMER;
 
-\OPERATOR
-  \FILESTREAM
+OPERATOR
+  FILESTREAM
     FStream_1 = xml_stream_1;
     FStream_2 = xml_stream_2;
-\END \OPERATOR;
-\end{alltt}
+END OPERATOR;
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}
@@ -351,17 +351,17 @@ json format option & description \\
 \end{tabularx}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\STREAMER
-  json_stream \{
-    \JSON
-  , \INDENT = 4
-  , \HIDDEN
-  , !\TRANSIENT
-  \} (data_item_identifier);
-\END \STREAMER;
+\begin{intens}
+STREAMER
+  json_stream {
+    JSON
+  , INDENT = 4
+  , HIDDEN
+  , !TRANSIENT
+  } (data_item_identifier);
+END STREAMER;
 
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -425,9 +425,7 @@ Their index must be the first element in the group.
 On input operations a string constant within the stream description is
 considered as a search token.
 
-
 \vspace{1cm}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                Examples                               %%%
@@ -435,9 +433,8 @@ considered as a search token.
 \subsubsection{Examples}
 \label{sec:stexamples}
 
-
 \begin{boxedminipage}[t]{\linewidth}
-\begin{verbatim}
+\begin{intens}
 STREAMER
   file_in(
     asm_type:-20,asm_descriptor:-35,doc_id:-12, \n,
@@ -460,7 +457,7 @@ STREAMER
     \n, "Machine Parameters:", \n,
     "N/(1/min): ", (speed[]), \n  );
 END STREAMER;
-\end{verbatim}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -488,13 +485,6 @@ with the above declared stream \verb+file_in+
 10
 \end{verbatim}
 \end{boxedminipage}
-
-
-A repetition group within an input stream to Mathematica is realized as
-a list. It is not necessary to define repetition groups within an output
-stream from Mathematica, as for \INTENS{} every data item is stored
-as a list.
-%(see the example in appendix \nameref{sec:appendix})
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                             MATRIX                                    %%%
@@ -537,7 +527,6 @@ The first value indicates the number of dimensions, followed by the number of it
 
 Example of a 3x3 matrix:
 
-
 \begin{boxedminipage}[t]{\linewidth}
 \begin{verbatim}
 2 3 3
@@ -545,10 +534,7 @@ Example of a 3x3 matrix:
 \end{verbatim}
 \end{boxedminipage}
 
-
 gives the following matrix:\\[2ex]
-
-
 
 \begin{tabular}{ccc}
 0 & 1 & 2 \\
@@ -597,7 +583,7 @@ Read from standard input write to datapool (data-item). \\
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{verbatim}
+\begin{intens}
 DATAPOOL
   STRING
     data_item_output[15]
@@ -620,7 +606,7 @@ OPERATOR
     )
   ;
 END OPERATOR;
-\end{verbatim}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}
@@ -676,23 +662,3 @@ data_item_output[14] <-- "executed"
 \end{boxedminipage}
 
 \vspace{0.5cm}
-
-This is one possibility of displaying data\_items:
-
-\begin{boxedminipage}[t]{\linewidth}
-\begin{verbatim}
-UI_MANAGER
-  FIELDGROUP
-    fieldgroup_identifier (
-      "The first word in MyFile.dat is:" data_item_output[0],
-      "The last word in MyFile.dat is:" data_item_output[14]
-    )
-  ;
-  FORM
-    form_identifier {MAIN} (
-      (fieldgroup_identifier)
-    )
-  ;
-END UI_MANAGER;
-\end{verbatim}
-\end{boxedminipage}

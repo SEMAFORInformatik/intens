@@ -24,7 +24,7 @@ on its tab button.
 \index{NONE@\NONE!ui\_manager folder option}
 \index{TRUE@\TRUE!ui\_manager folder option}
 \begin{tabularx}{\textwidth}{l|X}
-Options           & description \\ 
+Options           & description \\
 \hline
 \TOP              & places the tab buttons on the top side of the form.\\
 \BOTTOM           & places the tab buttons on the bottom side of the form.\\
@@ -49,16 +49,16 @@ Options           & description \\
 
 \index{  @Signs / Characters!: (colon)!folder group identifier}
 
-The following example shows a series of folder declarations. 
-The tab buttons (strings in double quotes) may be associated to a tab group 
-(is the identifier after the colon).\index{tab group} 
-The advantage of tab button grouping is to have an application selecting and 
-popping up a series of folder-pages with one tab button click only. A tab group 
+The following example shows a series of folder declarations.
+The tab buttons (strings in double quotes) may be associated to a tab group
+(is the identifier after the colon).\index{tab group}
+The advantage of tab button grouping is to have an application selecting and
+popping up a series of folder-pages with one tab button click only. A tab group
 can only address \underline{one} tab button per folder. This is the only limitation.
 
-Each tab button may be associated with a function by the keyword 
+Each tab button may be associated with a function by the keyword
 \FUNC. Functions are invoked on selection of
-the tab button. Other functions of tab buttons, 
+the tab button. Other functions of tab buttons,
 which belong to the same tab group are ignored.
 \vspace{1cm}
 
@@ -84,24 +84,24 @@ folder entries           & description \\
 \index{STD\_WINDOW@\STDWINDOW!ui\_manager folder}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example FOLDER";
+\begin{intens}
+DESCRIPTION "Example FOLDER";
   ...
-\UIMANAGER
- \FOLDER
-   Data \{ \LEFT \} (  ["A" : tab_a, \FUNC = func_a ] (data_A),
+UI_MANAGER
+ FOLDER
+   Data { LEFT } (  ["A" : tab_a, FUNC = func_a ] (data_A),
                      ["B" : tab_b ] (data_B),
                      ["C" : tab_c ] (data_C)                       ),
-   Text \{ \LEFT, \STRETCH \}(  ["Standard"] (STD_WINDOW),
+   Text { LEFT, STRETCH }(  ["Standard"] (STD_WINDOW),
                                ["Log"]      (LOG_WINDOW),
                                ["Input"]    (Data)                 ),
-   Plots \{ \TOP, \VERTICAL \} (  ["Plot 1" : tab_a ] (plot1),
+   Plots { TOP, VERTICAL } (  ["Plot 1" : tab_a ] (plot1),
                                  ["Plot 2" : tab_b ] (plot2),
                                  ["Plot 3" : tab_c ] (plot3)       );
-\END \UIMANAGER;
+END UI_MANAGER;
   ...
-\END.
-\end{alltt}
+END.
+\end{intens}
 \end{boxedminipage}
 
 

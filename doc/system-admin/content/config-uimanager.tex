@@ -14,7 +14,7 @@ to place the interface objects geometrically. \INTENS{} places
 the text fields, plots, tables, buttons etc.
 automatically after calculating their sizes.
 
-WARNING:  Due to this feature, the layout of the windows may look
+NOTE:  Due to this feature, the layout of the windows may look
 slightly different after changing the language.
 
 \input{diagrams/ui_manager_description}
@@ -23,4 +23,29 @@ An \INTENS{}-application usually has a main window with a menubar and
 several user defined forms.
 Each form may contain any number of horizontally
 and vertically arranged fieldgroups, text
-and plot windows and folder groups. Its layout is defined within a form declaration.
+and plot windows and folder groups.
+Its layout is defined within a form declaration.
+Each pair of paranthesis toggles the orientation
+starting with a vertical orientation.
+
+\begin{minipage}{0.45\textwidth}
+\begin{intens}
+  FIELDGROUP
+    top_fg ( ... ),
+    left_1_fg ( ... ),
+    left_2_fg ( ... );
+
+  PLOT2D plot ( ... );
+
+  FORM main_form {MAIN} (
+    top_fg,
+    ( (
+    left_1_fg,
+    left_2_fg ), plot )
+  );
+\end{intens}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{form-struct}
+\end{minipage}

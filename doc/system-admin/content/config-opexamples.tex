@@ -3,46 +3,86 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Examples}
 \label{sec:opexamples}
-The following example shows a possible \OPERATOR{} configuration:
+The following example shows a sample \OPERATOR{} configuration
+to display a matplotlib diagram created by a python program
+scplot.py:
+\begin{center}
+\includegraphics[width=0.8\textwidth]{matplotlib-plot}
+\end{center}
 
+The python program creates the plot in SVG format
+and returns it as a base64 encoded
+string:
+
+\lstset{basicstyle=\normalsize\ttfamily}
+\begin{lstlisting}{language=python}
+  ...
+  imgbuffer = io.BytesIO()
+  fig.savefig(imgbuffer, format='svg')
+  plt.close(fig)
+  # Convert the SVG data to base64
+  svgplot = base64.b64encode(imgbuffer.getvalue()).decode()
+  encoding = 'data:image/svg+xml;charset=utf-8;base64,'
+  result = {}
+  result['time'] = t.tolist()
+  result['current'] = current.tolist()
+  result['plot'] = encoding + svgplot
+  json.dump(result, sys.stdout)
+\end{lstlisting}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\OPERATOR
-  \PROCESS
-      AsmChar: \MATHEMATICA
-    , Calculate: \BATCH \{"/usr/local/bin/doit -x -y"\}
-    ;
-  \FILESTREAM
-      Input_Stream = file_in \{"Input Parameters", \FILTER="*.DAT"\}
-    ;
-  \REPORTSTREAM
-      Calculation_Stream = report_out \{"Calculation Report"\}
-    ;
-  \PROCESSGROUP
-       BatchProg \{"Batch Run"\}(
-         bat_out = Calculate( bat_in );
-       )
-    ;
-  \TASK
-    BatchT \{"Optimize"\}\{
-      Sn = 0;
-      \WHILE( Sn < SnMax )\{
-        \RUN BatchProg;
-      \}
-    \}
-   ;
-  \MENU
-      Calculations
-        ( \PROCESS BatchProg
-        )
-    ;
-\END \OPERATOR;
-\end{alltt}
+\begin{intens}
+DESCRIPTION "Short Circuit Current Fit";
+
+DATAPOOL
+  STRUCT FitParameters {
+    REAL {EDITABLE, SCALAR} Io, T, f1, tmax;
+    INTEGER {EDITABLE, SCALAR} nsamples;
+  };
+  FitParameters {SCALAR} pars;
+
+  STRUCT ResultStruct {
+    REAL time, current;
+    STRING plot;
+  };
+  ResultStruct results;
+END DATAPOOL;
+
+STREAMER
+  input_stream{JSON}(pars);
+  result_stream{JSON}(results);
+END STREAMER;
+
+OPERATOR
+  FILESTREAM input_stream_fs = input_stream {"Open Parameters JSON",
+    FILTER="JSON (*.json)"};
+  PROCESS fit_plot: BATCH{"tee p.in| ./scplot.py | tee r.out"};
+  PROCESSGROUP fit_plot_pg {_("Fit Plot"), HIDDEN, SILENT, NO_LOG}(
+    result_stream{DISPLAY=NONE} = fit_plot(input_stream);
+  );
+END OPERATOR;
+
+UI_MANAGER
+  ...
+  matplotlib_plot(results.plot:30:20 {EXPAND});
+);
+
+FOLDER plot_folder {EXPAND} (
+  ...
+  ["Matplotlib Plot"] (matplotlib_plot)
+);
+
+FORM main_window_form{MAIN}(
+  (plot_folder, par_fg)
+);
+
+END UI_MANAGER;
+
+END.
+\end{intens}
 \end{boxedminipage}
-
-
-\newpage
+\clearpage
+%\newpage
 \paragraph{\MESSAGEQUEUE{} \PUBLISH{} - \SUBSCRIBE{} example with \TIMER{}}
 \label{sec:opexamples:messagequeue:publishsubscribe}
 
@@ -67,51 +107,51 @@ The example consists of four files:
 publisher.des:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Publisher";
+\begin{intens}
+DESCRIPTION "Publisher";
 
 INCLUDE common.inc
 INCLUDE timer.inc
 
-\UIMANAGER
-  \FORM
-    main_form \{ \MAIN, \HIDECYCLE \} (
+UI_MANAGER
+  FORM
+    main_form { MAIN, HIDE_CYCLE } (
       weather_fg
     , timer_button_fg
     )
   ;
-\END \UIMANAGER;
+END UI_MANAGER;
 
-\OPERATOR
-  \MESSAGEQUEUE
-    weather_publisher \{
-      \PUBLISH              // *MessageQueue Pattern
-    , \PORT=5561            // TCP port
-    \}
+OPERATOR
+  MESSAGE_QUEUE
+    weather_publisher {
+      PUBLISH              // MessageQueue Pattern
+    , PORT=5561            // TCP port
+    }
   ;
-\END \OPERATOR;
+END OPERATOR;
 
-\FUNCTIONS
-  \FUNC
-    publish_weather_func \{
-      \PUBLISH (
-        \MESSAGEQUEUE = weather_publisher
-      , \HEADER="Weather"
-      , \RESPONSE=weather_stream
+FUNCTIONS
+  FUNC
+    publish_weather_func {
+      PUBLISH (
+        MESSAGE_QUEUE = weather_publisher
+      , HEADER="Weather"
+      , RESPONSE=weather_stream
       );
-    \}
+    }
   ;
 
-  \FUNC
-    \INIT \{
+  FUNC
+    INIT {
       weather.stationName = "Basel";
       t = 0;
-    \}
+    }
   ;
-\END \FUNCTIONS;
+END FUNCTIONS;
 
-\END.
-\end{alltt}
+END.
+\end{intens}
 \end{boxedminipage}
 
 
@@ -119,146 +159,139 @@ INCLUDE timer.inc
 subscriber.des:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Subscriber";
+\begin{intens}
+DESCRIPTION "Subscriber";
 
 INCLUDE common.inc
 
-\UIMANAGER
-  \FORM
-    main_form \{ \MAIN, \HIDECYCLE \} (
+UI_MANAGER
+  FORM
+    main_form { MAIN, HIDE_CYCLE } (
       weather_fg
     )
   ;
-\END \UIMANAGER;
+END UIMANAGER;
 
-\OPERATOR
-  \MESSAGEQUEUE
-    weather_subscriber \{
-      \SUBSCRIBE            // *MessageQueue Pattern
-    , \HOST="localhost"     // Hostname
-    , \PORT=5561            // TCP port
+OPERATOR
+  MESSAGE_QUEUE
+    weather_subscriber {
+      SUBSCRIBE            // *MessageQueue Pattern
+    , HOST="localhost"     // Hostname
+    , PORT=5561            // TCP port
     , (
-        \HEADER="Weather"
-      , \STREAM=weather_stream
+        HEADER="Weather"
+      , STREAM=weather_stream
       )
-    \}
+    }
   ;
-\END \OPERATOR;
+END OPERATOR;
 
-\END.
-\end{alltt}
+END.
+\end{intens}
 \end{boxedminipage}
-
 
 \newpage
 common.inc:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 // Common parts of the message queue examples
-\DATAPOOL
-  \STRUCT
-    Wheather \{
-      \STRING
-        stationName \{ \LABEL="Station name", \LABEL \}
-      , timestamp   \{ \LABEL="Timestamp", \STRINGTIME \}
+DATAPOOL
+  STRUCT
+    Weather {
+      STRING
+        stationName { LABEL="Station name", LABEL }
+      , timestamp   { LABEL="Timestamp", STRINGTIME }
       ;
-      \REAL
-        temperature \{ \LABEL="Temperature", \UNIT="[°C]" \}
-      , airPressure \{ \LABEL="Air pressure", \UNIT="[hPa]" \}
+      REAL
+        temperature { LABEL="Temperature", UNIT="[°C]" }
+      , airPressure { LABEL="Air pressure", UNIT="[hPa]" }
       ;
-    \}
+    }
   ;
-  Wheather weather;
-\END \DATAPOOL;
+  Weather weather;
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
+UI_MANAGER
+  FIELDGROUP
     weather_fg (
-      \LABEL(weather.stationName) weather.stationName \{ \COLSPAN=2 \}
-    , \LABEL(weather.timestamp)   weather.timestamp   \{ \COLSPAN=2 \}
-    , \LABEL(weather.temperature) weather.temperature:6:1
-        \UNIT(weather.temperature)
-    , \LABEL(weather.airPressure) weather.airPressure*1e-2:6:1
-        \UNIT(weather.airPressure)
+      LABEL(weather.stationName) weather.stationName { COLSPAN=2 }
+    , LABEL(weather.timestamp)   weather.timestamp   { COLSPAN=2 }
+    , LABEL(weather.temperature) weather.temperature:6:1
+        UNIT(weather.temperature)
+    , LABEL(weather.airPressure) weather.airPressure*1e-2:6:1
+        UNIT(weather.airPressure)
     )
   ;
 
-  // Hide \STDWINDOW and \LOGWINDOW from \MAIN form
-  \FORM
-    stdwin_form \{ "Standard output", \HIDECYCLE
-                , \CLOSEBUTTON=\NONE \} (
-      \STDWINDOW \{ \SIZE=24*80 \}
+  // Hide STDWINDOW and LOGWINDOW from MAIN form
+  FORM
+    stdwin_form { "Standard output", HIDECYCLE
+                , CLOSE_BUTTON=NONE } (
+      STD_WINDOW { SIZE=24*80 }
     )
-  , logwin_form \{ "Log output", \HIDECYCLE
-                , \CLOSEBUTTON=\NONE \} (
-      \LOGWINDOW \{ \SIZE=24*80 \}
+  , logwin_form { "Log output", HIDECYCLE
+                , CLOSE_BUTTON=NONE } (
+      LOG_WINDOW { SIZE=24*80 }
     )
   ;
-\END \UIMANAGER;
+END UI_MANAGER;
 
-\STREAMER
-  weather_stream \{ \JSON \} (
+STREAMER
+  weather_stream { JSON } (
     weather
   );
-\END \STREAMER;
-\end{alltt}
+END STREAMER;
+\end{intens}
 \end{boxedminipage}
-
 
 \newpage
 timer.inc:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 // Timer parts for publisher.des
-\DATAPOOL
-  \REAL t;
-  \STRING \{ \EDITABLE \}
-    start \{ \LABEL="Start", \BUTTON, \FUNC=start_timer_func \}
-  , stop  \{ \LABEL="Stop" , \BUTTON, \FUNC=stop_timer_func \}
-  ;
-\END \DATAPOOL;
+DATAPOOL
+  REAL t;
+  STRING { EDITABLE }
+    start { LABEL="Start", BUTTON, FUNC=start_timer_func }
+  , stop  { LABEL="Stop" , BUTTON, FUNC=stop_timer_func };
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
+UI_MANAGER
+  FIELDGROUP
     timer_button_fg (
-      start   stop
-    )
-  ;
-\END \UIMANAGER;
+      start   stop );
+END UI_MANAGER;
 
-\OPERATOR
-  \TIMER
-    publish_weather_timer \{
-      \FUNC=update_and_publish_weather_func
-    \}
-  ;
-\END \OPERATOR;
+OPERATOR
+  TIMER
+    publish_weather_timer {
+      FUNC=update_and_publish_weather_func
+    };
+END OPERATOR;
 
-\FUNCTIONS
-  \FUNC
-    update_and_publish_weather_func \{
+FUNCTIONS
+  FUNC
+    update_and_publish_weather_func {
       // update (simulate) weather data
       t += 0.1;
-      weather.timestamp   = \CURRENTTIME;
-      weather.temperature = 15 + \SIN(t) * 10;
-      weather.airPressure = 102300 + \COS(t) * 3000;
+      weather.timestamp   = CURRENT_TIME;
+      weather.temperature = 15 + SIN(t) * 10;
+      weather.airPressure = 102300 + COS(t) * 3000;
 
-      \RUN ( publish_weather_func );
-    \}
-  , start_timer_func \{
-      \START (
+      RUN ( publish_weather_func );
+    },
+    start_timer_func {
+      START (
         publish_weather_timer
-      , \PERIOD=1
-      , \DELAY=5
+      , PERIOD=1
+      , DELAY=5
       );
-    \}
-  , stop_timer_func \{
-      \STOP ( publish_weather_timer );
-    \}
-  ;
-\END \FUNCTIONS;
-\end{alltt}
+    },
+    stop_timer_func {
+      STOP ( publish_weather_timer );
+    };
+END FUNCTIONS;
+\end{intens}
 \end{boxedminipage}

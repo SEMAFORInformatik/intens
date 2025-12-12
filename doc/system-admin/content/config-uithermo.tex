@@ -33,7 +33,7 @@ THERMO Syntax       & description \\
 \index{ALARM\_COLOR@\ALARMCOLOR!thermo option}
 \index{INVERTED@\INVERTED!thermo option}
 \begin{tabularx}{\textwidth}{l|X}
-thermo option            & description \\ 
+thermo option            & description \\
 \hline
 \RANGE{} (min, max) & Thermo range from min to max. \newline
                     min, max can be constant (real\_value) or variable
@@ -65,23 +65,23 @@ The following example shows the configuration of a thermo
 and how it will be displayed by \INTENS{} (see page \pageref{fig:thermo})
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\UIMANAGER
-  \THERMO
+\begin{intens}
+UI_MANAGER
+  THERMO
     speed_thermo {
-      \RANGE ( speed_limit*0, speed_limit )
-    , \COLOR = speed_color
-    , \ORIENTATION = \VERTICAL
-    , \SIZE ( 100, 200 )
-    , \FORMAT = "4"
-    , \LABEL = "Speed:"
-    , \UNIT = \UNIT(speed)
-    } ( 
+      RANGE ( speed_limit*0, speed_limit )
+    , COLOR = speed_color
+    , ORIENTATION = VERTICAL
+    , SIZE ( 100, 200 )
+    , FORMAT = "4"
+    , LABEL = "Speed:"
+    , UNIT = UNIT(speed)
+    } (
       speed
     )
   ;
-\END \UIMANAGER;
-\end{alltt}
+END UI_MANAGER;
+\end{intens}
 \end{boxedminipage}
 
 \begin{figure}[h]\label{fig:thermo}

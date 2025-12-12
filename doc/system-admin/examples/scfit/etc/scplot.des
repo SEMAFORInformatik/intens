@@ -1,0 +1,76 @@
+DESCRIPTION "Short Circuit Current Fit";
+
+DATAPOOL
+  STRUCT FitParameters {
+    REAL {EDITABLE, SCALAR} Io, T, f1, tmax;
+    INTEGER {EDITABLE, SCALAR} nsamples;
+  };
+  FitParameters {SCALAR} pars;
+
+  STRUCT ResultStruct {
+    REAL time, current;
+    STRING plot;
+  };
+  ResultStruct results;
+END DATAPOOL;
+
+STREAMER
+  input_stream{JSON}(pars);
+  result_stream{JSON}(results);
+END STREAMER;
+
+OPERATOR
+  FILESTREAM input_stream_fs = input_stream {"Open Parameters JSON",
+    FILTER="JSON (*.json)"};
+  PROCESS fit_plot: BATCH{"tee p.in| ./scplot.py | tee r.out"};
+  PROCESSGROUP fit_plot_pg {_("Fit Plot"), HIDDEN, SILENT, NO_LOG}(
+    result_stream{DISPLAY=NONE} = fit_plot(input_stream);
+  );
+END OPERATOR;
+
+UI_MANAGER
+FIELDGROUP
+  par_fg (
+    "Io / A" pars.Io,
+    "T / ms" pars.T*1e3,
+    "f1 / Hz" pars.f1,
+    VOID,
+    "tmax / ms" pars.tmax*1e3,
+    "Num Samples" pars.nsamples ),
+
+  matplotlib_plot(results.plot:30:20 {EXPAND});
+
+PLOT2D intens_plot (
+  plot {YAXIS1 {LABEL="Current / A"} }(
+    (results.time[*] {LABEL=_("time"), XAXIS},
+     results.current {LABEL=_("Current"), YAXIS1}
+    )
+  )
+);
+
+FOLDER
+  std_log_folder { EXPAND } (
+    [_("Standard output")] ( STD_WINDOW { SIZE=24*80 } ),
+    [_("Session log")] ( LOG_WINDOW { SIZE=24*80 } )
+  )
+;
+
+FORM
+  std_log_form {
+    _("Standard output, Session log"),
+    HIDE_CYCLE
+  } ( std_log_folder )
+;
+
+FOLDER plot_folder {EXPAND} (
+  ["Intens Plot"] (intens_plot),
+  ["Matplotlib Plot"] (matplotlib_plot)
+);
+
+FORM main_window_form{MAIN}(
+  (plot_folder, par_fg)
+);
+
+END UI_MANAGER;
+
+END.

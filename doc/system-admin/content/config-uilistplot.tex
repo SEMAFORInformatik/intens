@@ -34,10 +34,10 @@ options       & description \\ \hline
 \index{LOG\_Y@\LOGY!ui\_manager listplot}
 \index{SAME\_YRANGE@\SAMEYRANGE!ui\_manager listplot}
 \begin{tabularx}{\textwidth}{l|X}
-graph options        & description \\ 
+graph options        & description \\
 \hline
 {\verb+string+}     & defines the graph title.\\
-{\verb+identifier+} & defines the graph title that will be printed at the top 
+{\verb+identifier+} & defines the graph title that will be printed at the top
                        of the plot. The identifier must be a previously declared stream.
                        (see section \nameref{sec:streamer} on page \pageref{sec:streamer})\\
 \XAXIS               & defines the data item whose values give the x-coordinates\\
@@ -79,29 +79,29 @@ plot item options & description \\
 \end{tabularx}
 
 \newpage
-The following example shows the configuration of a 2D-plot 
+The following example shows the configuration of a 2D-plot
 and how it will
 be displayed by \INTENS{} (see page \pageref{fig:listplot})
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \LISTPLOT  
-    curve_plot\{ "Plot" \} ( 
-       ( magn_curve \{"Magnetizing curve", \XAXIS=iMag\}
-         ( psiMag\{"[Vs]"\} ), 
-         x_i2  \{"Rotor current", \XAXIS=speed*60\{"1/min"\} \} 
-         (i2\{"[A]"\} ) 
+\begin{intens}
+  LISTPLOT
+    curve_plot{ "Plot" } (
+       ( magn_curve {"Magnetizing curve", XAXIS=iMag}
+         ( psiMag{"[Vs]"} ),
+         x_i2  {"Rotor current", XAXIS=speed*60{"1/min"} }
+         (i2{"[A]"} )
        ),
-       ( x_torque\{"Induction Motor", \XAXIS=speed*60\{"1/min"\} \}
-         ( torque*1e-3\{"[kNm]"\}, i1\{"[A]"\}, cos )
+       ( x_torque{"Induction Motor", XAXIS=speed*60{"1/min"} }
+         ( torque*1e-3{"[kNm]"}, i1{"[A]"}, cos )
        )
     );
-  \FORM
+  FORM
     curve_form (
        ( curve_plot )
     );
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{1cm}

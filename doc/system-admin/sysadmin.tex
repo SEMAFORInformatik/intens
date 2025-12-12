@@ -1,8 +1,3 @@
-% TODO:
-% gettext
-% unit manager
-% command line options
-%
 \documentclass[a4paper,DIV=12,11pt,parskip=half]{scrartcl}
 \input{config/packages}
 %
@@ -10,22 +5,21 @@
 %---------------------------------------------------------------------------%
 % Page Heading & Footing                                                    %
 %---------------------------------------------------------------------------%
-\pagestyle{fancy}
+\usepackage[automark,headsepline,footsepline]{scrlayer-scrpage}
+%\pagestyle{fancy}
 \newbox{\logobox}
 \sbox{\logobox}{
   \includegraphics[width=1cm]{smallogo}
-%  \includegraphics[width=1cm]{smallogo}
-%  \includegraphics[width=1cm]{/usr/local/share/texmf.local/tex/SEmacros/smallogo}
 }
-\def\doc@version{Version 5.3.1}
-\def\pub@date{June 2025}
+\def\doc@version{Version 6.0.3}
+\def\pub@date{December 2025}
 %
-\fancyhead{} % clear all fields
-\fancyhead[L]{\upshape \leftmark \hspace{1cm} \rightmark}
-\fancyhead[R]{\upshape \thepage}
-\fancyfoot[L]{\usebox{\logobox}{\ \small \sffamily SEMAFOR}}
-\fancyfoot[R]{\doc@version}
-\fancyfoot[C]{}
+\ohead{\pagemark}
+\chead{}
+\ihead{\upshape \rightmark}
+\ifoot{\usebox{\logobox}{\ \small \sffamily SEMAFOR}}
+\cfoot{}
+\ofoot{\doc@version}
 %%
 \begin{document}
 \renewcommand{\arraystretch}{1.5}

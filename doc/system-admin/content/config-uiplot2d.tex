@@ -341,43 +341,43 @@ Y-graph item option & description \\
 \index{PLOT2D@\PLOTTWOD!example!STYLE@\STYLE}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example PLOT-2D";
-\DATAPOOL
-  \REAL \{\EDITABLE\}
+\begin{intens}
+DESCRIPTION "Example PLOT-2D";
+DATAPOOL
+  REAL {EDITABLE}
     xValues,
     y1Values,
     y2Values
   ;
-\END \DATAPOOL;
+END DATAPOOL;
 
-\STREAMER
+STREAMER
   streamer_identifier ("Plot Title");
-\END \STREAMER;
+END STREAMER;
 
-\UIMANAGER
-  \PLOTTWOD
+UI_MANAGER
+  PLOT2D
     plot2d_identifier
     (
-      graph_identifier \{streamer_identifier\}
+      graph_identifier {streamer_identifier}
       (
-        xValues \{\LABEL="x-axis"\}
+        xValues {LABEL="x-axis"}
         (
-          y1Values \{\YAXISONE, \LABEL="y1-axis"\},
-          y2Values \{\YAXISONE, \LABEL="y2-axis"\}
+          y1Values {YAXIS1, LABEL="y1-axis"},
+          y2Values {YAXIS2, LABEL="y2-axis"}
         )
       )
     )
   ;
-  \FORM
-    form_identifier \{"2D Plot", \HIDECYCLE\}
+  FORM
+    form_identifier {"2D Plot", HIDE_CYCLE}
     (
       ( plot2d_identifier )
     )
   ;
-\END \UIMANAGER;
-\END.
-\end{alltt}
+END UI_MANAGER;
+END.
+\end{intens}
 \end{boxedminipage}
 
 %
@@ -451,96 +451,95 @@ Y-graph item option & description \\
 \end{center}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "PLOT2D: ASPECT_RATIO";
+\begin{intens}
+DESCRIPTION "PLOT2D: ASPECT_RATIO";
 
-\DATAPOOL
-  \STRUCT Axis \{
-    \REAL \{\EDITABLE\}
+DATAPOOL
+  STRUCT Axis {
+    REAL {EDITABLE}
       value
-    , min \{\SCALAR\}
-    , max \{\SCALAR\}
-    , aspect_ratio \{\SCALAR\}
+    , min {SCALAR}
+    , max {SCALAR}
+    , aspect_ratio {SCALAR}
     ;
-  \};
-  Axis \{\SCALAR\}
+  };
+  Axis {SCALAR}
     x
   , y
   ;
-\END \DATAPOOL;
+END DATAPOOL;
 
-\UIMANAGER
-  \TABLE xy_table \{
-    \ORIENTATION=\VERTICAL
-  , \HORIZONTAL(\TABLESIZE=15)
-  \} (
-    \TABLE (
-      \LABEL(x)
+UI_MANAGER
+  TABLE xy_table {
+    ORIENTATION=VERTICAL
+  , HORIZONTAL(TABLESIZE=15)
+  } (
+    TABLE (
+      LABEL(x)
       x.value[*]
 
-    , \LABEL(y)
+    , LABEL(y)
       y.value[*]
     );
   );
 
-  \FIELDGROUP scale_fg (
-    \VOID
-    \LABEL(x.min)
-    \LABEL(x.max)
-    \LABEL(x.aspect_ratio)
+  FIELDGROUP scale_fg (
+    VOID
+    LABEL(x.min)
+    LABEL(x.max)
+    LABEL(x.aspect_ratio)
 
-  , \LABEL(x)
+  , LABEL(x)
     x.min
     x.max
     x.aspect_ratio
 
-  , \LABEL(y)
+  , LABEL(y)
     y.min
     y.max
     y.aspect_ratio
   );
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \PLOTTWOD xy_plot (
-    plot \{
-      \XAXIS \{
-        \LABEL=\LABEL(x)
-      , \SCALE(x.min, x.max)
-      , \ASPECTRATIO=x.aspect_ratio
-      \}
-    , \YAXISONE \{
-        \LABEL=\LABEL(y)
-      , \SCALE(y.min, y.max)
-      , \ASPECTRATIOREFAXIS
-      , \ASPECTRATIO=y.aspect_ratio
-      \}
-    \} (
-      ( x.value[*] \{
-          \XAXIS
+\begin{intens}
+  PLOT2D xy_plot (
+    plot {
+      XAXIS {
+        LABEL=LABEL(x)
+      , SCALE(x.min, x.max)
+      , ASPECT_RATIO=x.aspect_ratio
+      }
+    , YAXIS1 {
+        LABEL=LABEL(y)
+      , SCALE(y.min, y.max)
+      , ASPECT_RATIO_REF_AXIS
+      , ASPECT_RATIO=y.aspect_ratio
+      }
+    } (
+      ( x.value[*] {
+          XAXIS
         , LABEL=LABEL(x)
-        \}
-      , y.value[*] \{
-          \YAXISONE
-        , \LABEL=\LABEL(x)
-        \}
+        }
+      , y.value[*] {
+          YAXIS1
+        , LABEL=LABEL(x)
+        }
       )
     )
   );
 
-  \FORM main_form \{\MAIN\} (
+  FORM main_form {MAIN} (
     ( ( xy_table
       , scale_fg
       )
     , xy_plot
     )
   );
-\END \UIMANAGER;
 ...
-\END.
-\end{alltt}
+END.
+\end{intens}
 \end{boxedminipage}
 
 %

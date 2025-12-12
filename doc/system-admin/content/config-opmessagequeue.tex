@@ -7,7 +7,7 @@ Message Queues are used to communicate with other programs using ZeroMQ.
 Each message can have multiple parts. The first part (\HEADER)
 is used to identify the message.
 
-The communication is done over TCP / IP.
+The communication is done over TCP/IP.
 
 Two patterns are implemented:
 \begin{itemize}
@@ -124,5 +124,49 @@ mq header options & description \\
 \PLUGIN           & Forward the received message to the plugin. \\
 \end{tabularx}
 
+Example:
 
-%% TODO: examples!!
+\begin{boxedminipage}[t]{\linewidth}
+\begin{intens}
+DATAPOOL
+  STRUCT
+    MqResponse {
+      STRING {SCALAR} status;
+      STRING message;
+    }
+  ;
+  MqResponse mq_response;
+  STRUCT ResultReport {
+    CDATA short_circuit;
+  };
+  ResultReport report;
+END DATAPOOL;
+
+STREAMER
+  sc_input_stream{JSON}(motor, variant.short_circuit);
+  sc_output_stream{JSON}(result);
+  mq_response_stream{JSON}(mq_response);
+END STREAMER;
+
+OPERATOR
+
+  MESSAGE_QUEUE python_mq {
+    REQUEST,
+    HOST=RESOURCE("API_GATEWAY_HOST"),
+    PORT_REQUEST=RESOURCE("API_GATEWAY_PORT"),
+    TIMEOUT=0
+  };
+
+  TASK calculate {_("Calculate (api-gateway)")}{
+    REQUEST(MESSAGE_QUEUE=python_mq,
+              HEADER="scimcalc",
+              REQUEST(sc_input_stream),
+              RESPONSE(mq_response_stream, sc_output_stream)
+            );
+   IF (mq_response.status != "ok" && VALID(mq_response.message)) {
+     MESSAGEBOX("<h3>" & _("Message") & "</h3><p>" +
+                  mq_response.message + "</p>");
+   }
+  };
+\end{intens}
+\end{boxedminipage}

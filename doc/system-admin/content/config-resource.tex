@@ -26,7 +26,7 @@ when \RESOURCE{} is i.E. an \INTEGER{} in a context where a \STRING{} is needed.
 Example:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{verbatim}
+\begin{intens}
 
 MESSAGE_QUEUE mq_request{
   REQUEST
@@ -34,13 +34,13 @@ MESSAGE_QUEUE mq_request{
 , PORT_REQUEST=RESOURCE("REPLY_PORT")
 };
 
-\end{verbatim}
+\end{intens}
 \end{boxedminipage}
 
-With a start script that has the lines
+With a start script that includes the lines
 \begin{verbatim}
 export REPLY_HOST="localhost"
 export REPLY_PORT=12345
 \end{verbatim}
-, \INTENS{} replaces \verb+RESOURCE("REPLY_HOST")+ with the \STRING{} ``localhost'' and
+\INTENS{} replaces \verb+RESOURCE("REPLY_HOST")+ with the \STRING{} ``localhost'' and
 \verb+RESOURCE("REPLY_PORT")+ with the \INTEGER{} 12345.

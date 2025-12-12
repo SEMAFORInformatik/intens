@@ -116,29 +116,29 @@ followed by a \verb+'>'+ or a \verb+'|'+.
 Example: \\
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example PIXMAP";
-\DATAPOOL
-  \SET
+\begin{intens}
+DESCRIPTION "Example PIXMAP";
+DATAPOOL
+  SET
     pixmap_set ("plot2d", "semafor-logo");
-  \STRING \{EDITABLE\}
-    filename \{\SET = pixmap_set\};
-\END \DATAPOOL;
+  STRING {EDITABLE}
+    filename {SET = pixmap_set};
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
+UI_MANAGER
+  FIELDGROUP
     Group_1 (
-        filename \PIXMAP( filename, 100, 50 )
+        filename PIXMAP( filename, 100, 50 )
       )
    ;
-  \FORM
+  FORM
     Form_1
       ( ( Group_1 )
       )
    ;
-\END \UIMANAGER;
-\END.
-\end{alltt}
+END UI_MANAGER;
+END.
+\end{intens}
 \end{boxedminipage}
 
 
@@ -345,37 +345,37 @@ The configuration 'Example 1' uses no fieldgroup options.
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example 1";
-\DATAPOOL
-  \SET
+\begin{intens}
+DESCRIPTION "Example 1";
+DATAPOOL
+  SET
      Colors ("red" = 1,"green" = 2,"blue" = 3)
     ;
-  \REAL \{\EDITABLE\}
+  REAL {EDITABLE}
     speed ,height ,length ,weight
   ;
-  \INTEGER \{\EDITABLE\}
-    color \{\SET = Colors\}
+  INTEGER {EDITABLE}
+    color {SET = Colors}
   ;
-\END \DATAPOOL;
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
+UI_MANAGER
+  FIELDGROUP
     Group_1
       ( "Speed"    speed   "km/h"
       , "Height"   height  "mm"   "Length"   length  "mm"
       , "Weight"   weight  "kg"
-      , \VOID       \VOID    \VOID    "Color"    color
+      , VOID       VOID    VOID    "Color"    color
       )
    ;
-  \FORM
+  FORM
     Form_1
       ( ( Group_1 )
       )
    ;
-\END \UIMANAGER;
-\END.
-\end{alltt}
+END UI_MANAGER;
+END.
+\end{intens}
 \end{boxedminipage}
 
 
@@ -397,37 +397,37 @@ are right justified within the fieldgroup.
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example 2";
-\DATAPOOL
-  \SET
+\begin{intens}
+DESCRIPTION "Example 2";
+DATAPOOL
+  SET
     color_set ("red" = 1, "green" = 2, "blue" = 3 )
   ;
-  \REAL \{\EDITABLE\}
+  REAL {EDITABLE}
     speed, height, length, weight
   ;
-  \INTEGER \{\EDITABLE\}
-    color \{ \LABEL="Color:", \SET=color_set \}
+  INTEGER {EDITABLE}
+    color { LABEL="Color:", SET=color_set }
   ;
-\END \DATAPOOL;
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
-    Group_2 \{"Group Two", \JUSTRIGHT\} (
+UI_MANAGER
+  FIELDGROUP
+    Group_2 {"Group Two", JUSTRIGHT} (
       "Speed:">  speed*3.6>       "km/h"<
     , "Height:"> height:5:1>      "m"<    "Length:"> length:4> "m"<
-    , "Weight:"> weight*1e-3:6:2> "kg"<   \VOID      \VOID     \VOID
-    , \VOID      \VOID            \VOID   "Color:">  color:5>  \VOID
+    , "Weight:"> weight*1e-3:6:2> "kg"<   VOID      VOID     VOID
+    , VOID      VOID            VOID   "Color:">  color:5>  VOID
     )
   ;
-  \FORM
+  FORM
     Form_2
       ( ( Group_2 )
       )
    ;
-\END \UIMANAGER;
-\END.
-\end{alltt}
+END UI_MANAGER;
+END.
+\end{intens}
 \end{boxedminipage}
 
 
@@ -446,23 +446,23 @@ This is done with the option \TABLESIZE{}.
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example 3";
-\DATAPOOL
-  \SET
+\begin{intens}
+DESCRIPTION "Example 3";
+DATAPOOL
+  SET
      Colors ("red" = 1,"green" = 2,"blue" = 3)
     ;
-  \REAL \{\EDITABLE\}
+  REAL {EDITABLE}
     speed ,height ,length ,weight
   ;
-  \INTEGER \{\EDITABLE\}
-    color \{\SET = Colors\}
+  INTEGER {EDITABLE}
+    color {SET = Colors}
   ;
-\END \DATAPOOL;
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
-    Group_3 \{"Group Three", \TABLESIZE = 3 \STEP 2\}
+UI_MANAGER
+  FIELDGROUP
+    Group_3 {"Group Three", TABLESIZE = 3, STEP 2}
       ( "Speed"    speed       "km/h"<
       , "Height"   height:5:1  "mm"<
       , "Length"   length:4    "mm"<
@@ -470,12 +470,12 @@ This is done with the option \TABLESIZE{}.
       , "Color"    color:5
       )
    ;
-  \FORM
+  FORM
     Form_3
       ( ( Group_3 )
       )
    ;
-\END \UIMANAGER;
-\END.
-\end{alltt}
+END UI_MANAGER;
+END.
+\end{intens}
 \end{boxedminipage}

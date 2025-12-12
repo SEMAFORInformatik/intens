@@ -31,7 +31,7 @@ function         & description  \\
 \FILENAME        & Name of the file saved or opened through a filestream. \\
 {\bfseries ID\_DATAVARIABLE} & references a data item declared in datapool (section
                    \nameref{sec:dpitem} page \pageref{sec:dpitem}). \\
-{\bfseries ID\_DATASET} & references a data set declared in datapool (section 
+{\bfseries ID\_DATASET} & references a data set declared in datapool (section
                    \nameref{sec:dpset} page \pageref{sec:dpset}). \\
 .                & structure item separator \\
 \end{tabularx}
@@ -46,7 +46,7 @@ By using indexes you can refer to each value of a data item. \\
 \index{  @Signs / Characters!\texttt{"+} (plus)!index offset}
 \index{  @Signs / Characters!: (colon)!index range}
 \begin{tabularx}{\textwidth}{l|X}
-index                   & description \\ 
+index                   & description \\
 \hline
 \verb+ID_INDEX+         & refers a index object defined in UI\_MANAGER (section \nameref{sec:uiindex} page \pageref{sec:uiindex}) \\
 +                       & add constant offset to an array-index \\
@@ -67,9 +67,9 @@ data_item_id[m,*] // an array item with running index on column
 data_item_id[m,n] // a scalar item with index m,n
 
 data_item_id[index-object_identifier]
-                       // it is displaied an index-object,
+                       // displayed as an index-object,
                        // which enables you to scroll through
-                       // the data item using the maouse pointer. \\
+                       // the data item using the mouse pointer. \\
 
 data_item_id[ 5 + index-object_identifier]
                        // adds an offset of 5 to the index-object. \\

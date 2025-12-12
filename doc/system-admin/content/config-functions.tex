@@ -869,20 +869,20 @@ from the application: base64 encoded ``<username>:<password>''.
 Example:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\FUNCTIONS
-  \FUNC
-    getMotor \{
-      [motor] = \GET( \PATH="/components/123" );
-    \}
-  , saveMotor \{
-      [motor] = \PUT( \PATH="/components"
-                    , \DATA="motor_stream"
-                    , \SETDBTIMESTAMP );
-    \}
+\begin{intens}
+FUNCTIONS
+  FUNC
+    getMotor {
+      [motor] = GET( PATH="/components/123" );
+    },
+    saveMotor {
+      [motor] = PUT( PATH="/components"
+                    , DATA="motor_stream"
+                    , SETDBTIMESTAMP );
+    }
   ;
-\END \FUNCTIONS;
-\end{alltt}
+END FUNCTIONS;
+\end{intens}
 \end{boxedminipage}
 
 \subparagraph*{Rest Service: Version control}
@@ -1280,15 +1280,15 @@ Selecting an item will execute the data item assigned function first.
 Inside a function, you can test the reason for calling it using \REASON{} expressions:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-  \FUNC a\_func \{
+\begin{intens}
+  FUNC a_func {
     ...
-    \IF(\REASONINPUT) \{
+    IF(REASON_INPUT) {
       ...
-    \}
+    }
     ...
-  \};
-\end{alltt}
+  };
+\end{intens}
 \end{boxedminipage} \\[2ex]
 
 Sometimes, you may want to call a function with a different REASON.
@@ -1406,19 +1406,19 @@ reason expression       & description\\
 \label{fuexample1}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\FUNCTIONS
-  \FUNC testminmax \{
-    \IF( \VALID(SnMin) && \VALID(SnMax) )\{
-      \IF( SnMin > SnMax )\{
-        \SETERROR( "Minimum value must be less than maximum!"
-                 , \EOLN );
-      \}
-    \}
-  \}
+\begin{intens}
+FUNCTIONS
+  FUNC testminmax {
+    IF( VALID(SnMin) && VALID(SnMax) ){
+      IF( SnMin > SnMax ){
+        SET_ERROR( "Minimum value must be less than maximum!"
+                 , EOLN );
+      }
+    }
+  }
 ;
-\END \FUNCTIONS;
-\end{alltt}
+END FUNCTIONS;
+\end{intens}
 \end{boxedminipage}
 
 
@@ -1427,46 +1427,45 @@ reason expression       & description\\
 \label{fuexample2}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-
+\begin{intens}
 DESCRIPTION "Example of THIS";
 
 DATAPOOL
   SET Set_identifier ("Pass" = 1, "Fail" = 2 );
-  STRUCT Structure \{
-    REAL \{EDITABLE\}
-      Data_item_choice \{ SET = Set_identifier,
-                         FUNC = save_test_results \};
+  STRUCT Structure {
+    REAL {EDITABLE}
+      Data_item_choice { SET = Set_identifier,
+                         FUNC = save_test_results };
     STRING
       Data_item_test_result;
-  \};
-  Structure {\bfseries TestResults} ;
+  };
+  Structure TestResults;
 END DATAPOOL;
 
 UI_MANAGER
-  FIELDGROUP fieldgroup_identifier_1{\bfseries  \{TABLESIZE=5\}} (
+  FIELDGROUP fieldgroup_identifier_1{TABLESIZE=5} (
     "Choose restult of each test-run:"
-    {\bfseries TestResults [*] }.Data_item_choice
+    TestResults [*].Data_item_choice
   );
-  FORM form_identifier_1 \{MAIN\} (
+  FORM form_identifier_1 {MAIN} (
     ( fieldgroup_identifier_1 )
   );
 END UI_MANAGER;
 
 FUNCTIONS
-  FUNC save_test_results \{
-    IF ( \THIS.Data_item_choice == 1 ) \{
-      \THIS.Data_item_test_result = "Test result was OK";
-    \}
-    ELSE \{
-      \THIS.Data_item_test_result = "Test failed";
-    \}
-  \}
+  FUNC save_test_results {
+    IF ( THIS.Data_item_choice == 1 ) {
+      THIS.Data_item_test_result = "Test result was OK";
+    }
+    ELSE {
+      THIS.Data_item_test_result = "Test failed";
+    }
+  }
 ;
 END FUNCTIONS;
 
 END.
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \newpage
@@ -1509,27 +1508,26 @@ data2.p2.y & - & - & - & - & - & - \\
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-
+\begin{intens}
 DESCRIPTION "Example of Input Struct Func and NODE, BASE";
 
 DATAPOOL
-  STRUCT Point \{
-    REAL \{EDITABLE, SCALAR\}
-      x \{FUNC=x_func\}
+  STRUCT Point {
+    REAL {EDITABLE, SCALAR}
+      x {FUNC=x_func}
     , y
     ;
-  \};
+  };
 
-  STRUCT Data \{
+  STRUCT Data {
     Point
-      p1 \{FUNC=p1_func\}
+      p1 {FUNC=p1_func}
     , p2
     ;
-  \};
+  };
 
   Data
-    data1 \{FUNC=data1_func\}
+    data1 {FUNC=data1_func}
   , data2
   ;
 END DATAPOOL;
@@ -1543,40 +1541,40 @@ UI_MANAGER
   , "data2.p2"  data2.p2.x  data2.p2.y
   );
 
-  FORM main_form \{MAIN, HIDE_CYCLE\} (main_fg);
+  FORM main_form {MAIN, HIDE_CYCLE} (main_fg);
 END UI_MANAGER;
 
 ...
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 ...
 FUNCTIONS
-  FUNC print_func \{
+  FUNC print_func {
     PRINT("NODE(INPUT): ", NODE(INPUT),
           ", NODE(THIS): ", NODE(THIS),
           ", NODE(BASE): ", NODE(BASE), EOLN, EOLN);
-  \};
+  };
 
-  FUNC x_func \{
+  FUNC x_func {
     PRINT("x_func:", EOLN);
     RUN(print_func);
-  \};
+  };
 
-  FUNC p1_func \{
+  FUNC p1_func {
     PRINT("p1_func:", EOLN);
     RUN(print_func);
-  \};
+  };
 
-  FUNC data1_func \{
+  FUNC data1_func {
     PRINT("data1_func:", EOLN);
     PRINT("BASE.p1:", BASE.p1, ", BASE.p1.x:", BASE.p1.x, EOLN);
     RUN(print_func);
-  \};
+  };
 END FUNCTIONS;
 
 END.
-\end{alltt}
+\end{intens}
 \end{boxedminipage}

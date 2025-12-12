@@ -48,25 +48,24 @@ index options  & description \\
 Examples:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example INDEX";
-\DATAPOOL
-  \REAL \{\EDITABLE\}
+\begin{intens}
+DESCRIPTION "Example INDEX";
+DATAPOOL
+  REAL {EDITABLE}
     a
    ;
-\END \DATAPOOL;
+END DATAPOOL;
   ...
-\UIMANAGER
-  \INDEX
-    index\_a \{ \RANGE(1,10) \}
+UI_MANAGER
+  INDEX
+    index_a { RANGE(1,10) }
   ;
-  \FIELDGROUP
-    fieldgroup\_a (
-      "Variable a"  a[index\_a]:10
-     ,"Index of a"  index\_a
+  FIELDGROUP
+    fieldgroup_a (
+      "Variable a"  a[index_a]:10
+     ,"Index of a"  index_a
     );
-\END \UIMANAGER;
-\END.
-\end{alltt}
+END UI_MANAGER;
+END.
+\end{intens}
 \end{boxedminipage}
-

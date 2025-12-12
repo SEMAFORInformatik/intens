@@ -40,30 +40,24 @@ scale                       & Description \\
 Example:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DATAPOOL
-  \REAL data, factor;
-\END \DATAPOOL;
+\begin{intens}
+DATAPOOL
+  REAL data, factor;
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP fg_identifier (
-    "@title@This fieldgroup shows following values:",
-    " 40: " data * 2,
+UIMANAGER
+  FIELDGROUP fg_identifier (
+    "This fieldgroup shows following values:",
+    " 20000: " data * 1e3,
     " 10: " data / 2,
-    "-40: " data * -2,
-    " -1: " data / -(2/2),
-    "-40: " data / -(((2+2)-2)/2*1.0),
-
     " 40: " data * factor,
-    " 10: " data / factor
-  );
-\END \UIMANAGER
+    " 10: " data / factor  );
+END UIMANAGER
 
-\FUNCTIONS
-  \FUNC INIT {
+FUNCTIONS
+  FUNC INIT {
     data = 20; factor = 2;
   };
-\END \FUNCTIONS;
-
-\end{alltt}
+END FUNCTIONS;
+\end{intens}
 \end{boxedminipage}

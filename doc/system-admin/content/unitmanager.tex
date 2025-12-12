@@ -12,7 +12,7 @@ in base units. They are only scaled for the user interface.
 Throughout this section, let's use an example variable motor.Lls
 that was defined this way:
 
-\begin{lstlisting}
+\begin{intens}
 DATAPOOL
   STRUCT Motor: Component {
     ...
@@ -30,7 +30,7 @@ DATAPOOL
       PERSISTENT, SCALAR
     }
   ;
-\end{lstlisting}
+\end{intens}
 
 It has the value 0.001 H, shown as 1 mH in the user interface.
 
@@ -45,13 +45,13 @@ It has the value 0.001 H, shown as 1 mH in the user interface.
 Without the Unit Manager, the variable motor.Lls needs a scale
 factor *1e3 when shown in the user interface:
 
-\begin{lstlisting}[escapeinside={(*}{*)}]
+\begin{intens}[escapeinside={(*}{*)}]
 FIELDGROUP motor_properties_fg(
   ...
   LABEL(motor.Lls)      motor.Lls(*\textbf{*1e3}*)   UNIT(motor.Lls),
   ...
 );
-\end{lstlisting}
+\end{intens}
 
 INTENS reads the value motor.Lls (0.001), multiplies it by 1000 (1.0)
 and shows this in the user interface. When the user enters a value,
@@ -71,19 +71,19 @@ DATAPOOL. This is where the Unit Manager comes in.
 
 \subsection{With Unit Manager}
 You activate the Unit Manager using the INTENS
-commandline option \texttt{--}unitManager.
+command line option \texttt{--}unitManager.
 
 As mentioned, the Unit Manager handles the automatic scaling of values
 in the user interface.
 
 You no longer provide the scale factor:
-\begin{lstlisting}
+\begin{intens}
 FIELDGROUP motor_properties_fg(
   ...
   LABEL(motor.Lls)      motor.Lls   UNIT(motor.Lls),
   ...
 );
-\end{lstlisting}
+\end{intens}
 
 As you defined the UNIT ``mH'' in the variable definition, INTENS
 knows that you want to see motor.Lls in ``mH''.
@@ -151,7 +151,7 @@ Maybe a user wants to see different units in the user interface?
 You can tell INTENS to show the units as comboboxes instead of
 as labels.
 %
-To do so, provide one of two values to the commandline option unitManager:
+To do so, provide one of two values to the command line option unitManager:
 \begin{itemize}
 \item \texttt{--}unitManager=comboBox\_hide\_single
 \item \texttt{--}unitManager=comboBox\_always
@@ -180,7 +180,7 @@ application the next time, motor.Lls will be shown in the chosen unit.
 %
 (INTENS stores these choices in the user resource file.)
 
-If you prefer to see a combobox for all (known) units, use the commandline
+If you prefer to see a combobox for all (known) units, use the command line
 option \newline
 \texttt{--}unitManager=comboBox\_always (see figure
 \ref{fig:unitmanager-test-application-always} on page \pageref{fig:unitmanager-test-application-always}.

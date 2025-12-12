@@ -69,15 +69,15 @@ data item           & Description \\
 \vspace{0.5cm}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DATAPOOL
-  \REAL
-    data\_item\_identifier\_A[10],        // 1 dimension
-    data\_item\_identifier\_B[3,20],      // 2 dimensions
-    data\_item\_identifier\_C[2,4,10];    // 3 dimensions
+\begin{intens}
+DATAPOOL
+  REAL
+    data_item_identifier_A[10],        // 1 dimension
+    data_item_identifier_B[3,20],      // 2 dimensions
+    data_item_identifier_C[2,4,10];    // 3 dimensions
 
-\END \DATAPOOL;
-\end{alltt}
+END DATAPOOL;
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}
@@ -325,7 +325,6 @@ tag          & Description \\ \hline
 {\bfseries ID\_TAG} & References an existing tag. \\
 \end{tabularx}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                              Data Set                                 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -363,18 +362,17 @@ starting at 0 for real and integer items. String items contain the string itself
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DATAPOOL
-  \SET
-    set\_identifier ( "circle" = 0, "triangle" = 1, "square"= 2 );
+\begin{intens}
+DATAPOOL
+  SET
+    set_identifier ( "circle" = 0, "triangle" = 1, "square"= 2 );
 
-  \INTEGER \{\EDITABLE\}
-    data\_item\_identifier \{\SET = set\_identifier\};
+  INTEGER {EDITABLE}
+    data_item_identifier {SET = set_identifier};
 
-\END \DATAPOOL;
-\end{alltt}
+END DATAPOOL;
+\end{intens}
 \end{boxedminipage}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                              Dynamic Combobox                         %%%
@@ -384,8 +382,10 @@ starting at 0 for real and integer items. String items contain the string itself
 \index{STRING@\STRING!dynamic combobox}
 \label{stringdynamiccombobox}
 Sometimes it is not possible to use a \SET{} to build a combobox. Then, a \STRING{}
-item can be changed to a combobox by assigning a special value to it: \newline
-\verb+{"value": "a", "input":["A","B","C",null], "output":["a","b","c",null]}+ \newline
+item can be changed to a combobox by assigning a special value to it:
+
+\verb+{"value": "a", "input":["A","B","C",null], "output":["a","b","c",null]}+
+
 It must be a JSON object with the members:
 \begin{itemize}
   \item \Slanted{value}: the selected value. One of the values of \Slanted{output}.
@@ -464,25 +464,24 @@ value                    & Description \\
 \vspace{0.5cm}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DATAPOOL
-  \COLOR
-    red\_green\_blue\_color (
-      INVALID = ( "red", "black" )
-    , < 0     = ( "#fff", "#f00" )
-    , RANGE ( 0, <2 ) = ( "#ffffff", "#00ff00" )
-    , 2 = ( "#ffffff", "#0000ff" )
-    , ELSE = ( "#ffffff", "#0000ff" )
+\begin{intens}
+DATAPOOL
+  COLOR
+    red_green_blue_color (
+      INVALID = ( "red", "black" ),
+      < 0     = ( "#fff", "#f00" ),
+      RANGE ( 0, <2 ) = ( "#ffffff", "#00ff00" ),
+      2 = ( "#ffffff", "#0000ff" ),
+      ELSE = ( "#ffffff", "#0000ff" )
     )
   ;
 
-  \INTEGER \{\EDITABLE\}
-    data\_item\_identifier \{\COLOR = red\_green\_blue\_color\};
+  INTEGER {EDITABLE}
+    data_item_identifier {COLOR = red_green_blue_color};
 
-\END \DATAPOOL;
-\end{alltt}
+END DATAPOOL;
+\end{intens}
 \end{boxedminipage}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                     Structured Data Items                             %%%
@@ -514,23 +513,23 @@ Structure definition            & Description \\
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DATAPOOL
-  \STRUCT structure\_def
-  \{
-     \INTEGER \{\EDITABLE\}
-        data\_item\_identifier_1,
-        data\_item\_identifier_2;
-     \REAL \{\OPTIONAL\}
-        data\_item\_identifier_3;
-  \};
+\begin{intens}
+DATAPOOL
+  STRUCT structure_def
+  {
+     INTEGER {EDITABLE}
+        data_item_identifier_1,
+        data_item_identifier_2;
+     REAL {OPTIONAL}
+        data_item_identifier_3;
+  };
 
-  structure\_def
-    structure\_identifier_1,
-    structure\_identifier_2;
+  structure_def
+    structure_identifier_1,
+    structure_identifier_2;
 
-\END \DATAPOOL;
-\end{alltt}
+END DATAPOOL;
+\end{intens}
 \end{boxedminipage}
 
 
@@ -543,49 +542,49 @@ Structure definition            & Description \\
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\DESCRIPTION "Example of data defining and referring"
+\begin{intens}
+DESCRIPTION "Example of data defining and referring"
 
-\DATAPOOL
-  \SET shape_set ( "circle" = 0, "triangle" = 1, "square"= 2 );
+DATAPOOL
+  SET shape_set ( "circle" = 0, "triangle" = 1, "square"= 2 );
 
-  \STRUCT Object \{
-     \INTEGER \{\EDITABLE\}
-        shape \{\SET = shape_set,\COMBOBOX
-              ,\LABEL = "The Shape"\};
-     \REAL \{\OPTIONAL\}
-        size  \{\LABEL = "The Size", \UNIT = "cm"\};
-  \};
+  STRUCT Object {
+     INTEGER {EDITABLE}
+        shape {SET = shape_set,COMBOBOX
+              ,LABEL = "The Shape"};
+     REAL {OPTIONAL}
+        size  {LABEL = "The Size", UNIT = "cm"};
+  };
 
   Object obj[20];
 
-  \STRING \{\EDITABLE\}
+  STRING {EDITABLE, SCALAR}
      text;
 
-\END \DATAPOOL;
+END DATAPOOL;
 
-\UIMANAGER
-  \FIELDGROUP
-    fieldgroup\_identifier
+UIMANAGER
+  FIELDGROUP
+    fieldgroup_identifier
     (
       "Select first shape:" obj[0].shape,
       "Enter first size:"   obj[0].size,
 
-      "Select last shape:"  obj[20].shape,
-      "Enter last size:"    obj[20].size,
+      "Select last shape:"  obj[19].shape,
+      "Enter last size:"    obj[19].size,
 
       "Enter a remark:"     text
     )
   ;
 
-  \FORM
-    form_identifier \{MAIN\}
+  FORM
+    form_identifier {MAIN}
     (
       (fieldgroup_identifier)
     )
   ;
 
-\END \UIMANAGER;
+END UIMANAGER;
 
-\end{alltt}
+\end{intens}
 \end{boxedminipage}

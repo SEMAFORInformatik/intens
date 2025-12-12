@@ -132,38 +132,38 @@ Example of structure definition with name items: \\
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 DATAPOOL
   STRUCT
-    STRU\_1 \{
-      STRING \{EDITABLE\}
-        {\bfseries name},
+    STRU_1 {
+      STRING {EDITABLE}
+        name,
         data_item_1,
         data_item_2
       ;
-    \};
+    };
   STRUCT
-    STRU_2 \{
-      STRING \{EDITABLE\}
-        {\bfseries name},
+    STRU_2 {
+      STRING {EDITABLE}
+        name,
         data_item_1,
         data_item_2
       ;
-    \};
+    };
   STRUCT
-    STRU_MAIN \{
-      STRING \{EDITABLE\}
-        {\bfseries name};
+    STRU_MAIN {
+      STRING {EDITABLE}
+        name;
       STRU_1
         stru_1;
       STRU_2
         stru_2;
-    \};
+    };
   STRU_MAIN
     stru_main
   ;
 END DATAPOOL;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}
@@ -171,7 +171,7 @@ END DATAPOOL;
 Example of corresponding navigator definition: \\
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 UI_MANAGER
   NAVIGATOR
     navigator_identifier
@@ -180,7 +180,7 @@ UI_MANAGER
     )
   ;
 END UI_MANAGER;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -190,38 +190,38 @@ Example of structure definition without name items: \\
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 DATAPOOL
   STRUCT
-    STRU\_1 \{
-      STRING \{EDITABLE\}
-        {\bfseries noname}   \{TAG = (tag_col_1)\},
-        data_item_1    \{TAG = (tag_col_2)\},
-        data_item_2    \{TAG = (tag_col_3)\}
+    STRU_1 {
+      STRING {EDITABLE}
+        noname   {TAG = (tag_col_1)},
+        data_item_1    {TAG = (tag_col_2)},
+        data_item_2    {TAG = (tag_col_3)}
       ;
-    \};
+    };
   STRUCT
-    STRU_2 \{
-      STRING \{EDITABLE\}
-        {\bfseries noname}   \{TAG = (tag_col_1)\},
-        data_item_1    \{TAG = (tag_col_2)\},
-        data_item_2    \{TAG = (tag_col_3)\}
+    STRU_2 {
+      STRING {EDITABLE}
+        noname   {TAG = (tag_col_1)},
+        data_item_1    {TAG = (tag_col_2)},
+        data_item_2    {TAG = (tag_col_3)}
       ;
-    \};
+    };
   STRUCT
-    STRU_MAIN \{
-      STRING \{EDITABLE\}
-        {\bfseries noname}   \{TAG = (tag_col_1)\};
+    STRU_MAIN {
+      STRING {EDITABLE}
+        noname   {TAG = (tag_col_1)};
       STRU_1
         stru_1;
       STRU_2
         stru_2;
-    \};
+    };
   STRU_MAIN
     stru_main
   ;
 END DATAPOOL;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{0.5cm}
@@ -229,20 +229,20 @@ END DATAPOOL;
 Example of corresponding navigator definition: \\
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 UI_MANAGER
   NAVIGATOR
     navigator_identifier
-    \{ COL ("Label column1" {\bfseries tag\_col\_1}:20,
-            "Label column2" {\bfseries tag\_col\_2}:10,
-            "Label column3" {\bfseries tag\_col\_3}:10)
-    \}
+    { COL ("Label column1" tag_col_1:20,
+            "Label column2" tag_col_2:10,
+            "Label column3" tag_col_3:10)
+    }
     (
       stru_main[*]
     )
   ;
 END UI_MANAGER;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -258,18 +258,18 @@ END UI_MANAGER;
 Example of functions to encounter events like {\bfseries select} or {\bfseries drag and drop}:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 DESCRIPTION "Implementing menu and drag'n'drop functions";
 DATAPOOL
-  STRUCT Motor \{
+  STRUCT Motor {
     INTEGER   id;
-    REAL      nom_power        \{TAG=Tpower\};
-    STRING    id_manuf         \{TAG=Tmanuf\};
-    STRING    model            \{TAG=Tname\};
+    REAL      nom_power        {TAG=Tpower};
+    STRING    id_manuf         {TAG=Tmanuf};
+    STRING    model            {TAG=Tname};
     REAL      nom_voltage;
     REAL      nom_frequency;
-  \};
-   Motor motors                \{FUNC={\bfseries select\_motor}\};
+  };
+   Motor motors                {FUNC=select_motor};
 END DATAPOOL;
 FUNCTIONS
   FUNC INIT {
@@ -282,28 +282,28 @@ FUNCTIONS
     .
     .
   };
-  FUNC {\bfseries select\_motor} \{
-    IF( REASON_SELECT )\{
-      SET_MSG( THIS.model, " selected" ); \}
-    ELSE IF( REASON_UNSELECT )\{
-      SET_MSG( THIS.model, " unselected" ); \}
-    ELSE IF( REASON_ACTIVATE )\{
-      SET_MSG( THIS.model, " activated" ); \}
-    ELSE IF( REASON_DROP )\{
-      SET_MSG( SOURCE.model, " dropping to ", THIS.model ); \}
-  \};
-  FUNC DeleteThisMotor_func \{
+  FUNC select_motor {
+    IF( REASON_SELECT ){
+      SET_MSG( THIS.model, " selected" ); }
+    ELSE IF( REASON_UNSELECT ){
+      SET_MSG( THIS.model, " unselected" ); }
+    ELSE IF( REASON_ACTIVATE ){
+      SET_MSG( THIS.model, " activated" ); }
+    ELSE IF( REASON_DROP ){
+      SET_MSG( SOURCE.model, " dropping to ", THIS.model ); }
+  };
+  FUNC DeleteThisMotor_func {
     PRINT "Delete: ", THIS.model, EOLN;
-  \};
-  FUNC MoveThisMotor_func \{
+  };
+  FUNC MoveThisMotor_func {
     PRINT "Move: ", THIS.model, EOLN;
-  \};
+  };
 END FUNCTIONS;
 UI_MANAGER
   NAVIGATOR
-    motornav \{ COL( "" Tname:20
+    motornav { COL( "" Tname:20
                   , "Manuf." Tmanuf:12
-                  , "Output [kW]" Tpower:15 )\} (
+                  , "Output [kW]" Tpower:15 )} (
       motors[*] = "Motors" );
 
   MENU Motor (
@@ -311,7 +311,7 @@ UI_MANAGER
    ,FUNC MoveThisMotor_func = "Move This Motor"
   );
 END UI_MANAGER;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 
@@ -323,35 +323,35 @@ To add a popup \MENU{} to a navigator tree,
 the menu identifier must be the same as the structure identifier:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 DESCRIPTION "Implementing menu and drag'n'drop functions";
 DATAPOOL
-  STRUCT Motor \{
+  STRUCT Motor {
     INTEGER   id;
-    REAL      nom_power        \{TAG=Tpower\};
-    STRING    id_manuf         \{TAG=Tmanuf\};
-    STRING    model            \{TAG=Tname\};
+    REAL      nom_power        {TAG=Tpower};
+    STRING    id_manuf         {TAG=Tmanuf};
+    STRING    model            {TAG=Tname};
     REAL      nom_voltage;
     REAL      nom_frequency;
-  \};
-  {\bfseries Motor} motors                 \{FUNC=select_motor\};
+  };
+  Motor motors                 {FUNC=select_motor};
 END DATAPOOL;
 .
 .
 .
 UI_MANAGER
   NAVIGATOR
-    motornav \{ COL( "" Tname:20
+    motornav { COL( "" Tname:20
                   , "Manuf." Tmanuf:12
-                  , "Output [kW]" Tpower:15 )\} (
+                  , "Output [kW]" Tpower:15 )} (
       motors[*] = "Motors" );
 
-  MENU {\bfseries Motor} (
+  MENU Motor (
     FUNC DeleteThisMotor_func = "Delete This Motor"
    ,FUNC MoveThisMotor_func = "Move This Motor"
   );
 END UI_MANAGER;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \newpage
@@ -371,40 +371,40 @@ The \ICONVIEW{} shows all children of it that have an attribute with that tag
 \end{center}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
+\begin{intens}
 DATAPOOL
   STRUCT
-    Elements \{
-      STRING \{EDITABLE\}
-        name \{ TAG=(nametag) \}
+    Elements {
+      STRING {EDITABLE}
+        name { TAG=(nametag) }
       , type
       ;
-    \}
+    }
   ;
   STRUCT
-    Parent \{
-      STRING \{EDITABLE\}
-        name \{ TAG=(nametag) \}
+    Parent {
+      STRING {EDITABLE}
+        name { TAG=(nametag) }
       ;
       Elements elements;
-    \}
+    }
   ;
   Parent parent;
 END DATAPOOL;
 
 UI_MANAGER
-  NAVIGATOR \{ ICONVIEW \}
+  NAVIGATOR { ICONVIEW }
     iconView_navigator
-    \{ SIZE ( 200, 200 )
+    { SIZE ( 200, 200 )
     , COL ("" nametag)
     , TOOLTIP(nametag)
-    \}
+    }
     (
-      parent \{ AUTOLEVEL \}
+      parent { AUTOLEVEL }
     )
   ;
   FORM
-    iconView_form \{ HIDE_CYCLE \} (
+    iconView_form { HIDE_CYCLE } (
       iconView_navigator
     )
   ;
@@ -412,7 +412,7 @@ END UI_MANAGER;
 
 FUNCTIONS
   FUNC
-    INIT \{
+    INIT {
       parent.elements[0].name = "A";
       parent.elements[1].name = "B";
       ...
@@ -420,11 +420,11 @@ FUNCTIONS
       parent.elements[0].type = "A";
       parent.elements[1].type = "B";
       ...
-    \}
+    }
   ;
 END FUNCTIONS;
 END.
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \newpage

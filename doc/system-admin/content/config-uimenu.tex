@@ -58,7 +58,7 @@ string        & Define a menu label (default is the menu id) \\
 The user can display a form by activating the corresponding menu button.
 \INTENS{} creates
 the necessary buttons automatically in the form menu of the main window.
-This menu structure can be specified with the following syntax. 
+This menu structure can be specified with the following syntax.
 
 \input{diagrams/ui_form_menu_button_list}
 \label{key:menu_form}
@@ -76,7 +76,7 @@ This menu structure can be specified with the following syntax.
 \index{FUNC@\FUNC!ui\_manager forms menu}
 \index{SEPARATOR@\SEPARATOR!ui\_manager forms  menu}
 \begin{tabularx}{\textwidth}{l|X}
-MENU Syntax       & description \\ 
+MENU Syntax       & description \\
 \hline
 \MENU             & creates a new submenu.\\
 \FORM             & creates a menu button within the submenu containing the name of the form to be displayed with this button.\\
@@ -90,16 +90,16 @@ Example:
 
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\MENU 
+\begin{intens}
+MENU
    "Results" (
-      \FORM Form_1,
-      \FORM Form_2,
-      \MENU "Plots" (
-         \FORM curve_form
+      FORM Form_1,
+      FORM Form_2,
+      MENU "Plots" (
+         FORM curve_form
       )
     );
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{1cm}
@@ -163,19 +163,19 @@ Example of a print menu:
 \label{example:uimanagermenu}
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\MENU 
-   \PRINT (
-      \MENU Windows (
-         \STDWINDOW = "Standard",
-         \LOGWINDOW = "Log"
+\begin{intens}
+MENU
+   PRINT (
+      MENU Windows (
+         STD_WINDOW = "Standard",
+         LOG_WINDOW = "Log"
       ),
-      \MENU Plots (
+      MENU Plots (
          Plot1 = "First Plot",
          Plot2 = "Second Plot"
       )
    );
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 

@@ -128,30 +128,30 @@ The following example shows the configuration of two tables
 and how they will be displayed by \INTENS{} (see page \pageref{fig:tables})
 
 \begin{boxedminipage}[ht]{\linewidth}
-\begin{alltt}
-  \TABLE
-    Table1 \{ "Table 1"
-           , \HORIZONTAL ( \TABLESIZE = 5  )
-           , \VERTICAL   ( \TABLESIZE = 23 )
-           \}
-    ( \TOP   ( "Length"  length[0:*,0]:10
+\begin{intens}
+  TABLE
+    Table1 { "Table 1"
+           , HORIZONTAL ( TABLESIZE = 5  )
+           , VERTICAL   ( TABLESIZE = 23 )
+           }
+    ( TOP   ( "Length"  length[0:*,0]:10
              , "Weight"  weight[0:*,1]:10
              );
-      \LEFT  ( "Speed"   speed[0:*]:10     );
-      \TABLE ( rslt[*,*]:10 );
+      LEFT  ( "Speed"   speed[0:*]:10     );
+      TABLE ( rslt[*,*]:10 );
     )
-  , Table2 \{ "Table 2"
-           , \HORIZONTAL ( \TABLESIZE = 3 )
-           , \ORIENTATION = \HORIZONTAL
-           , \NAVIGATION  = \HORIZONTAL
-           \}
-    ( \TOP ( "Color"   color[0,*]:-20     );
-      \TABLE ( "first"   first [0,*]:-10
+  , Table2 { "Table 2"
+           , HORIZONTAL ( TABLESIZE = 3 )
+           , ORIENTATION = HORIZONTAL
+           , NAVIGATION  = HORIZONTAL
+           }
+    ( TOP ( "Color"   color[0,*]:-20     );
+      TABLE ( "first"   first [0,*]:-10
              , "second"  second[1,*]:10
              , "third"   third [2,*]:10   );
     )
   ;
-\end{alltt}
+\end{intens}
 \end{boxedminipage}
 
 \vspace{1cm}

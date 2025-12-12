@@ -1,10 +1,7 @@
 \usepackage{fontspec}
 \usepackage{graphicx}
-\usepackage{fancyhdr}
-\usepackage{times}
 \usepackage{tabularx}
 \usepackage{ltablex}
-\usepackage{color,colortbl}
 \usepackage[bookmarks,colorlinks,linkcolor=blue]{hyperref}
 \usepackage{listings}
 \usepackage{makeidx}
@@ -16,12 +13,14 @@
 \usepackage{everyshi}
 \usepackage{lmodern}
 \usepackage{nameref}
-\usepackage{fancybox,color}
+\usepackage{fancybox}
 \usepackage{epic}
 % nice picture \oval (corners fit straight lines)
 \usepackage{pict2e}
 \usepackage{boxedminipage}
 \usepackage{float}
+\usepackage{xcolor}
+\usepackage{textcomp}
 %
 \addtolength{\textheight}{2cm}
 \definecolor{SteelBlue}     {rgb}{0.27,0.51,0.71}
@@ -31,20 +30,13 @@
 \newcommand{\structure}[1]{\textcolor{SteelBlue}{\bfseries #1}}
 
 \newcommand{\Intens}[1][ ]{\textcolor{SteelBlue}{\bfseries INTENS}#1}
-\newcommand{\nothing}{\rule{0pt}{0pt}}
-\newcommand{\Zitat}[1]{\flqq{#1}\frqq}
 \newcommand{\Slanted}[1]{{\normalfont\slshape #1}}
-\newcommand{\SlantedB}[1]{{\normalfont\bfseries\slshape #1}}
 \newcommand{\Bold}[1]{{\bfseries{#1}}}
 \newcommand{\BoldIt}[1]{{\bfseries\textit{#1}}}
 \newcommand{\BoldTt}[1]{{\bfseries\ttfamily{#1}}}
 \newcommand{\Tt}[1]{{\ttfamily{#1}}}
 \newcommand{\Kopffreiheit}[1][2.5ex]{\rule{0pt}{#1}}
 \newcommand{\Fussfreiheit}[1][-0.7ex]{\rule[#1]{0pt}{1ex}}
-\newcommand{\Tilde}{\raisebox{-0.8ex}{\~\ }}
-\newcommand{\TildeTt}{\raisebox{-0.8ex}{\~\ \hspace{-0.7em}}}
-
-\definecolor{delim}{RGB}{20,105,176}
 
 \lstdefinelanguage{json}{
     showspaces=false,
@@ -56,6 +48,524 @@
     upquote=true,
     morestring=[b]",
 }
+\lstdefinelanguage{intens}{
+  morekeywords=[1]{DATAPOOL, DESCRIPTION, END, FUNCTIONS,
+    HELPFILE, OPERATOR, STREAMER, UI_MANAGER},
+  morekeywords=[2]{ABORT,
+    ABORTTRANSACTION,
+    ABS,
+    ACOS,
+    AFTER_DB_LOGON,
+    AFTER_UPDATE_FORMS,
+    ALARM_COLOR,
+    ALARM_LEVEL,
+    ALIGN,
+    ALLCYCLES,
+    ALLOW,
+    ALWAYS,
+    ANNOTATION,
+    APP_MODAL,
+    APP_VERSION_MAJOR,
+    APP_VERSION_MINOR,
+    APP_VERSION_PATCH,
+    APPEND,
+    AREA,
+    ARG,
+    ARROWS,
+    ASCII,
+    ASIN,
+    ASPECT_RATIO,
+    ASPECT_RATIO_REF_AXIS,
+    ASSIGN_CONSISTENCY,
+    ASSIGN_CORR,
+    ATAN,
+    ATAN2,
+    ATTRS,
+    AUTO_SCROLL,
+    AUTO_WIDTH,
+    AUTOCLEAR_DEPENDENCIES,
+    AUTOLEVEL,
+    AVG,
+    AXES_ORIGIN,
+    AXES_ORIGIN_X,
+    AXES_ORIGIN_Y,
+    BAR,
+    BASE,
+    BASENAME,
+    BATCH,
+    BEEP,
+    BEGINTRANSACTION,
+    BINARY,
+    BOTTOM,
+    BUTTON,
+    BUTTON_CANCEL,
+    BUTTON_NO,
+    BUTTON_YES,
+    BUTTONS,
+    BY,
+    CAPTION,
+    CELL,
+    CENTER,
+    CHANGED,
+    CLASS,
+    CLASSNAME,
+    CLEAR,
+    CLEAR_SELECTION,
+    CLEARCYCLE,
+    CLOSE_BUTTON,
+    COL,
+    COLOR_SCALE,
+    COLORBIT,
+    COLSPAN,
+    COMBOBOX,
+    COMMITTRANSACTION,
+    COMPARE,
+    COMPOSE,
+    COMPOSE_STRING,
+    CONFIRM,
+    CONFIRM_CANCEL,
+    CONTOUR,
+    COPY,
+    COS,
+    CURRENT_DATE,
+    CURRENT_DATETIME,
+    CURRENT_TIME,
+    CYCLE,
+    CYCLENAME,
+    DAEMON,
+    DATA,
+    DATA_SIZE,
+    DATASET_TEXT,
+    DATE,
+    DB_VERSION_IGNORE,
+    DB_VERSION_MAJOR,
+    DB_VERSION_MINOR,
+    DB_VERSION_PATCH,
+    DBASSEMBLY,
+    DBATTR,
+    DBLIST,
+    DBUNIT,
+    DEADLY_SILENT,
+    DEBUG,
+    DEFAULT_LANG,
+    DELAY,
+    DELETE,
+    DELETECYCLE,
+    DELIMITER,
+    DEPENDENCIES,
+    DESCRIPTION_FILE,
+    DIAGRAM,
+    DIAGRAM_XPOS,
+    DIAGRAM_YPOS,
+    DIRNAME,
+    DISABLE,
+    DISABLE_DRAG,
+    DISALLOW,
+    DISCRETE,
+    DISPLAY,
+    DOMAIN,
+    DOTS,
+    DROP,
+    EDITABLE,
+    ELSE,
+    ENABLE,
+    EOLN,
+    ERASE,
+    ERROR,
+    EXIT,
+    EXPAND,
+    EXPLICIT,
+    EXTENSION,
+    FALSE,
+    FATAL,
+    FILENAME,
+    FILTER,
+    FIRSTCYCLE,
+    FIRSTLEVEL,
+    FORMAT,
+    FORTRAN,
+    FRAME,
+    FROM_STRING_DATETIME,
+    GET,
+    GET_SELECTION,
+    GET_SORT_CRITERIA,
+    GETCYCLE,
+    GETTEXT,
+    GLOBAL,
+    Global_Point,
+    Global_Rect,
+    GOCYCLE,
+    GUI_ELEMENT_METHOD,
+    HEADER,
+    HELPKEY,
+    HELPTEXT,
+    HIDDEN,
+    HIDE_CYCLE,
+    HIDE_EMPTY_FOLDER,
+    HIGH,
+    HORIZONTAL,
+    HOST,
+    ICON,
+    ICONVIEW,
+    IF,
+    IGNORE,
+    IMAG,
+    IN,
+    INDENT,
+    INDEXED_SET,
+    INFO,
+    INIT,
+    INIT_HEADER,
+    INPUT,
+    INTENS_PATH,
+    INTENS_REVISION,
+    INTENS_VERSION,
+    INTENS_VERSION_MAJOR,
+    INTENS_VERSION_MINOR,
+    INTENS_VERSION_PATCH,
+    INVALID,
+    INVERTED,
+    IPADDR,
+    JSON,
+    JUSTIFY,
+    JUSTLEFT,
+    JUSTRIGHT,
+    KEY,
+    LABEL,
+    LASTCYCLE,
+    LASTLEVEL,
+    LATEX,
+    LEFT,
+    LEGEND,
+    LENGTH,
+    LINEAR,
+    LINESTYLE,
+    LOAD,
+    LOCALE,
+    LOCK,
+    LOCKABLE,
+    LOG,
+    LOG10,
+    LOG_WINDOW,
+    LOG_X,
+    LOG_Y,
+    LOGOFF,
+    LOGON,
+    LOGON_STATUS,
+    MAIN,
+    MAP,
+    MARGIN,
+    MARKER,
+    MATLAB,
+    MAX_OCCURS,
+    MAX_PENDING_FUNCTIONS,
+    MAXCYCLE,
+    MESSAGE_CURLERROR,
+    MESSAGE_UNAUTHORIZED,
+    MESSAGEBOX,
+    MFM,
+    MINMAX,
+    MODIFIED,
+    MODIFY,
+    MOTIF,
+    MOVE,
+    MULTIPLE_SELECTION,
+    NAMESPACE,
+    NAVIGATION,
+    NEWCYCLE,
+    NEXTCYCLE,
+    NO_COLORBIT,
+    NO_DEPENDENCIES,
+    NO_GZ,
+    NO_LOG,
+    NO_PANEDWINDOW,
+    NO_SCROLLBARS,
+    NODE,
+    NONE,
+    NP,
+    NS,
+    OF,
+    OFFSET,
+    OLDVALUE,
+    OMIT_ACTIVATE,
+    OMIT_TTRAIL,
+    ON_CYCLE_EVENT,
+    ON_CYCLE_SWITCH,
+    ON_EOS,
+    ON_VIEW_ACTION,
+    OPEN,
+    OPEN_FILE,
+    OPEN_URL,
+    OPENLEVELS,
+    OPTIONAL,
+    ORIENTATION,
+    OUT,
+    OVERLAY,
+    PACK,
+    PACKAGES,
+    PANEDWINDOW,
+    PARENT,
+    PASSWORD,
+    PASTE,
+    PATH,
+    PATTERN,
+    PERIOD,
+    PERSISTENT,
+    PIXMAP,
+    PLACEHOLDER,
+    PLOT,
+    PLOT2D_UIMODE,
+    POLAR,
+    PORT,
+    PORT_REQUEST,
+    POSITION,
+    POST,
+    POSTGRES,
+    PREVIEW,
+    PRINT,
+    PRINT_LOG,
+    PRINTSTYLE,
+    PRIORITY,
+    ProgressDialog,
+    PROTO,
+    PSPLOT,
+    PUBLISH,
+    PUT,
+    PW,
+    QUERY,
+    QUIT,
+    RADIO,
+    RANGE,
+    READONLY,
+    REASON,
+    REASON_ACTIVATE,
+    REASON_CLEAR,
+    REASON_CLOSE,
+    REASON_CONNECTION,
+    REASON_CYCLE_CLEAR,
+    REASON_CYCLE_DELETE,
+    REASON_CYCLE_NEW,
+    REASON_CYCLE_RENAME,
+    REASON_CYCLE_SWITCH,
+    REASON_DROP,
+    REASON_DUPLICATE,
+    REASON_FOCUS,
+    REASON_FOCUS_OUT,
+    REASON_FUNCTION,
+    REASON_GUI_UPDATE,
+    REASON_INPUT,
+    REASON_INSERT,
+    REASON_MOVE,
+    REASON_OPEN,
+    REASON_PACK,
+    REASON_REMOVE,
+    REASON_REMOVE_CONNECTION,
+    REASON_REMOVE_ELEMENT,
+    REASON_SELECT,
+    REASON_SELECT_POINT,
+    REASON_SELECT_RECTANGLE,
+    REASON_TASK,
+    REASON_UNSELECT,
+    REPLACE,
+    REPLY,
+    REPORT,
+    REQUEST,
+    RESET,
+    RESET_ERROR,
+    RESOURCE,
+    RESPONSE,
+    REST_JWT_LOGON,
+    REST_LOGOFF,
+    REST_LOGON,
+    REST_SERVICE,
+    RESTBASE,
+    RESTUSERNAME,
+    RESTUSERNAMELIST,
+    RETURN,
+    RIGHT,
+    RMS,
+    ROTATE_180,
+    ROUND,
+    ROUND10,
+    ROUND5,
+    ROW,
+    ROWSPAN,
+    RUN,
+    SAME_YRANGE,
+    SAVE,
+    SB,
+    SCALAR,
+    SCALE,
+    SCHEMA,
+    SCROLLBARS,
+    SELECT_LIST,
+    SEND,
+    SEPARATOR,
+    SERIALIZE,
+    SERIALIZE_FORM,
+    SET_CURRENT_FORM,
+    SET_DB_TIMESTAMP,
+    SET_ERROR,
+    SET_FUNC_ARGS,
+    SET_INDEX,
+    SET_MQ_HOST,
+    SET_MSG,
+    SET_REASON,
+    SET_RESOURCE,
+    SET_THIS,
+    SETTINGS,
+    SILENT,
+    SIN,
+    SIZE,
+    SKIP,
+    SLIDER,
+    SORT,
+    SORTORDER,
+    SOURCE,
+    SOURCE2,
+    SQRT,
+    STACKING_BAR,
+    START,
+    STD_WINDOW,
+    STEP,
+    STOP,
+    STRETCH,
+    STRING_DATE,
+    STRING_DATETIME,
+    STRING_TIME,
+    STRING_VALUE,
+    STYLE,
+    STYLESHEET,
+    SUBSCRIBE,
+    SURFACE,
+    TABLESIZE,
+    TAG,
+    TAN,
+    TEMPLATE,
+    THIS,
+    THUMBNAIL,
+    TIMEOUT,
+    TIMESTAMP,
+    TIMETABLE,
+    TO_STRING_DATETIME,
+    TO_STRING_TIME,
+    TOGGLE,
+    TOOLTIP,
+    TOP,
+    TOUCH,
+    TRANSIENT,
+    TRANSPARENT,
+    TRUE,
+    TSEP,
+    UI_UPDATE,
+    UNIT,
+    UNITS,
+    UNMAP,
+    UNSET,
+    UPDATE,
+    UPDATE_FORMS,
+    URL,
+    USER,
+    USER_PATH,
+    VALID,
+    VAR,
+    VERSION,
+    VERTICAL,
+    VISIBLE,
+    VOID,
+    WARN,
+    WEBAPI,
+    WHEEL_EVENT,
+    WHILE,
+    WRAP,
+    WRITE_SETTINGS,
+    WRITEONLY,
+    XANNOTATION,
+    XAXIS,
+    XAXIS2,
+    XML,
+    XMLGROUP,
+    Y1_STYLE,
+    Y2_STYLE,
+    YANNOTATION,
+    YAXIS,
+    YAXIS1,
+    YAXIS2},
+  morekeywords=[3]{
+    CDATA,
+    COLOR,
+    COMPLEX,
+    FIELDGROUP,
+    FILESTREAM,
+    FOLDER,
+    FORM,
+    FUNC,
+    FOCUS_FUNC,
+    IMAGE,
+    INDEX,
+    INT,
+    INTEGER,
+    LATEXREPORT,
+    LINEPLOT,
+    LIST,
+    LISTPLOT,
+    MENU,
+    MESSAGE_QUEUE,
+    NAVIGATOR,
+    PLOT2D,
+    PLUGIN,
+    PROCESS,
+    PROCESSGROUP,
+    PYTHON,
+    REAL,
+    REPORTSTREAM,
+    SET,
+    SOCKET,
+    STREAM,
+    STRING,
+    STRUCT,
+    TABLE,
+    TASK,
+    TEXT_WINDOW,
+    THERMO,
+    TIMER,
+    TRANSACTION,
+    UNIPLOT,
+    USERGROUPS,
+    XRT3DPLOT,
+    XRTGRAPH},
+  sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]"
+  }
+
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{purple}{RGB}{153,0,153} % there's actually no standard purple
+% 1 function-name
+% 2 keyword-face
+% 3 type-face
+\newcommand\intensstyle{\lstset{%
+  language=intens,                   % the language
+  basicstyle=\normalsize\ttfamily,   % size of the fonts for the code
+  % Color settings to match IDLE style
+  keywordstyle=[1]\bfseries\color{blue},       % core keywords
+  keywordstyle=[2]\bfseries\color{orange}, % built-ins
+  keywordstyle=[3]\color{purple}, % built-ins
+  stringstyle=\color{darkgreen},%
+  commentstyle=\color{gray},%
+  upquote=true,                      % requires textcomp
+  showstringspaces=false
+}}
+% intens environment
+\lstnewenvironment{intens}[1][]
+{
+\intensstyle
+\lstset{#1}
+}
+{}
 
 % Standard Environments
 % =====================
@@ -194,106 +704,6 @@
   ]}
 {\end{tcolorbox}}
 
-\lstset{%
-  basicstyle=\small,
-  keywordstyle=\color{blue}\bfseries\sffamily,
-  identifierstyle=\ttfamily,
-  commentstyle=\em,
-  stringstyle=\ttfamily,
-  extendedchars=true,
-  showstringspaces=false,
-  literate=%
-   {Ω}{{O}}1
-{Ö}{{\"O}}1
-{Ä}{{\"A}}1
-{Ü}{{\"U}}1
-{ß}{{\ss}}2
-{ü}{{\"u}}1
-{ä}{{\"a}}1
-{ö}{{\"o}}1
-}
-\lstdefinestyle{DescStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{yellow!5!white},
-  keywordstyle=\color{blue},
-  identifierstyle=\ttfamily,
-  commentstyle=\em,
-  stringstyle=\ttfamily,
-  extendedchars=true,
-  showstringspaces=false,
-  escapechar=\£,
-  morekeywords={*,INTEGER,REAL,STRING,EDITABLE,SCALAR,LABEL,HELPTEXT,UNIT,DBUNIT,PERSISTENT
-               ,FIELDGROUP,DATAPOOL,END,STRUCT,BUTTON,FUNC,UI_MANAGER,PLOT2D,FORM
-               ,FUNCTIONS,MAP,VOID,COLSPAN,STREAMER,OPERATOR,PROCESS,PROCESSGROUP
-               ,DISPLAY,NONE,HIDDEN,SILENT,NO_LOG,JSON,BATCH,MATLAB,FOLDER,MAIN
-               ,YAXIS1,YAXIS2,MESSAGE_QUEUE,REQUEST,HOST,RESOURCE,PORT_REQUEST,TIMEOUT
-               ,TASK,HEADER,RESPONSE,MESSAGEBOX,ABORT},
-}
-
-\lstdefinestyle{CmdStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{blue!8!white},
-  escapechar=\£
-}
-
-\lstdefinestyle{ShellStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{blue!15!white},
-  escapechar=\£
-}
-
-\lstdefinestyle{URLStyle}{%
-  basicstyle=\small,
-  frame=single,
-  backgroundcolor=\color{red!10!white},
-  escapechar=\£
-}
-
-\lstdefinestyle{PyStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{green!10!white},
-  escapechar=\£
-}
-
-\lstdefinestyle{ListStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{white},
-  escapechar=\£
-}
-
-\lstdefinestyle{DockerStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{magenta!20!white},
-  escapechar=\£,
-  keywordstyle=\color{black}\bfseries\sffamily,
-  morekeywords={*,MAINTAINER,FROM,LABEL,RUN,ADD,COPY,ENV,EXPOSE,ENTRYPOINT,CMD},
-  numbers=left,
-  stepnumber=1,
-  numberstyle=\tiny,
-  numbersep=2ex,
-}
-
-\lstdefinestyle{ComposeStyle}{%
-  basicstyle=\footnotesize,
-  frame=single,
-  backgroundcolor=\color{green!20!white},
-  escapechar=\£,
-  keywordstyle=\color{blue}\bfseries\sffamily,
-  morekeywords={*,version,services,image,build,command,deploy,replicas,placement,constraints,
-                ports,volumes,depends_on,environment,networks},
-  numbers=left,
-  stepnumber=1,
-  numberstyle=\tiny,
-  numbersep=2ex,
-}
-
-\newcommand{\strich}{\ttfamily\textminus}
 
 \newcolumntype{A}{%
   >{\color{white}\columncolor[gray]{.8}}c

@@ -22,7 +22,7 @@ IMAGE Syntax     & description \\
 \index{SOCKET@\SOCKET!image option}
 \index{SETTINGS@\SETTINGS!image option}
 \begin{tabularx}{\textwidth}{l|X}
-image option & description \\ 
+image option & description \\
 \hline
 \SIZE          & Width and height of the image. \\
 \SOCKET        & The image will show data aquired trough this socket.
@@ -36,9 +36,9 @@ image option & description \\
 The \SETTINGS{} structure contains the following variables :
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\STRUCT IMAGE_SETTINGS_STRUCT {
-  INTEGER 
+\begin{intens}
+STRUCT IMAGE_SETTINGS_STRUCT {
+  INTEGER
     channel     // references MFM_channel
   , direction   // 0: forward, 1: backward
   , processing  // 0: raw, 1: avg, 2: line fit, 3: plane fit
@@ -46,12 +46,12 @@ The \SETTINGS{} structure contains the following variables :
   , scaling     // 0: automatic, 1: manual
   ;
   REAL
-    max         // maximum value 
-  , min         // minimum value 
+    max         // maximum value
+  , min         // minimum value
   , weight      // std dev parameter
   , x           // x scaling factor
   , y           // y scaling factor
   ;
 };
-\end{alltt}
+\end{intens}
 \end{boxedminipage}

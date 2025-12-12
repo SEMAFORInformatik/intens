@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+#
+# SPDX-License-Identifier: Apache-2.0
+
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generator/application)
 
 add_custom_command(

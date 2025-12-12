@@ -4,7 +4,10 @@
 ;; Created: 28 Jan 2008
 ;; Keywords: INTENS major-mode
 
-;; Copyright (C) 2008-2021, SEMAFOR Informatik und Energie AG <info@semafor.ch>
+;;; Copyright (C) 2008-2021, SEMAFOR Informatik und Energie AG <info@semafor.ch>
+;;; SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+;;;
+;;; SPDX-License-Identifier: Apache-2.0
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as

@@ -85,9 +85,9 @@ add_library(gui_qt OBJECT
         GuiQwtThermo.cc
         GuiQtProgressBar.cc
         HelpWindow.cc
-        KNumValidator.cpp
-        PlotCurve.cpp
-        QProgressIndicator.cpp
+        KNumValidator.cc
+        PlotCurve.cc
+        QProgressIndicator.cc
         QtDialogCompare.cc
         QtDialogConfirmation.cc
         QtDialogCopyright.cc
@@ -108,8 +108,8 @@ add_library(gui_qt OBJECT
         QtSimpleAction.cc
         QtTimer.cc
         GuiQwtBasePlot.cc
-        printpreview.cpp
-        stylesheeteditor.cpp
+        printpreview.cc
+        stylesheeteditor.cc
         )
 
 target_include_directories(gui_qt

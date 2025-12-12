@@ -1,7 +1,6 @@
-# Intens - Copyright (C) 1990-2025
-# SEMAFOR Informatik & Energie AG, Basel, Switzerland
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
 #
-# See the LICENSE file in the Intens root directory for license information.
+# SPDX-License-Identifier: Apache-2.0
 
 cmake_minimum_required(VERSION 3.20)
 

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+#
+# SPDX-License-Identifier: Apache-2.0
+
 if(CMAKE_VERSION VERSION_GREATER "3.31")
   cmake_policy(SET CMP0077 NEW) # honors normal variables.
 endif()

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+#
+# SPDX-License-Identifier: Apache-2.0
+
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/MessageQueueReply.inc
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/MessageQueueReply.inc

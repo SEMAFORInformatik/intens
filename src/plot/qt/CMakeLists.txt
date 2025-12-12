@@ -7,7 +7,7 @@ add_library(plot_qt OBJECT
         QtPlot2dConfigDialog.cc
         QtScaleDialog.cc
         QtSimpel.cc
-        qtcanvas.cpp
+        qtcanvas.cc
         )
 
 target_include_directories(plot_qt

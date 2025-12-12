@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set(VENV_DIR ${CMAKE_CURRENT_BINARY_DIR}/venv)
 if(WIN32)
   set(VENV_BIN "${VENV_DIR}/Scripts")
@@ -19,7 +23,7 @@ add_custom_command(
 
 add_custom_command(
   OUTPUT "${VENV_BIN}/pyinstaller"
-  DEPENDS requirements.txt
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
   DEPENDS "${VENV_PYTHON}"
   COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${VENV_PYTHON} -m pip install -r ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
 )
@@ -31,11 +35,10 @@ add_custom_target(
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/pybuild/lsp
-  DEPENDS tree-sitter-grammar
-  DEPENDS src/lsp.py
-  DEPENDS src/autoCompleter.py
-  DEPENDS src/completions.yaml
-  DEPENDS "${VENV_BIN}/pyinstaller"
+  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../tree-sitter-intens/${TS_NATIVE_GRAMMAR}
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py
+  #DEPENDS src/autoCompleter.py
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/completions.yaml
   COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${VENV_PYTHON} -m PyInstaller
     ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py
     --add-data=${CMAKE_CURRENT_BINARY_DIR}/../tree-sitter-intens/${TS_NATIVE_GRAMMAR}:.

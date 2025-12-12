@@ -30,6 +30,7 @@ string:
   json.dump(result, sys.stdout)
 \end{lstlisting}
 
+The plot is displayed in multi line fieldgroup
 \begin{boxedminipage}[t]{\linewidth}
 \begin{intens}
 DESCRIPTION "Short Circuit Current Fit";
@@ -54,8 +55,6 @@ STREAMER
 END STREAMER;
 
 OPERATOR
-  FILESTREAM input_stream_fs = input_stream {"Open Parameters JSON",
-    FILTER="JSON (*.json)"};
   PROCESS fit_plot: BATCH{"tee p.in| ./scplot.py | tee r.out"};
   PROCESSGROUP fit_plot_pg {_("Fit Plot"), HIDDEN, SILENT, NO_LOG}(
     result_stream{DISPLAY=NONE} = fit_plot(input_stream);
@@ -63,17 +62,11 @@ OPERATOR
 END OPERATOR;
 
 UI_MANAGER
-  ...
-  matplotlib_plot(results.plot:30:20 {EXPAND});
-);
-
-FOLDER plot_folder {EXPAND} (
-  ...
-  ["Matplotlib Plot"] (matplotlib_plot)
-);
+  FIELDGROUP
+    matplotlib_plot(results.plot:30:20 {EXPAND});
 
 FORM main_window_form{MAIN}(
-  (plot_folder, par_fg)
+  matplotlib_plot
 );
 
 END UI_MANAGER;

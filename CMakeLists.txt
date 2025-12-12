@@ -33,22 +33,61 @@ if(UNIX)
   include(GNUInstallDirs)
 endif()
 
-# change the default without overriding a user-provided value
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR WIN32)
-  if(WIN32)
-    set(CMAKE_INSTALL_PREFIX
-      ./semafor/${PACKAGE_NAME}/${PACKAGE_VERSION} CACHE PATH
-        "Choose the installation directory; by default it installs
-         in the semafor/${PACKAGE_NAME}/${PACKAGE_VERSION} directory."
-         FORCE)
+option(CMAKE_DEBUG_MESSAGES "Enable verbose status messages for CMakeLists.txt logic." OFF)
+
+# change the default install path without overriding a user-provided value
+# --------------------------------------------------------------------------------
+# desired default install path
+if(WIN32)
+  set(DEFAULT_INSTALL_PREFIX "./semafor/${PACKAGE_NAME}/${PACKAGE_VERSION}")
+else()
+  set(DEFAULT_INSTALL_PREFIX "/usr/local/${PACKAGE_NAME}/${PACKAGE_VERSION}")
+endif()
+
+if(CMAKE_DEBUG_MESSAGES)
+  message(STATUS "Default Install Prefix: ${DEFAULT_INSTALL_PREFIX}")
+  message(STATUS "Loaded Install Prefix:  ${CMAKE_INSTALL_PREFIX}")
+endif()
+
+set(UPDATE_INSTALL_PREFIX FALSE)
+
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(UPDATE_INSTALL_PREFIX TRUE)
+  if(CMAKE_DEBUG_MESSAGES)
+    message(STATUS "Action: First run (Initialized to default). Overwriting system default.")
+  endif()
+elseif(NOT "${CMAKE_INSTALL_PREFIX}" STREQUAL "${DEFAULT_INSTALL_PREFIX}")
+  if(
+    (NOT WIN32 AND "${CMAKE_INSTALL_PREFIX}" MATCHES "^/usr/local/${PACKAGE_NAME}/") OR
+    (WIN32 AND "${CMAKE_INSTALL_PREFIX}" MATCHES "^\\./semafor/${PACKAGE_NAME}/")
+  )
+    set(UPDATE_INSTALL_PREFIX TRUE)
+    if(CMAKE_DEBUG_MESSAGES)
+      message(STATUS "Action: Overwriting outdated prefix '${CMAKE_INSTALL_PREFIX}' with new default.")
+    endif()
   else()
-    set(CMAKE_INSTALL_PREFIX
-      /usr/local/${PACKAGE_NAME}/${PACKAGE_VERSION} CACHE PATH
-        "Choose the installation directory; by default it installs
-         in the /usr/local/${PACKAGE_NAME}/${PACKAGE_VERSION} directory."
-         FORCE)
+    if(CMAKE_DEBUG_MESSAGES)
+      message(STATUS "Action: Prefix '${CMAKE_INSTALL_PREFIX}' appears manually set. No update.")
+    endif()
+  endif()
+endif()
+
+if(UPDATE_INSTALL_PREFIX)
+  unset(CMAKE_INSTALL_PREFIX CACHE)
+  set(CMAKE_INSTALL_PREFIX
+    "${DEFAULT_INSTALL_PREFIX}" CACHE PATH
+    "Choose the installation directory; by default it installs
+     in the ${DEFAULT_INSTALL_PREFIX} directory."
+    FORCE)
+  if(CMAKE_DEBUG_MESSAGES)
+    message(STATUS "SUCCESS: CMAKE_INSTALL_PREFIX set to: ${CMAKE_INSTALL_PREFIX}")
+  endif()
+endif()
+
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR WIN32)
+  if(NOT WIN32)
     set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
-    # don't used RPATH when building
+    # don't use RPATH when building
     set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
     set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)

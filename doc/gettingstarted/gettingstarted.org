@@ -1675,6 +1675,7 @@ To prevent interferencies of concurrent modifications an
 it will be detected and the save operation will be aborted with an ``Up-to-date Conflict'' message.
 
 ** REST Interface
+
 *** Queries
 HTTP GET with base path ~/services/rest~:
 
@@ -1763,6 +1764,41 @@ HTTP PUT with base path: ~/services/rest~
 | components/check        | check status of component               |       |
 | components/<id>/rename  | rename the component with id            |       |
 | components/<id>/approve | set aproval state of component          |       |
+
+** Access Permissions
+The access permissions depend on the approval states and are defined in the
+file application.properties:
+| Permission | Description      |
+|------------+------------------|
+| R          | read (get by id) |
+| M          | modify (update)  |
+| L          | list (select)    |
+
+*** Components
+| Approval State | Group | Others |
+|----------------+-------+--------|
+| experimental   | R - - | R - -  |
+| inPreparation  | R M L | R - -  |
+| shared         | R M L | R M L  |
+| approved       | R - L | R - L  |
+| obsolete       | R - L | R - L  |
+
+*** Variants
+| Approval State | Group | Others |
+|----------------+-------+--------|
+| experimental   | R - - | R - -  |
+| inPreparation  | R M L | R - -  |
+| shared         | R M L | R M L  |
+| approved       | R - L | R - L  |
+| obsolete       | R - L | R - L  |
+
+*** Projects
+| State         | Group | Others |
+|---------------+-------+--------|
+| local         | R M L | - - -  |
+| global        | R M L | R M L  |
+| delivered     | R M L | R - -  |
+| obsolete      | R - L | R - -  |
 
 * Appendix
 ** Installation on Windows

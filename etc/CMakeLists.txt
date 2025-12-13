@@ -25,8 +25,8 @@ add_custom_target(
   )
 
 if (USE_LSP)
-  add_subdirectory(lsp)
   add_subdirectory(tree-sitter-intens)
+  add_subdirectory(lsp)
 endif()
 
 

@@ -17,7 +17,7 @@ endif()
 add_custom_command(
   OUTPUT "${VENV_PYTHON}"
   "${VENV_DIR}"
-  COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} python -m venv ${CMAKE_CURRENT_BINARY_DIR}/venv
+  COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} python -m venv ${VENV_DIR}
 )
 
 
@@ -37,7 +37,7 @@ add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/pybuild/lsp
   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../tree-sitter-intens/${TS_NATIVE_GRAMMAR}
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py
-  #DEPENDS src/autoCompleter.py
+  DEPENDS "${VENV_BIN}/pyinstaller"
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/completions.yaml
   COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${VENV_PYTHON} -m PyInstaller
     ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py

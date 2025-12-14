@@ -13,6 +13,35 @@ else()
   set(TS_NATIVE_GRAMMAR "libtree-sitter-intens.so")
 endif()
 
+add_custom_target(
+  tree-sitter-grammar
+  DEPENDS tree-sitter-intens
+  )
+
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/grammar.json
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/node-types.json
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/parser.c
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/tree_sitter
+  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/tree-sitter.json
+  COMMAND tree-sitter generate --abi 14 ${CMAKE_CURRENT_SOURCE_DIR}/grammar.js
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/tree-sitter.json
+  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/tree-sitter.json ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_library(
+  tree-sitter-intens SHARED
+  ${CMAKE_CURRENT_BINARY_DIR}/src/parser.c
+)
+
+install(
+  TARGETS tree-sitter-intens
+)
+
 
 add_custom_command(
   OUTPUT "${VENV_PYTHON}"
@@ -35,13 +64,13 @@ add_custom_target(
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/pybuild/lsp
-  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../tree-sitter-intens/${TS_NATIVE_GRAMMAR}
+  DEPENDS tree-sitter-intens
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py
   DEPENDS "${VENV_BIN}/pyinstaller"
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/completions.yaml
   COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${VENV_PYTHON} -m PyInstaller
     ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py
-    --add-data=${CMAKE_CURRENT_BINARY_DIR}/../tree-sitter-intens/${TS_NATIVE_GRAMMAR}:.
+    --add-data=${CMAKE_CURRENT_BINARY_DIR}/${TS_NATIVE_GRAMMAR}:.
     --add-data=${CMAKE_CURRENT_SOURCE_DIR}/src/completions.yaml:.
     --distpath ${CMAKE_CURRENT_BINARY_DIR}/pybuild
     --clean -y -F --strip

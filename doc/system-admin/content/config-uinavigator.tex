@@ -89,7 +89,6 @@ Columns declaration     & description \\
                           You can select an other column using the mouse. \\
 \end{tabularx}
 
-\newpage
 \input{diagrams/ui_navigator_root_list}
 \index{root-list}
 
@@ -131,13 +130,13 @@ Root list options & description \\
 Example of structure definition with name items: \\
 
 
-\begin{boxedminipage}[t]{\linewidth}
-\begin{intens}
+\begin{boxedminipage}[t]{0.45\linewidth}
+\begin{intens}[escapechar=@]
 DATAPOOL
   STRUCT
     STRU_1 {
       STRING {EDITABLE}
-        name,
+        @\hl{name}@,
         data_item_1,
         data_item_2
       ;
@@ -145,7 +144,7 @@ DATAPOOL
   STRUCT
     STRU_2 {
       STRING {EDITABLE}
-        name,
+        @\hl{name}@,
         data_item_1,
         data_item_2
       ;
@@ -153,11 +152,9 @@ DATAPOOL
   STRUCT
     STRU_MAIN {
       STRING {EDITABLE}
-        name;
-      STRU_1
-        stru_1;
-      STRU_2
-        stru_2;
+        @\hl{name}@;
+      STRU_1 stru_1;
+      STRU_2 stru_2;
     };
   STRU_MAIN
     stru_main
@@ -165,12 +162,8 @@ DATAPOOL
 END DATAPOOL;
 \end{intens}
 \end{boxedminipage}
-
-\vspace{0.5cm}
-
-Example of corresponding navigator definition: \\
-
-\begin{boxedminipage}[t]{\linewidth}
+\hfill
+\begin{boxedminipage}[t]{0.45\linewidth}
 \begin{intens}
 UI_MANAGER
   NAVIGATOR
@@ -182,20 +175,18 @@ UI_MANAGER
 END UI_MANAGER;
 \end{intens}
 \end{boxedminipage}
-
 
 \newpage
 \index{NAVIGATOR@\NAVIGATOR!structure definition}
-Example of structure definition without name items: \\
-
+Example of structure definition without name items:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{intens}
+\begin{intens}[escapechar=@]
 DATAPOOL
   STRUCT
     STRU_1 {
       STRING {EDITABLE}
-        noname   {TAG = (tag_col_1)},
+        @\hl{noname}@   {TAG = (tag_col_1)},
         data_item_1    {TAG = (tag_col_2)},
         data_item_2    {TAG = (tag_col_3)}
       ;
@@ -203,7 +194,7 @@ DATAPOOL
   STRUCT
     STRU_2 {
       STRING {EDITABLE}
-        noname   {TAG = (tag_col_1)},
+        @\hl{noname}@   {TAG = (tag_col_1)},
         data_item_1    {TAG = (tag_col_2)},
         data_item_2    {TAG = (tag_col_3)}
       ;
@@ -211,20 +202,15 @@ DATAPOOL
   STRUCT
     STRU_MAIN {
       STRING {EDITABLE}
-        noname   {TAG = (tag_col_1)};
-      STRU_1
-        stru_1;
-      STRU_2
-        stru_2;
+        @\hl{noname}@   {TAG = (tag_col_1)};
+      STRU_1  stru_1;
+      STRU_2  stru_2;
     };
-  STRU_MAIN
-    stru_main
-  ;
+
+  STRU_MAIN stru_main;
 END DATAPOOL;
 \end{intens}
 \end{boxedminipage}
-
-\vspace{0.5cm}
 
 Example of corresponding navigator definition: \\
 
@@ -232,19 +218,14 @@ Example of corresponding navigator definition: \\
 \begin{intens}
 UI_MANAGER
   NAVIGATOR
-    navigator_identifier
-    { COL ("Label column1" tag_col_1:20,
-            "Label column2" tag_col_2:10,
-            "Label column3" tag_col_3:10)
-    }
-    (
-      stru_main[*]
-    )
-  ;
+  navigator_identifier{
+    COL ("Label column1" tag_col_1:20,
+         "Label column2" tag_col_2:10,
+         "Label column3" tag_col_3:10)}(
+       stru_main[*]);
 END UI_MANAGER;
 \end{intens}
 \end{boxedminipage}
-
 
 \newpage
 \label{navigatordragndrop}
@@ -255,10 +236,10 @@ END UI_MANAGER;
 \index{REASON_ACTIVATE@\REASONACTIVATE!function exression!navigator example}
 \index{REASON_DROP@\REASONDROP!function exression!navigator example}
 \index{REASON_SELECT@\REASONSELECT!function exression!navigator example}
-Example of functions to encounter events like {\bfseries select} or {\bfseries drag and drop}:
+Example of functions to handle events like {\bfseries select} or {\bfseries drag and drop}:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{intens}
+\begin{intens}[escapechar=@]
 DESCRIPTION "Implementing menu and drag'n'drop functions";
 DATAPOOL
   STRUCT Motor {
@@ -266,23 +247,22 @@ DATAPOOL
     REAL      nom_power        {TAG=Tpower};
     STRING    id_manuf         {TAG=Tmanuf};
     STRING    model            {TAG=Tname};
-    REAL      nom_voltage;
-    REAL      nom_frequency;
+    ...
   };
-   Motor motors                {FUNC=select_motor};
+  Motor motors  {FUNC=@\hl{select\_motor}@};
 END DATAPOOL;
 FUNCTIONS
   FUNC INIT {
     motors[0].nom_power = 2.5;
     motors[0].id_manuf = "ABB";
     motors[0].model="QU 132";
-    motors[0].nom_voltage=400;
-    motors[0].nom_frequency=50;
+
     motors[1].nom_power = 7.5;
-    .
-    .
+    motors[0].id_manuf = "Siemens";
+    motors[0].model="1PH8131";
+    ...
   };
-  FUNC select_motor {
+  FUNC @\hl{select\_motor}@ {
     IF( REASON_SELECT ){
       SET_MSG( THIS.model, " selected" ); }
     ELSE IF( REASON_UNSELECT ){
@@ -292,12 +272,6 @@ FUNCTIONS
     ELSE IF( REASON_DROP ){
       SET_MSG( SOURCE.model, " dropping to ", THIS.model ); }
   };
-  FUNC DeleteThisMotor_func {
-    PRINT "Delete: ", THIS.model, EOLN;
-  };
-  FUNC MoveThisMotor_func {
-    PRINT "Move: ", THIS.model, EOLN;
-  };
 END FUNCTIONS;
 UI_MANAGER
   NAVIGATOR
@@ -305,25 +279,19 @@ UI_MANAGER
                   , "Manuf." Tmanuf:12
                   , "Output [kW]" Tpower:15 )} (
       motors[*] = "Motors" );
-
-  MENU Motor (
-    FUNC DeleteThisMotor_func = "Delete This Motor"
-   ,FUNC MoveThisMotor_func = "Move This Motor"
-  );
 END UI_MANAGER;
 \end{intens}
 \end{boxedminipage}
 
-
-
 \label{navigatormenu}
 \index{NAVIGATOR@\NAVIGATOR!menu}
 \index{MENU@\MENU!UI\_MANAGER!NAVIGATOR}
+\clearpage
 To add a popup \MENU{} to a navigator tree,
 the menu identifier must be the same as the structure identifier:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{intens}
+\begin{intens}[escapechar=@]
 DESCRIPTION "Implementing menu and drag'n'drop functions";
 DATAPOOL
   STRUCT Motor {
@@ -331,14 +299,11 @@ DATAPOOL
     REAL      nom_power        {TAG=Tpower};
     STRING    id_manuf         {TAG=Tmanuf};
     STRING    model            {TAG=Tname};
-    REAL      nom_voltage;
-    REAL      nom_frequency;
+    ...
   };
-  Motor motors                 {FUNC=select_motor};
+  @\hl{Motor}@ motors  {FUNC=select_motor};
 END DATAPOOL;
-.
-.
-.
+...
 UI_MANAGER
   NAVIGATOR
     motornav { COL( "" Tname:20
@@ -346,7 +311,7 @@ UI_MANAGER
                   , "Output [kW]" Tpower:15 )} (
       motors[*] = "Motors" );
 
-  MENU Motor (
+  MENU @\hl{Motor}@ (
     FUNC DeleteThisMotor_func = "Delete This Motor"
    ,FUNC MoveThisMotor_func = "Move This Motor"
   );
@@ -366,48 +331,29 @@ The data item (parent in the example below) must have an attribute with that tag
 The \ICONVIEW{} shows all children of it that have an attribute with that tag
 (parent.elements[*] with name in the example).
 
-\begin{center}
-  \includegraphics[width=0.3\linewidth]{examples/navigator/iconView}
-\end{center}
-
-\begin{boxedminipage}[t]{\linewidth}
+\begin{boxedminipage}[c]{0.62\linewidth}
 \begin{intens}
 DATAPOOL
   STRUCT
     Elements {
       STRING {EDITABLE}
-        name { TAG=(nametag) }
-      , type
-      ;
-    }
-  ;
+        name { TAG=(nametag) }, type; };
   STRUCT
     Parent {
       STRING {EDITABLE}
-        name { TAG=(nametag) }
-      ;
-      Elements elements;
-    }
-  ;
+        name { TAG=(nametag) };
+      Elements elements; };
   Parent parent;
 END DATAPOOL;
 
 UI_MANAGER
   NAVIGATOR { ICONVIEW }
-    iconView_navigator
-    { SIZE ( 200, 200 )
-    , COL ("" nametag)
-    , TOOLTIP(nametag)
-    }
-    (
-      parent { AUTOLEVEL }
-    )
-  ;
+    iconView_navigator{
+      SIZE(200, 200), COL ("" nametag)}(
+      parent { AUTOLEVEL });
   FORM
     iconView_form { HIDE_CYCLE } (
-      iconView_navigator
-    )
-  ;
+      iconView_navigator );
 END UI_MANAGER;
 
 FUNCTIONS
@@ -420,13 +366,14 @@ FUNCTIONS
       parent.elements[0].type = "A";
       parent.elements[1].type = "B";
       ...
-    }
-  ;
+    };
 END FUNCTIONS;
-END.
 \end{intens}
 \end{boxedminipage}
-
+\hfill
+\begin{minipage}[c]{0.3\linewidth}
+  \includegraphics[width=\linewidth]{examples/navigator/iconView}
+\end{minipage}
 \newpage
 \subsubsection{Navigator Diagram}
 \label{sec:uinavigatorDiagram}

@@ -10,12 +10,15 @@ scplot.py:
 \includegraphics[width=0.8\textwidth]{matplotlib-plot}
 \end{center}
 
-The python program creates the plot in SVG format
+The python program reads the JSON formatted input parameters
+from stdin, creates the plot in SVG format
 and returns it as a base64 encoded
-string:
+string as JSON to stdout:
 
 \lstset{basicstyle=\normalsize\ttfamily}
 \begin{lstlisting}{language=python}
+  pars = json.load(sys.stdin)
+  # calculate and create matplotlib fig
   ...
   imgbuffer = io.BytesIO()
   fig.savefig(imgbuffer, format='svg')
@@ -24,16 +27,16 @@ string:
   svgplot = base64.b64encode(imgbuffer.getvalue()).decode()
   encoding = 'data:image/svg+xml;charset=utf-8;base64,'
   result = {}
+  result['plot'] = encoding + svgplot
   result['time'] = t.tolist()
   result['current'] = current.tolist()
-  result['plot'] = encoding + svgplot
   json.dump(result, sys.stdout)
 \end{lstlisting}
-
-The plot is displayed in multi line fieldgroup
+\clearpage
+The plot is displayed in the highlighted multi line field:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{intens}
+\begin{intens}[escapechar=@]
 DESCRIPTION "Short Circuit Current Fit";
 
 DATAPOOL
@@ -64,7 +67,7 @@ END OPERATOR;
 
 UI_MANAGER
   FIELDGROUP
-    matplotlib_plot(results.plot:30:20 {EXPAND});
+    matplotlib_plot(@\hl{results.plot:30:20}@ {EXPAND});
 
 FORM main_window_form{MAIN}(
   matplotlib_plot
@@ -75,6 +78,8 @@ END UI_MANAGER;
 END.
 \end{intens}
 \end{boxedminipage}
+
+NOTE: the unix filter \verb+tee+ in BATCH is used here for debugging purposes.
 \clearpage
 %\newpage
 \paragraph{\MESSAGEQUEUE{} \PUBLISH{} - \SUBSCRIBE{} example with \TIMER{}}

@@ -738,19 +738,19 @@ while statement  & description \\
 Example:
 
 \begin{boxedminipage}[t]{\linewidth}
-\begin{alltt}
-\FUNCTIONS
-  \FUNC function_identifier \{
-    \IF( data_item_identifier_1 == 99 )\{
+\begin{intens}
+FUNCTIONS
+  FUNC function_identifier {
+    IF( data_item_identifier_1 == 99 ){
        data_item_identifier_2 = "Error message" ;
-    \}
-    \WHILE( data_item_identifier_1 <= 99 )\{
+    }
+    WHILE( data_item_identifier_1 <= 99 ){
        data_item_identifier_1++ ;
-    \}
-  \}
+    }
+  }
 ;
-\END \FUNCTIONS;
-\end{alltt}
+END FUNCTIONS;
+\end{intens}
 \end{boxedminipage}
 
 
@@ -1405,13 +1405,13 @@ reason expression       & description\\
 \paragraph*{Example 1}
 \label{fuexample1}
 
-\begin{boxedminipage}[t]{\linewidth}
+\begin{boxedminipage}[t]{0.9\linewidth}
 \begin{intens}
 FUNCTIONS
   FUNC testminmax {
     IF( VALID(SnMin) && VALID(SnMax) ){
       IF( SnMin > SnMax ){
-        SET_ERROR( "Minimum value must be less than maximum!"
+        SET_ERROR("Minimum value must be less than maximum!"
                  , EOLN );
       }
     }
@@ -1426,7 +1426,7 @@ END FUNCTIONS;
 \paragraph*{Example 2}
 \label{fuexample2}
 
-\begin{boxedminipage}[t]{\linewidth}
+\begin{boxedminipage}[t]{0.8\linewidth}
 \begin{intens}
 DESCRIPTION "Example of THIS";
 

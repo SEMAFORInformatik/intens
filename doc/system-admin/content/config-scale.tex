@@ -45,14 +45,15 @@ DATAPOOL
   REAL data, factor;
 END DATAPOOL;
 
-UIMANAGER
+UI_MANAGER
   FIELDGROUP fg_identifier (
     "This fieldgroup shows following values:",
-    " 20000: " data * 1e3,
-    " 10: " data / 2,
-    " 40: " data * factor,
-    " 10: " data / factor  );
-END UIMANAGER
+    " data: " data,
+    " data * 1e3: " data * 1e3,
+    " data / 2: " data / 2,
+    " data * factor: " data * factor,
+    " data / factor: " data / factor);
+END UI_MANAGER
 
 FUNCTIONS
   FUNC INIT {

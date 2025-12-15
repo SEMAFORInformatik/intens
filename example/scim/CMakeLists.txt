@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(scim C CXX)
-if(CMAKE_VERSION VERSION_GREATER "3.30")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.31")
   cmake_policy(SET CMP0177 NEW)
 endif()
 enable_testing()

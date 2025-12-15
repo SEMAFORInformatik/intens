@@ -1,13 +1,14 @@
 DESCRIPTION "Multifont strings";
 UI_MANAGER
-  FIELDGROUP 
+  FIELDGROUP
     fieldgroup_identifier (
-      "@text@This is an example of a multifont string",
-      "@text@========================================",
-      "@text@text @huge@huge @large@large",
-      "@titel@titel @tab@tab @label@label",
-      "@index@index @menu@menu @button@button",
-      "@pulldown@pulldown @banner@banner @Title@Title"
+      "<h1>Examples of multifont strings</h1>",
+      "",
+      "<b style='font-size:20px; color:#1c87c9;'>Bold Blue</b>"
+          "<strong>STRONG</strong> <small>small</small>",
+      "<em>Emphasized</em> <big>Big</big>"
+          " normal text<sub>subcripted</sub>"
+      "text<sup>sup</sup> <tt>monospaced</tt>"
     );
   FORM
     form_identifier {MAIN} ((fieldgroup_identifier));
@@ -21,4 +22,3 @@ UI_MANAGER
 END UI_MANAGER;
 
 END.
-

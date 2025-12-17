@@ -546,6 +546,9 @@ bool DataStringElement::writeJSON( std::ostream &ostr,
                                    double scale,
                                    const SerializableMask flags )
 {
+  if( !isValid() ){
+    ostr << "null";
+  } else
   if (m_mimeType.size() && m_mimeType != "text/plain" && m_mimeType != "image/svg+xml") {
     std::string sBase64;
     base64encode(reinterpret_cast<const unsigned char*>(m_value.c_str()),

@@ -781,9 +781,7 @@ JobElement::OpStatus JobCodeSelectRows::execute( JobEngine *eng ){
   dat_int->getStructureValue(dref);
   xfer = dref ? new XferDataItem(dref) : 0;
   if (m_dataIsInt) {
-    if (!dat_int->getIntegerValue(row)) {
-      xfer->getValue(row);
-    }
+    dat_int->getIntegerValue(row);
   }
   return executeElement(m_guiElementId, xfer, row);
 }
@@ -825,6 +823,10 @@ JobElement::OpStatus JobCodeSelectRows::executeElement(const std::string& guiEle
           return op_FatalError;
         }
         return op_Ok;
+      }
+    } else {
+      if(xfer != 0) {
+        xfer->getValue(row);
       }
     }
 

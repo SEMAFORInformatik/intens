@@ -67,9 +67,11 @@ add_library(gui_qt OBJECT
         GuiQtText.cc
         GuiQtTextfield.cc
         GuiQtToggle.cc
-        GuiQwt3dPlot.cc
+        GuiQt3dPlot.cc
         GuiQwtContourPlot.cc
         GuiQwtContourPlotData.cc
+        GuiQtGraphsPlot.cc
+        GuiQtGraphsPlotData.cc
         GuiQwtPlotBarChart.cc
         GuiQwtPlotCurveData.cc
         GuiQwtPlotLayout.cc

@@ -1710,6 +1710,8 @@ void GuiQtTableViewBase::copy(bool all) {
         }
         for (long c = 0; c < nCols; ++c) {
           GuiTableItem *item = m_table->getTableItem( r, c );
+          if (!item)
+            continue;
           double d;
           double fac = item->getDataField()->getScalefactor()->getValue();
           if (!item->getDataField()->getValue(d))
@@ -1737,6 +1739,8 @@ void GuiQtTableViewBase::copy(bool all) {
       for (long r = 0; r < nRows; ++r) {
         for (long c = 1; c < nCols; ++c) {
           GuiTableItem *item = m_table->getTableItem( r, c );
+          if (!item)
+            continue;
           double d;
           double fac = item->getDataField()->getScalefactor()->getValue();
           if (!item->getDataField()->getValue(d)){

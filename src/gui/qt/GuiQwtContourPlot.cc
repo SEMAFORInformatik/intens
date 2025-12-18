@@ -18,10 +18,10 @@
 #include "GuiQwtContourPlotData.h"
 #include "GuiQwtPlotScalePicker.h"
 #include "GuiQwtScaleDraw.h"
-#include "GuiQwt3dPlot.h"
+#include "GuiQt3dPlot.h"
 #include "gui/qt/QtMultiFontString.h"
 
-GuiQwtContourPlot::GuiQwtContourPlot(GuiQwt3dPlot* plot, QwtLinearColorMap* colormap,
+GuiQwtContourPlot::GuiQwtContourPlot(GuiQt3dPlot* plot, QwtLinearColorMap* colormap,
 				     GuiQwtContourPlotData* data) :
   currentEditedAxisLabelId(-1)
   , m_data(data)

@@ -33,14 +33,19 @@
 #include "gui/qt/GuiQtButton.h"
 #include "gui/qt/GuiQtPrinterDialog.h"
 #include "gui/qt/GuiQtManager.h"
+#if HAVE_QGRAPHS
+#include "gui/qt/GuiQtGraphsPlot.h"
+#include "gui/qt/GuiQtGraphsPlotData.h"
+#else
 #include "gui/qt/GuiQwtContourPlot.h"
 #include "gui/qt/GuiQwtContourPlotData.h"
+#endif
 #include "gui/GuiFieldgroup.h"
 #include "gui/qt/GuiQtFieldgroupLine.h"
 #include "gui/qt/GuiQtLabel.h"
 #include "gui/qt/GuiQtToggle.h"
 #include "gui/GuiPlotDataItem.h"
-#include "gui/qt/GuiQwt3dPlot.h"
+#include "gui/qt/GuiQt3dPlot.h"
 #include "gui/qt/GuiQwtPlot.h"
 #include "gui/qt/GuiQwtScaleDraw.h"
 #include "gui/qt/GuiQwtScaleEngine.h"
@@ -59,7 +64,8 @@ typedef std::map<std::string, GuiPlotDataItem*> DataItemType;
 /*******************************************************************************/
 /* public member functions                                                     */
 /*******************************************************************************/
-QwtLinearColorMap* GuiQwt3dPlot::createColorMap() {
+#if !HAVE_QGRAPHS
+QwtLinearColorMap* GuiQt3dPlot::createColorMap() {
   QwtLinearColorMap* colormap;
   int num = std::max( m_valueList.size(), m_colorList.size() );
   // read from settings
@@ -77,12 +83,13 @@ QwtLinearColorMap* GuiQwt3dPlot::createColorMap() {
 
   return colormap;
 }
+#endif
 
 /* --------------------------------------------------------------------------- */
 /* Constructor --                                                              */
 /* --------------------------------------------------------------------------- */
 
-GuiQwt3dPlot::GuiQwt3dPlot( GuiElement *parent, const std::string& name )
+GuiQt3dPlot::GuiQt3dPlot( GuiElement *parent, const std::string& name )
   : GuiQtElement( parent, name )
   , m_framewidget( 0 )
   , m_widget( 0 )
@@ -145,7 +152,7 @@ GuiQwt3dPlot::GuiQwt3dPlot( GuiElement *parent, const std::string& name )
   // m_supportedFileFormats[HardCopyListener::XPM]        = HardCopyListener::FILE_EXPORT;
 }
 
-GuiQwt3dPlot::GuiQwt3dPlot( const GuiQwt3dPlot &plot)
+GuiQt3dPlot::GuiQt3dPlot( const GuiQt3dPlot &plot)
   : GuiQtElement(plot)
   , Gui3dPlot(plot)
   , m_framewidget( 0 )
@@ -199,25 +206,25 @@ GuiQwt3dPlot::GuiQwt3dPlot( const GuiQwt3dPlot &plot)
   init();
 }
 
-void GuiQwt3dPlot::withAnnotationOption( GuiPlotDataItem* plotAxis, bool state ) {
+void GuiQt3dPlot::withAnnotationOption( GuiPlotDataItem* plotAxis, bool state ) {
   m_withAnnotationOption[plotAxis] = state;
 }
 
-bool GuiQwt3dPlot::hasAnnotationOption(bool bXAxis) {
+bool GuiQt3dPlot::hasAnnotationOption(bool bXAxis) {
   GuiPlotDataItem *plotAxis = bXAxis ? getPlotDataItem("XAXIS") : getPlotDataItem("YAXIS");
   WithAnnotationMap::iterator it = m_withAnnotationOption.find(plotAxis);
   return (it != m_withAnnotationOption.end()) ? m_withAnnotationOption[plotAxis] : false;
 }
 
-void GuiQwt3dPlot::showAnnotationLabels( bool bXAxis, bool status ) {
+void GuiQt3dPlot::showAnnotationLabels( bool bXAxis, bool status ) {
   m_showAnnotationLabels[(bXAxis?0:1)] = status;
 }
-bool GuiQwt3dPlot::isShownAnnotationLabels( bool bXAxis ) {
+bool GuiQt3dPlot::isShownAnnotationLabels( bool bXAxis ) {
   return m_showAnnotationLabels[(bXAxis?0:1)];
 }
 
 
-void GuiQwt3dPlot::init () {
+void GuiQt3dPlot::init () {
   //  createDataReference();
 
   m_supportedFileFormats[HardCopyListener::Postscript] = HardCopyListener::OWN_CONTROL;
@@ -238,14 +245,14 @@ void GuiQwt3dPlot::init () {
 /* Destructor --                                                               */
 /* --------------------------------------------------------------------------- */
 
-GuiQwt3dPlot::~GuiQwt3dPlot(){
+GuiQt3dPlot::~GuiQt3dPlot(){
 }
 
 /* --------------------------------------------------------------------------- */
 /* setUseFrame --                                                              */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setUseFrame(){
+void GuiQt3dPlot::setUseFrame(){
   if( m_with_frame == status_Undefined ){
     m_with_frame = status_ON;
   }
@@ -255,7 +262,7 @@ void GuiQwt3dPlot::setUseFrame(){
 /* setFrame --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setFrame( FlagStatus s ){
+void GuiQt3dPlot::setFrame( FlagStatus s ){
   if( m_with_frame == status_Undefined ){
     m_with_frame = s;
   }
@@ -265,7 +272,7 @@ void GuiQwt3dPlot::setFrame( FlagStatus s ){
 /* setAxesData --                                                              */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setAxesData() {
+void GuiQt3dPlot::setAxesData() {
 
   // Datenitems fuer x-, y- und z-Achse zuordnen
   GuiPlotDataItem *xaxis = getPlotDataItem("XAXIS");
@@ -291,7 +298,7 @@ void GuiQwt3dPlot::setAxesData() {
   if( xaxis != 0 )
     if( (xaxis->getLabel()).size() > 0 ) {
        if (m_plotStyle.getStyle() == CONTOUR)
-	 m_widget->axisWidget(QwtPlot::xBottom)->setTitle( QString::fromStdString(xaxis->getLabel()) );
+         m_widget->axisWidget(xBottom)->setTitle(QString::fromStdString(xaxis->getLabel()));
 #if HAVE_QWTPLOT3D
        else
 	 get3dPlot()->coordinates()->axes[Qwt3D::X1].setLabelString( QString::fromStdString(xaxis->getLabel()) );
@@ -299,8 +306,8 @@ void GuiQwt3dPlot::setAxesData() {
     }
   if( yaxis != 0 )
     if( (yaxis->getLabel()).size() > 0 ) {
-       if (m_plotStyle.getStyle() == CONTOUR)
-	 m_widget->axisWidget(QwtPlot::yLeft)->setTitle( QString::fromStdString(yaxis->getLabel()) );
+      if (m_plotStyle.getStyle() == CONTOUR)
+        m_widget->axisWidget(GuiElement::yLeft)->setTitle( QString::fromStdString(yaxis->getLabel()) );
 #if HAVE_QWTPLOT3D
        else
 	 get3dPlot()->coordinates()->axes[Qwt3D::Y1].setLabelString( QString::fromStdString(yaxis->getLabel()) );
@@ -308,8 +315,10 @@ void GuiQwt3dPlot::setAxesData() {
     }
   if( zaxis != 0 )
      if( (zaxis->getLabel()).size() > 0 ){
+#if HAVE_QGRAPHS
        if (m_plotStyle.getStyle() == CONTOUR)
-	 ;//m_widget->axisWidget(QwtPlot::yRight)->setTitle( QString::fromStdString(zaxis->getLabel()) );
+         m_widget->axisWidget(GuiElement::zAxis)->setTitle( QString::fromStdString(zaxis->getLabel()) );
+#endif
 #if HAVE_QWTPLOT3D
        else
 	 get3dPlot()->coordinates()->axes[Qwt3D::Z1].setLabelString( QString::fromStdString(zaxis->getLabel()) );
@@ -321,9 +330,9 @@ void GuiQwt3dPlot::setAxesData() {
 /* create --                                                                   */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::create(){
+void GuiQt3dPlot::create(){
 
-  BUG(BugGui,"GuiQwt3dPlot::create");
+  BUG(BugGui,"GuiQt3dPlot::create");
   assert(!m_widget);
 
   int width, height;
@@ -332,10 +341,9 @@ void GuiQwt3dPlot::create(){
 
   // create data object
 
-#if QWT_VERSION < 0x060000
-  m_data = new Plot3dData( NULL, m_dataitems);
-
-  m_widget = new Plot(this, *m_data/*_widget3d->getPlot3dData()*/, NULL);
+#if HAVE_QGRAPHS
+  m_contourData = new GuiQtGraphsPlotData(m_dataitems);
+  m_widget = new GuiQtGraphsPlot(this, m_contourData);
 #else
   m_contourData = new GuiQwtContourPlotData(m_dataitems);
   m_widget = new GuiQwtContourPlot(this, createColorMap(), m_contourData);
@@ -385,7 +393,7 @@ void GuiQwt3dPlot::create(){
 /* manage --                                                                   */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::manage(){
+void GuiQt3dPlot::manage(){
   int width=300, height =400;
   myWidget()->setVisible( getVisibleFlag() );  // maybe function hide this GuiElement
 
@@ -406,7 +414,7 @@ void GuiQwt3dPlot::manage(){
 /* setTabOrder --                                                              */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setTabOrder(){
+void GuiQt3dPlot::setTabOrder(){
 //   XmAddTabGroup( m_widget );
 }
 
@@ -414,7 +422,7 @@ void GuiQwt3dPlot::setTabOrder(){
 /* unsetTabOrder --                                                            */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::unsetTabOrder(){
+void GuiQt3dPlot::unsetTabOrder(){
 //   XmRemoveTabGroup( m_widget );
 }
 
@@ -422,7 +430,7 @@ void GuiQwt3dPlot::unsetTabOrder(){
 /* createPopupMenu --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::createPopupMenu() {
+void GuiQt3dPlot::createPopupMenu() {
 
   // Popup Menue generieren
   m_popupMenu = new GuiQtPopupMenu( this );
@@ -504,7 +512,7 @@ void GuiQwt3dPlot::createPopupMenu() {
 /* popupMenu --                                                                */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::popupMenu(const QContextMenuEvent* event){
+void GuiQt3dPlot::popupMenu(const QContextMenuEvent* event){
   m_popupMenu->popup();
 }
 
@@ -512,7 +520,7 @@ void GuiQwt3dPlot::popupMenu(const QContextMenuEvent* event){
 /* createDetailMenu --                                                         */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::createDetailMenu( GuiPopupMenu *menu ){
+void GuiQt3dPlot::createDetailMenu( GuiPopupMenu *menu ){
 
   // Pulldown Menue PlotDeatails generieren und an das Popup Menue anfuegen
   GuiQtPulldownMenu *detailmenu = new GuiQtPulldownMenu( menu->getElement(), "Details" );
@@ -548,7 +556,7 @@ void GuiQwt3dPlot::createDetailMenu( GuiPopupMenu *menu ){
 /* buildConfigDialog --                                                        */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::buildConfigDialog() {
+void GuiQt3dPlot::buildConfigDialog() {
   GuiFieldgroup     *group = 0;
   GuiQtFieldgroupLine *line = 0;
   GuiQtLabel     *label = 0;
@@ -677,8 +685,8 @@ void GuiQwt3dPlot::buildConfigDialog() {
 /* createDataReference --                                                      */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::createDataReference() {
-  BUG(BugGui,"GuiQwt3dPlot::createDataReference");
+void GuiQt3dPlot::createDataReference() {
+  BUG(BugGui,"GuiQt3dPlot::createDataReference");
 
   DataPool &datapool = DataPoolIntens::getDataPool();
   std::string varname;
@@ -714,13 +722,15 @@ void GuiQwt3dPlot::createDataReference() {
 /* update --                                                                   */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::update( UpdateReason reason ){
-  BUG(BugGui, "GuiQwt3dPlot::update");
+void GuiQt3dPlot::update( UpdateReason reason ){
+  BUG(BugGui, "GuiQt3dPlot::update");
   if( m_widget == 0 ) return;
 
   // zumindest einen kleinen refresh bei leeren widget zu bekommen
+#if !HAVE_QGRAPHS
   m_widget->setCanvasBackground(QColor("#f0f0f9"));
   m_widget->replot();
+#endif
 
   switch( reason ){
   case reason_FieldInput:
@@ -757,15 +767,12 @@ void GuiQwt3dPlot::update( UpdateReason reason ){
   setAnnotationLabels();
 
   if (m_plotStyle.getStyle() == CONTOUR) {
-#if QWT_VERSION < 0x060000
-    m_data->update();
-    m_widget->update( *m_data );
-#else
     m_contourData->updateData();
     m_widget->update( *m_contourData );
-#endif
     drawMarkerLine();
+#if !HAVE_QGRAPHS
     m_widget->replot();
+#endif
     m_widgetStack->setCurrentWidget(m_widget);
   }     else {
 #if QWT_VERSION < 0x060000
@@ -782,7 +789,8 @@ void GuiQwt3dPlot::update( UpdateReason reason ){
 /* --------------------------------------------------------------------------- */
 /* drawMarkerLine --                                                           */
 /* --------------------------------------------------------------------------- */
-void GuiQwt3dPlot::drawMarkerLine() {
+void GuiQt3dPlot::drawMarkerLine() {
+#if !HAVE_QGRAPHS
   // delete old markerLines
   std::vector<QwtPlotCurve*>::iterator it;
   for (it = m_markerCurves.begin();
@@ -805,13 +813,13 @@ void GuiQwt3dPlot::drawMarkerLine() {
       double* m_xArray = new double[y_num];
       double* m_yArray = new double[y_num];
       for (int i=0; i< y_num; ++i) {
-	iy->setIndex( item->Data(), i );
-	item->getValue( m_yArray[i] );
-	m_yArray[i]*=item->getScaleFactor();
+        iy->setIndex( item->Data(), i );
+        item->getValue( m_yArray[i] );
+        m_yArray[i]*=item->getScaleFactor();
 
-	ix->setIndex( item->getMarkerLineXAxisXferData()->Data(), i );
-	item->getMarkerLineXAxisXferData()->getValue( m_xArray[i] );
-	m_xArray[i]*=item->getMarkerLineXAxisScaleFactor();
+        ix->setIndex( item->getMarkerLineXAxisXferData()->Data(), i );
+        item->getMarkerLineXAxisXferData()->getValue( m_xArray[i] );
+        m_xArray[i]*=item->getMarkerLineXAxisScaleFactor();
       }
       QwtPlotCurve* plotCurve = new QwtPlotCurve( "label" );
       plotCurve->attach(m_widget);
@@ -830,13 +838,14 @@ void GuiQwt3dPlot::drawMarkerLine() {
       m_markerCurves.push_back(plotCurve);
     }
   }
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 /* acceptIndex --                                                              */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::acceptIndex( const std::string &name, int inx ) {
+bool GuiQt3dPlot::acceptIndex( const std::string &name, int inx ) {
   DataItemType::iterator iter;
   for( iter=m_dataitems.begin(); iter != m_dataitems.end(); ++iter ) {
     if( !((*iter).second->acceptIndex( name, inx )) )
@@ -849,13 +858,13 @@ bool GuiQwt3dPlot::acceptIndex( const std::string &name, int inx ) {
 /* setIndex --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setIndex( const std::string &name, int inx ) {
+void GuiQt3dPlot::setIndex( const std::string &name, int inx ) {
   DataItemType::iterator iter;
   for( iter=m_dataitems.begin(); iter != m_dataitems.end(); ++iter )
     (*iter).second->setIndex( name, inx );
   update( reason_Always );
 
-  std::vector<GuiQwt3dPlot*>::iterator it = m_clonedList.begin();
+  std::vector<GuiQt3dPlot*>::iterator it = m_clonedList.begin();
   for (; it != m_clonedList.end(); ++it)
     (*it)->getElement()->setIndex(name, inx);
 }
@@ -863,10 +872,10 @@ void GuiQwt3dPlot::setIndex( const std::string &name, int inx ) {
 /* --------------------------------------------------------------------------- */
 /* clone --                                                                    */
 /* --------------------------------------------------------------------------- */
-GuiElement* GuiQwt3dPlot::clone() {
+GuiElement* GuiQt3dPlot::clone() {
   GuiElement* baseElem = findElement( getName() );
   if (baseElem == this->getElement())
-    m_clonedList.push_back( new GuiQwt3dPlot( *this ) );
+    m_clonedList.push_back( new GuiQt3dPlot( *this ) );
   else
     return baseElem->clone();
   return m_clonedList.back();
@@ -875,7 +884,7 @@ GuiElement* GuiQwt3dPlot::clone() {
 /* --------------------------------------------------------------------------- */
 /* getCloneList --                                                             */
 /* --------------------------------------------------------------------------- */
-void GuiQwt3dPlot::getCloneList( std::vector<GuiElement*>& cList ) const {
+void GuiQt3dPlot::getCloneList( std::vector<GuiElement*>& cList ) const {
   cList.clear();
   cList.insert(cList.begin(), m_clonedList.begin(), m_clonedList.end());
 }
@@ -884,7 +893,7 @@ void GuiQwt3dPlot::getCloneList( std::vector<GuiElement*>& cList ) const {
 /* PrintType --                                                                */
 /* --------------------------------------------------------------------------- */
 
-HardCopyListener::FileFormat GuiQwt3dPlot::getFileFormat() {
+HardCopyListener::FileFormat GuiQt3dPlot::getFileFormat() {
   return m_currentFileFormat;
 }
 
@@ -892,14 +901,14 @@ HardCopyListener::FileFormat GuiQwt3dPlot::getFileFormat() {
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
 
-const std::string &GuiQwt3dPlot::MenuLabel() {
+const std::string &GuiQt3dPlot::MenuLabel() {
   return m_menuText.empty() ? m_name : m_menuText;
 }
 
 /* --------------------------------------------------------------------------- */
 /* isFileFormatSupported --                                                    */
 /* --------------------------------------------------------------------------- */
-bool GuiQwt3dPlot::isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat ){
+bool GuiQt3dPlot::isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat ){
   HardCopyListener::FileFormats2::iterator it;
   bool result = false;
   for( it = m_supportedFileFormats.begin(); it != m_supportedFileFormats.end() && !result; ++it ){
@@ -912,7 +921,7 @@ bool GuiQwt3dPlot::isFileFormatSupported( const HardCopyListener::FileFormat &fi
 /* --------------------------------------------------------------------------- */
 /* isExportPrintFormat --                                                             */
 /* --------------------------------------------------------------------------- */
-bool GuiQwt3dPlot::isExportPrintFormat( const HardCopyListener::FileFormat &fileFormat ){
+bool GuiQt3dPlot::isExportPrintFormat( const HardCopyListener::FileFormat &fileFormat ){
   HardCopyListener::PrintType  ptype = getPrintType(fileFormat);
   if (ptype==HardCopyListener::FILE_EXPORT ||
       ptype==HardCopyListener::OWN_CONTROL   )
@@ -923,7 +932,7 @@ bool GuiQwt3dPlot::isExportPrintFormat( const HardCopyListener::FileFormat &file
 /* --------------------------------------------------------------------------- */
 /* getPrintType --                                                             */
 /* --------------------------------------------------------------------------- */
-HardCopyListener::PrintType GuiQwt3dPlot::getPrintType( const HardCopyListener::FileFormat &fileFormat ){
+HardCopyListener::PrintType GuiQt3dPlot::getPrintType( const HardCopyListener::FileFormat &fileFormat ){
   HardCopyListener::FileFormats2::iterator it = m_supportedFileFormats.find( fileFormat );
   if ( it == m_supportedFileFormats.end() ) {
     return HardCopyListener::NOT_SUPPORTED;
@@ -935,9 +944,9 @@ HardCopyListener::PrintType GuiQwt3dPlot::getPrintType( const HardCopyListener::
 /* write( InputChannelEvent &event ) --                                        */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::write( InputChannelEvent &event ) {
+bool GuiQt3dPlot::write( InputChannelEvent &event ) {
   ///  assert(false);
-  BUG(BugGui, "GuiQwt3dPlot::write");
+  BUG(BugGui, "GuiQt3dPlot::write");
   std::string msg;
   GuiQtPrinterDialog& hardcopy = GuiQtPrinterDialog::Instance();
   switch( hardcopy.FileFormat() ){
@@ -970,7 +979,7 @@ bool GuiQwt3dPlot::write( InputChannelEvent &event ) {
 
   std::string tmp_eps_name;
   generateFileWithSvgGenerator( tmp_eps_name );
-  // std::cout << "   GuiQWTPlot::write file["<<tmp_eps_name<<"]\n";
+  // std::cout << "   GuiQTPlot::write file["<<tmp_eps_name<<"]\n";
   QFile tmp_eps(QString::fromStdString(tmp_eps_name));
 
   std::ostringstream os;
@@ -983,8 +992,8 @@ bool GuiQwt3dPlot::write( InputChannelEvent &event ) {
 /* --------------------------------------------------------------------------- */
 /* write( std::string fileName ) --                                                          */
 /* --------------------------------------------------------------------------- */
-bool GuiQwt3dPlot::write( const std::string &fileName) {
-  BUG(BugGui, "GuiQwt3dPlot::write");
+bool GuiQt3dPlot::write( const std::string &fileName) {
+  BUG(BugGui, "GuiQt3dPlot::write");
   if( m_widget == 0 ){
     create();
   }
@@ -1057,8 +1066,7 @@ bool GuiQwt3dPlot::write( const std::string &fileName) {
     pm.fill();
 
     if (m_plotStyle.getStyle() == CONTOUR) {
-#if QWT_VERSION < 0x060000
-      m_widget->print( pm );
+#if HAVE_QGRAPHS
 #else
       QwtPlotRenderer renderer;
       renderer.renderTo(m_widget, pm);
@@ -1083,7 +1091,7 @@ bool GuiQwt3dPlot::write( const std::string &fileName) {
 /* saveFile --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::saveFile( GuiElement *e ){
+bool GuiQt3dPlot::saveFile( GuiElement *e ){
   GuiQtElement::saveFile(NULL);
   return true;
 }
@@ -1092,7 +1100,7 @@ bool GuiQwt3dPlot::saveFile( GuiElement *e ){
 /* generateFileWithSvgGenerator( const std::string &fileName ) --              */
 /* --------------------------------------------------------------------------- */
 
-bool  GuiQwt3dPlot::generateFileWithSvgGenerator(std::string& eps_result_file) {
+bool  GuiQt3dPlot::generateFileWithSvgGenerator(std::string& eps_result_file) {
   QSvgGenerator svg;
   QTemporaryFile tmp_svg("testXXXXXX.svg");
   tmp_svg.open();
@@ -1131,7 +1139,7 @@ bool  GuiQwt3dPlot::generateFileWithSvgGenerator(std::string& eps_result_file) {
 /* getDefaultSettings --                                                       */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::getDefaultSettings( HardCopyListener::PaperSize &size,
+bool GuiQt3dPlot::getDefaultSettings( HardCopyListener::PaperSize &size,
 				    HardCopyListener::Orientation &orient,
 				    int &quantity,
 				    HardCopyListener::FileFormat &format,
@@ -1153,7 +1161,7 @@ bool GuiQwt3dPlot::getDefaultSettings( HardCopyListener::PaperSize &size,
 /* print --                                                                    */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::print(QPrinter* printer) {
+void GuiQt3dPlot::print(QPrinter* printer) {
   if( m_widget == 0 ){
     create();
   }
@@ -1175,8 +1183,8 @@ void GuiQwt3dPlot::print(QPrinter* printer) {
 /* isDataItemUpdated --                                                        */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::isDataItemUpdated( TransactionNumber trans ) {
-  BUG(BugGui,"GuiQwt3dPlot::isDataItemUpdated");
+bool GuiQt3dPlot::isDataItemUpdated( TransactionNumber trans ) {
+  BUG(BugGui,"GuiQt3dPlot::isDataItemUpdated");
   if (m_dataitems.size()>3) {
     GuiPlotDataItem *zaxis1 = getPlotDataItem("ZAXIS1");
     std::string s;
@@ -1209,7 +1217,7 @@ bool GuiQwt3dPlot::isDataItemUpdated( TransactionNumber trans ) {
 /* setDrawButtons --                                                           */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setDrawButtons() {
+void GuiQt3dPlot::setDrawButtons() {
   if( m_PopupMenuCreated ) {
 #if 0
     m_buttonPerspective->setToggleStatus( m_plotStyle.getFlagDrawPerspective() );
@@ -1225,7 +1233,7 @@ void GuiQwt3dPlot::setDrawButtons() {
 /* setStyleButtons --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setStyleButtons() {
+void GuiQt3dPlot::setStyleButtons() {
   if( m_PopupMenuCreated ) {
     Style style = m_plotStyle.getStyle();
 #if 0
@@ -1240,7 +1248,7 @@ void GuiQwt3dPlot::setStyleButtons() {
 /* setPlotStyleBar --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setPlotStyleBar() {
+void GuiQt3dPlot::setPlotStyleBar() {
   // XRT3D_TYPE_BAR mit mesh(true), shaded(true), contours(true), zones(true)
   setPlotStyleSurface();
   m_plotStyle.setStyle( BAR );
@@ -1259,7 +1267,7 @@ void GuiQwt3dPlot::setPlotStyleBar() {
 /* setPlotStyleSurface --                                                      */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setPlotStyleSurface() {
+void GuiQt3dPlot::setPlotStyleSurface() {
   // XRT3D_TYPE_SURFACE mit mesh(true), shaded(true), contours(true), zones(true)
   m_plotStyle.setStyle( SURFACE );
   setDetailStyle( true, true, true, true );
@@ -1276,7 +1284,7 @@ void GuiQwt3dPlot::setPlotStyleSurface() {
 /* setPlotStyleContour --                                                      */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setPlotStyleContour() {
+void GuiQt3dPlot::setPlotStyleContour() {
   // XRT3D_TYPE_SURFACE mit mesh(false), shaded(false), contours(true), zones(true)
   m_plotStyle.setStyle( CONTOUR );
   setDetailStyle( false, false, true, true );
@@ -1289,12 +1297,14 @@ void GuiQwt3dPlot::setPlotStyleContour() {
 /* setTitle --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setTitle(const std::vector<std::string>& title) {
+void GuiQt3dPlot::setTitle(const std::vector<std::string>& title) {
   if (title.size() == 0)
     return;
 
+#if !HAVE_QGRAPHS
   if (m_widget)
     m_widget->setTitle( QString::fromStdString( title[0] ) );
+#endif
 #if HAVE_QWTPLOT3D
   if (m_widget3d)
     get3dPlot()->setTitle( QString::fromStdString( title[0] ) );
@@ -1305,7 +1315,7 @@ void GuiQwt3dPlot::setTitle(const std::vector<std::string>& title) {
 /* setDeatailStyle --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setDetailStyle( bool mesh, bool shaded, bool contours, bool zones ) {
+void GuiQt3dPlot::setDetailStyle( bool mesh, bool shaded, bool contours, bool zones ) {
   m_plotStyle.setFlagDrawMesh( mesh );
   m_plotStyle.setFlagDrawShaded( shaded );
   m_plotStyle.setFlagDrawContours( contours );
@@ -1321,7 +1331,7 @@ void GuiQwt3dPlot::setDetailStyle( bool mesh, bool shaded, bool contours, bool z
 /* setMenuText --                                                              */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::setMenuText( const std::string &menuText ) {
+bool GuiQt3dPlot::setMenuText( const std::string &menuText ) {
   m_menuText = menuText;
   return true;
 }
@@ -1334,8 +1344,8 @@ bool GuiQwt3dPlot::setMenuText( const std::string &menuText ) {
 /* setDataGrid --                                                              */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::setDataGrid() {
-  BUG(BugGui,"GuiQwt3dPlot::setDataGrid");
+void GuiQt3dPlot::setDataGrid() {
+  BUG(BugGui,"GuiQt3dPlot::setDataGrid");
   int rows=0, cols=0;
   int x, y;
 
@@ -1469,7 +1479,7 @@ void GuiQwt3dPlot::setDataGrid() {
 /* toggleStyle --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::toggleStyle() {
+void GuiQt3dPlot::toggleStyle() {
   assert( false );
 //   m_plotStyle.setFlagStyleBars( !m_plotStyle.getFlagStyleBars() );
 //   if( m_plotStyle.getFlagStyleBars() ){
@@ -1492,7 +1502,7 @@ void GuiQwt3dPlot::toggleStyle() {
 /* drawMesh --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::drawMesh() {
+void GuiQt3dPlot::drawMesh() {
   setPlotStyleSurface();
   m_plotStyle.setFlagDrawMesh( !m_plotStyle.getFlagDrawMesh() );
 #if HAVE_QWTPLOT3D
@@ -1508,7 +1518,7 @@ void GuiQwt3dPlot::drawMesh() {
 /* drawShaded --                                                               */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::drawShaded() {
+void GuiQt3dPlot::drawShaded() {
   setPlotStyleSurface();
   m_plotStyle.setFlagDrawShaded( !m_plotStyle.getFlagDrawShaded() );
 #if HAVE_QWTPLOT3D
@@ -1530,19 +1540,22 @@ void GuiQwt3dPlot::drawShaded() {
 /* drawContours --                                                             */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::drawContours(bool flag) {
+void GuiQt3dPlot::drawContours(bool flag) {
   m_plotStyle.setFlagDrawContours(flag);
+#if !HAVE_QGRAPHS
   if (m_widget)
     m_widget->showContour( flag );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 /* drawZones --                                                                */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::drawZones(bool flag) {
+void GuiQt3dPlot::drawZones(bool flag) {
   m_plotStyle.setFlagDrawZones(flag);
-#if QWT_VERSION >= 0x060000
+#if HAVE_QGRAPHS
+#elif QWT_VERSION >= 0x060000
   if (m_widget)
     m_widget->setResampleMode( flag ? QwtMatrixRasterData::BilinearInterpolation : QwtMatrixRasterData::NearestNeighbour);
 #endif
@@ -1557,7 +1570,7 @@ void GuiQwt3dPlot::drawZones(bool flag) {
 /* drawHiddenLines --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::drawHiddenLines() {
+void GuiQt3dPlot::drawHiddenLines() {
   setPlotStyleSurface();
   m_plotStyle.setFlagDrawHiddenLines( !m_plotStyle.getFlagDrawHiddenLines() );
 #if HAVE_QWTPLOT3D
@@ -1573,7 +1586,7 @@ void GuiQwt3dPlot::drawHiddenLines() {
 /* drawPerspective --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::drawPerspective() {
+void GuiQt3dPlot::drawPerspective() {
   if (m_plotStyle.getStyle() != CONTOUR) {
     m_plotStyle.setFlagDrawPerspective( !m_plotStyle.getFlagDrawPerspective() );
 #if HAVE_QWTPLOT3D
@@ -1591,9 +1604,11 @@ void GuiQwt3dPlot::drawPerspective() {
 /* resetScaleParameters --                                                     */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::resetScaleParameters() {
+void GuiQt3dPlot::resetScaleParameters() {
   if (m_plotStyle.getStyle() == CONTOUR) {
+#if !HAVE_QGRAPHS
     m_widget->resetScale();
+#endif
   } else {
 #if HAVE_QWTPLOT3D
     get3dPlot()->resetScale();
@@ -1605,7 +1620,7 @@ void GuiQwt3dPlot::resetScaleParameters() {
 /* resetRotationParameters --                                                  */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::resetRotationParameters() {
+void GuiQt3dPlot::resetRotationParameters() {
   if (m_plotStyle.getStyle() != CONTOUR) {
 #if HAVE_QWTPLOT3D
     get3dPlot()->resetRotation();
@@ -1617,7 +1632,7 @@ void GuiQwt3dPlot::resetRotationParameters() {
 /* deleteText --                                                               */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::deleteText() {
+void GuiQt3dPlot::deleteText() {
 //   WidgetList textWidgets;
 //   int i = 0;
 
@@ -1639,7 +1654,7 @@ void GuiQwt3dPlot::deleteText() {
 /* showText --                                                                 */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::showText( bool state ) {
+void GuiQt3dPlot::showText( bool state ) {
 //   WidgetList textWidgets;
 //   int i = 0;
 
@@ -1666,7 +1681,7 @@ void GuiQwt3dPlot::showText( bool state ) {
 /* create3dPlot --                                                             */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::create3dPlot() {
+void GuiQt3dPlot::create3dPlot() {
 #if HAVE_QWTPLOT3D
   if (!m_widget3d) {
     // create openGL 3d widget
@@ -1680,7 +1695,7 @@ void GuiQwt3dPlot::create3dPlot() {
 /* get3dPlot --                                                             */
 /* --------------------------------------------------------------------------- */
 
-Plot3D* GuiQwt3dPlot::get3dPlot() {
+Plot3D* GuiQt3dPlot::get3dPlot() {
   if (!m_widget3d) {
     create3dPlot();
   }
@@ -1690,7 +1705,7 @@ Plot3D* GuiQwt3dPlot::get3dPlot() {
 /* --------------------------------------------------------------------------- */
 /* getPlotDataItem --                                                          */
 /* --------------------------------------------------------------------------- */
-GuiPlotDataItem* GuiQwt3dPlot::getPlotDataItem(std::string axis_name, int num) {
+GuiPlotDataItem* GuiQt3dPlot::getPlotDataItem(std::string axis_name, int num) {
   DataItemType::iterator iter;
   if (num >= 0) {
     iter = m_dataitems.find( compose(axis_name+"%1", num ));
@@ -1706,7 +1721,7 @@ GuiPlotDataItem* GuiQwt3dPlot::getPlotDataItem(std::string axis_name, int num) {
 /* putDataItem --                                                              */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwt3dPlot::putDataItem( const std::string &name, GuiPlotDataItem *item ) {
+bool GuiQt3dPlot::putDataItem( const std::string &name, GuiPlotDataItem *item ) {
   if( m_dataitems.insert(DataItemPair(name, item)).second ) {
     return true;
   }
@@ -1719,7 +1734,7 @@ bool GuiQwt3dPlot::putDataItem( const std::string &name, GuiPlotDataItem *item )
 /* openConfigDialog --                                                         */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::openConfigDialog() {
+void GuiQt3dPlot::openConfigDialog() {
 //   if( m_configDialog == 0 )
 //     buildConfigDialog();
 
@@ -1740,7 +1755,7 @@ void GuiQwt3dPlot::openConfigDialog() {
 /* cDresetEvent --                                                             */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::cDresetEvent() {
+void GuiQt3dPlot::cDresetEvent() {
 //   for( int i=0; i < m_dataItems.size(); i++ ) { !!!!
 //     GuiPlotDataItem* item = m_dataItems[i];
 //     assert( item != 0 );
@@ -1762,7 +1777,7 @@ void GuiQwt3dPlot::cDresetEvent() {
 /* cDcloseEvent --                                                             */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::cDcloseEvent() {
+void GuiQt3dPlot::cDcloseEvent() {
 //   m_configDialog->unmanage();
 }
 
@@ -1770,8 +1785,8 @@ void GuiQwt3dPlot::cDcloseEvent() {
 /* cDsetDistnMethodEvent --                                                    */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwt3dPlot::cDsetDistnMethodEvent( bool state ) {
-  BUG(BugGui, "GuiQwt3dPlot::cDsetDistnMethodEvent");
+void GuiQt3dPlot::cDsetDistnMethodEvent( bool state ) {
+  BUG(BugGui, "GuiQt3dPlot::cDsetDistnMethodEvent");
   assert( m_drefDistnMethod != 0 );
 
   if( state ) {
@@ -1792,14 +1807,14 @@ void GuiQwt3dPlot::cDsetDistnMethodEvent( bool state ) {
 /* --------------------------------------------------------------------------- */
 /* serializeXML --                                                             */
 /* --------------------------------------------------------------------------- */
-void GuiQwt3dPlot::serializeXML(std::ostream &os, bool recursive){
+void GuiQt3dPlot::serializeXML(std::ostream &os, bool recursive){
   return Gui3dPlot::serializeXML(os, recursive);
 }
 
 /* --------------------------------------------------------------------------- */
 /* serializeJson --                                                            */
 /* --------------------------------------------------------------------------- */
-bool GuiQwt3dPlot::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
+bool GuiQt3dPlot::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
   return Gui3dPlot::serializeJson(jsonObj, onlyUpdated);
 }
 
@@ -1808,7 +1823,7 @@ bool GuiQwt3dPlot::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
 /* serializeProtobuf --                                                            */
 /* --------------------------------------------------------------------------- */
 #if HAVE_PROTOBUF
-bool GuiQwt3dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated){
+bool GuiQt3dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated){
   return Gui3dPlot::serializeProtobuf(eles, onlyUpdated);
 }
 #endif
@@ -1816,7 +1831,7 @@ bool GuiQwt3dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdat
 /* --------------------------------------------------------------------------- */
 /* PrintButtonListener  ButtonPressed --                                       */
 /* --------------------------------------------------------------------------- */
-void GuiQwt3dPlot::PrintButtonListener::ButtonPressed() {
+void GuiQt3dPlot::PrintButtonListener::ButtonPressed() {
   GuiPrinterDialog::MyEventData event( ReportGen::PRINT );
   GuiFactory::Instance()->createPrinterDialog()->showDialog( m_plot, 0, &event );
 }
@@ -1825,7 +1840,7 @@ void GuiQwt3dPlot::PrintButtonListener::ButtonPressed() {
 /* writeSettings --                                                            */
 /* --------------------------------------------------------------------------- */
 #include <QSettings>
-void GuiQwt3dPlot::writeSettings() {
+void GuiQt3dPlot::writeSettings() {
   if ( ! m_widget ) {
     return;
   }
@@ -1836,7 +1851,8 @@ void GuiQwt3dPlot::writeSettings() {
   settings->setValue(_tmp + ".countContourLevels", m_contourLevels);
   settings->setValue(_tmp + ".drawContour", m_plotStyle.getFlagDrawContours());
   settings->setValue(_tmp + ".drawInterpolated", m_plotStyle.getFlagDrawZones());
-#if QWT_VERSION >= 0x060000
+#if HAVE_QGRAPHS
+#else
   if ( m_widget->axisWidget(QwtPlot::yRight) ) {
     const QwtLinearColorMap *colorMap = (const QwtLinearColorMap*) m_widget->axisWidget(QwtPlot::yRight)->colorMap();
     QList<QVariant> valueList;
@@ -1857,7 +1873,7 @@ void GuiQwt3dPlot::writeSettings() {
 /* --------------------------------------------------------------------------- */
 /* readSettings --                                                             */
 /* --------------------------------------------------------------------------- */
-void GuiQwt3dPlot::readSettings() {
+void GuiQt3dPlot::readSettings() {
   m_valueList.clear();
   m_colorList.clear();
   QList<QVariant> valueList;
@@ -1883,8 +1899,8 @@ void GuiQwt3dPlot::readSettings() {
 /* --------------------------------------------------------------------------- */
 /* setAnnotationLabels --                                                      */
 /* --------------------------------------------------------------------------- */
-bool GuiQwt3dPlot::setAnnotationLabels(){
-#ifdef HAVE_QWTPLOT3D
+bool GuiQt3dPlot::setAnnotationLabels(){
+#if  HAVE_QWTPLOT3D
   GuiPlotDataItem *xaxis = getPlotDataItem("XAXIS");
   GuiPlotDataItem *yaxis = getPlotDataItem("YAXIS");
 
@@ -1947,8 +1963,9 @@ bool GuiQwt3dPlot::setAnnotationLabels(){
     }
     scaleDraw->setAnnotationType(true);
   }
+#if !HAVE_QGRAPHS
   m_widget->replot();
-
+#endif
+#endif
   return true;
- #endif
 }

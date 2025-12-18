@@ -78,6 +78,7 @@ private:
 
   virtual void showAnnotationLabels( bool bXAxis, bool status ) = 0;
   virtual bool isShownAnnotationLabels( bool bXAxis ) = 0;
+  Style getPlotStyle() { return m_plotStyle.getStyle(); }
 
 /*=============================================================================*/
 /* protected Definitions                                                       */

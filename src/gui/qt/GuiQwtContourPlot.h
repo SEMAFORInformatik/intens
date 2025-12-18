@@ -14,12 +14,12 @@ class QwtLinearColorMap;
 class QwtPlotSpectrogram;
 class QwtRasterData;
 class QwtPlotCanvas;
-class GuiQwt3dPlot;
+class GuiQt3dPlot;
 
   class GuiQwtContourPlot : public QwtPlot
   {
   public:
-    GuiQwtContourPlot(GuiQwt3dPlot* plot, QwtLinearColorMap* colormap,
+    GuiQwtContourPlot(GuiQt3dPlot* plot, QwtLinearColorMap* colormap,
 		      GuiQwtContourPlotData* data);
 
     /** update data */
@@ -100,7 +100,7 @@ class GuiQwt3dPlot;
 
     QwtPlotZoomer      *zoomer;
     GuiQwtContourPlotData *m_data;
-    GuiQwt3dPlot       *m_plot;
+    GuiQt3dPlot       *m_plot;
   };
 
 #endif // !defined(GUIQWTCONTOURPLOT_H__INCLUDED_)

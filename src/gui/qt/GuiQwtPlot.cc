@@ -73,7 +73,9 @@ QT_USE_NAMESPACE
 #include "gui/qt/GuiQwtPlotBarChart.h"
 #include "gui/qt/GuiQwtScaleEngine.h"
 #include "gui/qt/GuiQwtPropertyDialog.h"
+#if HAVE_QPOLAR
 #include "gui/qt/GuiQtPolarPlot.h"
+#endif
 #include "gui/qt/GuiQwtPolarPlot.h"
 #include "gui/qt/GuiQwtPlotLayout.h"
 
@@ -427,10 +429,12 @@ GuiQWTPlot::GuiQWTPlot( const std::string &name )
   : GuiQtElement( 0, name )
   , Gui2dPlot( name )
   , m_plot( 0 )
+#if HAVE_QPOLAR
   , m_polarPlot(0)
   , m_polarChart(0)
   , m_angularAxis(0)
   , m_radialAxis(0)
+#endif
   , m_widgetStack( 0 )
   , m_picker( 0 )
   , m_popupMenu(0)
@@ -614,10 +618,12 @@ GuiQWTPlot::GuiQWTPlot( const GuiQWTPlot &plot )
   : GuiQtElement( plot )
   , Gui2dPlot( plot )
   , m_plot( 0 )
+#if HAVE_QPOLAR
   , m_polarPlot(0)
   , m_polarChart(0)
   , m_angularAxis(0)
   , m_radialAxis(0)
+#endif
   , m_widgetStack( 0 )
   , m_picker( 0 )
   , m_popupMenu( 0 )
@@ -676,10 +682,12 @@ GuiQWTPlot::~GuiQWTPlot(){
   delete m_zoomer[0];
   delete m_zoomer[1];
   delete m_plot;
+#if HAVE_QPOLAR
   delete m_polarPlot;
   delete m_polarChart;
   delete m_angularAxis;
   delete m_radialAxis;
+#endif
   delete m_widgetStack;
   delete m_yStyleMenu[0];
   delete m_yStyleMenu[1];
@@ -1065,6 +1073,7 @@ void GuiQWTPlot::getClassPointer(PlotItem* plotitem, void* pClass,
   }
 }
 
+#if HAVE_QPOLAR
 /* --------------------------------------------------------------------------- */
 /* getClassPointer --                                                          */
 /* --------------------------------------------------------------------------- */
@@ -1079,16 +1088,19 @@ void GuiQWTPlot::getClassPointer(PlotItem* plotitem, void* pClass,
     plotItem = reinterpret_cast<QwtPlotItem*>(pClass);
   }
 }
+#endif
 
 /* --------------------------------------------------------------------------- */
 /* createPolarPlot --                                                          */
 /* --------------------------------------------------------------------------- */
 void GuiQWTPlot::createPolarPlot() {
+#if HAVE_QPOLAR
   if (m_polarPlot) return;
   m_polarChart= new GuiQtPolarChart();
   m_polarPlot = new GuiQtChartView(m_polarChart);
   m_polarChart->create(dynamic_cast<GuiQtChartView*>(m_polarPlot));
   m_widgetStack->addWidget(m_polarPlot);
+#endif
 }
 //----------------------------------------------------
 // slot_selectedCurve
@@ -1133,24 +1145,28 @@ void GuiQWTPlot::zoomed(){
 void GuiQWTPlot::setAutoScale (TransactionNumber trans){
   if (!getAxis(0).isScaleEnabled()) {
     m_plot->setAxisAutoScale( AXIS_Y_LEFT );
+#if HAVE_QPOLAR
     if (m_polarChart) {
       QList<QAbstractAxis*> lst = m_polarChart->axes(QPolarChart::PolarOrientationRadial);
       for (QList<QAbstractAxis*>::iterator  i = lst.begin(); i != lst.end(); ++i) {
         (*i)->setRange(0, 0); // trick, autoscale
       }
     }
+#endif
   }
   if (!getAxis(1).isScaleEnabled())  {
     m_plot->setAxisAutoScale( AXIS_Y_RIGHT );
   }
   if (!getAxis(2).isScaleEnabled()) {
     m_plot->setAxisAutoScale( AXIS_X_BOTTOM );
+#if HAVE_QPOLAR
     if (m_polarChart) {
       QList<QAbstractAxis*> lst = m_polarChart->axes(QPolarChart::PolarOrientationAngular);
       for (QList<QAbstractAxis*>::iterator  i = lst.begin(); i != lst.end(); ++i) {
         (*i)->setRange(0, 360);
       }
     }
+#endif
   }
 
   if (!getAxis(3).isScaleEnabled())
@@ -1219,7 +1235,9 @@ void GuiQWTPlot::setdrefAxis(){
 void GuiQWTPlot::update( GuiElement::UpdateReason reason ){
  if (!m_plot || // plot (noch) nicht kreiert
      (!m_plot->isVisible() &&
+#if HAVE_QPOLAR
       (!m_polarPlot || !m_polarPlot->isVisible()) &&
+#endif
        reason != reason_Always && // reason_Always: update durchführen, es könnte z.B. ein SAVE folgen!
        reason != reason_Cycle &&
        reason != reason_Cancel
@@ -1273,6 +1291,7 @@ void GuiQWTPlot::update( GuiElement::UpdateReason reason ){
     break;
   }
 
+#if HAVE_QPOLAR
   // polarplot
   if (getQwtCurveStyle(Gui2dPlot::Y1AXIS)  == GuiQwtPlotCurve::Polar ||
       getQwtCurveStyle(Gui2dPlot::Y2AXIS)  == GuiQwtPlotCurve::Polar) {
@@ -1281,6 +1300,7 @@ void GuiQWTPlot::update( GuiElement::UpdateReason reason ){
     }
     m_widgetStack->setCurrentWidget(m_polarPlot);
   } else
+#endif
   m_widgetStack->setCurrentWidget(m_plot);
 
   // set user interaction mode
@@ -1391,7 +1411,9 @@ void GuiQWTPlot::update( GuiElement::UpdateReason reason ){
 
   setRescaleMode();
   m_plot->replot();
+#if HAVE_QPOLAR
   if (m_polarPlot) m_polarPlot->update();  // repaint?
+#endif
   if ( m_plot->legend() ) {
     QList<QWidget*> list;
 #if QWT_VERSION < 0x060100
@@ -1465,6 +1487,7 @@ bool GuiQWTPlot::setScale(TransactionNumber trans){
         }
       }
 
+#if HAVE_QPOLAR
     if (m_polarPlot) {
       if (n == 0) {
         QList<QAbstractAxis*> lst = m_polarChart->axes(QPolarChart::PolarOrientationRadial);
@@ -1479,6 +1502,7 @@ bool GuiQWTPlot::setScale(TransactionNumber trans){
         }
       }
     }
+#endif
       // change axis scale, if needed
       if (lowerBound[n] != min[n] || upperBound[n] != max[n] ) {
         BUG_DEBUG("setAxisScale axis: " << axis[n] << ", range: " << min[n] << ", " << max[n]);
@@ -1629,7 +1653,9 @@ bool GuiQWTPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, int
   void* voidItem = 0;
   QwtPlotItem* plotItem = 0;
   GuiQwtPlotBarChart* plotBarItem = 0;
+#if HAVE_QPOLAR
   QLineSeries *polarCurve = 0;
+#endif
   Plot2dCurvePalette* curvePalette = m_curveAttrs.getPalette(yItem->getUniqueName(xWildcardIndex, yWildcardIndex, cyclePlotMode));
 
   // get existing or create a new plotItem
@@ -1668,6 +1694,7 @@ bool GuiQWTPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, int
       }
       plotItem = plotBarItem;
     }
+#if HAVE_QPOLAR
     else
     if ( style == GuiQwtPlotCurve::Polar) {
       QPen pen(QString::fromStdString(curvePalette->lineColor));
@@ -1676,6 +1703,7 @@ bool GuiQWTPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, int
       item->setPlotCurve(cycle, xWildcardIndex, yWildcardIndex, series);
       return true;
     }
+#endif
     else {
 #endif
     //
@@ -1725,7 +1753,9 @@ bool GuiQWTPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, int
     if ( m_plot->legend() )
       m_plot->legend()->setEnabled((m_barPlotChart[0] || m_barPlotChart[1]) ? false : true);
   } else {
+#if HAVE_QPOLAR
     getClassPointer(item, voidItem, plotItem, polarCurve);
+#endif
   }
 
   // if y-Axis logarithmic set baseline to e-100 (default 0. makes no sense)
@@ -1833,7 +1863,11 @@ bool GuiQWTPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, int
     }
 #endif
 
+#if HAVE_QPOLAR
   QString qTitle = plotItem ? plotItem->title().text() : polarCurve->name();
+#else
+  QString qTitle = plotItem ? plotItem->title().text() : "";
+#endif
   if (!m_legendVis.count(qTitle)) {
     m_legendVis[qTitle] = true;
   }
@@ -1851,7 +1885,9 @@ bool GuiQWTPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, int
       m_plot->updateLegend(plotItem);
     }
   }
+#if HAVE_QPOLAR
   if (polarCurve) return polarCurve->isVisible();
+#endif
   return  plotItem ? plotItem->isVisible() : false;
 }
 
@@ -2361,7 +2397,9 @@ void GuiQWTPlot::drawHeaderText() {
     }
     if (m_plot)
       m_plot->titleLabel()->setText( QString::fromStdString(os.str()).trimmed() );
+#if HAVE_QPOLAR
     if (m_polarChart) m_polarChart->setTitle( QString::fromStdString(os.str()).trimmed());
+#endif
   }
 }
 
@@ -3765,19 +3803,26 @@ void GuiQWTPlot::clearPlots(bool always) {
       }
       void* voidItem = (*pit)->getPlotCurve((*it)->cycle(), (*it)->xIndex(), (*it)->yIndex());
       QwtPlotItem* plotItem = 0;
+#if !HAVE_POLAR
+      void *polarCurve = 0;
+#else
       QLineSeries *polarCurve = 0;
       getClassPointer((*pit), voidItem, plotItem, polarCurve);
 
       BUG_DEBUG("ClearPlots plotItem["<<plotItem<<"]  polarCurve["<<polarCurve<<"]  getAxisType["<<(*pit)->getAxisType()<<"]");
+#endif
       if (std::find(rm_qwtPlotItems.begin(), rm_qwtPlotItems.end(), plotItem) != rm_qwtPlotItems.end()) {
         (*pit)->setPlotCurve((*it)->cycle(), (*it)->xIndex(), (*it)->yIndex(), 0);
       } else
         if (voidItem) {
           // remove legend entry
+#if HAVE_QPOLAR
           if (polarCurve) {
             m_polarChart->removeSeries(polarCurve);
             delete polarCurve;
-          } else {
+          } else
+#endif
+          if (plotItem){
             m_picker->clearSelection( dynamic_cast<QwtPlotCurve*>(plotItem));
             m_legendVis[ plotItem->title().text() ] = plotItem->isVisible();
             plotItem->setItemAttribute(QwtPlotItem::Legend, false);

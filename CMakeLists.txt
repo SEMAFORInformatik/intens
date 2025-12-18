@@ -109,6 +109,7 @@ option(USE_LOG4CPLUS "use log4cplus Library" ON)
 option(USE_OAUTH "use OAuth / QtNetworkAuth" ON)
 option(USE_PROTOBUF "use protobuf" ON)
 option(USE_QT6 "use Qt6 Library" ON)
+option(USE_QT6GRAPHS "use Qt6 GraphsWidgets Library" OFF)
 option(USE_LSP "build the language server (requires tree-sitter)" OFF)
 option(USE_MATLAB "use the matlab API (requires matlab)" ON)
 
@@ -126,6 +127,9 @@ endif()
 
 if (USE_OAUTH)
   add_compile_definitions(HAVE_OAUTH)
+endif()
+if (USE_QT6GRAPHS)
+  add_compile_definitions(HAVE_QGRAPHS)
 endif()
 
 if (USE_QT6)

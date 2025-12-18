@@ -31,7 +31,12 @@ if (USE_LOG4CPLUS)
 endif()
 if (USE_QT6)
   set(QT_NO_PRIVATE_MODULE_WARNING ON)
-  find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network SvgWidgets PrintSupport Charts)
+  find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network SvgWidgets PrintSupport)
+  if (USE_QT6GRAPHS)
+    find_package(Qt6 REQUIRED COMPONENTS GraphsWidgets)
+  else()
+    find_package(Qt6 REQUIRED COMPONENTS Charts)
+  endif()
 else()
   find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Network Svg PrintSupport Charts)
 endif()
@@ -120,7 +125,6 @@ target_link_libraries(intens
         jsoncpp
         Qwt::Qwt
         Qt::PrintSupport
-        Qt::Charts
         Qt::Network
         Qt::Widgets
         Qt::Gui
@@ -150,6 +154,18 @@ target_link_libraries(intens
         PRIVATE
         Qt::SvgWidgets
         )
+ if (USE_QT6GRAPHS)
+ target_link_libraries(intens
+        PRIVATE
+        Qt::GraphsWidgets
+        Qt6Charts
+        )
+ else()
+ target_link_libraries(intens
+        PRIVATE
+        Qt::Charts
+        )
+ endif(USE_QT6GRAPHS)
 else()
 target_link_libraries(intens
         PRIVATE

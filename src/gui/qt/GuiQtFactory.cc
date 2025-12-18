@@ -71,7 +71,7 @@
 #include "plot/PSPlot.h"
 #include "plot/Plot2dMenuDescription.h"
 #include "plot/qt/QtSimpel.h"
-#include "gui/qt/GuiQwt3dPlot.h"
+#include "gui/qt/GuiQt3dPlot.h"
 
 #include "operator/QtServerSocket.h"
 #include "operator/QtClientSocket.h"
@@ -308,7 +308,7 @@ Gui3dPlot*  GuiQtFactory::create3dPlot( GuiElement *parent, const std::string &n
     return 0;
   }
   Gui3dPlot *plot=0;
-  plot = new GuiQwt3dPlot( parent, name );
+  plot = new GuiQt3dPlot( parent, name );
   return plot;
 }
 

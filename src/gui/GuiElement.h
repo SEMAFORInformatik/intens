@@ -226,6 +226,7 @@ public:
   , button_TEXT
   , button_TEXT_PIXMAP
   };
+  enum GuiAxisType { yLeft, yRight, xBottom, xTop, zAxis };
 
 /*=============================================================================*/
 /* public member functions                                                     */

@@ -27,8 +27,10 @@ class GuiQtPolarChart;
 class GuiQtChartView;
 class GuiQwtPolarPlot;
 class QwtPolarCurve;
+#if HAVE_QPOLAR
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QLineSeries>
+#endif
 #if QT_VERSION >= 0x060000
 QT_USE_NAMESPACE
 #else
@@ -308,8 +310,10 @@ private:
   void configureCycleXfer(XferDataItem* xfer, int pos);
   void getClassPointer(PlotItem* plotitem, void* pClass,
                        QwtPlotItem*& plotItem, QwtPolarCurve*& polarCurve);
+#if HAVE_QPOLAR
   void getClassPointer(PlotItem* plotitem, void* pClass,
                        QwtPlotItem*& plotItem, QLineSeries*& polarCurve);
+#endif
   void createPolarPlot();
 
   /*=============================================================================*/
@@ -547,12 +551,12 @@ public slots:
 private:
   void setRescaleMode();
   MyQwtPlot       *m_plot;
+#if HAVE_QPOLAR
   GuiQtChartView*  m_polarPlot;
-  ///QGraphicsView*  m_polarPlot;
   GuiQtPolarChart* m_polarChart;
   QValueAxis*  m_angularAxis;
   QValueAxis*  m_radialAxis;
-
+#endif
   /// last marked closest (Curve-)Point
   long m_lastClosestIdx;
 

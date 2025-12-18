@@ -1,6 +1,6 @@
 
-#if !defined GUI_QWT_3DPLOT_INCLUDED_H
-#define GUI_QWT_3DPLOT_INCLUDED_H
+#if !defined GUI_QT_3DPLOT_INCLUDED_H
+#define GUI_QT_3DPLOT_INCLUDED_H
 
 #include "gui/qt/GuiQtElement.h"
 #include "gui/qt/GuiQtPopupMenu.h"
@@ -16,33 +16,38 @@ class GuiTextDialog;
 class GuiDataField;
 class GuiFieldgroupLine;
 class InputChannelEvent;
+class DataReference;
+#if HAVE_QGRAPHS
+class GuiQtGraphsPlot;
+class GuiQtGraphsPlotData;
+#else
 class GuiQwtContourPlot;
 class GuiQwtContourPlotData;
+class QwtPlotCurve;
+class QwtLinearColorMap;
+#endif
 
 class QStackedWidget;
 class Plot3D;
 class Plot;
 class Plot3dData;
-class QwtPlotCurve;
-class QwtLinearColorMap;
 
 /**
-   Die Klasse 'GuiPlot3d' ermoeglicht das Darstellen von 3d-Plots auf Basis des
-   XRT/3d Widget.
-   @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-   @version $Id: GuiQwt3dPlot.h,v 1.6 2008/10/21 14:12:44 amg Exp $
+   Display 3d-Plots
+   @author Copyright (C) 2025 SEMAFOR Informatik & Energie AG, Basel, Switzerland
 */
-class GuiQwt3dPlot : public GuiQtElement, public Gui3dPlot
+
+class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
 /* 		, public HardCopyListener */
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
  public:
-  GuiQwt3dPlot( GuiElement *parent, const std::string& name );
-  virtual ~GuiQwt3dPlot();
+  GuiQt3dPlot( GuiElement *parent, const std::string& name );
+  virtual ~GuiQt3dPlot();
  private:
-  GuiQwt3dPlot( const GuiQwt3dPlot &plot);
+  GuiQt3dPlot( const GuiQt3dPlot &plot);
   void init();
 
 /*=============================================================================*/
@@ -50,7 +55,6 @@ class GuiQwt3dPlot : public GuiQtElement, public Gui3dPlot
 /*=============================================================================*/
  public:
   GuiElement* getElement() { return this; }
-  // enum Style { BAR, SURFACE, CONTOUR };
   virtual void withAnnotationOption( GuiPlotDataItem* plotAxis, bool state );
   virtual bool hasAnnotationOption( bool bXAxis );
   virtual void showAnnotationLabels( bool bXAxis, bool status );
@@ -59,180 +63,180 @@ class GuiQwt3dPlot : public GuiQtElement, public Gui3dPlot
   class RedrawButtonListener : public GuiButtonListener
   {
   public:
-    RedrawButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    RedrawButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() { m_plot->update( reason_Always ); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class PrintButtonListener : public GuiButtonListener
   {
   public:
-    PrintButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    PrintButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed();
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class ResetScaleButtonListener : public GuiButtonListener
   {
   public:
-    ResetScaleButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    ResetScaleButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() { m_plot->resetScaleParameters(); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class ResetRotationButtonListener : public GuiButtonListener
   {
   public:
-    ResetRotationButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    ResetRotationButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() { m_plot->resetRotationParameters(); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class StyleBarsButtonListener : public GuiToggleListener
   {
   public:
-    StyleBarsButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    StyleBarsButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { if( state ) m_plot->setPlotStyleBar(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class StyleSurfaceButtonListener : public GuiToggleListener
   {
   public:
-    StyleSurfaceButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    StyleSurfaceButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { if( state ) m_plot->setPlotStyleSurface(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class StyleContourButtonListener : public GuiToggleListener
   {
   public:
-    StyleContourButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    StyleContourButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { if( state ) m_plot->setPlotStyleContour(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class DrawHiddenLinesButtonListener : public GuiToggleListener
   {
   public:
-    DrawHiddenLinesButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    DrawHiddenLinesButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) {  m_plot->drawHiddenLines(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class PerspectiveButtonListener : public GuiToggleListener
   {
   public:
-    PerspectiveButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    PerspectiveButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->drawPerspective(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class DeleteTextButtonListener : public GuiButtonListener
   {
   public:
-    DeleteTextButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    DeleteTextButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() {  m_plot->deleteText(); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class ShowTextButtonListener : public GuiToggleListener
   {
   public:
-    ShowTextButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    ShowTextButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->showText( state ); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class DrawMeshButtonListener : public GuiToggleListener
   {
   public:
-    DrawMeshButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    DrawMeshButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->drawMesh(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class DrawShadedButtonListener : public GuiToggleListener
   {
   public:
-    DrawShadedButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    DrawShadedButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->drawShaded(); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class DrawContoursButtonListener : public GuiToggleListener
   {
   public:
-    DrawContoursButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    DrawContoursButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->drawContours(state); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class DrawZonesButtonListener : public GuiToggleListener
   {
   public:
-    DrawZonesButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    DrawZonesButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->drawZones(state); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class ConfigButtonListener : public GuiButtonListener
   {
   public:
-    ConfigButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    ConfigButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() { m_plot->openConfigDialog(); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class CDresetButtonListener : public GuiButtonListener
   {
   public:
-    CDresetButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    CDresetButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() { m_plot->cDresetEvent(); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class CDcloseButtonListener : public GuiButtonListener
   {
   public:
-    CDcloseButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    CDcloseButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ButtonPressed() { m_plot->cDcloseEvent(); }
     virtual JobAction* getAction() { return 0; }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
   class CDDistnMethodButtonListener : public GuiToggleListener
   {
   public:
-    CDDistnMethodButtonListener( GuiQwt3dPlot *plot ) : m_plot( plot ) {}
+    CDDistnMethodButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
     virtual void ToggleStatusChanged( bool state ) { m_plot->cDsetDistnMethodEvent( state ); }
   private:
-    GuiQwt3dPlot *m_plot;
+    GuiQt3dPlot *m_plot;
   };
 
 
@@ -321,7 +325,7 @@ class GuiQwt3dPlot : public GuiQtElement, public Gui3dPlot
   void drawContours(bool flag);
   void drawZones(bool flag);
   void showText( bool state );
-#if HAVE_QWTPLOT3D
+#if HAVE_QTPLOT3D
   /** get 3d plot data */
   Plot3dData* getPlot3dData() { return m_data;  }
 #endif
@@ -355,7 +359,9 @@ private:
   GuiPlotDataItem* getPlotDataItem(std::string axis_name, int num=-1);
 
   /** create base colorMap */
+#if !HAVE_QGRAPHS
   QwtLinearColorMap* createColorMap();
+#endif
   bool setAnnotationLabels();
 
 /*=============================================================================*/
@@ -428,16 +434,16 @@ private:
 
   GuiQtPopupMenu     *m_popupMenu;
 
-#if HAVE_QWTPLOT3D
-  Plot    *m_widget;
-  Plot3dData*         m_data;
+#if HAVE_QGRAPHS
+  GuiQtGraphsPlotData *m_contourData;
+  GuiQtGraphsPlot     *m_widget;
 #else
   GuiQwtContourPlotData *m_contourData;
   GuiQwtContourPlot     *m_widget;
-#endif
   std::vector<QwtPlotCurve*> m_markerCurves;
+#endif
 
-  std::vector<GuiQwt3dPlot*> m_clonedList;  // cloned plot3d list
+  std::vector<GuiQt3dPlot*> m_clonedList;  // cloned plot3d list
 
   // value vector for colorMap
   std::vector<double>    m_valueList;

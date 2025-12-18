@@ -6,7 +6,7 @@
 #include "gui/GuiPlotDataItem.h"
 #include "gui/qt/GuiQwtPlot.h"
 #include "gui/qt/GuiQwtPlotZoomer.h"
-#include "gui/qt/GuiQwt3dPlot.h"
+#include "gui/qt/GuiQt3dPlot.h"
 
 #include <qprintdialog.h>
 #include <qwt_color_map.h>
@@ -26,7 +26,7 @@ GuiQwtBasePlot::ColorMap::ColorMap()
   addColorStop(0.95, Qt::yellow);
 }
 
-GuiQwtBasePlot::GuiQwtBasePlot(GuiQwt3dPlot* plot, QwtRasterData& data, QWidget *parent):
+GuiQwtBasePlot::GuiQwtBasePlot(GuiQt3dPlot* plot, QwtRasterData& data, QWidget *parent):
   QwtPlot(parent)
   , m_plot( plot )
   , d_spectrogram(0)
@@ -518,7 +518,7 @@ void Plot3D::contextMenuEvent ( QContextMenuEvent* event ){
   m_plot->popupMenu(event);
 }
 
-Plot3D::Plot3D(GuiQwt3dPlot* plot, DataItemType& dataitems)
+Plot3D::Plot3D(GuiQt3dPlot* plot, DataItemType& dataitems)
   : m_plot(plot) {
 
   resetScale();

@@ -23,7 +23,7 @@ class QwtPlotZoomer;
 class GuiQwtBasePlot: public QwtPlot
 {
 public:
-  GuiQwtBasePlot(GuiQwt3dPlot* plot, QwtRasterData& data, QWidget *parent = NULL);
+  GuiQwtBasePlot(GuiQt3dPlot* plot, QwtRasterData& data, QWidget *parent = NULL);
 
 public :
   virtual void updateAxes(){
@@ -52,7 +52,7 @@ private:
 private:
   QwtPlotSpectrogram *d_spectrogram;
   QwtPlotZoomer* m_zoomer;
-  GuiQwt3dPlot* m_plot;
+  GuiQt3dPlot* m_plot;
 };
 
 //---------------------------------------------------
@@ -125,7 +125,7 @@ virtual Qwt3D::Triple  operator()(double x, double y);
 class Plot3D : public Qwt3D::SurfacePlot
   {
   public:
-    Plot3D(GuiQwt3dPlot* plot, DataItemType& dataitems);
+    Plot3D(GuiQt3dPlot* plot, DataItemType& dataitems);
 
     virtual void createData();
     virtual void updateData(bool qwtplot3d=true);
@@ -140,6 +140,6 @@ class Plot3D : public Qwt3D::SurfacePlot
   void contextMenuEvent ( QContextMenuEvent* event );
 
   private:
-    GuiQwt3dPlot* m_plot;
+    GuiQt3dPlot* m_plot;
 };
 #endif

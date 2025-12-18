@@ -129,8 +129,6 @@ void GuiQtDiagramPixmapItem::refresh() {
   QPoint pt = getPositionDataPool();
   if (isValid())//!pt.isNull())
     setPos( pt );// mapToScene(pt) );
-  else
-    return;
   if (scene())
     dynamic_cast<GuiQtDiagramScene*>(scene())->updateScreenSize(this);
 }
@@ -358,93 +356,91 @@ void GuiQtDiagramConnection::paint(QPainter *painter, const QStyleOptionGraphics
 // updateConnectLines
 //----------------------------------------------------
 
-void GuiQtDiagramConnection::updateConnectLines()
-{
-    QRectF sBB(myStartItem->boundingRect());
-    QRectF eBB(myEndItem->boundingRect());
-    qreal dX =  myEndItem->pos().x() - myStartItem->pos().x();
-    qreal dY =  myEndItem->pos().y() - myStartItem->pos().y();
-    if (isValid(m_startAnchor) && isValid(m_endAnchor)) {
-      dX +=  m_endAnchor.x() - m_startAnchor.x();
-      dY +=  m_endAnchor.y() - m_startAnchor.y();
+void GuiQtDiagramConnection::updateConnectLines(){
+  QRectF sBB(myStartItem->boundingRect());
+  QRectF eBB(myEndItem->boundingRect());
+  qreal dX =  myEndItem->pos().x() - myStartItem->pos().x();
+  qreal dY =  myEndItem->pos().y() - myStartItem->pos().y();
+  if (isValid(m_startAnchor) && isValid(m_endAnchor)) {
+    dX +=  m_endAnchor.x() - m_startAnchor.x();
+    dY +=  m_endAnchor.y() - m_startAnchor.y();
+  }
+  double xFac = 0.5;
+  bool vertConnection = xFac*abs(dX) < abs(dY);
+
+  if (vertConnection) {  // VERT
+    qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : 0.5 * sBB.width();
+    qreal edx = isValid(m_endAnchor) ? m_endAnchor.x() : 0.5 * eBB.width();
+
+    qreal sdy = isValid(m_startAnchor) ? m_startAnchor.y() : dY > 0  ? sBB.bottom() : sBB.top();
+    qreal edy = isValid(m_endAnchor) ? m_endAnchor.y() : dY < 0  ? eBB.bottom() : eBB.top();
+    setLine(QLineF(myEndItem->pos().x() + edx,
+                   myEndItem->pos().y() + edy,
+                   myStartItem->pos().x() + sdx,
+                   myStartItem->pos().y() + sdy));
+  } else {  // HORZ
+    qreal sdy = isValid(m_startAnchor) ? m_startAnchor.y() : 0.5 * sBB.height();
+    qreal edy = isValid(m_endAnchor) ? m_endAnchor.y() : 0.5 * eBB.height();
+
+    qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : dX > 0  ? sBB.right() : sBB.left();
+    qreal edx = isValid(m_endAnchor) ? m_endAnchor.x() : dX < 0  ? eBB.right() : eBB.left();
+    setLine(QLineF(myEndItem->pos().x() + edx,
+                   myEndItem->pos().y() + edy,
+                   myStartItem->pos().x() + sdx,
+                   myStartItem->pos().y() + sdy));
+  }
+
+  m_connectLine.clear();
+
+  qreal diffX = line().p2().x() - line().p1().x();
+  qreal diffY = line().p2().y() - line().p1().y();
+  QPointF pm1(line().p1()), pm2(line().p2());
+  QPointF pm0(line().p1()), pm3(line().p2());
+  bool step1(false);
+  if (vertConnection) {  // VERT
+    if (connectType == HalfStep) {
+      pm1.setY(line().p2().y());
+    } else if (connectType == OneStep) {
+      pm1.setY(line().p1().y()+0.5*diffY);
+      pm2.setY(pm1.y());
+    } else if (connectType == TwoStep) {
+      pm1.setY(line().p1().y()+1./3*diffY);
+      pm1.setX(line().p1().x()+0.5*diffX);
+      pm2.setY(line().p1().y()+2./3*diffY);
+      pm2.setX(line().p1().x()+0.5*diffX);
+      pm0.setY(line().p1().y()+1./3*diffY);
+      pm3.setY(line().p1().y()+2./3*diffY);
     }
-    double xFac = 0.5;
+  } else { // HORZ
+    if (connectType == HalfStep) {
+      pm1.setX(line().p2().x());
+    } else if (connectType == OneStep) {
+      pm1.setX(line().p1().x()+0.5*diffX);
+      pm2.setX(pm1.x());
+    } else if (connectType == TwoStep) {
+      pm1.setX(line().p1().x()+1./3*diffX);
+      pm1.setY(line().p1().y()+0.5*diffY);
+      pm2.setX(line().p1().x()+2./3*diffX);
+      pm2.setY(line().p1().y()+0.5*diffY);
 
-    if (xFac*abs(dX) < abs(dY)) {  // VERT
-      qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : 0.5 * sBB.width();
-      qreal edx = isValid(m_endAnchor) ? m_endAnchor.x() : 0.5 * eBB.width();
-
-      qreal sdy = isValid(m_startAnchor) ? m_startAnchor.y() : dY > 0  ? sBB.bottom() : sBB.top();
-      qreal edy = isValid(m_endAnchor) ? m_endAnchor.y() : dY < 0  ? eBB.bottom() : eBB.top();
-      setLine(QLineF(myEndItem->pos().x() + edx,
-                     myEndItem->pos().y() + edy,
-                     myStartItem->pos().x() + sdx,
-                     myStartItem->pos().y() + sdy));
-   } else {  // HORZ
-      qreal sdy = isValid(m_startAnchor) ? m_startAnchor.y() : 0.5 * sBB.height();
-      qreal edy = isValid(m_endAnchor) ? m_endAnchor.y() : 0.5 * eBB.height();
-
-      qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : dX > 0  ? sBB.right() : sBB.left();
-      qreal edx = isValid(m_endAnchor) ? m_endAnchor.x() : dX < 0  ? eBB.right() : eBB.left();
-      setLine(QLineF(myEndItem->pos().x() + edx,
-                     myEndItem->pos().y() + edy,
-                     myStartItem->pos().x() + sdx,
-                     myStartItem->pos().y() + sdy));
+      pm0.setX(line().p1().x()+1./3*diffX);
+      pm3.setX(line().p1().x()+2./3*diffX);
     }
-
-    m_connectLine.clear();
-    dX = line().p2().x() - line().p1().x();
-    dY = line().p2().y() - line().p1().y();
-
-    qreal diffX = line().p2().x() - line().p1().x();
-    qreal diffY = line().p2().y() - line().p1().y();
-    QPointF pm1(line().p1()), pm2(line().p2());
-    QPointF pm0(line().p1()), pm3(line().p2());
-    bool step1(false);
-    if (xFac*abs(dX) < abs(dY)) {  // VERT
-      if (connectType == HalfStep) {
-        pm1.setY(line().p2().y());
-      } else if (connectType == OneStep) {
-        pm1.setY(line().p1().y()+0.5*diffY);
-        pm2.setY(pm1.y());
-      } else if (connectType == TwoStep) {
-        pm1.setY(line().p1().y()+1./3*diffY);
-        pm1.setX(line().p1().x()+0.5*diffX);
-        pm2.setY(line().p1().y()+2./3*diffY);
-        pm2.setX(line().p1().x()+0.5*diffX);
-        pm0.setY(line().p1().y()+1./3*diffY);
-        pm3.setY(line().p1().y()+2./3*diffY);
-      }
-    } else { // HORZ
-      if (connectType == HalfStep) {
-        pm1.setX(line().p2().x());
-      } else if (connectType == OneStep) {
-        pm1.setX(line().p1().x()+0.5*diffX);
-        pm2.setX(pm1.x());
-      } else if (connectType == TwoStep) {
-        pm1.setX(line().p1().x()+1./3*diffX);
-        pm1.setY(line().p1().y()+0.5*diffY);
-        pm2.setX(line().p1().x()+2./3*diffX);
-        pm2.setY(line().p1().y()+0.5*diffY);
-
-        pm0.setX(line().p1().x()+1./3*diffX);
-        pm3.setX(line().p1().x()+2./3*diffX);
-      }
-    }
-    switch(connectType) {
-    case Line:
-      m_connectLine << line().p1() << line().p2();
-      break;
-    case HalfStep:
-      m_connectLine << line().p1() << pm1 << line().p2();
-      break;
-    case TwoStep:
-      m_connectLine << line().p1() << pm0 << pm1 << pm2 << pm3 << line().p2();
-      break;
-    case OneStep:
-    default:
-      m_connectLine << line().p1() << pm1 << pm2 << line().p2();
-    }
+  }
+  switch(connectType) {
+  case Line:
+    m_connectLine << line().p1() << line().p2();
+    break;
+  case HalfStep:
+    m_connectLine << line().p1() << pm1 << line().p2();
+    break;
+  case TwoStep:
+    m_connectLine << line().p1() << pm0 << pm1 << pm2 << pm3 << line().p2();
+    break;
+  case OneStep:
+  default:
+    m_connectLine << line().p1() << pm1 << pm2 << line().p2();
+  }
 }
 
 //----------------------------------------------------

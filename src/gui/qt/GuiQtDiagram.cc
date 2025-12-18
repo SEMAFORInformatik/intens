@@ -617,6 +617,10 @@ QPointF GuiQtDiagram::toGridPoint(const QPointF& vPt) const {
 /* --------------------------------------------------------------------------- */
 
 void GuiQtDiagram::slot_itemMoved(std::vector<GuiQtDiagramPixmapItem*> items, const QPointF & pt)  {
+  if (pt.x() == 0 && pt.y() == 0) {
+    m_navigator->getElement()->update(GuiElement::reason_Always);
+    return;
+  }
   if (!items.size()) return;
   // event position crash
   if (abs(pt.x()) > 500 || abs(pt.y()) > 500) {
@@ -1003,6 +1007,8 @@ void GuiQtDiagram::refreshConnections(){
 void GuiQtDiagram::refreshPixmapItem(GuiQtNavElement* navElement, GuiQtDiagramPixmapItem* item) {
   if (!item) return;
   item->refresh();
+  if (scene())
+    dynamic_cast<GuiQtDiagramScene*>(scene())->updateScreenSize(item);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1022,6 +1028,8 @@ GuiQtDiagramPixmapItem* GuiQtDiagram::addPixmapItem(GuiQtNavElement* navElement)
 
   // create new pixmap item
   GuiQtDiagramPixmapItem* myDiagramItem = new GuiQtDiagramPixmapItem(pixmap, navElement,GRID_LEN_X, GRID_LEN_Y);
+  if (scene())
+    dynamic_cast<GuiQtDiagramScene*>(scene())->updateScreenSize(myDiagramItem);
   if (!m_navigator->getElement()->isEnabled()){
     myDiagramItem->setFlag(QGraphicsItem::ItemIsSelectable, false);
     myDiagramItem->setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -1079,13 +1087,7 @@ void GuiQtDiagram::ScaleListener::ButtonPressed(){
   m_diagram->update(); // to be sure
 
   // refresh scene rect
-  ir.setTopLeft(QPointF(0,0));
-  qreal new_scale =  sqrt(m_diagram->transform().determinant()) ;
-  if (new_scale < 1.) {
-    m_diagram->setSceneRect(0,0, delta+ir.width()/new_scale, delta+ir.height()/new_scale);
-  } else {
-    m_diagram->setSceneRect(0,0, ir.width()+delta, ir.height()+delta);
-  }
+  // m_diagram->setSceneRect(ir.x(), ir.y(), ir.width(), ir.height());
 
   return;
 

@@ -84,6 +84,16 @@ void GuiQtDiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     if (event->widget()->cursor().shape() != m_oldCursor.shape()){
       GuiManager::Instance().update( GuiElement::reason_Process );
       event->widget()->setCursor(  m_oldCursor );
+
+      // move to old position
+      std::vector<GuiQtDiagramPixmapItem*> listVec;
+      QList<QGraphicsItem*> list = selectedItems();
+      for (int i=0; i< list.size(); ++i) {
+        if (list.at(i)->type() == GuiQtDiagramPixmapItem::Type)
+          listVec.push_back(qgraphicsitem_cast<GuiQtDiagramPixmapItem *>(list.at(i)) );
+      }
+      QPointF pt(0,0);
+      emit itemMoved(listVec, pt);
       return;
     }
     // throw signal
@@ -116,18 +126,18 @@ void GuiQtDiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     delete m_line;
 
     if (startItems.count() > 0 && endItems.count() > 0 &&
- 	startItems.first()->type() == GuiQtDiagramPixmapItem::Type &&
- 	endItems.first()->type() == GuiQtDiagramPixmapItem::Type &&
-	startItems.first() != endItems.first()) {
+        startItems.first()->type() == GuiQtDiagramPixmapItem::Type &&
+        endItems.first()->type() == GuiQtDiagramPixmapItem::Type &&
+        startItems.first() != endItems.first()) {
       GuiQtDiagramPixmapItem *startItem =
-	qgraphicsitem_cast<GuiQtDiagramPixmapItem *>(startItems.first());
+        qgraphicsitem_cast<GuiQtDiagramPixmapItem *>(startItems.first());
       GuiQtDiagramPixmapItem *endItem =
-	qgraphicsitem_cast<GuiQtDiagramPixmapItem *>(endItems.first());
+        qgraphicsitem_cast<GuiQtDiagramPixmapItem *>(endItems.first());
 
       // call function
       if (views().size())
-	dynamic_cast<GuiQtDiagram*>(views()[0])->
-	  newConnection(startItem, endItem);
+        dynamic_cast<GuiQtDiagram*>(views()[0])->
+          newConnection(startItem, endItem);
     }
     m_line = 0;
   }
@@ -181,7 +191,6 @@ bool GuiQtDiagramScene::getAllConnections(std::vector<GuiQtDiagramConnection*>& 
 // mouseMoveEvent
 //----------------------------------------------------
 void GuiQtDiagramScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
-
   // no button pressed => return
   if (event->buttons() == Qt::NoButton) {
     if (m_line) {
@@ -206,14 +215,16 @@ void GuiQtDiagramScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
       if (list.at(i)->type() ==  GuiQtDiagramConnection::Type) continue;
       QList<QGraphicsItem *> clist = list.at(i)->collidingItems();
       for (int x = 0; x < clist.size(); ++x) {
-	if (clist.at(x)->type() !=  GuiQtDiagramConnection::Type) {
-	  collides = true;
-	  break;
-	}
+        if (list.contains(clist.at(x)))
+          continue;
+        if (clist.at(x)->type() !=  GuiQtDiagramConnection::Type) {
+          collides = true;
+          break;
+        }
       }
       if (!collides &&
-	  list.at(i)->scenePos().x() < 0 ||
-	  list.at(i)->scenePos().y() < 0) {
+          list.at(i)->scenePos().x() < sceneRect().x() ||
+          list.at(i)->scenePos().y() < sceneRect().y()) {
         collides=true;
       }
       if (collides) break;
@@ -238,12 +249,22 @@ void GuiQtDiagramScene::updateScreenSize(QGraphicsItem* item) {
     const int add = 4 + 16; // border + scrollbar
     QPoint ptBL (add + pt.toPoint().x() + item->boundingRect().width(),
 		 add + pt.toPoint().y() + item->boundingRect().height());
-    //    std::cout << "  screnRect["<<sceneRect().width()<<", " <<sceneRect().height()<<"]  => ["<<ptBL.x()<<", " <<ptBL.y()<<"]\n";
     if (ptBL.x() > sceneRect().width()) {
       setSceneRect( QRect(sceneRect().x(),sceneRect().y(),sceneRect().x()+ptBL.x(),sceneRect().height()) );
     }
     if (ptBL.y() > sceneRect().height()) {
       setSceneRect(QRect(sceneRect().x(),sceneRect().y(),sceneRect().width(),sceneRect().y()+ptBL.y()));
     }
-
+    // update x, y
+    QRectF r = sceneRect();
+    if (pt.y() < r.y()) {
+      double diff = r.y() - pt.y();
+      r.setY(r.y() - diff);
+      setSceneRect(r);
+    }
+    if (pt.x() < r.x()) {
+      double diff = r.x() - pt.x();
+      r.setX(r.x() - diff);
+      setSceneRect(r);
+    }
 }

@@ -726,6 +726,14 @@ void GuiQtList::rowActivate(const QModelIndex& index) {
 /* --------------------------------------------------------------------------- */
 void GuiQtList::rowSelect(const QModelIndex& index) {
   m_tablewidget->scrollTo(index, QAbstractItemView::EnsureVisible);
+
+  GuiElement* baseElem = findElement( getName() );
+  if (baseElem == this->getElement())
+    for(auto it: m_clonedList)
+      it->selectRow(index.row(), false);
+  else
+    baseElem->getList()->selectRow(index.row(), true);
+
   if (getFunction() == 0) return;
   QVariant var = index.sibling(index.row(),0).data();
   if (var.isValid()) {

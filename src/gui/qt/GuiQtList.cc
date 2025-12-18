@@ -871,25 +871,14 @@ bool GuiQtList::selectRows( std::vector<int> rows, bool recursive ) {
 /* getSelectedRows --                                                          */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQtList::getSelectedRows(std::vector<int>& idxs, bool withFocus) {
+bool GuiQtList::getSelectedRows(std::vector<int>& idxs) {
   idxs.clear();
 
   if ( !m_tablewidget ) {
-    // find i cloned lists
-    for (std::vector<GuiQtList*>::iterator it =  m_clonedList.begin();
-	 it != m_clonedList.end(); ++it)
-      if ( (*it)->getSelectedRows( idxs, true )  && idxs.size() > 0)
-	return true;
-
-    // log error msg
-    std::stringstream logmsg;
-    logmsg << DateAndTime() << ": ERROR: not created list '" << getName()
-	   << "' was called by a function.  " << std::endl;
-    // GuiFactory::Instance()->getLogWindow()->writeText( logmsg.str() );
-    return false;
-  }
-  if (withFocus && ! m_tablewidget->hasFocus()) {
-    return false;
+    // m_selectedIdxs is correct as long as m_tablewidget is not yet created
+    std::copy(m_selectedIdxs.begin(), m_selectedIdxs.end(),
+              std::back_inserter(idxs));
+    return true;
   }
   // get all selected rows
   QModelIndexList idxList = m_tablewidget->selectedIndexes();

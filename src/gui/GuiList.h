@@ -63,9 +63,8 @@ class GuiList
   virtual bool selectRows(std::vector<int> rows, bool recursive=true) = 0;
   /** Abfrage nach den Indizes der selektierten Zeilen
      @param idxs Resultliste mit den Indizes
-     @param withFocus true => suche nur in Widgets, welche des Focus haben
    */
-  virtual bool getSelectedRows(std::vector<int>& idxs, bool withFocus=false) = 0;
+  virtual bool getSelectedRows(std::vector<int>& idxs) = 0;
   virtual bool getSortCriteria(std::string& sortColumn) = 0;
   virtual void resetSortCriteria() = 0;
   virtual void clearSelection() = 0;

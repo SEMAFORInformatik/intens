@@ -951,7 +951,12 @@ void GuiQtList::resetSortCriteria() {
 void GuiQtList::clearSelection() {
   BUG(BugGui,"GuiQtList::clearSelection");
   if (m_tablewidget)
-	m_tablewidget->clearSelection();
+    m_tablewidget->clearSelection();
+  else
+    m_selectedIdxs.clear();
+
+  for(auto it: m_clonedList)
+    it->clearSelection();
 }
 
 /* --------------------------------------------------------------------------- */

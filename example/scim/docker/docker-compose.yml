@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:2.10
+    image: traefik:3.6
     ports:
       - 8080:80
     volumes:

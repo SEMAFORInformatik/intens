@@ -127,6 +127,7 @@ MessageQueuePublisher* MessageQueue::createPublisher( const std::string &name,
 void MessageQueue::parseIncludeFile() {
   std::string token("__PORT_REPLY__");
   std::string tokenPublish("__PORT_PUBLISH__");
+  std::string tokenReplyCtrl("__PORT_REPLY_CTRL__");
   std::string tokenIntensNS(App::TOKEN_INTENS_NAMESPACE);
   std::string intensNS(App::INTENS_NAMESPACE);
 
@@ -154,6 +155,13 @@ void MessageQueue::parseIncludeFile() {
         std::ostringstream osp;
         osp << (replyPort + 1);  // !! Publish Port = Reply Port + 1 !!
         line.replace(n, tokenPublish.size(), osp.str());
+      }
+      // find reply ctrl port token
+      n = line.find(tokenReplyCtrl);
+      if (n != std::string::npos) {
+        std::ostringstream osp;
+        osp << (replyPort + 2);  // !! Reply Ctrl Port = Reply Port + 2 !!
+        line.replace(n, tokenReplyCtrl.size(), osp.str());
       }
       // intens namespace
       while ((n = line.find(tokenIntensNS)) != std::string::npos) {

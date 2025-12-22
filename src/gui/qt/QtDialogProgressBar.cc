@@ -191,7 +191,7 @@ void QtDialogProgressBar::execute_abort(bool callAbortedFunc) {
   std::string s = getAbortCommand();
   BUG_INFO("QtDialogProgressBar::execute_abort, cmd: " << s);
 
-  // does abort commant contain #
+  // don't abort the job when command starts with #
   bool abortJob = s.find("#") != 0;
   if (!abortJob)
     s = s.substr(1);

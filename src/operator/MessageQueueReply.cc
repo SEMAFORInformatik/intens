@@ -18,6 +18,7 @@
 #include "operator/MessageQueueReply.h"
 #include "operator/MessageQueueThreads.h"
 #include "operator/SocketException.h"
+#include "job/JobManager.h"
 
 INIT_LOGGER();
 
@@ -181,6 +182,9 @@ void MessageQueueReply::slot_receivedReplyData(const std::string& header,
     }
 
     // start function
+    JobFunction* afterUpdateFormsFunction = JobManager::Instance().getFunction("AFTER_UPDATE_FORMS");
+    if (afterUpdateFormsFunction)
+      afterUpdateFormsFunction->setMessageQueueReplyThread(m_replyThread);
     if( _function ){
       Trigger *trigger = new Trigger( this, _function );
       trigger->setMessageQueueReplyThread(m_replyThread);

@@ -104,8 +104,11 @@ public:
     FINISHED = 7
   };
   void setStatus(Status state);
+  void setExpectedQueryResultMembers(const std::vector<std::string>& member);
   Status getStatus();
-  const Json::Value& doQuery(const Json::Value& jsonObj, const std::string& sendData=std::string(),
+  const Json::Value& doQuery(const Json::Value& jsonObj,
+                             const std::vector<std::string>& expected_member=std::vector<std::string>(),
+                             const std::string& sendData=std::string(),
                              Stream* file_stream=0);
   const std::vector<std::string>& getQueryData() { return m_dataList; }
 
@@ -120,6 +123,7 @@ private:
   std::vector<Stream*> m_inStreams;
   std::vector<Stream*> m_responseStreams;
   Status      m_status;
+  std::vector<std::string> m_expectedQueryResultMembers;
   MessageQueueReply& m_mqReply;
   Json::Value m_queryResponseJsonObj;
   std::vector<std::string> m_dataList;

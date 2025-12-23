@@ -370,6 +370,13 @@ void MessageQueueReplyThread::setStatus(MessageQueueReplyThread::Status state) {
   m_mutex.unlock();
 }
 
+void MessageQueueReplyThread::setExpectedQueryResultMembers(const std::vector<std::string>& member){
+  m_mutex.lock();
+  m_expectedQueryResultMembers.clear();
+  std::copy(member.begin(), member.end(), back_inserter(m_expectedQueryResultMembers));
+  m_mutex.unlock();
+}
+
 void MessageQueueReplyThread::run() {
   BUG_INFO("MessageQueueReplyThread::run Port: " << m_port);
   std::ostringstream os;
@@ -398,6 +405,7 @@ void MessageQueueReplyThread::run() {
         emit receivedData(header, resultDataList);
       }
 
+      // wait if function has finished, or a function interrupt (Query)
       while (getStatus() != RECEIVE_DONE) {
 
         // send a query
@@ -427,7 +435,7 @@ void MessageQueueReplyThread::run() {
           bool bHeader(false);
           m_queryResponseJsonObj = Json::Value(Json::objectValue);  // reset
           if (readMultiPartMessage(m_dataList, syncservice)) {
-            BUG_INFO("Got Answer, size: "<< m_dataList.size());
+            BUG_INFO("Got Answer, size: "<< m_dataList.size()<< ", expectedEmpty: " << m_expectedQueryResultMembers.empty());
             setStatus(WORKING);
             if (m_dataList.size() > 1) {
               header = m_dataList[0];
@@ -438,7 +446,22 @@ void MessageQueueReplyThread::run() {
               if (m_dataList.size() && bHeader) {
                 BUG_INFO("Got Answer, header: " << header << ", data: " << m_dataList[0].substr(0, 250));
                 m_queryResponseJsonObj = ch_semafor_intens::JsonUtils::parseJson(m_dataList[0]);
-                m_dataList.erase(m_dataList.begin());
+                // expected check
+                if (!m_expectedQueryResultMembers.empty()){
+                  bool bExpected(false);
+                  for (auto expected: m_expectedQueryResultMembers){
+                    if (m_queryResponseJsonObj.isMember(expected)){
+                      bExpected = true;
+                      break;
+                    }
+                  }
+                  if (!bExpected){
+                    BUG_INFO("Unexpected query answer");
+                    setStatus(WORKING);
+                    emit receivedData(header, m_dataList);
+                  }
+                  m_dataList.erase(m_dataList.begin());
+                }
               }
             }
             catch (const std::exception& e) {
@@ -457,7 +480,7 @@ void MessageQueueReplyThread::run() {
           it != m_responseStreams.end(); ++it, ++idx) {
         std::ostringstream os;
         (*it)->write( os );
-        BUG_INFO("Send stream, " << idx <<  ".dataLen: " << os.str().size());
+        BUG_INFO("Send stream, " << idx <<  ".dataLen: " << os.str().size() << ", data: " << os.str().substr(0, 100));
         if (idx+1 < m_responseStreams.size())
           s_sendmore (syncservice, os.str());
         else
@@ -473,7 +496,9 @@ void MessageQueueReplyThread::run() {
   setStatus(FINISHED);
 }
 
-const Json::Value& MessageQueueReplyThread::doQuery(const Json::Value& jsonObj, const std::string& sendData,
+const Json::Value& MessageQueueReplyThread::doQuery(const Json::Value& jsonObj,
+                                                    const std::vector<std::string>& expected_members,
+                                                    const std::string& sendData,
                                                     Stream* file_stream) {
   m_fileStream = file_stream;  // use file stream if set
   while (getStatus() == WORKING_QUERY || getStatus() == SEND_QUERY) {
@@ -498,6 +523,7 @@ const Json::Value& MessageQueueReplyThread::doQuery(const Json::Value& jsonObj, 
     refMsg->SetValue(ch_semafor_intens::JsonUtils::value2string(jsonObj));
   }
   setStatus(SEND_QUERY);
+  setExpectedQueryResultMembers(expected_members);
 
   while (getStatus() != WORKING_QUERY_DONE) {
     usleep(100);

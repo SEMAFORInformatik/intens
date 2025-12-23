@@ -736,6 +736,10 @@ void FileStream::openFile( FileStreamAction *action, FileSelectListener *listene
     jsonObj["directory"] = m_dir;
     jsonObj["filter"] = m_filter;
     jsonObj["title"] = title;
+    std::vector<std::string> expected;
+    expected.push_back("data");
+    expected.push_back("type");
+    expected.push_back("filename");
     Json::Value retObj = mq_reply->doQuery(jsonObj);
     BUG_DEBUG("FileOpenDialog mq reply return["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");
     if (!retObj.isNull() &&  retObj.isMember("data")) {  // json data

@@ -213,9 +213,11 @@ JobElement::OpStatus JobStackData::checkFormat( JobEngine *eng, JobStackDataPtr 
          jsonObj["message"] =  _("The results are not consistent anymore.\nDo you want to delete them?");
          jsonObj["title"] = _("Consistency Query");
          BUG_DEBUG("ConsistencyDialog do query["<<ch_semafor_intens::JsonUtils::value2string(jsonObj)<<"]");
-         Json::Value retObj = mq_reply->doQuery(jsonObj);
+         std::vector<std::string> expected;
+         expected.push_back("return");
+         Json::Value retObj = mq_reply->doQuery(jsonObj, expected);
          BUG_DEBUG("ConsistencyDialog mq reply return["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");
-         s = retObj["return"].asString();
+         s = retObj.isMember("return") ? retObj["return"].asString() : "no";
          if (lower(s) == "yes") {
            param->DataItem()->clearTargetStreams();
          } else {

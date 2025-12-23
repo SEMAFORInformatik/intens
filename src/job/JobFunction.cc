@@ -469,23 +469,25 @@ void JobFunction::epilog( OpStatus op_status ){
     assert(false);
   }
 
-  if (m_webReplyResultDataitem) {
-    // webapi result erwuenscht
-    // mqReply_datapool_func, mqReply_function_func, mqReply_control_func
-    BUG_DEBUG("registerWebReplyResult, ReplyThread: " << getMessageQueueReplyThread() << ", Name: " << Name());
-    JobAction::registerWebReplyResult(new WebReplyResultData(this,m_webReplyResultDataitem,
-                                                             webApiUpdate,
-                                                             m_saveWepApiTransaction,
-                                                             rslt,
-                                                             getMessageQueueReplyThread(),
-                                                             m_previousCycleName,
-                                                             m_previousCycleNum,
-                                                             m_webReplyResultDataitemProto));
-    m_previousCycleNum = -1; // reset
-  } else if (getMessageQueueReplyThread()) {
-    // mqReply_uimanager_func
-    BUG_DEBUG("No registerWebReplyResult, ReplyThread: " << getMessageQueueReplyThread());
-    getMessageQueueReplyThread()->setStatus(MessageQueueReplyThread::RECEIVE_DONE);
+  if (Name() != "AFTER_UPDATE_FORMS"){
+    if (m_webReplyResultDataitem) {
+      // webapi result erwuenscht
+      // mqReply_datapool_func, mqReply_function_func, mqReply_control_func
+      BUG_DEBUG("registerWebReplyResult, ReplyThread: " << getMessageQueueReplyThread() << ", Name: " << Name());
+      JobAction::registerWebReplyResult(new WebReplyResultData(this,m_webReplyResultDataitem,
+                                                               webApiUpdate,
+                                                               m_saveWepApiTransaction,
+                                                               rslt,
+                                                               getMessageQueueReplyThread(),
+                                                               m_previousCycleName,
+                                                               m_previousCycleNum,
+                                                               m_webReplyResultDataitemProto));
+      m_previousCycleNum = -1; // reset
+    } else if (getMessageQueueReplyThread()) {
+      // mqReply_uimanager_func
+      BUG_DEBUG("No registerWebReplyResult, ReplyThread: " << getMessageQueueReplyThread());
+      getMessageQueueReplyThread()->setStatus(MessageQueueReplyThread::RECEIVE_DONE);
+    }
   }
 
   // if( JobStackItem::getItemCount() != 0 ){

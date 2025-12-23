@@ -208,7 +208,9 @@ GuiElement::ButtonType HeadlessGuiFactory::showDialogConfirmation(GuiElement *pa
          }
          jsonObj["button"] = jsonAry;
        }
-       Json::Value retObj = mq_reply->doQuery(jsonObj);
+       std::vector<std::string> expected;
+       expected.push_back("button_pressed");
+       Json::Value retObj = mq_reply->doQuery(jsonObj, expected);
        BUG_INFO("showDialogConfirmation reply, got answer["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");
        if ( retObj.isMember("button_pressed") ) {
          std::string btn_text(lower(retObj["button_pressed"].asString()));
@@ -334,7 +336,10 @@ std::string HeadlessGuiFactory::showDialogTextInput(GuiElement *
       std::string msg(message);
       jsonObj["message"] = msg;
       jsonObj["label"] = label;
-      Json::Value retObj = mq_reply->doQuery(jsonObj);
+      std::vector<std::string> expected;
+      expected.push_back("button_pressed");
+      expected.push_back("value");
+      Json::Value retObj = mq_reply->doQuery(jsonObj, expected);
       BUG_INFO("showDialogTextInput reply, got answer["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");
       if ( retObj.isMember("button_pressed") ) {
         std::string btn_text(lower(retObj["button_pressed"].asString()));
@@ -394,7 +399,10 @@ std::string HeadlessGuiFactory::showDialogTextInputExt(GuiElement *e
          jsonObj["button"] = jsonAry;
        }
        BUG_INFO("showDialogTextInputExt try, listener: "<< listener);
-       Json::Value retObj = mq_reply->doQuery(jsonObj);
+       std::vector<std::string> expected;
+       expected.push_back("button_pressed");
+       expected.push_back("data");
+       Json::Value retObj = mq_reply->doQuery(jsonObj, expected);
        BUG_INFO("showDialogTextInputExt reply, got answer["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");
        if ( retObj.isMember("button_pressed") ) {
          std::string btn_text(lower(retObj["button_pressed"].asString()));
@@ -525,7 +533,10 @@ bool HeadlessGuiFactory::showDialogFileSelection( GuiElement *element
          jsonObj["command"] = "file_open";
          jsonObj["message"] = "Please upload a file!";
        }
-     Json::Value retObj = mq_reply->doQuery(jsonObj, sendData, streamArg);
+       std::vector<std::string> expected;
+       expected.push_back("data");
+       expected.push_back("type");
+       Json::Value retObj = mq_reply->doQuery(jsonObj, expected, sendData, streamArg);
        BUG_INFO("FileSaveDialog mq reply, Valid RetObj: " << !retObj.isNull());
        BUG_INFO("FileSaveDialog mq reply, got answer["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");
        // answer
@@ -676,7 +687,9 @@ bool HeadlessGuiFactory::doPaste( Stream *in_stream){
     MessageQueueReplyThread *mq_reply = jobContrl->getMessageQueueReplyThread();
     Json::Value jsonObj = Json::Value(Json::objectValue);
     jsonObj["command"] = "getClipboard";
-    Json::Value retObj = mq_reply->doQuery(jsonObj);
+    std::vector<std::string> expected;
+    expected.push_back("clipboard");
+    Json::Value retObj = mq_reply->doQuery(jsonObj, expected);
     if(retObj.isMember("clipboard")) {
       clipboard = retObj["clipboard"].asString();
     }

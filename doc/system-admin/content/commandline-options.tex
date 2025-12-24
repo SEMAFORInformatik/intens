@@ -14,52 +14,29 @@ The list of INTENS commandline options can be printed using the command: \\
 
 \begin{description}
 \item[\texttt{--}geometry <argument>] defines the geometry of the main window (on linux only). \\
-  <argument> is <width>x<height>[+<xOffset>+<yOffset>]
+  <argument> is <width>x<height>[+<xOffset>+<yOffset>] \\
+  obsolete / not implemented
 %
-%\item[\texttt{--}name <argument>]
-%  TODO
+\item[\texttt{--}name <argument>]
+  obsolete / not implemented
 %
-%\item[\texttt{--}display <argument>]
-%  TODO
+\item[\texttt{--}display <argument>]
+  obsolete / not implemented
 %
-%\item[\texttt{--}mathnode <argument>]
-%  TODO
+\item[\texttt{--}matlabnode <argument>]
+  TODO
 %
-%\item[\texttt{--}mathport <argument>]
-%  TODO
+\item[\texttt{--}fontname <argument>]
+  TODO
 %
-%\item[\texttt{--}matlabnode <argument>]
-%  TODO
+\item[\texttt{--}background <argument>]
+  obsolete / not implemented
 %
-%\item[\texttt{--}fontname <argument>]
-%  TODO
+\item[\texttt{--}xfontlist <argument>]
+  TODO
 %
-%\item[\texttt{--}background <argument>]
-%  TODO
-%
-%\item[\texttt{--}xfontlist <argument>]
-%  TODO
-%
-\item[\texttt{--}logconfig <argument>] is obsolete.
-  It used to be the configuration filename for log4cxx.
-%
-\item[\texttt{--}localeDomain <argument>]
-  INTENS uses gettext for translation. There are two locale domains:
-  \begin{description}
-  \item[INTENS] itself is translated using the locale domain name ``intens''
-  and the locale directory ``<INTENS\_HOME>/share/locale''.
-  The mo file for the german translation is
-  ``<INTENS\_HOME>/share/locale/de/LC\_MESSAGES/intens.mo''.
-  \item[The Application] is translated using a second locale domain.
-  The default locale domain name for the application is the name
-  of the description file, without the extension. You can, however,
-  provide the locale domain name using this commandline option.
-  This is needed i.E. when you want multiple applications to use the
-  same translation files. \\
-  The locale directory is ``<APPHOME>/share/locale''.
-  The mo file for the german translation is
-  ``<APPHOME>/share/locale/de/LC\_MESSAGES/<localeDomainName>.mo''.
-  \end{description}
+\item[\texttt{--}listFonts]
+  obsolete / not implemented
 %
 \item[\texttt{--}init <argument>] defines the filename of a datapool init file.
   That file is read at startup to initialize the datapool. \\
@@ -106,8 +83,8 @@ The list of INTENS commandline options can be printed using the command: \\
   \end{description}
   You can undo at most five changes.
 %
-%\item[\texttt{--}detailGrid]
-%  TODO
+\item[\texttt{--}detailGrid]
+  TODO
 %
 \item[\texttt{--}helpmsg] enables help messages, shown in the Statusbar.
   The help message mode can be changed later using the menu Options > Help messages. \\
@@ -129,14 +106,29 @@ The list of INTENS commandline options can be printed using the command: \\
   <argument> is the filename. \\
   No description file is needed.
 %
-%\item[\texttt{--}listFonts]
-%  TODO
-%
 \item[\texttt{--}qtGuiStyle <argument>] sets the Qt Style. \\
   Use \texttt{--}listQtGuiStyles to get a list of available styles.
 %
 \item[\texttt{--}listQtGuiStyles] prints the available Qt Styles. \\
   No description file is needed.
+%
+\item[\texttt{--}localeDomain <argument>]
+  INTENS uses gettext for translation. There are two locale domains:
+  \begin{description}
+  \item[INTENS] itself is translated using the locale domain name ``intens''
+  and the locale directory ``<INTENS\_HOME>/share/locale''.
+  The mo file for the german translation is
+  ``<INTENS\_HOME>/share/locale/de/LC\_MESSAGES/intens.mo''.
+  \item[The Application] is translated using a second locale domain.
+  The default locale domain name for the application is the name
+  of the description file, without the extension. You can, however,
+  provide the locale domain name using this commandline option.
+  This is needed i.E. when you want multiple applications to use the
+  same translation files. \\
+  The locale directory is ``<APPHOME>/share/locale''.
+  The mo file for the german translation is
+  ``<APPHOME>/share/locale/de/LC\_MESSAGES/<localeDomainName>.mo''.
+  \end{description}
 %
 \item[\texttt{--}maxoptions <argument>] sets the maximal number of options shown in a \COMBOBOX.
   The default value is 25.
@@ -189,29 +181,23 @@ The list of INTENS commandline options can be printed using the command: \\
   \end{itemize}
   \end{description}
 %
-\item[\texttt{--}disableSVGSupport]
+\item[\texttt{--}pspreviewer <argument>]
   TODO
 %
-\item[\texttt{--}pspreviewer <argument>]
+\item[\texttt{--}disableSVGSupport]
   TODO
 %
 \item[\texttt{--}printerConfig <argument>]
   TODO
 %
-%\item[\texttt{--}create]
-%  TODO
+\item[\texttt{--}jsb <argument>]
+  TODO
 %
-%\item[\texttt{--}xml <argument>]
-%  TODO
+\item[\texttt{--}xml <argument>]
+  TODO
 %
-%\item[\texttt{--}jsb <argument>]
-%  TODO
-%
-%\item[\texttt{--}cpp]
-%  TODO
-%
-%\item[\texttt{--}xmlPath <argument>]
-%  TODO
+\item[\texttt{--}xmlPath <argument>]
+  TODO
 %
 \item[\texttt{--}apprunPath <argument>]
   TODO
@@ -220,9 +206,6 @@ The list of INTENS commandline options can be printed using the command: \\
   TODO
 %
 \item[\texttt{--}dbautologon]
-  TODO
-%
-\item[\texttt{--}corba <argument>]
   TODO
 %
 \item[\texttt{--}debug <argument>]
@@ -235,6 +218,9 @@ The list of INTENS commandline options can be printed using the command: \\
 \item[\texttt{--}persistfileREST <filename>]
   Same as \texttt{--}persistfile, but \LABEL{} and \HELPTEXT{} are not written
   to <filename>. This allows the usage of html tags in \LABEL{} and \HELPTEXT{}.
+%
+\item[\texttt{--}logconfig <argument>] is obsolete.
+  It used to be the configuration filename for log4cxx.
 %
 \item[\texttt{--}log4cplusPropertiesFile <argument>] sets the filename of the log4cplus properties file.
   The default is APPHOME/config/log4cplus.properties.
@@ -253,6 +239,16 @@ The list of INTENS commandline options can be printed using the command: \\
 %
 \item[\texttt{--}help] prints the list of INTENS commandline options and exists. \\
   No description file is needed.
+%
+\item[\texttt{--}withTargetStreamInfo <argument>]
+  When INTENS detects a dependency violation between input and output values,
+  if automatically clears the output (or target) values (\AUTOCLEARDEPENDENCIES) or
+  it shows a confirm dialog: \\ \\
+  The results are not consistent anymore. \\
+  Do you want to delete them? \\
+  Yes / No \\  \\
+  With this commandline option, the dialog also shows the name(s) of the
+  target stream(s) (output values) involved.
 %
 \item[\texttt{--}whichGui] prints the GUI type (QT) and exists. \\
   No description file is needed.
@@ -275,6 +271,9 @@ The list of INTENS commandline options can be printed using the command: \\
   When enabled (default), you can use the up/down keys to increment/decrement
   the digit of a number before the cursor.
 %
+\item[\texttt{--}withKeypadDecimalPoint <argument>]
+  TODO
+%
 \item[\texttt{--}defaultScaleFactor1] sets the default scale factor to 1.0.
   See section \nameref{sec:scale} on page \pageref{sec:scale}.
 %
@@ -284,10 +283,7 @@ The list of INTENS commandline options can be printed using the command: \\
 %
 \item[\texttt{--}withoutTextPopupMenu] disables the right click menu of multiline text input fields.
 %
-\item[\texttt{--}ORBIIOPVersion <argument>]
-  TODO
-%
-\item[\texttt{--}ORBInitRef <argument>]
+\item[\texttt{--}withoutRangeCheck <argument>]
   TODO
 %
 \item[\texttt{--}test <argument>] enables TestMode:
@@ -298,8 +294,19 @@ The list of INTENS commandline options can be printed using the command: \\
   \item \MESSAGEBOX{}es are not shown. Their content is printed to stderr.
   \end{itemize}
 %
+\item[\texttt{--}testmode] enables TestMode.
+%
+\item[\texttt{--}noInitFunc] Don't run the INIT function.
+%
 \item[\texttt{--}replyPort <argument>]
-  TODO
+  An INTENS application can run as a desktop program or in the browser (webtens).
+  When run in the browser, INTENS must be started with this commandline option.
+  INTENS will listen on this tcp port for zmq requests. Webtens sends all
+  user inputs to INTENS as zmq requests, on this port. \\
+
+  This can also be used for testing an INTENS application: a test software, i.E.
+  python behave, can set or get values, call functions, etc. using the same
+  zmq request / reply pattern.
 %
 \item[\texttt{--}sendMessageQueueWithMetadata]
   TODO
@@ -311,11 +318,26 @@ The list of INTENS commandline options can be printed using the command: \\
   (see \nameref{dia:jobmessagequeueoption} on page \pageref{dia:jobmessagequeueoption} or
   \nameref{dia:jobpluginoption} on page \pageref{dia:jobpluginoption}). \\
   Without such an option, the default \MESSAGEQUEUE{} dependencies are used. \\
-  This commandline options defines that default:
+  This commandline option defines that default:
   \begin{itemize}
   \item 1 or ``true'' (=default): The \STREAM{} is used with dependencies
   \item 0 or ``false'': The \STREAM{} is not used with dependencies
   \end{itemize}
+  Note: the reason for this commandline option was the introduction of
+  \MESSAGEQUEUE{} \REQUEST{} dependencies. This option allows existing applications
+  to behave as before, without changing the application code.
+%
+\item[\texttt{--}oauth <argument>]
+  TODO
+%
+\item[\texttt{--}oauthAccessTokenUrl <argument>]
+  TODO
+%
+\item[\texttt{--}opentelemetryMetadata]
+  TODO
+%
+\item[\texttt{--}lspWorker]
+  TODO
 %
 \item[\texttt{--}unitManager\mbox{[}=<argument>\mbox{]}]
   Activate the unit manager (see section \nameref{sec:unitmanager} on page \pageref{sec:unitmanager}). \\

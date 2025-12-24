@@ -108,7 +108,6 @@ public:
   void setHelpDirectory( const char *dirname );
   void setFontname( const std::string &n );
   void setInitfileName( const std::string &n );
-  void setDetailGrid( bool d );
   void setResfile( const std::string &n );
   void setMaxLines( int l );
   void setToolTipDuration( int sec );
@@ -199,7 +198,6 @@ public:
   bool AppShortMainTitle();
   bool AppToolbar();
   bool Undo();
-  bool DetailGrid();
   HelpMessageType Helpmessages();
   const std::string &Title();
   int MaxOptions();
@@ -307,7 +305,6 @@ private:
   bool              m_app_shortMainTitle;
   bool              m_app_toolbar;
   bool              m_undo;
-  bool              m_detailGrid;
   HelpMessageType   m_helpmessages;
   int               m_maxoptions;   /* Number of buttons in one option pane */
   int               m_maxlines;     /* NUmber of lines in log window */

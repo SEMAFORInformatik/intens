@@ -65,7 +65,6 @@ static struct option long_options[] = {
   ,{"shortMainTitle", no_argument,     0,  0}
   ,{"toolbar",      no_argument,       0,  0}
   ,{"undo",         no_argument,       0,  0}
-  ,{"detailGrid",   no_argument,       0,  0}
   ,{"helpmsg",      no_argument,       0,  0}
   ,{"resfile",      required_argument, 0,  0}
   ,{"createRes",    required_argument, 0,  0}
@@ -145,7 +144,6 @@ AppData::AppData()
   , m_app_shortMainTitle( false )
   , m_app_toolbar( false )
   , m_undo( false )
-  , m_detailGrid( false )
   , m_helpmessages( NoneType )
   , m_maxoptions( 0 )
   , m_maxlines( 0 )
@@ -445,7 +443,6 @@ void AppData::setHelpDirectory( const char *dirname ){
 }
 void AppData::setFontname( const std::string &n )        { m_fontname = n;}
 void AppData::setInitfileName( const std::string &n )    { m_initfile = n;}
-void AppData::setDetailGrid( bool d )                    { m_detailGrid = d;}
 void AppData::setMaxLines( int l )                       { m_maxlines = l; }
 void AppData::setToolTipDuration( int sec )              { m_toolTipDuration = sec; }
 void AppData::setIncludePath( const std::string &n )     { m_includePath = n; }
@@ -627,7 +624,6 @@ bool AppData::AppTitlebar()                     { return m_app_titlebar; }
 bool AppData::AppShortMainTitle()               { return m_app_shortMainTitle; }
 bool AppData::AppToolbar()                      { return m_app_toolbar; }
 bool AppData::Undo()                            { return m_undo; }
-bool AppData::DetailGrid()                      { return m_detailGrid; }
 AppData::HelpMessageType AppData::Helpmessages(){ return m_helpmessages; }
 const std::string &AppData::Title()             { return m_title; }
 int AppData::MaxOptions()                       { return m_maxoptions; }
@@ -768,7 +764,6 @@ void AppData::setDefaultOpts(){
   setInitfileName( "" );
   setAppTitlebar( true );
   setAppShortMainTitle( false );
-  setDetailGrid( false );
   setHelpmessages( NoneType );
 #ifndef HAVE_QT
   setResfile( "./intensrc" );
@@ -889,9 +884,6 @@ void AppData::getOpt(int &argc, char **argv){
       // }
       else if( strcmp( optName, "undo")==0){
         setUndo();
-      }
-      else if( strcmp( optName, "detailGrid")==0){
-        setDetailGrid( true );
       }
       else if( strcmp( optName, "helpmsg")==0){
         HelpMessageType helpMsgType = StatusBarType;

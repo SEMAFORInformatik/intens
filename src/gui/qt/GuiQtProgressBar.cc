@@ -17,11 +17,13 @@ GuiQtProgressBar::GuiQtProgressBar(GuiElement *parent, std::string name)
   : GuiQtDataField( parent, name )
   , m_progressBar(0)
   , m_publisher(0)
+  , m_timerId(0)
 {}
 
 GuiQtProgressBar::GuiQtProgressBar(const GuiQtProgressBar &progressbar)
   : GuiQtDataField(progressbar)
   , m_progressBar(0)
+  , m_timerId(0)
 {
 }
 
@@ -93,6 +95,8 @@ void GuiQtProgressBar::update( UpdateReason reason ){
 void GuiQtProgressBar::manage(){
   if (myWidget())
     myWidget()->setVisible( getVisibleFlag() );  // maybe function hide this GuiElement
+  if (AppData::Instance().HeadlessWebMode())
+    m_timerId = startTimer(1000);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -101,6 +105,9 @@ void GuiQtProgressBar::manage(){
 
 void GuiQtProgressBar::unmanage(){
   myWidget()->hide();
+  if (m_timerId)
+    killTimer( m_timerId );
+  m_timerId = 0;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -129,6 +136,15 @@ void GuiQtProgressBar::getCloneList( std::vector<GuiElement*>& cList ) const {
 
 GuiElement::Orientation GuiQtProgressBar::getDialogExpandPolicy() {
   return (GuiElement::Orientation) 0;
+}
+
+/* --------------------------------------------------------------------------- */
+/* timerEvent --                                                               */
+/* --------------------------------------------------------------------------- */
+void GuiQtProgressBar::timerEvent ( QTimerEvent * event ) {
+  BUG_DEBUG("GuiQtProgressBar::timerEvent");
+  if (myWidget()->isVisible())
+    update(GuiElement::reason_FieldInput);
 }
 
 /* --------------------------------------------------------------------------- */

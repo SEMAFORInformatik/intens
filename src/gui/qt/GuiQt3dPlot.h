@@ -18,14 +18,16 @@ class GuiFieldgroupLine;
 class InputChannelEvent;
 class DataReference;
 #if HAVE_QGRAPHS
-class GuiQtGraphsPlot;
-class GuiQtGraphsPlotData;
+class GuiQtSurfaceGraph;
+class GuiQtBarGraph;
+class GuiQt3dData;
 #else
 class GuiQwtContourPlot;
 class GuiQwtContourPlotData;
 class QwtPlotCurve;
 class QwtLinearColorMap;
 #endif
+class GuiQt3dBasePlot;
 
 class QStackedWidget;
 class Plot3D;
@@ -38,7 +40,6 @@ class Plot3dData;
 */
 
 class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
-/* 		, public HardCopyListener */
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -230,16 +231,6 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
     GuiQt3dPlot *m_plot;
   };
 
-  class CDDistnMethodButtonListener : public GuiToggleListener
-  {
-  public:
-    CDDistnMethodButtonListener( GuiQt3dPlot *plot ) : m_plot( plot ) {}
-    virtual void ToggleStatusChanged( bool state ) { m_plot->cDsetDistnMethodEvent( state ); }
-  private:
-    GuiQt3dPlot *m_plot;
-  };
-
-
  public:
 
   // Ueberladene Funktionen der Klasse 'GuiElement'
@@ -247,16 +238,12 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
   virtual void create();
   virtual void manage();
   virtual void update( UpdateReason );
-  virtual QWidget* myWidget() { return m_framewidget; }
+  virtual QWidget* myWidget();
   virtual bool acceptIndex( const std::string &, int );
   virtual void setIndex( const std::string &name, int inx );
   virtual bool cloneable() { return true; }
   virtual GuiElement *clone();
   virtual void getCloneList(std::vector<GuiElement*>& cList) const;
-  virtual void setFrame( FlagStatus s );
-  virtual void setUseFrame();
-  virtual void setTabOrder();
-  virtual void unsetTabOrder();
   virtual void serializeXML(std::ostream &os, bool recursive = false);
   virtual bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false);
 #if HAVE_PROTOBUF
@@ -308,8 +295,6 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
   void cDresetEvent();
   /// Ereignis vom Button 'Close' des Konfigurationsdialoges
   void cDcloseEvent();
-  /// Ereignis eines Toggles 'Levels' des Konfigurationsdialoges
-  void cDsetDistnMethodEvent( bool state );
 
   // Callback Funktionen
   void popupMenu(const QContextMenuEvent* event);
@@ -329,8 +314,6 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
   /** get 3d plot data */
   Plot3dData* getPlot3dData() { return m_data;  }
 #endif
-  /** get 3d plot*/
-  Plot3D* get3dPlot();
   /** draw marker line(s) */
   void drawMarkerLine();
 
@@ -352,9 +335,6 @@ private:
 
   void setDataGrid();
 
-  /** create 3d plot*/
-  void create3dPlot();
-
   /** getDataItemType */
   GuiPlotDataItem* getPlotDataItem(std::string axis_name, int num=-1);
 
@@ -363,6 +343,8 @@ private:
   QwtLinearColorMap* createColorMap();
 #endif
   bool setAnnotationLabels();
+  bool isSurfaceType();
+  bool isBarType();
 
 /*=============================================================================*/
 /* private Data                                                                */
@@ -371,11 +353,9 @@ private:
   typedef std::map<std::string, GuiPlotDataItem*> DataItemType;
   typedef DataItemType::value_type DataItemPair;
 
-  const std::string         m_name;
-  QWidget               *m_framewidget;
-  QStackedWidget *m_widgetStack;
-  Plot3D    *m_widget3d;
-  FlagStatus           m_with_frame;
+  const std::string m_name;
+  QStackedWidget   *m_widgetStack;
+  FlagStatus        m_with_frame;
 
   HardCopyListener::FileFormat  m_currentFileFormat;
   HardCopyListener::FileFormats2 m_supportedFileFormats;
@@ -385,7 +365,8 @@ private:
 
   std::string          m_fileName;
   DataReference       *m_drefStruct;
-  DataReference       *m_drefNumDistnLevels;
+  DataReference       *m_drefCameraRotationX;
+  DataReference       *m_drefCameraRotationY;
   DataReference       *m_drefDistnMethod;
   DataReference       *m_drefDistnTable;
 
@@ -426,7 +407,6 @@ private:
   GuiForm       *m_configDialog;
   CDresetButtonListener       *m_cDresetButtonListener;
   CDcloseButtonListener       *m_cDcloseButtonListener;
-  CDDistnMethodButtonListener *m_cDDistnMethodButtonListener;
   GuiMenuToggle *m_cDDistnMethodToggleButton;
   GuiDataField  *m_fieldNumDistnLevels;
   GuiDataField  *m_fieldDistnTable;
@@ -435,11 +415,12 @@ private:
   GuiQtPopupMenu     *m_popupMenu;
 
 #if HAVE_QGRAPHS
-  GuiQtGraphsPlotData *m_contourData;
-  GuiQtGraphsPlot     *m_widget;
+  GuiQt3dData       *m_data;
+  GuiQtSurfaceGraph *m_contourWidget;
+  GuiQtBarGraph     *m_barWidget;
 #else
-  GuiQwtContourPlotData *m_contourData;
-  GuiQwtContourPlot     *m_widget;
+  GuiQwtContourPlotData *m_data;
+  GuiQwtContourPlot     *m_contourWidget;
   std::vector<QwtPlotCurve*> m_markerCurves;
 #endif
 

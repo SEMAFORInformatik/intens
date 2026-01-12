@@ -5,14 +5,14 @@
 #if HAVE_QGRAPHS
 
 #include "gui/GuiPlotDataItem.h"
-#include "gui/qt/GuiQtGraphsPlotData.h"
+#include "gui/qt/GuiQt3dData.h"
 
 INIT_LOGGER();
 
 /* --------------------------------------------------------------------------- */
 /* Constructor --                                                              */
 /* --------------------------------------------------------------------------- */
-GuiQtGraphsPlotData::GuiQtGraphsPlotData( DataItemType& dataitems )
+GuiQt3dData::GuiQt3dData( DataItemType& dataitems )
   : minXUser(std::numeric_limits<double>::max())
   , maxXUser(std::numeric_limits<double>::min())
   , bXUserScale(false)
@@ -22,8 +22,6 @@ GuiQtGraphsPlotData::GuiQtGraphsPlotData( DataItemType& dataitems )
   , minZUser(std::numeric_limits<double>::max())
   , maxZUser(std::numeric_limits<double>::min())
   , bZUserScale(false)
-  , minZ(std::numeric_limits<double>::max())
-  , maxZ(std::numeric_limits<double>::min())
   , maxDiffDelta(std::numeric_limits<double>::min())
   , m_columns(0), m_rows(0)
   , minStepX(std::numeric_limits<double>::max())
@@ -45,29 +43,20 @@ GuiQtGraphsPlotData::GuiQtGraphsPlotData( DataItemType& dataitems )
     m_zaxis = (*iter).second;
   m_ixrows = m_zaxis->getDataItemIndexWildcard( 1 );
   m_ixcols = m_zaxis->getDataItemIndexWildcard( 2 );
-
-  ///  setResampleMode( BilinearInterpolation );
 }
 
 /* --------------------------------------------------------------------------- */
 /* Destructor --                                                               */
 /* --------------------------------------------------------------------------- */
-GuiQtGraphsPlotData::~GuiQtGraphsPlotData() {
+GuiQt3dData::~GuiQt3dData() {
 }
 
 /* --------------------------------------------------------------------------- */
-/* updateData --                                                               */
+/* update --                                                                   */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::updateData() {
-  BUG(BugGui, "GuiQtGraphsPlotData::updateData");
-  //  discardRaster();
-  minXData =  std::numeric_limits<double>::max();
-  maxXData =  -std::numeric_limits<double>::max();
-  minYData =  std::numeric_limits<double>::max();
-  maxYData =  -std::numeric_limits<double>::max();
-  minZData =  std::numeric_limits<double>::max();
-  maxZData =  -std::numeric_limits<double>::max();
-
+bool GuiQt3dData::update() {
+  BUG_DEBUG("GuiQt3dData::update");
+  clearBoundingBox();
 
   // get Dimension
   m_rows = m_ixrows->getDimensionSize( m_zaxis->Data() );
@@ -90,99 +79,181 @@ void GuiQtGraphsPlotData::updateData() {
   m_reverseY = false;
 
   // reverse check
-  if (m_columns && m_rows) {
-    this->getZValue(0, 0);
-    this->getZValue(m_columns-1,m_rows-1);
-    if (m_xvalues.size())
-      m_reverseX = (m_xvalues[0] > m_xvalues.back()) ? true: false;
-    if (m_yvalues.size())
-      m_reverseY = (m_yvalues[0] > m_yvalues.back()) ? true: false;
+  if (!m_columns || !m_rows) {
+    return false;
   }
+  getValue(0, 0);
+  getValue(m_columns-1,m_rows-1);
+  if (m_xvalues.size())
+    m_reverseX = (m_xvalues[0] > m_xvalues.back()) ? true: false;
+  if (m_yvalues.size())
+    m_reverseY = (m_yvalues[0] > m_yvalues.back()) ? true: false;
+
+  return true;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getSurfaceDataArray --                                                      */
+/* --------------------------------------------------------------------------- */
+const QSurfaceDataArray& GuiQt3dData::getSurfaceDataArray(){
+  m_surfaceDataArray.clear();
+
+  if (!update())
+    return m_surfaceDataArray;
 
   // get new z values
-  clear();
-  if (m_rows > 1 /***&& resampleMode() == BilinearInterpolation***/) {
-    reserve(m_rows > 1 ? m_rows : m_columns);
+  if (m_rows > 1) {
+    m_surfaceDataArray.reserve(m_rows);
     for (int y = 0; y < m_rows; ++y) {
       QSurfaceDataRow dataRow;
       dataRow.reserve(m_columns);
       for (long x = 0; x < m_columns; ++x) {
         int _y = m_rows > 1 ? y : x;
-        QVector3D pt = this->getZValue( m_reverseX ? m_columns-1-x : x,
-                                        m_reverseY ? m_rows-1-_y : _y);
+        QVector3D pt = getValue( m_reverseX ? m_columns-1-x : x,
+                                 m_reverseY ? m_rows-1-_y : _y);
         dataRow << QSurfaceDataItem(pt.x(), pt.z(), pt.y());
-        if (minZData > pt.z()) minZData = pt.z();
-        if (maxZData < pt.z()) maxZData = pt.z();
-        if (minXData > pt.x()) minXData = pt.x();
-        if (maxXData < pt.x()) maxXData = pt.x();
-        if (minYData > pt.y()) minYData = pt.y();
-        if (maxYData < pt.y()) maxYData = pt.y();
       }
-      *this << dataRow;
+      m_surfaceDataArray << dataRow;
     }
   } else {
-    // special case
-    // all data (x, y, z) are vector data
-    double oldX = std::numeric_limits<double>::max();
-    int maxRow(0);
-    int cnt = 0, cntRowMax = 0, cntMax = 0;
+    MatrixVector3dData matrix_data;
+    int cntColMax;
+    getMatrixData(matrix_data, cntColMax);
+    // add data
+    // swap axis, need increasíng x value
+    int cNum = cntColMax;
+    int rNum = matrix_data.size();
+    for (int r=0; r<cNum; ++r){
+      QSurfaceDataRow dataRow(cntColMax);
+      for (int c=0; c<rNum; ++c){
+        int rmin = std::min(r, (int)matrix_data[c].size()-1);
+        QVector3D &pt = matrix_data[c][rmin];
+        dataRow[c] = QSurfaceDataItem(pt.x(), pt.z(), pt.y());
+      }
+      m_surfaceDataArray << dataRow;
+    }
+  }
+  return m_surfaceDataArray;
+}
 
-    // get max row size
-    for (int x = 0; x < m_columns; ++x) {
-      for (long y = 0; y < m_rows; ++y) {
-        QVector3D pt = this->getZValue(x, x);
-        if (oldX == std::numeric_limits<double>::max()) oldX = pt.x();
-        if (std::abs(pt.x() - oldX) > 1e3*std::numeric_limits<double>::epsilon()){
-          oldX = pt.x();
-          cntRowMax = std::max(cnt, cntRowMax);
-          cnt = 0;
-        }
-        ++cnt;
+/* --------------------------------------------------------------------------- */
+/* getBarDataArray --                                                          */
+/* --------------------------------------------------------------------------- */
+const QBarDataArray& GuiQt3dData::getBarDataArray(QStringList& row_labels, QStringList& column_labels){
+
+  m_barDataArray.clear();
+  row_labels.clear();
+  column_labels.clear();
+
+  if (!update())
+    return m_barDataArray;
+
+  // fill data
+  if (m_rows > 1) {
+    m_barDataArray.reserve(m_rows);
+    for (int y = 0; y < m_rows; ++y) {
+      QBarDataRow dataRow(m_columns);
+      dataRow.reserve(m_columns);
+      for (long x = 0; x < m_columns; ++x) {
+        int _y = m_rows > 1 ? y : x;
+        QVector3D pt = getValue( m_reverseX ? m_columns-1-x : x,
+                                 m_reverseY ? m_rows-1-_y : _y);
+        dataRow[x].setValue(pt.z());
       }
+      m_barDataArray << dataRow;
     }
-    oldX = std::numeric_limits<double>::max();
-    QSurfaceDataRow* dataRow = new QSurfaceDataRow(cntRowMax);
-    cnt = 0;
-    for (int x = 0; x < m_columns; ++x) {
-      for (long y = 0; y < m_rows; ++y) {
-        QVector3D pt = this->getZValue(x, m_rows > 1 ? y : x);
-        if (minZData > pt.z()) minZData = pt.z();
-        if (maxZData < pt.z()) maxZData = pt.z();
-        if (minXData > pt.x()) minXData = pt.x();
-        if (maxXData < pt.x()) maxXData = pt.x();
-        if (minYData > pt.y()) minYData = pt.y();
-        if (maxYData < pt.y()) maxYData = pt.y();
-        if (oldX == std::numeric_limits<double>::max()) oldX = pt.x();
-        if (std::abs(pt.x() - oldX) > 1e3*std::numeric_limits<double>::epsilon()){
-          //std::cout << cnt << "=!=" << ".Changed X diff["<<std::abs(pt.x() - oldX)<<"]\n";
-          cntMax = std::max(cnt, cntMax);
-          while (cnt++ <= cntMax){
-            *dataRow << dataRow->last();
+
+    // get axis labels
+    for(auto val: m_xvalues) {
+      column_labels.append(QString::number(val, 'g'));
+    }
+    for(auto val: m_yvalues) {
+      row_labels.append(QString::number(val, 'g'));
+    }
+  } else {
+#if 1
+    MatrixVector3dData matrix_data;
+    int cntColMax;
+    getMatrixData(matrix_data, cntColMax);
+    QList<double> row_values;
+    double row_delta;
+
+    // add data
+    int cNum = cntColMax;
+    int rNum = matrix_data.size();
+    for (int r=0; r<rNum; ++r){
+      QBarDataRow dataRow(cntColMax);
+      int coff=0;
+      for (int c=0; c<matrix_data[r].size(); ++c){
+        QVector3D &pt = matrix_data[r][c];
+        // process starting gap
+        if (!c && cNum != (int)matrix_data[r].size()){
+          for (int i=0; i<row_values.size(); ++i){
+            if (pt.y() < (row_values[i]+row_delta)){
+              coff = i;
+              break;
+            }
+            dataRow[i].setValue(std::numeric_limits<double>::quiet_NaN());
           }
-          *this << *dataRow ;;
-          oldX = pt.x();
-          delete dataRow;
-          cnt = 0;
-          dataRow = new QSurfaceDataRow(cntRowMax);
         }
-        ++cnt;
-        ///        std::cout <<  "X: " << pt.x() << ", y: " << pt.y() << ", " << pt.z() << std::endl;
-        *dataRow << QSurfaceDataItem(pt.x(), pt.z(), pt.y());
+
+        // add point
+        if (c+coff < cNum)
+          dataRow[c+coff].setValue(pt.z());
+
+        // only once, add label
+        if (!(c-coff)) {
+          row_labels.append(QString::number(pt.x(), 'g'));
+        }
+        // only once, add label
+        if (!r) {
+          column_labels.append(QString::number(pt.y(), 'g'));
+          row_values.append(pt.y());
+          row_delta = 1e-2 * (row_values.back() - row_values[0]);
+        }
       }
+      m_barDataArray << dataRow;
     }
-    // append last data row
-     while (cnt++ <= cntMax && cntRowMax){
-       *dataRow << dataRow->last();
-     }
-     *this << *dataRow;
-     delete dataRow;
+#endif
+    return m_barDataArray;
+  }
+
+  return m_barDataArray;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getMatrixData --                                                            */
+/* --------------------------------------------------------------------------- */
+void GuiQt3dData::getMatrixData(MatrixVector3dData& matrix_data, int& cntColMax){
+    // special case
+    // all matrix_data(x, y, z) are vector matrix_data
+  matrix_data.clear();
+  cntColMax = 0;
+  QVector3D pt0 = getValue(0,0);
+  double oldX = pt0.x();
+  int cnt = 0;
+
+  // get matrix_data
+  matrix_data.push_back(std::vector<QVector3D>());
+  matrix_data.back().push_back(pt0);
+  for (int x = 1; x < m_columns; ++x) {
+    QVector3D pt = getValue(m_reverseX ? m_columns-1-x : x,
+                            m_reverseX ? m_columns-1-x : x);
+    if (std::abs(pt.x() - oldX) > 1e3*std::numeric_limits<double>::epsilon()){
+      oldX = pt.x();
+      cntColMax = std::max(cnt, cntColMax);
+      cnt = 0;
+      matrix_data.push_back(std::vector<QVector3D>());
+    }
+    matrix_data.back().push_back(pt);
+    ++cnt;
   }
 }
 
 /* --------------------------------------------------------------------------- */
 /* getIndex --                                                                 */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::getIndex(double x, double y, int& ix, int& iy)  const {
+void GuiQt3dData::getIndex(double x, double y, int& ix, int& iy)  const {
   if (m_xvalues.size() == 0 || m_yvalues.size() == 0 ) {
     ix = iy = 0;
     return;
@@ -247,21 +318,14 @@ void GuiQtGraphsPlotData::getIndex(double x, double y, int& ix, int& iy)  const 
 }
 
 /* --------------------------------------------------------------------------- */
-/* value --                                                                    */
+/* getValue --                                                                 */
 /* --------------------------------------------------------------------------- */
-double GuiQtGraphsPlotData::value(double x, double y)  const {
-  return std::numeric_limits<double>::quiet_NaN();
-}
-
-/* --------------------------------------------------------------------------- */
-/* getZValue --                                                                */
-/* --------------------------------------------------------------------------- */
-QVector3D GuiQtGraphsPlotData::getZValue(int ix, int iy) {
-  BUG(BugGui, "GuiQtGraphsPlotData::getZValue");
+QVector3D GuiQt3dData::getValue(int ix, int iy) {
+  BUG_DEBUG("GuiQt3dData::getValue");
   double x, y;
   double z = std::numeric_limits<double>::quiet_NaN();
 
-  // z-Wert ermitteln
+  // z value
   m_ixrows->setIndex( m_zaxis->Data(), m_rows > 1 ? iy : 0 );
   m_ixcols->setIndex( m_zaxis->Data(), ix );
   if (m_zaxis->getValue(z)) {
@@ -269,7 +333,7 @@ QVector3D GuiQtGraphsPlotData::getZValue(int ix, int iy) {
   } else
     z = std::numeric_limits<double>::quiet_NaN();
 
-  // y-Wert ermitteln
+  // y value
   if( m_yaxis ) {
     if( m_yaxis->XferData() ) {
       XferDataItemIndex *dix = m_yaxis->getDataItemIndexWildcard( 1 );
@@ -281,7 +345,7 @@ QVector3D GuiQtGraphsPlotData::getZValue(int ix, int iy) {
     }
   }
 
-  // x-Wert ermitteln
+  // x value
   if( m_xaxis ) {
     if( m_xaxis->XferData() ) {
       XferDataItemIndex *dix = m_xaxis->getDataItemIndexWildcard( 1 );
@@ -304,13 +368,14 @@ QVector3D GuiQtGraphsPlotData::getZValue(int ix, int iy) {
   }
   BUG_DEBUG("ix: " << ix << ", iy: " << iy << " => z:" << z
             << ", x:" << m_xvalues[ix] << ", y:" << m_yvalues[iy]);
+  updateBoundingBox(x, y, z);
   return QVector3D(x, y, z);
 }
 
 /* --------------------------------------------------------------------------- */
 /* getXInterval --                                                             */
 /* --------------------------------------------------------------------------- */
-GuiQtGraphsPlotData::Interval GuiQtGraphsPlotData::getXInterval() {
+GuiQt3dData::Interval GuiQt3dData::getXInterval() const {
   // // get user or data minimum or maximum
   double minX = minXUser != std::numeric_limits<double>::max() ? minXUser : minXData;
   double maxX = maxXUser != std::numeric_limits<double>::min() ? maxXUser : maxXData;
@@ -320,7 +385,7 @@ GuiQtGraphsPlotData::Interval GuiQtGraphsPlotData::getXInterval() {
 /* --------------------------------------------------------------------------- */
 /* getYInterval --                                                             */
 /* --------------------------------------------------------------------------- */
-GuiQtGraphsPlotData::Interval GuiQtGraphsPlotData::getYInterval() {
+GuiQt3dData::Interval GuiQt3dData::getYInterval() const {
   // // get user or data minimum or maximum
   double minY = minYUser != std::numeric_limits<double>::max() ? minYUser : minYData;
   double maxY = maxYUser != std::numeric_limits<double>::min() ? maxYUser : maxYData;
@@ -330,37 +395,37 @@ GuiQtGraphsPlotData::Interval GuiQtGraphsPlotData::getYInterval() {
 /* --------------------------------------------------------------------------- */
 /* getZInterval --                                                             */
 /* --------------------------------------------------------------------------- */
-GuiQtGraphsPlotData::Interval GuiQtGraphsPlotData::getZInterval() {
+GuiQt3dData::Interval GuiQt3dData::getZInterval() const {
   // // get user or data minimum or maximum
-  minZ = minZUser != std::numeric_limits<double>::max() ? minZUser : minZData;
-  maxZ = maxZUser != std::numeric_limits<double>::min() ? maxZUser : maxZData;
+  double minZ = minZUser != std::numeric_limits<double>::max() ? minZUser : minZData;
+  double maxZ = maxZUser != std::numeric_limits<double>::min() ? maxZUser : maxZData;
   return Interval(minZ, maxZ);
 }
 
 /* --------------------------------------------------------------------------- */
 /* setMinZUser --                                                              */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::setMinZUser(double newOffset) {
+void GuiQt3dData::setMinZUser(double newOffset) {
   minZUser = newOffset;
   if (maxZUser == std::numeric_limits<double>::min())
     maxZUser = maxZData;
-  updateData();
+  update();
 }
 
 /* --------------------------------------------------------------------------- */
 /* setMaxZUser --                                                              */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::setMaxZUser(double newOffset) {
+void GuiQt3dData::setMaxZUser(double newOffset) {
   maxZUser = newOffset;
   if (minZUser == std::numeric_limits<double>::max())
     minZUser = minZData;
-  updateData();
+  update();
 }
 
 /* --------------------------------------------------------------------------- */
 /* resetZUser --                                                               */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::resetZUser() {
+void GuiQt3dData::resetZUser() {
   // already reseted
   if (!bZUserScale) return;
 
@@ -368,13 +433,13 @@ void GuiQtGraphsPlotData::resetZUser() {
   minZUser = std::numeric_limits<double>::max();
   maxZUser = std::numeric_limits<double>::min();
 
-  updateData();
+  update();
 }
 
 /* --------------------------------------------------------------------------- */
 /* setRangeXUser --                                                            */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::setRangeXUser(double minXValue, double maxXValue) {
+void GuiQt3dData::setRangeXUser(double minXValue, double maxXValue) {
   bXUserScale= true;
   minXUser = minXValue;
   maxXUser = maxXValue;
@@ -383,7 +448,7 @@ void GuiQtGraphsPlotData::setRangeXUser(double minXValue, double maxXValue) {
 /* --------------------------------------------------------------------------- */
 /* resetXUser --                                                               */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::resetXUser() {
+void GuiQt3dData::resetXUser() {
   bXUserScale= false;
   minXUser = std::numeric_limits<double>::max();
   maxXUser = std::numeric_limits<double>::min();
@@ -392,7 +457,7 @@ void GuiQtGraphsPlotData::resetXUser() {
 /* --------------------------------------------------------------------------- */
 /* setRangeYUser --                                                            */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::setRangeYUser(double minYValue, double maxYValue) {
+void GuiQt3dData::setRangeYUser(double minYValue, double maxYValue) {
   bYUserScale= true;
   minYUser = minYValue;
   maxYUser = maxYValue;
@@ -401,7 +466,7 @@ void GuiQtGraphsPlotData::setRangeYUser(double minYValue, double maxYValue) {
 /* --------------------------------------------------------------------------- */
 /* resetYUser --                                                               */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::resetYUser() {
+void GuiQt3dData::resetYUser() {
   bYUserScale= false;
   minYUser = std::numeric_limits<double>::max();
   maxYUser = std::numeric_limits<double>::min();
@@ -410,11 +475,34 @@ void GuiQtGraphsPlotData::resetYUser() {
 /* --------------------------------------------------------------------------- */
 /* setRangeZUser --                                                            */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlotData::setRangeZUser(double minXValue, double maxXValue) {
+void GuiQt3dData::setRangeZUser(double minXValue, double maxXValue) {
   bZUserScale= true;
   setMinZUser(minXValue);
   setMaxZUser(maxXValue);
 }
 
+/* --------------------------------------------------------------------------- */
+/* clearBoundingBox --                                                         */
+/* --------------------------------------------------------------------------- */
+void GuiQt3dData::clearBoundingBox() {
+  minXData =  std::numeric_limits<double>::max();
+  maxXData =  -std::numeric_limits<double>::max();
+  minYData =  std::numeric_limits<double>::max();
+  maxYData =  -std::numeric_limits<double>::max();
+  minZData =  std::numeric_limits<double>::max();
+  maxZData =  -std::numeric_limits<double>::max();
+}
+
+/* --------------------------------------------------------------------------- */
+/* updateBoundingBox --                                                        */
+/* --------------------------------------------------------------------------- */
+void GuiQt3dData::updateBoundingBox(double x, double y, double z) {
+  if (minZData > z) minZData = z;
+  if (maxZData < z) maxZData = z;
+  if (minXData > x) minXData = x;
+  if (maxXData < x) maxXData = x;
+  if (minYData > y) minYData = y;
+  if (maxYData < y) maxYData = y;
+}
 
 #endif

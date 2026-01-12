@@ -1,7 +1,8 @@
-#ifndef GUIQTGRAPHSPLOTDATA_H_
-#define GUIQTGRAPHSPLOTDATA_H_
+#ifndef GUIQT3DDATAARRAY_H_
+#define GUIQT3DDATAARRAY_H_
 
 #include <QtGraphsWidgets/q3dsurfacewidgetitem.h>
+#include <QtGraphsWidgets/q3dbarswidgetitem.h>
 
 #include <limits>
 
@@ -11,10 +12,10 @@ class QVector3D;
 
 typedef std::map<std::string, GuiPlotDataItem*> DataItemType;
 /**
- * main class of GuiQtGraphsPlotData
+ * main class of GuiQt3dData
  */
 
-class GuiQtGraphsPlotData: public QSurfaceDataArray {
+class GuiQt3dData {
 public:
   struct Interval {
     Interval(double min, double max): min(min), max(max) {}
@@ -22,12 +23,12 @@ public:
     double max;
   };
 
-  GuiQtGraphsPlotData(DataItemType& dataitems);
-  virtual ~GuiQtGraphsPlotData();
+  GuiQt3dData(DataItemType& dataitems);
+  virtual ~GuiQt3dData();
 
-  void updateData();
-
-  virtual double value(double x, double y) const;
+  bool update();
+  const QSurfaceDataArray& getSurfaceDataArray();
+  const QBarDataArray& getBarDataArray(QStringList& row_labels, QStringList& column_labels);
 
   /**
      get index for datapool or catched data
@@ -81,27 +82,35 @@ public:
   /**
      get x interval
   */
-  Interval getXInterval();
+  Interval getXInterval() const;
   /**
      get y interval
   */
-  Interval getYInterval();
+  Interval getYInterval() const;
   /**
      get z interval
   */
-  Interval getZInterval();
+  Interval getZInterval() const;
+
 private:
-  QVector3D getZValue(int ix, int iy);
+  typedef std::vector<std::vector<QVector3D>> MatrixVector3dData;
+  void getMatrixData(MatrixVector3dData &data, int& cntColMax);
+  QVector3D getValue(int ix, int iy);
+  void clearBoundingBox();
+  void updateBoundingBox(double x, double y, double z);
 
 private:
   // -----------------------------------------------------------------------
   //  Unimplemented Constructors
   // -----------------------------------------------------------------------
-  //    GuiQtGraphsPlotData();
-  GuiQtGraphsPlotData(const GuiQtGraphsPlotData&);
-  GuiQtGraphsPlotData& operator=(const GuiQtGraphsPlotData&);
+  //    GuiQt3dData();
+  GuiQt3dData(const GuiQt3dData&);
+  GuiQt3dData& operator=(const GuiQt3dData&);
 
 private:
+  QSurfaceDataArray m_surfaceDataArray;
+  QBarDataArray     m_barDataArray;
+
   // colormap offsets
   double         minXUser;
   double         maxXUser;
@@ -118,8 +127,6 @@ private:
   double         maxXData;
   double         minYData;
   double         maxYData;
-  double         minZ;
-  double         maxZ;
   double         maxDiffDelta;
 
   int m_rows;

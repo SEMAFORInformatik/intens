@@ -1,39 +1,46 @@
-#ifndef GUIQTGRAPHSPLOT_H_
-#define GUIQTGRAPHSPLOT_H_
+#ifndef GUIQTSURFACEGRAPH_H_
+#define GUIQTSURFACEGRAPH_H_
 #if HAVE_QGRAPHS
 
 #include <QtQuickWidgets/QQuickWidget>
-#include <QtGraphsWidgets/q3dsurfacewidgetitem.h>
 #include "gui/GuiElement.h"
+#include "gui/Gui3dPlot.h"
+#include "gui/qt/GuiQt3dBasePlot.h"
 
-class GuiQtGraphsPlotData;
 class GuiQt3dPlot;
+class GuiQt3dData;
+class Q3DSurfaceWidgetItem;
 class QSurface3DSeries;
+class QValue3DAxis;
 
-class GuiQtGraphsPlot : public QQuickWidget
+class GuiQtSurfaceGraph : public QQuickWidget, public GuiQt3dBasePlot
   {
   public:
-    GuiQtGraphsPlot(GuiQt3dPlot* plot, GuiQtGraphsPlotData* data);
+    GuiQtSurfaceGraph(GuiQt3dPlot* plot);
 
     /** update data
         @param data plot data
      */
-    void update(GuiQtGraphsPlotData& data);
+    void update(GuiQt3dData& data);
 
     /** returns axis
         @param atype axis type
         @return pointer to axis
     */
-    QValue3DAxis *axisWidget(GuiElement::GuiAxisType atype) const;
+    QAbstract3DAxis *axisWidget(GuiElement::GuiAxisType atype) const;
 
     /**  print to paint device (eg. Printer)
         @param paintdevice
      */
     void print(QPaintDevice& paintdevice);
+    void setPlotStyle(Gui3dPlot::Style plotStyle);
+    void printLog();
+    QWidget* myWidget() {return this;}
 
   private:
     /** set new data */
-    void setData(GuiQtGraphsPlotData* data);
+    void setData(GuiQt3dData& data);
+
     /** contextMenuEvent */
     void contextMenuEvent ( QContextMenuEvent* event );
 
@@ -43,15 +50,12 @@ class GuiQtGraphsPlot : public QQuickWidget
 #endif
 
   private:
-    GuiQtGraphsPlot();
-    GuiQtGraphsPlot(const GuiQtGraphsPlot& );
+    GuiQtSurfaceGraph();
+    GuiQtSurfaceGraph(const GuiQtSurfaceGraph& );
 
   private:
-    QSurface3DSeries*   m_series;
+    QSurface3DSeries*     m_series;
     Q3DSurfaceWidgetItem* m_surface;
-    int                 currentEditedAxisLabelId;
-
-    GuiQtGraphsPlotData *m_data;
     GuiQt3dPlot          *m_plot;
   };
 #endif // HAVE_QGRAPHS

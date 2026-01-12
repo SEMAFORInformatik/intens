@@ -3,20 +3,20 @@
 #include <QPrintDialog>
 #include <QContextMenuEvent>
 
-#include "GuiQtGraphsPlot.h"
-#include "GuiQtGraphsPlotData.h"
+#include "GuiQtSurfaceGraph.h"
+#include "GuiQt3dData.h"
 #include "GuiQt3dPlot.h"
 
 /* --------------------------------------------------------------------------- */
 /* Constructor --                                                              */
 /* --------------------------------------------------------------------------- */
-GuiQtGraphsPlot::GuiQtGraphsPlot(GuiQt3dPlot* plot, GuiQtGraphsPlotData* _data) :
-  currentEditedAxisLabelId(-1)
-  , m_data(_data)
-  , m_plot(plot){
+GuiQtSurfaceGraph::GuiQtSurfaceGraph(GuiQt3dPlot* plot) :
+  m_plot(plot){
+
   m_surface = new Q3DSurfaceWidgetItem();
   m_surface->setWidget(this);
-  m_surface->widget()->setMinimumSize(QSize(756, 756));
+  m_surface->widget()->setMinimumSize(QSize(256, 256));
+  m_surface->setHorizontalAspectRatio(1);  // same length x and y(z) axes
 
   // config axis
   m_surface->setAxisX(new QValue3DAxis);
@@ -30,37 +30,11 @@ GuiQtGraphsPlot::GuiQtGraphsPlot(GuiQt3dPlot* plot, GuiQtGraphsPlotData* _data) 
   m_surface->addSeries(m_series);
 
   // Optional: Theme
-  auto *theme = new QGraphsTheme/*Q3DTheme(Q3DTheme::ThemeQt)*/;
-  // theme->setTheme(QGraphsTheme::Theme::UserDefined);
-  // theme->setBackgroundColor(QColor(QRgb(0x99ca53)));
-  // theme->setBackgroundVisible(true);
-  // QList<QColor> colors = { QColor(QRgb(0x209fdf)) };
-  // theme->setSeriesColors(colors);
-  // theme->setColorStyle(QGraphsTheme::ColorStyle::Uniform);
-  theme->setLabelFont(QFont(QStringLiteral("Impact"), 20));
-  // theme->setGridVisible(true);
-  // auto gridline = theme->grid();
-  // gridline.setMainColor(QColor(QRgb(0x99ca53)));
-  // theme->setGrid(gridline);
-  // theme->setLabelBackgroundColor(QColor(0xf6, 0xa6, 0x25, 0xa0));
-  // theme->setLabelBackgroundVisible(true);
-  // theme->setLabelBorderVisible(true);
-  // theme->setLabelTextColor(QColor(QRgb(0x404044)));
-  // theme->setMultiHighlightColor(QColor(QRgb(0x6d5fd5)));
-  // theme->setSingleHighlightColor(QColor(QRgb(0xf6a625)));
-  // theme->setBackgroundColor(QColor(QRgb(0xffffff)));
+  auto *theme = m_surface->activeTheme();
+  theme->setLabelFont(QFont(QStringLiteral("Impact"), 18));
   m_surface->setActiveTheme(theme);
 
-  // camera zoom rotation
-  if (plot->getPlotStyle() == Gui3dPlot::CONTOUR){
-    ///    m_surface->setCameraZoomLevel(150.0f);
-    m_surface->setCameraYRotation(90.0f);
-    m_surface->setOrthoProjection(true);
-  }else{
-    m_surface->setCameraZoomLevel(85.0f); // 85%
-    m_surface->setCameraXRotation(45.0f);
-    m_surface->setCameraYRotation(45.0f);
-  }
+  setPlotStyle(plot->getPlotStyle());
 
   // Choose a nice gradient
   QLinearGradient gradient;
@@ -70,46 +44,52 @@ GuiQtGraphsPlot::GuiQtGraphsPlot(GuiQt3dPlot* plot, GuiQtGraphsPlotData* _data) 
   gradient.setColorAt(1.0, Qt::red);
   m_series->setBaseGradient(gradient);
   m_series->setColorStyle(QGraphsTheme::ColorStyle::RangeGradient);
-
-  // setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding,  QSizePolicy::MinimumExpanding ) );
 }
 
 /* --------------------------------------------------------------------------- */
 /* setData --                                                                  */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlot::setData(GuiQtGraphsPlotData* data) {
-  m_data = data;
+void GuiQtSurfaceGraph::setData(GuiQt3dData& data) {
+  const auto& dataArray = data.getSurfaceDataArray();
+  if (dataArray.empty()) return;
 
-  // NOTE we changed Y <==> Z axis
-  GuiQtGraphsPlotData::Interval interval = data->getXInterval();
+  // NOTE we swapped Y <==> Z axis
+  GuiQt3dData::Interval interval = data.getXInterval();
+  if(interval.min == std::numeric_limits<double>::max() ||
+     interval.max == std::numeric_limits<double>::min())
+    return;
   m_surface->axisX()->setRange(interval.min, interval.max);
-  interval = data->getYInterval();
+  interval = data.getYInterval();
   m_surface->axisZ()->setRange(interval.min, interval.max);
-  interval = data->getZInterval();
+  interval = data.getZInterval();
   m_surface->axisY()->setRange(interval.min, interval.max);
 
-  m_series->dataProxy()->resetArray(*data);
-  m_series->setDataArray(*data);
+  m_series->dataProxy()->resetArray(dataArray);
+  m_series->setDataArray(dataArray);
 }
 
 /* --------------------------------------------------------------------------- */
 /* contextMenuEvent --                                                         */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlot::contextMenuEvent ( QContextMenuEvent* event ){
-  m_plot->popupMenu(event);
-  event->ignore();
+void GuiQtSurfaceGraph::contextMenuEvent ( QContextMenuEvent* event ){
+  if (event->modifiers() == Qt::NoModifier) {
+    m_plot->popupMenu(event);
+    event->accept();
+  } else {
+    QQuickWidget::contextMenuEvent(event);
+  }
 }
 
 /* --------------------------------------------------------------------------- */
 /* print --                                                                    */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlot::print(QPaintDevice& pd) {
+void GuiQtSurfaceGraph::print(QPaintDevice& pd) {
 }
 
 /* --------------------------------------------------------------------------- */
 /* printPlot --                                                                */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlot::printPlot()
+void GuiQtSurfaceGraph::printPlot()
 {
   QPrinter printer;
   printer.setPageOrientation(QPageLayout::Landscape);
@@ -122,16 +102,15 @@ void GuiQtGraphsPlot::printPlot()
 /* --------------------------------------------------------------------------- */
 /* update --                                                                   */
 /* --------------------------------------------------------------------------- */
-void GuiQtGraphsPlot::update(GuiQtGraphsPlotData& data) {
-  if (data.size())
-    setData( &data );
+void GuiQtSurfaceGraph::update(GuiQt3dData& data) {
+  setData( data );
 }
 
 /* --------------------------------------------------------------------------- */
 /* axisWidget --                                                               */
 /* --------------------------------------------------------------------------- */
-QValue3DAxis* GuiQtGraphsPlot::axisWidget(GuiElement::GuiAxisType axis) const {
-  // NOTE we changed Y <==> Z axis
+QAbstract3DAxis* GuiQtSurfaceGraph::axisWidget(GuiElement::GuiAxisType axis) const {
+  // NOTE we swapped Y <==> Z axis
   switch(axis){
   case GuiElement::yLeft:
   case GuiElement::yRight:
@@ -144,4 +123,45 @@ QValue3DAxis* GuiQtGraphsPlot::axisWidget(GuiElement::GuiAxisType axis) const {
   }
   return 0;
 }
+
+/* --------------------------------------------------------------------------- */
+/* axisWidget --                                                               */
+/* --------------------------------------------------------------------------- */
+void GuiQtSurfaceGraph::setPlotStyle(Gui3dPlot::Style plotStyle){
+  switch(plotStyle){
+  case Gui3dPlot::BAR:
+    m_surface->setOrthoProjection(false);
+    m_surface->setCameraZoomLevel(80.0f); // 85%
+    m_surface->setCameraXRotation(45.0f);
+    m_surface->setCameraYRotation(45.0f);
+    break;
+  case Gui3dPlot::SURFACE:
+    m_surface->setOrthoProjection(false);
+    m_surface->setCameraZoomLevel(75.0f); // 85%
+    m_surface->setCameraXRotation(45.0f);
+    m_surface->setCameraYRotation(45.0f);
+    break;
+  case Gui3dPlot::CONTOUR:
+    m_surface->setOrthoProjection(true);
+    m_surface->setCameraZoomLevel(100.0f);
+    m_surface->setCameraXRotation(0.0f);
+    m_surface->setCameraYRotation(90.0f);
+    QQuickWidget::update();
+    updateGeometry();
+    break;
+  }
+}
+
+void GuiQtSurfaceGraph::printLog(){
+  auto p = m_surface->cameraTargetPosition();
+  auto pn = p.normalized();
+  //m_surface->setAspectRatio(10);
+  std::cout << " cameraTargetPosition: " << p.x() << ", " << p.y()
+            << ", " << p.z() << std::endl;
+  std::cout << " camera rotation x: " << m_surface->cameraXRotation() << " y: " << m_surface->cameraYRotation() << ", zoom: " << m_surface->cameraZoomLevel() << std::endl;
+  std::cout << " camera rotation x: " << m_surface->minCameraXRotation() << ", " << m_surface->maxCameraXRotation() << std::endl;
+  std::cout << " camera rotation y: " << m_surface->minCameraYRotation() << ", " << m_surface->maxCameraYRotation() << std::endl;
+  std::cout << " aspectRatio: " << m_surface->aspectRatio() << ", " << m_surface->horizontalAspectRatio()  << std::endl;
+}
+
 #endif

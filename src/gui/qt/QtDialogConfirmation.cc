@@ -13,6 +13,8 @@
 #include "gui/qt/QtMessageBoxExt.h"
 #include "gui/qt/GuiQtElement.h"
 
+INIT_LOGGER();
+
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
@@ -94,21 +96,31 @@ GuiElement::ButtonType QtDialogConfirmation::showDialog( GuiElement *element
     // QMessageBox::ButtonRole => GuiElement::ButtonType
     switch(result) {
     case QMessageBox::Yes:
+      if (listener) listener->confirmYesButtonPressed();
       return GuiElement::button_Yes;
     case QMessageBox::Save:
+      if (listener) listener->confirmYesButtonPressed();
       return GuiElement::button_Save;
     case QMessageBox::Discard:
       return GuiElement::button_Discard;
     case QMessageBox::Apply:
+      if (listener) listener->confirmYesButtonPressed();
       return GuiElement::button_Apply;
     case QMessageBox::Open:
+      if (listener) listener->confirmYesButtonPressed();
       return GuiElement::button_Open;
     case QMessageBox::Cancel:
+      if (listener) listener->confirmCancelButtonPressed();
       return GuiElement::button_Cancel;
+    case QMessageBox::No:
+      if (listener) listener->confirmNoButtonPressed();
+      return GuiElement::button_No;
     case QMessageBox::Abort:
+      if (listener) listener->confirmCancelButtonPressed();
       return GuiElement::button_Abort;
     default:
       std::cerr << "Unknown Button pushed: " << result << std::endl;
+      if (listener) listener->confirmCancelButtonPressed();
       return GuiElement::button_Cancel;
     }
   } else {

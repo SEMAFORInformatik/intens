@@ -1,8 +1,10 @@
 #ifndef GUIQT3DDATAARRAY_H_
 #define GUIQT3DDATAARRAY_H_
 
+#if HAVE_QGRAPHS
 #include <QtGraphsWidgets/q3dsurfacewidgetitem.h>
 #include <QtGraphsWidgets/q3dbarswidgetitem.h>
+#endif
 
 #include <limits>
 

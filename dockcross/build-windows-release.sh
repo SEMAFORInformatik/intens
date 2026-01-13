@@ -26,5 +26,5 @@ DOCKCROSS="docker run --rm --name dockcross-$$RANDOM \
 ${DOCKCROSS_IMAGE}"
 
 # NOTE: -DUSE_LSP is off, cannot use matlab in shared config
-${DOCKCROSS} bash -c "cp -r /tmp/wine /tmp/wineuser && cmake${PLATFORM_EXT} -DUSE_OAUTH=True -DUSE_LSP=ON -B ${TARGET_DIR} -S . && \
+${DOCKCROSS} bash -c "cp -r /tmp/wine /tmp/wineuser && cmake${PLATFORM_EXT} -DUSE_OAUTH=True -DUSE_LSP=ON -DUSE_QT6GRAPHS=OFF -B ${TARGET_DIR} -S . && \
     cmake${PLATFORM_EXT} --build $TARGET_DIR -j8 && (cd ${TARGET_DIR}; cpack${PLATFORM_EXT})"

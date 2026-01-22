@@ -150,11 +150,21 @@ void MessageQueueRequest::slot_receivedRequestData(const std::vector<std::string
   if (getRequestOutStreams().size()) {
     for(std::vector<Stream*>::const_iterator it = getRequestOutStreams().begin();
         it != getRequestOutStreams().end(); ++it, ++idx) {
-      (*it)->clearRange( );
+      (*it)->clearRange();
+
+      // read data
       if (idx < dataList.size()) {
         BUG_DEBUG("Size of Data: " << dataList[idx]);
         std::istringstream is( dataList[idx] );
-        (*it)->read( is );
+        if((*it)->getFileFlag()){
+          // streams with file options are already saved to a file
+          // read filename
+          (*it)->setFileFlag(false);
+          (*it)->read( is );
+          (*it)->setFileFlag(true);
+        } else {
+          (*it)->read( is );
+        }
       }
       else {
         std::istringstream is((*it)->hasJSONFlag() ? "{}" : "");

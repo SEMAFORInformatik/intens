@@ -52,7 +52,7 @@ public:
   /// get stream locale flag
   char getLocaleFlag(){ return m_locale; }
   /// set stream file flag
-  void setFileFlag(){ m_file = true; }
+  void setFileFlag(bool set=true){ m_file = set; }
   /// get stream file flag
   bool getFileFlag(){ return m_file; }
   /// get file size of stream with file flag

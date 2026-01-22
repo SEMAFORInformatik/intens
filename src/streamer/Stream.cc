@@ -93,8 +93,12 @@ std::string Stream::writeFileData(std::istream& is) {
   ulong size=0;
   while (is.get(c))
     ++size, outfile << c;
-  BUG_INFO("writeFileData, size: " << size);
+  BUG_DEBUG("writeFileData, size: " << size);
   outfile.close();
+
+  // write filename, AND NOT CONTENT to StreamParameter
+  std::istringstream iss(filename);
+  m_pargroup.read( iss );
   return filename;
 }
 
@@ -104,16 +108,13 @@ std::string Stream::writeFileData(std::istream& is) {
 std::string Stream::writeFileData(void* data, int size) {
   std::string filename = newStreamFilename();
   std::ofstream outfile(filename.c_str(), std::ios::binary | std::ios::out);
-  char* dataStr = static_cast<char*>(data);
-  ulong idx = 0;
-  m_filesize = size;
-  int bufsize=BUFSIZ;
-  while (idx < size) {
-    outfile.write(&dataStr[idx], idx < (size-bufsize) ? bufsize : (size-idx));
-    idx += bufsize;
-  }
-  BUG_INFO("writeFileData, idx: " << idx << " , size: " << size);
+  outfile.write(static_cast<const char*>(data), size);
+  BUG_DEBUG("writeFileData, filename: " << filename << " , size: " << size);
   outfile.close();
+
+  // write filename, AND NOT CONTENT to StreamParameter
+  std::istringstream iss(filename);
+  m_pargroup.read( iss );
   return filename;
 }
 
@@ -150,7 +151,7 @@ void Stream::readFileData(char* cp) {
     i++, cp[p++] = c;
   ifs.close();
   cp[p] = '\0';
-  BUG_INFO("readFileData char, size: " << i  << ", p: " << p);
+  BUG_DEBUG("readFileData char, size: " << i  << ", p: " << p);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -735,7 +736,7 @@ bool Stream::read( std::istream &istr ){
         rslt = m_pargroup.read( is );
       int msec  = startTime.msecsTo(QTime::currentTime());
       if (msec > 0) {
-        BUG_INFO("Read Stream: " << Name() <<Date::durationAsString(msec));
+        BUG_DEBUG("Read Stream: " << Name() <<Date::durationAsString(msec));
       }
       if (hasAppendOption() ){
         m_pargroup.setAppendOption(false);
@@ -752,7 +753,7 @@ bool Stream::read( std::istream &istr ){
         rslt = m_pargroup.read( istr );
       int msec  = startTime.msecsTo(QTime::currentTime());
       if (msec > 0) {
-        BUG_INFO("Read Stream: " << Name() <<Date::durationAsString(msec));
+        BUG_DEBUG("Read Stream: " << Name() <<Date::durationAsString(msec));
       }
       if( !rslt ){
         BUG_MSG(" - read failed");

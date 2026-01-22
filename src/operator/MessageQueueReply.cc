@@ -165,12 +165,21 @@ void MessageQueueReply::slot_receivedReplyData(const std::string& header,
     int idx=0;
     for (std::vector<Stream*>::iterator it = _in_streams.begin();
          it != _in_streams.end(); ++it, ++idx) {
-      //      (*it)->clearRange( );
+      (*it)->clearRange( );
       if (idx < dataList.size()) {
         BUG_DEBUG("Request data: "
                   << (dataList[idx].find("LOGIN") == std::string::npos ? dataList[idx] : "LoginData"));
+        // read data
         std::stringstream is( dataList[idx] );
-        (*it)->read( is );
+        if((*it)->getFileFlag()){
+          // streams with file options are already saved to a file
+          // read filename
+          (*it)->setFileFlag(false);
+          (*it)->read( is );
+          (*it)->setFileFlag(true);
+        } else {
+          (*it)->read( is );
+        }
       }
     }
     m_replyThread->setResponseStreams( _out_streams );
@@ -196,7 +205,6 @@ void MessageQueueReply::slot_receivedReplyData(const std::string& header,
       GuiFactory::Instance()->update( GuiElement::reason_Process );
     }
   }
-
 }
 
 //----------------------------------------------------

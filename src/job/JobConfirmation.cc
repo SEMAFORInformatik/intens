@@ -19,7 +19,6 @@ INIT_LOGGER();
 /* --------------------------------------------------------------------------- */
 
 void JobConfirmation::startJobAction(){
-
   GuiFactory::Instance()->showDialogConfirmation( m_element
 						  , "Confirm"
 						  , m_message
@@ -34,6 +33,7 @@ void JobConfirmation::startJobAction(){
 /* --------------------------------------------------------------------------- */
 
 void JobConfirmation::stopJobAction(){
+  BUG_DEBUG("stop");
   assert( false );
 }
 
@@ -42,6 +42,7 @@ void JobConfirmation::stopJobAction(){
 /* --------------------------------------------------------------------------- */
 
 void JobConfirmation::confirmYesButtonPressed(){
+  BUG_DEBUG("yes");
   endJobAction( JobAction::job_Ok );
 }
 
@@ -50,6 +51,7 @@ void JobConfirmation::confirmYesButtonPressed(){
 /* --------------------------------------------------------------------------- */
 
 void JobConfirmation::confirmNoButtonPressed(){
+  BUG_DEBUG("no");
   endJobAction( JobAction::job_Nok );
 }
 
@@ -58,5 +60,6 @@ void JobConfirmation::confirmNoButtonPressed(){
 /* --------------------------------------------------------------------------- */
 
 void JobConfirmation::confirmCancelButtonPressed(){
+  BUG_DEBUG("cancel");
   endJobAction( JobAction::job_Canceled );
 }

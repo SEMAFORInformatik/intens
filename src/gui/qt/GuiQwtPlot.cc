@@ -2580,13 +2580,13 @@ bool GuiQWTPlot::write( InputChannelEvent &event ) {
     getMyForm()->getElement()->getQtElement()->create();
   }
   update(reason_Always);
-  std::string tmp_eps_name;
+  std::string tmp_eps_name("/tmp/xxxx.eps");
   if (AppData::Instance().disableFeatureSVG()) {
-    QTemporaryFile tmp_file( QString::fromStdString(compose("%1%2XXXXXX.eps", QDir::tempPath().toStdString(),QDir::separator().toLatin1())) );
-    tmp_file.open();
-    tmp_eps_name =  tmp_file.fileName().toStdString();
-    tmp_file.remove();
-
+    QTemporaryFile tmp_file( QString::fromStdString(compose("%1%2XXXXXX.eps", QDir::tempPath().toStdString(),QDir::separator().row())) );
+    if (tmp_file.open()){
+      tmp_eps_name =  tmp_file.fileName().toStdString();
+      tmp_file.remove();
+    }
     QSize s(m_plot->sizeHint());
     QPixmap pm(s.width(), s.height());
     pm.fill();
@@ -2617,7 +2617,8 @@ bool  GuiQWTPlot::generateFileWithSvgGenerator(std::string& outFilename, bool bP
 
   QSvgGenerator svg;
   QTemporaryFile tmp_svg(QString::fromStdString(compose("%1%2XXXXXXXX.svg",  QDir::tempPath().toStdString(),QDir::separator().toLatin1())));
-  tmp_svg.open();
+  if (!tmp_svg.open())
+    return false;
   ReportGen::Instance().newTmpFile( tmp_svg.fileName().toStdString() );
 
   //  std::cout << " ======================== 1 GuiQWTPlot::generateFileEps fn["<<outFilename<<"] temp["<<tmp_svg.fileName().toStdString()<<"]\n";
@@ -3804,25 +3805,25 @@ void GuiQWTPlot::clearPlots(bool always) {
       void* voidItem = (*pit)->getPlotCurve((*it)->cycle(), (*it)->xIndex(), (*it)->yIndex());
       QwtPlotItem* plotItem = 0;
 #if !HAVE_POLAR
-      void *polarCurve = 0;
+      QwtPolarCurve *polarCurve = 0;
 #else
       QLineSeries *polarCurve = 0;
+#endif
       getClassPointer((*pit), voidItem, plotItem, polarCurve);
 
       BUG_DEBUG("ClearPlots plotItem["<<plotItem<<"]  polarCurve["<<polarCurve<<"]  getAxisType["<<(*pit)->getAxisType()<<"]");
-#endif
       if (std::find(rm_qwtPlotItems.begin(), rm_qwtPlotItems.end(), plotItem) != rm_qwtPlotItems.end()) {
         (*pit)->setPlotCurve((*it)->cycle(), (*it)->xIndex(), (*it)->yIndex(), 0);
       } else
         if (voidItem) {
           // remove legend entry
-#if HAVE_QPOLAR
           if (polarCurve) {
+#if HAVE_QPOLAR
             m_polarChart->removeSeries(polarCurve);
             delete polarCurve;
-          } else
 #endif
-          if (plotItem){
+          } else {
+            ///          if (plotItem){
             m_picker->clearSelection( dynamic_cast<QwtPlotCurve*>(plotItem));
             m_legendVis[ plotItem->title().text() ] = plotItem->isVisible();
             plotItem->setItemAttribute(QwtPlotItem::Legend, false);

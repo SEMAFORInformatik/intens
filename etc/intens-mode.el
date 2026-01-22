@@ -42,10 +42,9 @@
     intens-mode-map)
   "Keymap for INTENS major mode")
 
+;; Automatically use intens-mode for .des, .des.in
 (add-to-list 'auto-mode-alist '("\\.des\\'" . intens-mode))
-;; use intens-ts-mode for below file types
 (add-to-list 'auto-mode-alist '("\\.des.in\\'" . intens-mode))
-(add-to-list 'auto-mode-alist '("\\.inc\\'" . intens-mode))
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs

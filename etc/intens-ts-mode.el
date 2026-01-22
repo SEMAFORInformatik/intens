@@ -92,12 +92,7 @@
 (setq project-vc-extra-root-markers '(".intensproj"))
 
 ;; Automatically use intens-ts-mode for .des, .des.in and .inc
+;not yet; (add-to-list 'auto-mode-alist '("\\.des\\'" . intens-ts-mode))
 ;not yet; (add-to-list 'auto-mode-alist '("\\.des.in\\'" . intens-ts-mode))
-;not yet; (add-to-list 'auto-mode-alist '("\\.inc\\'" . intens-ts-mode))
-;; Use intens-mode for below files
-;; (add-to-list 'auto-mode-alist '("\\.des\\'" . intens-mode))
-(provide 'intens-ts-mode)
-
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . intens-ts-mode))
-;; Use intens-mode for below files
-(add-to-list 'auto-mode-alist '("\\.des\\'" . intens-mode))
+(provide 'intens-ts-mode)

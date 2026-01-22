@@ -59,20 +59,18 @@ static struct option long_options[] = {
   ,{"fontname",     required_argument, 0,  0}
   ,{"background",   required_argument, 0,  0}
   ,{"xfontlist",    required_argument, 0,  0}
-  ,{"logconfig",    required_argument, 0,  0}
-  ,{"localeDomain", required_argument, 0,  0}
+  ,{"listFonts",    no_argument,       0,  0}
   ,{"init",         required_argument, 0,  0}
   ,{"notitle",      no_argument,       0,  0}
   ,{"shortMainTitle", no_argument,     0,  0}
   ,{"toolbar",      no_argument,       0,  0}
   ,{"undo",         no_argument,       0,  0}
-  ,{"detailGrid",   no_argument,       0,  0}
   ,{"helpmsg",      no_argument,       0,  0}
   ,{"resfile",      required_argument, 0,  0}
   ,{"createRes",    required_argument, 0,  0}
-  ,{"listFonts",    no_argument,       0,  0}
   ,{"qtGuiStyle",   required_argument, 0,  0}
   ,{"listQtGuiStyles",  no_argument,   0,  0}
+  ,{"localeDomain", required_argument, 0,  0}
   ,{"maxoptions",   required_argument, 0,  0}
   ,{"maxlines",     required_argument, 0,  0}
   ,{"toolTipDuration", required_argument, 0,  0}
@@ -81,11 +79,11 @@ static struct option long_options[] = {
   ,{"startupImage", required_argument, 0,  0}
   ,{"rolefile",     required_argument, 0,  0}
   ,{"includePath",  required_argument, 0,  0}
-  ,{"disableSVGSupport", no_argument,       0,  0}
   ,{"pspreviewer",  required_argument, 0,  0}
+  ,{"disableSVGSupport", no_argument,       0,  0}
   ,{"printerConfig",required_argument, 0,  0}
-  ,{"xml",          required_argument, 0,  0}
   ,{"jsb",          required_argument, 0,  0}
+  ,{"xml",          required_argument, 0,  0}
   ,{"xmlPath",      required_argument, 0,  0}
   ,{"apprunPath",   required_argument, 0,  0}
   ,{"dbdriver",     required_argument, 0,  0}
@@ -93,33 +91,33 @@ static struct option long_options[] = {
   ,{"debug",        required_argument, 0,  0}
   ,{"persistfile",           required_argument, 0,  0}
   ,{"persistfileREST",       required_argument, 0,  0}
-
+  ,{"logconfig",    required_argument, 0,  0}
   ,{"log4cplusPropertiesFile", required_argument, 0,  0}
   ,{"startToken",   required_argument, 0,  0}
   ,{"reflistfile",  required_argument, 0,  0}
   ,{"helpdir",      required_argument, 0,  0}
   ,{"version",      no_argument,       0,  0}
   ,{"help",         no_argument,       0,  0}
+  ,{"withTargetStreamInfo", no_argument,  0,  0}
   ,{"whichGui",     no_argument,       0,  0}
   ,{"withWheelEvent", no_argument,  0,  0}
   ,{"withInputStructFunc", no_argument,  0,  0}
   ,{"withoutArrowKeys", no_argument,  0,  0}
   ,{"withKeypadDecimalPoint", no_argument,  0,  0}
-  ,{"withTargetStreamInfo", no_argument,  0,  0}
   ,{"defaultScaleFactor1", no_argument,  0,  0}
   ,{"withoutEditableComboBox", no_argument,  0,  0}
   ,{"withoutTextPopupMenu", no_argument,  0,  0}
   ,{"withoutRangeCheck", no_argument,  0,  0}
-#ifdef HAVE_OAUTH
-  ,{"oauth",     required_argument, 0,  0}
-  ,{"oauthAccessTokenUrl",     required_argument, 0,  0}
-#endif
   ,{"test",         required_argument,       0,  0}
   ,{"testmode", no_argument, 0, 0}
   ,{"noInitFunc", no_argument, 0,  0}
   ,{"replyPort",    required_argument,       0,  0}
   ,{"sendMessageQueueWithMetadata", no_argument,  0,  0}
   ,{"defaultMessageQueueDependencies", required_argument,  0,  0}
+#ifdef HAVE_OAUTH
+  ,{"oauth",     required_argument, 0,  0}
+  ,{"oauthAccessTokenUrl",     required_argument, 0,  0}
+#endif
   ,{"opentelemetryMetadata", no_argument,  0,  0}
   ,{"lspWorker", no_argument,  0,  0}
   ,{"unitManager", optional_argument,  0,  0}
@@ -146,7 +144,6 @@ AppData::AppData()
   , m_app_shortMainTitle( false )
   , m_app_toolbar( false )
   , m_undo( false )
-  , m_detailGrid( false )
   , m_helpmessages( NoneType )
   , m_maxoptions( 0 )
   , m_maxlines( 0 )
@@ -446,7 +443,6 @@ void AppData::setHelpDirectory( const char *dirname ){
 }
 void AppData::setFontname( const std::string &n )        { m_fontname = n;}
 void AppData::setInitfileName( const std::string &n )    { m_initfile = n;}
-void AppData::setDetailGrid( bool d )                    { m_detailGrid = d;}
 void AppData::setMaxLines( int l )                       { m_maxlines = l; }
 void AppData::setToolTipDuration( int sec )              { m_toolTipDuration = sec; }
 void AppData::setIncludePath( const std::string &n )     { m_includePath = n; }
@@ -628,7 +624,6 @@ bool AppData::AppTitlebar()                     { return m_app_titlebar; }
 bool AppData::AppShortMainTitle()               { return m_app_shortMainTitle; }
 bool AppData::AppToolbar()                      { return m_app_toolbar; }
 bool AppData::Undo()                            { return m_undo; }
-bool AppData::DetailGrid()                      { return m_detailGrid; }
 AppData::HelpMessageType AppData::Helpmessages(){ return m_helpmessages; }
 const std::string &AppData::Title()             { return m_title; }
 int AppData::MaxOptions()                       { return m_maxoptions; }
@@ -769,7 +764,6 @@ void AppData::setDefaultOpts(){
   setInitfileName( "" );
   setAppTitlebar( true );
   setAppShortMainTitle( false );
-  setDetailGrid( false );
   setHelpmessages( NoneType );
 #ifndef HAVE_QT
   setResfile( "./intensrc" );
@@ -833,7 +827,6 @@ void AppData::getOpt(int &argc, char **argv){
   setDefaultOpts();
 
   int c;
-  int digit_optind = 0;
 
   while ( argc > 1) {
 #if  __MINGW32__
@@ -847,47 +840,56 @@ void AppData::getOpt(int &argc, char **argv){
     }
 #endif
 
-    int this_option_optind = optind ? optind : 1;
     int option_index = 0;
     c = getopt_long (argc, argv, "", long_options, &option_index);
     if (c == -1)
       break;
     if (c == 0){
-      if( strcmp( long_options[option_index].name, "matlabnode")==0){
+      const char* optName = long_options[option_index].name;
+      // if( strcmp( optName, "geometry")==0){
+      //   ...
+      // }
+      // if( strcmp( optName, "name")==0){
+      //   ...
+      // }
+      // if( strcmp( optName, "display")==0){
+      //   ...
+      // }
+      if( strcmp( optName, "matlabnode")==0){
         if (optarg) setMatlabnode( optarg );
       }
-      if( strcmp( long_options[option_index].name, "fontname")==0){
+      else if( strcmp( optName, "fontname")==0){
         if (optarg) setFontname( optarg );
       }
-      if( strcmp( long_options[option_index].name, "xfontlist")==0){
+      // else if( strcmp( optName, "background")==0){
+      //   ...
+      // }
+      else if( strcmp( optName, "xfontlist")==0){
         if (optarg) setXFontList( optarg );
       }
-      if( strcmp( long_options[option_index].name, "logconfig")==0){
-        if (optarg) setLogConfig( optarg );
+      else if( strcmp( optName, "listFonts")==0){
+        setListFonts( true );
       }
-      if( strcmp( long_options[option_index].name, "init")==0){
+      else if( strcmp( optName, "init")==0){
         if (optarg) setInitfileName( optarg );
       }
-      if( strcmp( long_options[option_index].name, "notitle")==0){
+      else if( strcmp( optName, "notitle")==0){
         setAppTitlebar( false );
       }
-      if( strcmp( long_options[option_index].name, "shortMainTitle")==0){
+      else if( strcmp( optName, "shortMainTitle")==0){
         setAppShortMainTitle( true );
       }
-      if( strcmp( long_options[option_index].name, "toolbar")==0){
-        std::cerr<<"Option \"toolbar\" ?"<<std::endl;
-      }
-      if( strcmp( long_options[option_index].name, "undo")==0){
+      // else if( strcmp( optName, "toolbar")==0){
+      //   std::cerr<<"Option \"toolbar\" ?"<<std::endl;
+      // }
+      else if( strcmp( optName, "undo")==0){
         setUndo();
       }
-      if( strcmp( long_options[option_index].name, "detailGrid")==0){
-        setDetailGrid( true );
-      }
-      if( strcmp( long_options[option_index].name, "helpmsg")==0){
+      else if( strcmp( optName, "helpmsg")==0){
         HelpMessageType helpMsgType = StatusBarType;
         setHelpmessages( helpMsgType );
       }
-      if( strcmp( long_options[option_index].name, "resfile")==0){
+      else if( strcmp( optName, "resfile")==0){
         if (optarg){
 #ifndef HAVE_QT
           if( ResourceFile().empty() ){
@@ -900,157 +902,154 @@ void AppData::getOpt(int &argc, char **argv){
           setResfile( optarg );
         }
       }
-      if( strcmp( long_options[option_index].name, "createRes")==0){
+      else if( strcmp( optName, "createRes")==0){
         setResCreate( true );
         if (optarg) setNewResFileName(optarg);
       }
-      if( strcmp( long_options[option_index].name, "listFonts")==0){
-        setListFonts( true );
-      }
-      if( strcmp( long_options[option_index].name, "qtGuiStyle")==0){
+      else if( strcmp( optName, "qtGuiStyle")==0){
         if (optarg) setQtGuiStyle( optarg );
       }
-      if( strcmp( long_options[option_index].name, "listQtGuiStyles")==0){
+      else if( strcmp( optName, "listQtGuiStyles")==0){
         setDisplayQtGuiStyles( true );
       }
-      if( strcmp( long_options[option_index].name, "localeDomain")==0){
+      else if( strcmp( optName, "localeDomain")==0){
         if (optarg) setLocaleDomainName( optarg );
       }
-      if( strcmp( long_options[option_index].name, "maxoptions")==0){
+      else if( strcmp( optName, "maxoptions")==0){
         if (optarg) setMaxOptions( atoi(optarg) );
       }
-      if( strcmp( long_options[option_index].name, "maxlines")==0){
+      else if( strcmp( optName, "maxlines")==0){
         if (optarg) setMaxLines( atoi(optarg) );
       }
-      if( strcmp( long_options[option_index].name, "toolTipDuration")==0){
+      else if( strcmp( optName, "toolTipDuration")==0){
 #if QT_VERSION > 0x050200
         if (optarg) setToolTipDuration( atoi(optarg) );
 #else
         std::cerr<<"Ignoring option toolTipDuration (needs Qt Version 5.2)!"<<std::endl;
 #endif
       }
-      if( strcmp( long_options[option_index].name, "leftIcon")==0){
+      else if( strcmp( optName, "leftIcon")==0){
         if (optarg) setLeftTitleIcon( optarg );
       }
-      if( strcmp( long_options[option_index].name, "rightIcon")==0){
+      else if( strcmp( optName, "rightIcon")==0){
         if (optarg) setRightTitleIcon( optarg );
       }
-      if( strcmp( long_options[option_index].name, "startupImage")==0){
+      else if( strcmp( optName, "startupImage")==0){
         if (optarg) setStartupImage( optarg );
       }
-      if( strcmp( long_options[option_index].name, "rolefile")==0){
+      else if( strcmp( optName, "rolefile")==0){
         if (optarg) setRolefileName( optarg );
       }
-      if( strcmp( long_options[option_index].name, "includePath")==0){
+      else if( strcmp( optName, "includePath")==0){
         if (optarg) setIncludePath( optarg );
       }
-      if( strcmp( long_options[option_index].name, "pspreviewer")==0){
+      else if( strcmp( optName, "pspreviewer")==0){
         if (optarg) setPsPreviewer( optarg );
       }
-      if( strcmp( long_options[option_index].name, "disableSVGSupport")==0){
+      else if( strcmp( optName, "disableSVGSupport")==0){
         setDisableFeatureSVG( true );
       }
-      if( strcmp( long_options[option_index].name, "printerConfig")==0){
+      else if( strcmp( optName, "printerConfig")==0){
         if (optarg) setPrinterConfig( optarg );
       }
-      if( strcmp( long_options[option_index].name, "jsb")==0){
+      else if( strcmp( optName, "jsb")==0){
         m_outputFormat = "jsb";
         if (optarg) setOutputFile( optarg );
       }
-      if( strcmp( long_options[option_index].name, "xml")==0){
+      else if( strcmp( optName, "xml")==0){
         m_outputFormat = "xml";
         if (optarg) setOutputFile( optarg );
       }
-      if( strcmp( long_options[option_index].name, "xmlPath")==0){
+      else if( strcmp( optName, "xmlPath")==0){
         if (optarg) setXmlPath( optarg );
       }
-      if( strcmp( long_options[option_index].name, "apprunPath")==0){
+      else if( strcmp( optName, "apprunPath")==0){
         if (optarg) setApprunPath( optarg );
       }
-      if( strcmp( long_options[option_index].name, "dbdriver")==0){
+      else if( strcmp( optName, "dbdriver")==0){
         if (optarg) setDBdriver( optarg );
       }
-      if( strcmp( long_options[option_index].name, "db")==0){
-        if (optarg) setDBdriver( optarg );
-      }
-      if( strcmp( long_options[option_index].name, "dbautologon")==0){
+      else if( strcmp( optName, "dbautologon")==0){
         setDBAutologon( true );
       }
-      if( strcmp( long_options[option_index].name, "debug")==0){
+      else if( strcmp( optName, "debug")==0){
         if (optarg)
           if( !Debugger::ModifyDebugFlag( optarg, true ) )
             std::cerr << " Invalid debug category '" << optarg << "'\n";
       }
-      if( strcmp( long_options[option_index].name, "persistfile")==0){
+      else if( strcmp( optName, "persistfile")==0){
         if (optarg) setPersistItemsFilename( optarg );
       }
-      if( strcmp( long_options[option_index].name, "persistfileREST")==0){
+      else if( strcmp( optName, "persistfileREST")==0){
         if (optarg) setPersistItemsFilename( optarg, true );
       }
-      if( strcmp( long_options[option_index].name, "log4cplusPropertiesFile")==0){
+      else if( strcmp( optName, "logconfig")==0){
+        if (optarg) setLogConfig( optarg );
+      }
+      else if( strcmp( optName, "log4cplusPropertiesFile")==0){
         if (optarg) setLog4cplusPropertiesFilename( optarg );
       }
-      if( strcmp( long_options[option_index].name, "startToken")==0){
+      else if( strcmp( optName, "startToken")==0){
         if (optarg) setParserStartToken( optarg );
       }
-      if( strcmp( long_options[option_index].name, "reflistfile")==0){
+      else if( strcmp( optName, "reflistfile")==0){
         if (optarg) setReflistFilename( optarg );
       }
-      if( strcmp( long_options[option_index].name, "helpdir")==0){
+      else if( strcmp( optName, "helpdir")==0){
         if (optarg) setHelpDirectory( optarg );
       }
-      if( strcmp( long_options[option_index].name, "version")==0){
+      else if( strcmp( optName, "version")==0){
         setDisplayVersion();
       }
-      if( strcmp( long_options[option_index].name, "help")==0){
+      else if( strcmp( optName, "help")==0){
         setDisplayHelp();
       }
-      if( strcmp( long_options[option_index].name, "withTargetStreamInfo")==0){
+      else if( strcmp( optName, "withTargetStreamInfo")==0){
         setTargetStreamInfo( true );
       }
-      if( strcmp( long_options[option_index].name, "whichGui")==0){
+      else if( strcmp( optName, "whichGui")==0){
         setDisplayWhichGui( true );
       }
-      if( strcmp( long_options[option_index].name, "withWheelEvent")==0){
+      else if( strcmp( optName, "withWheelEvent")==0){
         setGuiWheelEvent( true );
       }
-      if( strcmp( long_options[option_index].name, "withInputStructFunc")==0){
+      else if( strcmp( optName, "withInputStructFunc")==0){
         setInputStructFunc( true );
       }
-      if( strcmp( long_options[option_index].name, "withoutArrowKeys")==0){
+      else if( strcmp( optName, "withoutArrowKeys")==0){
         setArrowKeys( false );
       }
-      if( strcmp( long_options[option_index].name, "withKeypadDecimalPoint")==0){
+      else if( strcmp( optName, "withKeypadDecimalPoint")==0){
         setKeypadDecimalPoint( true );
       }
-      if( strcmp( long_options[option_index].name, "defaultScaleFactor1")==0){
+      else if( strcmp( optName, "defaultScaleFactor1")==0){
         setDefaultScaleFactor1( true );
       }
-      if( strcmp( long_options[option_index].name, "withoutEditableComboBox")==0){
+      else if( strcmp( optName, "withoutEditableComboBox")==0){
         setGuiComboBoxEditable( false );
       }
-      if( strcmp( long_options[option_index].name, "withoutTextPopupMenu")==0){
+      else if( strcmp( optName, "withoutTextPopupMenu")==0){
         setGuiTextPopupMenu( false );
       }
-      if( strcmp( long_options[option_index].name, "withoutRangeCheck")==0){
+      else if( strcmp( optName, "withoutRangeCheck")==0){
         setGuiRangeCheck( false );
       }
-      if( strcmp( long_options[option_index].name, "test")==0){
+      else if( strcmp( optName, "test")==0){
         if (optarg) setTestModeFunc( optarg );
       }
-      if( strcmp( long_options[option_index].name, "testmode")==0){
+      else if( strcmp( optName, "testmode")==0){
         m_testMode = true;
       }
-      if( strcmp( long_options[option_index].name, "noInitFunc")==0){
+      else if( strcmp( optName, "noInitFunc")==0){
         m_noInitFunc = true;
       }
-      if( strcmp( long_options[option_index].name, "replyPort")==0){
+      else if( strcmp( optName, "replyPort")==0){
         if (optarg) setReplyPort( atoi(optarg) );
       }
-      if( strcmp( long_options[option_index].name, "sendMessageQueueWithMetadata")==0){
+      else if( strcmp( optName, "sendMessageQueueWithMetadata")==0){
         setSendMessageQueueWithMetadata( true );
       }
-      if( strcmp( long_options[option_index].name, "defaultMessageQueueDependencies")==0){
+      else if( strcmp( optName, "defaultMessageQueueDependencies")==0){
         if (optarg) {
           bool b(false);
           if (strcmp(optarg, "true") == 0 ||
@@ -1061,37 +1060,43 @@ void AppData::getOpt(int &argc, char **argv){
         }
       }
 #ifdef HAVE_OAUTH
-      if( strcmp( long_options[option_index].name, "oauth")==0){
+      else if( strcmp( optName, "oauth")==0){
         if (optarg) {
            setOAuth(optarg);
         }
       }
-      if( strcmp( long_options[option_index].name, "oauthAccessTokenUrl")==0){
+      else if( strcmp( optName, "oauthAccessTokenUrl")==0){
         if (optarg) setOAuthAccessTokenUrl(optarg);
       }
 #endif
-    }
-    if( strcmp( long_options[option_index].name, "opentelemetryMetadata")==0){
-      setOpenTelemetryMetadata();
-    }
-    if( strcmp( long_options[option_index].name, "lspWorker")==0){
-      setLspWorker();
-    }
-    if( strcmp( long_options[option_index].name, "unitManager")==0){
-      UnitManagerFeature featureComboBox(unitManagerFeature_comboBox_hidden);
-      if (optarg){
-        if (strcmp(optarg, "comboBox_always") == 0 || strcmp(optarg, "1") == 0) {
-          featureComboBox = unitManagerFeature_comboBox_always;
-        } else
-        if (strcmp(optarg, "comboBox_hide_single") == 0 ||
-            strcmp(optarg, "comboBox_if_choice") == 0 ||
-            strcmp(optarg, "comboBox_if_selection") == 0 ||
-            strcmp(optarg, "0") == 0) {
-          featureComboBox = unitManagerFeature_comboBox_onlyMultiple;
-        } else
-          std::cerr << "unknown argument: " << optarg << ", default 'comboBox hidden' option will be used, " << std::endl;
+      else if( strcmp( optName, "opentelemetryMetadata")==0){
+        setOpenTelemetryMetadata();
       }
-      setUnitManagerFeature(featureComboBox);
+      else if( strcmp( optName, "lspWorker")==0){
+        setLspWorker();
+      }
+      else if( strcmp( optName, "unitManager")==0){
+        UnitManagerFeature featureComboBox(unitManagerFeature_comboBox_hidden);
+        if (optarg){
+          if (strcmp(optarg, "comboBox_always") == 0 || strcmp(optarg, "1") == 0) {
+            featureComboBox = unitManagerFeature_comboBox_always;
+          } else
+          if (strcmp(optarg, "comboBox_hide_single") == 0 ||
+              strcmp(optarg, "comboBox_if_choice") == 0 ||
+              strcmp(optarg, "comboBox_if_selection") == 0 ||
+              strcmp(optarg, "0") == 0) {
+            featureComboBox = unitManagerFeature_comboBox_onlyMultiple;
+          } else
+            std::cerr << "unknown argument: " << optarg << ", default 'comboBox hidden' option will be used, " << std::endl;
+        }
+        setUnitManagerFeature(featureComboBox);
+      }
+      else{
+        std::cerr << "Option '" << optName;
+        if (optarg)
+          std::cerr << " " << optarg;
+        std::cerr << "' is ignored" << std::endl;
+      }
     }
   }
 

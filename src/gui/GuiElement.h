@@ -207,10 +207,10 @@ public:
   , button_Save
   // second button
   , button_No
-  , button_Discard
   , button_Apply
   , button_Open
   // third button
+  , button_Discard
   , button_Cancel
   , button_Abort
   , button_None

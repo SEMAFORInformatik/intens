@@ -432,6 +432,18 @@ void DataPoolIntens::initializeDataPool(){
 				   , "DistnTable"
 				   , DataDictionary::type_Real );
   static_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "rotationX"
+				   , DataDictionary::type_Integer );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetSlider();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "rotationY"
+				   , DataDictionary::type_Integer );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetSlider();
+
 }
 
 /* --------------------------------------------------------------------------- */

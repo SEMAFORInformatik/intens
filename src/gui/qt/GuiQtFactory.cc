@@ -440,8 +440,7 @@ GuiElement::ButtonType GuiQtFactory::showDialogConfirmation( GuiElement *e
   if (HEADLESS_CHECK()) {
     GuiElement::ButtonType ret;
     ret = s_headlessGuiFactory->showDialogConfirmation(e, title, message, listener, buttonText, cancelBtn, defaultBtn);
-    if (ret != GuiElement::button_None)
-      return ret;
+    return ret;
   }
 
   return QtDialogConfirmation::showDialog(e, title, message, listener, buttonText, cancelBtn, defaultBtn);
@@ -460,8 +459,7 @@ bool GuiQtFactory::showDialogInformation( GuiElement *e
 
   // webapi query
   if (HEADLESS_CHECK()) {
-    if (s_headlessGuiFactory->showDialogInformation(e, title, message, listener))
-      return true;
+    return s_headlessGuiFactory->showDialogInformation(e, title, message, listener);
   }
 
   return QtDialogInformation::showDialog(e, title, message, listener);
@@ -502,8 +500,7 @@ std::string GuiQtFactory::showDialogTextInputExt(GuiElement *e
   // webapi query
   if (HEADLESS_CHECK()) {
     std::string ret = s_headlessGuiFactory->showDialogTextInputExt(e, title, message, label, buttonText, buttonClicked, listener);
-    if (buttonClicked != GuiElement::button_None)
-      return ret;
+    return ret;
   }
 
   //

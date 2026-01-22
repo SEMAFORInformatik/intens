@@ -26,7 +26,8 @@ static std::string s_recv_write_to_file_stream(zmq::socket_t & socket, Stream* s
 static bool s_send_read_from_file_stream(zmq::socket_t & socket, Stream* stream) {
   BUG_DEBUG("s_send_read_from_file_stream, size: "<< stream->getStreamFileSize());
   zmq::message_t message(stream->getStreamFileSize()+1); // +1 for end character '\0'
-  char *cp = reinterpret_cast<char*>(message.data());
+
+  char *cp = static_cast<char*>(message.data());
   stream->readFileData(cp);
   cp[stream->getStreamFileSize()] = '\0';
 #ifdef CPPZMQ_VERSION
@@ -450,13 +451,14 @@ void MessageQueueReplyThread::run() {
                 if (!m_expectedQueryResultMembers.empty()){
                   bool bExpected(false);
                   for (auto expected: m_expectedQueryResultMembers){
+                    BUG_DEBUG("Check expected : " << expected);
                     if (m_queryResponseJsonObj.isMember(expected)){
                       bExpected = true;
                       break;
                     }
                   }
-                  if (!bExpected){
-                    BUG_INFO("Unexpected query answer");
+                  if (!m_expectedQueryResultMembers.empty() && !bExpected){
+                    BUG_INFO("Unexpected query answer, expectedEmpty: " << m_expectedQueryResultMembers.empty());
                     setStatus(WORKING);
                     emit receivedData(header, m_dataList);
                   }

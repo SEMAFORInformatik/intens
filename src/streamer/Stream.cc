@@ -95,6 +95,7 @@ std::string Stream::writeFileData(std::istream& is) {
     ++size, outfile << c;
   BUG_DEBUG("writeFileData, size: " << size);
   outfile.close();
+  m_filesize = size;
 
   // write filename, AND NOT CONTENT to StreamParameter
   std::istringstream iss(filename);
@@ -111,6 +112,7 @@ std::string Stream::writeFileData(void* data, int size) {
   outfile.write(static_cast<const char*>(data), size);
   BUG_DEBUG("writeFileData, filename: " << filename << " , size: " << size);
   outfile.close();
+  m_filesize = size;
 
   // write filename, AND NOT CONTENT to StreamParameter
   std::istringstream iss(filename);
@@ -143,15 +145,10 @@ void Stream::readFileData(char* cp) {
   std::string filename = getStreamFilename();
   if (filename.empty())
     return;
+  BUG_DEBUG("readFileData filename: "<< filename);
   std::ifstream ifs(filename.c_str(), std::ios::binary | std::ios::in);
-  char c;
-  ulong p=0;
-  ulong i=0;
-  while (ifs.get(c))
-    i++, cp[p++] = c;
+  ifs.read(static_cast<char*>(cp), getStreamFileSize());
   ifs.close();
-  cp[p] = '\0';
-  BUG_DEBUG("readFileData char, size: " << i  << ", p: " << p);
 }
 
 /* --------------------------------------------------------------------------- */

@@ -470,6 +470,7 @@ bool HeadlessGuiFactory::showDialogFileSelection( GuiElement *element
          mode == DialogFileSelection::DirectoryOnly ? "DirectoryOnly" : "AnyFile";
 
        std::string sendData;
+       std::vector<std::string> expected;
        if (type == DialogFileSelection::Save) {
          jsonObj["type"] =  "save";
          jsonObj["command"] = "file_save";
@@ -532,10 +533,9 @@ bool HeadlessGuiFactory::showDialogFileSelection( GuiElement *element
          jsonObj["type"] =  "open";
          jsonObj["command"] = "file_open";
          jsonObj["message"] = "Please upload a file!";
+         expected.push_back("data");
+         expected.push_back("type");
        }
-       std::vector<std::string> expected;
-       expected.push_back("data");
-       expected.push_back("type");
        Json::Value retObj = mq_reply->doQuery(jsonObj, expected, sendData, streamArg);
        BUG_INFO("FileSaveDialog mq reply, Valid RetObj: " << !retObj.isNull());
        BUG_INFO("FileSaveDialog mq reply, got answer["<<ch_semafor_intens::JsonUtils::value2string(retObj)<<"]");

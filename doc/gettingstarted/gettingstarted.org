@@ -1203,7 +1203,7 @@ A scenario is a test case including input, actions and expected output.
 The ~environment.py~ module in directory ~testing/features~ contains the functions
 ~before_scenario~ and ~after_scenario~. As their name suggests,
 these functions are executed before and after each scenario.
-(See [[https://behave.readthedocs.io/en/stable/tutorial.html#environmental-controls][Environmental Controls]] for more information.)
+(See [[https://behave.readthedocs.io/en/latest/tutorial/#environmental-controls][Environmental Controls]] for more information.)
 
 The functions needed to communicate with Intens (using [[https://zguide.zeromq.org/][ZeroMQ]])
 are imported from the file *testing/features/steps/intens/intensZMQ.py*.

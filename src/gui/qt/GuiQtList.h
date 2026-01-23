@@ -36,7 +36,7 @@ private:
  public:
   virtual GuiList *getList(){ return this; }
   virtual int sortOrder();
-  virtual bool selectRow(int row, bool recursive=true);
+  virtual bool selectRow(int row, bool recursive=true, bool interactiveSelect=false);
   virtual bool selectRows(std::vector<int> rows, bool recursive=true);
   virtual bool getSelectedRows(std::vector<int>& idxs);
   virtual bool getSortCriteria(std::string& sortColumn);

@@ -59,7 +59,7 @@ class GuiList
   GuiElement::Alignment getTitleAlignment() { return m_titleAlign; }
   
   virtual int sortOrder() = 0;
-  virtual bool selectRow(int row, bool recursive=true) = 0;
+  virtual bool selectRow(int row, bool recursive=true, bool interactiveSelect=false) = 0;
   virtual bool selectRows(std::vector<int> rows, bool recursive=true) = 0;
   /** Abfrage nach den Indizes der selektierten Zeilen
      @param idxs Resultliste mit den Indizes

@@ -404,7 +404,6 @@ void GuiQtList::update( UpdateReason reason ) {
       return;
     }
   case reason_Unit:
-    std::cout << "List reason Unit\n";
     updateItemUnits();
   case reason_Cycle:
   case reason_Always:
@@ -730,9 +729,9 @@ void GuiQtList::rowSelect(const QModelIndex& index) {
   GuiElement* baseElem = findElement( getName() );
   if (baseElem == this->getElement())
     for(auto it: m_clonedList)
-      it->selectRow(index.row(), false);
+      it->selectRow(index.row(), false, true);
   else
-    baseElem->getList()->selectRow(index.row(), true);
+    baseElem->getList()->selectRow(index.row(), true, true);
 
   if (getFunction() == 0) return;
   QVariant var = index.sibling(index.row(),0).data();
@@ -786,7 +785,7 @@ int GuiQtList::sortOrder(){
 /* --------------------------------------------------------------------------- */
 /* selectRow --                                                                */
 /* --------------------------------------------------------------------------- */
-bool GuiQtList::selectRow( int row, bool recursive ) {
+bool GuiQtList::selectRow( int row, bool recursive, bool interactiveSelect ) {
 
   if ( m_tablewidget ) {
     // gui update
@@ -798,22 +797,36 @@ bool GuiQtList::selectRow( int row, bool recursive ) {
   if (recursive)
     for (std::vector<GuiQtList*>::iterator it =  m_clonedList.begin();
 	 it != m_clonedList.end(); ++it)
-      (*it)->selectRow( row, false );
+      (*it)->selectRow( row, false, interactiveSelect);
 
-  if ( !m_tablewidget ) {
+  if (interactiveSelect || !m_tablewidget) {
     m_selectedIdxs.clear();
     m_selectedIdxs.push_back(row);
     return true;
   }
 
   int oldSel =  m_tablewidget->selectedIndexes().size() ?  m_tablewidget->selectedIndexes().first().row() : -1;
+  bool b;
   if( row >=0 && row < m_tablewidget->model()->rowCount() ) {
     if (m_tablewidget->model()->index(row, 0).isValid()) {
-      if (oldSel != -1 && row == oldSel) {
-	return true;
+      bool b;
+      if (row == m_tablewidget->model()->index(row, 0).data().toInt(&b))  {// keine Sortierung
+        if (oldSel != -1 && row == oldSel) {
+          return true;
+        }
+        m_tablewidget->blocked_selectRow( row );
+        m_tablewidget->scrollTo( m_tablewidget->model()->index(row, 0), QAbstractItemView::EnsureVisible);
       }
-      m_tablewidget->blocked_selectRow(row);
-      m_tablewidget->scrollTo( m_tablewidget->model()->index(row, 0), QAbstractItemView::EnsureVisible);
+      else {
+	QList<QStandardItem *> items = dynamic_cast<QStandardItemModel*>(m_tablewidget->model())->findItems ( QString::number(row) );
+	int rowSel(items.first()->row());
+        if (oldSel != -1 && rowSel == oldSel) {
+          return true;
+        }
+        m_tablewidget->blocked_selectRow(rowSel);
+        m_tablewidget->scrollTo( m_tablewidget->model()->index(rowSel, 0), QAbstractItemView::EnsureVisible);
+      }
+      return true;
     }
   }
   else

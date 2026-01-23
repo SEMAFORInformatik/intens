@@ -809,23 +809,11 @@ bool GuiQtList::selectRow( int row, bool recursive ) {
   int oldSel =  m_tablewidget->selectedIndexes().size() ?  m_tablewidget->selectedIndexes().first().row() : -1;
   if( row >=0 && row < m_tablewidget->model()->rowCount() ) {
     if (m_tablewidget->model()->index(row, 0).isValid()) {
-      bool b;
-      if (row == m_tablewidget->model()->index(row, 0).data().toInt(&b))  {// keine Sortierung
-        if (oldSel != -1 && row == oldSel) {
-          return true;
-        }
-        m_tablewidget->blocked_selectRow( row );
-        m_tablewidget->scrollTo( m_tablewidget->model()->index(row, 0), QAbstractItemView::EnsureVisible);
+      if (oldSel != -1 && row == oldSel) {
+	return true;
       }
-      else {
-        QList<QStandardItem *> items = dynamic_cast<QStandardItemModel*>(m_tablewidget->model())->findItems ( QString::number(row) );
-        if (oldSel != -1 && items.first()->row() == oldSel) {
-          return true;
-        }
-        m_tablewidget->blocked_selectRow( items.first()->row() );
-        m_tablewidget->scrollTo( m_tablewidget->model()->index(items.first()->row(), 0), QAbstractItemView::EnsureVisible);
-      }
-      return true;
+      m_tablewidget->blocked_selectRow(row);
+      m_tablewidget->scrollTo( m_tablewidget->model()->index(row, 0), QAbstractItemView::EnsureVisible);
     }
   }
   else

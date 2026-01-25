@@ -1,6 +1,6 @@
 #+SETUPFILE: ./styles/theme-bigblow-local.setup
 # source https://github.com/fniessen/org-html-themes
-#+EXPORT_FILE_NAME: public/index
+#+EXPORT_FILE_NAME: ./public/index
 #+title:  Getting Started with the INTENS Application Development
 #+author: SEMAFOR Informatik & Energie AG, Basel, Switzerland
 #+OPTIONS: ^:nil
@@ -92,9 +92,9 @@ in more detail.
 This demo project can be built on a Linux/Unix or Windows system with the
 following packages installed:
 
-- Intens 5 (with REST-DB-Server)
-- Python 3.12 (virtualenv)
-- Java (JRE) 17
+- Intens 6 (with REST-DB-Server)
+- Python >=3.12 (virtualenv)
+- Java (JRE) >=17
 - CMake (Version >3.10, for Windows, see special information in appendix [[*Installation on Windows]])
 - MinGW/MSys (on Windows only, see appendix [[*Installation on Windows]])
 
@@ -451,7 +451,7 @@ scim
       📄 motor_streamer.inc
       📄 motor_operator.inc
 #+end_example
-- Open the file ~etc/motor/motor_datapool~ and include the data items in the Motor STRUCT block:
+- Open the file ~etc/motor/motor_datapool.inc~ and include the data items in the Motor STRUCT block:
 #+begin_src intens
   STRUCT Motor: Component {
     INTEGER {EDITABLE, SCALAR}
@@ -548,7 +548,7 @@ FIELDGROUP motor_properties_fg(
 );
 #+end_src
   The above lines define the content of the UI container
-  ~motor_properties.fg~.
+  ~motor_properties_fg~.
   Dialogs can contain several types of UI containers such
   as fieldgroups, folders, tables, plots.
   Fieldgroups are UI containers that align their children

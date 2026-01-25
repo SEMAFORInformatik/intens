@@ -1,6 +1,7 @@
 import zmq
 import json
 import base64
+import logging
 from pathlib import Path
 
 REPLY_PORT = 15560
@@ -101,7 +102,7 @@ class Client:
     def set_value(self, name, value):
         self.socket.send_string("setvalue", zmq.SNDMORE)
         request = {"varname": name, "data": str(value)}
-        # print(f"request: {json.dumps(request).encode('utf-8')}")
+        logging.debug("request: %s", request)
         self.socket.send(json.dumps(request).encode("utf-8"))
         message = self.socket.recv_multipart()
         # print(f'message: {message}')
@@ -109,7 +110,7 @@ class Client:
         if rslt.get("status", None) != "OK":
             status = rslt.get("status", None)
             message = rslt.get("message", "")
-            print(f"set_value({name}, {value}) returned status {status}: {message}")
+            logging.info("set_value %s <= %s returned status %s", name, value, message)
         assert rslt.get("status", None) == "OK"
 
     def get_string_value(self, name):
@@ -140,7 +141,7 @@ class Client:
         self.socket.send(json.dumps(request).encode("utf-8"))
         message = self.socket.recv_multipart()
         rslt = json.loads(message[0])
-        print(f"rslt: {rslt}")
+        logging.info("rslt: %s", rslt)
 
         response = json.loads(message[1])
         # print(f"data: {json.dumps(data, indent=4)}")

@@ -286,7 +286,7 @@ bool GuiQtTableComboBoxItem::convertInput( std::string &value ){
 	set = m_set_input;
       }
       set->GetValue( value, n );
-      BUG_ERROR(  "value '" << value << "'" );
+      BUG_DEBUG(  "value '" << value << "'" );
       return true;
     }
     n++;
@@ -310,7 +310,7 @@ bool GuiQtTableComboBoxItem::convertOutput( std::string &value ){
     BUG_DEBUG(  "'" << value << "' = '" << set_value << "'" );
     if( value == set_value ){
       m_set_input->GetValue( value, n );
-      BUG_ERROR(  "value '" << value << "'" );
+      BUG_DEBUG(  "value '" << value << "'" );
       return true;
     }
     n++;

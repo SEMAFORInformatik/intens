@@ -1190,7 +1190,7 @@ behave uses tests written in a natural language style, backed up by python code.
 (training) ~/intens-training $ pip install behave allure-behave
 #+end_example
 
-Download from [https://allurereport.org/docs/install], unpack the file and
+Download from [https://allurereport.org/docs/v2/install] (Version 2), unpack the file and
 add the bin directory of the unpacked files to you ~PATH~ variable.
 
 *** Features

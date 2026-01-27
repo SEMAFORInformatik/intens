@@ -3072,6 +3072,17 @@ bool InterpreterConfigurator::fieldgroupWithScrollBar(){
   m_rep->fieldgroup->getElement()->setScrollbar( GuiElement::scrollbar_AS_NEEDED );
   return true;
 }
+//======================================================================//
+// - fieldgroupSetAccordion
+//======================================================================//
+bool InterpreterConfigurator::fieldgroupSetAccordion(bool open){
+  if( m_rep->fieldgroup->getTitle().empty() ){
+    ParserError( _("Fieldgroup with accordion option must have a Title.") );
+  }
+  m_rep->fieldgroup->setAccordion(true, open);
+  return true;
+}
+
 
 //======================================================================//
 // - setAlignment

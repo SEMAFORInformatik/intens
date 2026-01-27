@@ -223,8 +223,8 @@ bool BasicStream::checkTargets( TransactionNumber timestamp ){
                 << ostr.str() << "][" << Name() << "]");
       int targetTransId = (*it).first->getLastTransactionNumber();
       BUG_DEBUG("Try to find my transId: " << targetTransId);
-      if (ownTransIds.size() == 0 || targetTransId == 0) {
-        ///      if (std::find(ownTransIds.begin(),ownTransIds.end(), targetTransId)  == std::end(ownTransIds)) {
+      if (ownTransIds.size() == 0 || targetTransId == 0 ||
+          std::find(ownTransIds.begin(),ownTransIds.end(), targetTransId)  == std::end(ownTransIds)) {
         getErrorMessage(); // clear Message
         BUG_DEBUG("  Not found, continue");
         continue;
@@ -236,7 +236,7 @@ bool BasicStream::checkTargets( TransactionNumber timestamp ){
         (*it).first->getErrorMessage();   // clear
         continue;
       }
-      BUG_DEBUG("check ok => true: Name: '"<<Name()<<"', CLEAR targetStream  '"<<(*it).first->Name()<<"' !!!");
+      BUG_INFO("checkTargets ConsistencyCheck Stream named: '"<<Name()<<"', CLEAR targetStream  '"<<(*it).first->Name()<<"' !!!");
       ret = true;
     }
   }

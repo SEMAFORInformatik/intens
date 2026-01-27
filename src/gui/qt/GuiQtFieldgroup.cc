@@ -313,6 +313,11 @@ void GuiQtFieldgroup::create(){
   if (getOverlayGeometry().isValid()) {
     myWidget()->hide();
   }
+  // accordian, set checked option
+  if (hasAccordion()) {
+    slot_accordian(isAccordionOpen());
+    dynamic_cast<QGroupBox*>(m_qgroupbox)->setChecked(isAccordionOpen());
+  }
   BUG_DEBUG( "--- end create() ---");
 }
 
@@ -431,47 +436,66 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
   m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
   m_qgroupboxLayout->setOriginCorner(Qt::TopLeftCorner );
 
-  if( withFrame() ) { // es gibt nur einen Typ
-    BUG_DEBUG(" - with frame");
-    QGroupBox* groupbox = new QGroupBox(parent);
-    m_qgroupbox = groupbox;
+  BUG_DEBUG(" - with frame: " << withFrame());
+  QGroupBox* groupbox = new QGroupBox(QtMultiFontString::getQString(getTitle()), parent);
+  m_qgroupbox = groupbox;
+  QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordian(bool)) );
+  if (hasAccordion()) {
+    groupbox->setCheckable(true);
+  }
 
-    int h = spacing;// = 6;
-    if( getTitle().size() ){
-      BUG_DEBUG(" - set title '" << getTitle() << "'");
-      groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
-      // set font (ignore Bold weight)
-      QFont font = groupbox->font();
-      font = QtMultiFontString::getQFont( "@groupboxTitle@", font );
-      // stylesheet font-weight will not be inheritance to childs (unlike font do)
-      if ( (int)font.weight() > QFont::Normal ) {
-        BUG_DEBUG(" - weight not normal");
-        groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
-	font.setWeight(QFont::Normal);
-	groupbox->setStyleSheet( groupbox->styleSheet()  + " QGroupBox { font-weight: bold; } ");
-      }
-      groupbox->setFont( font );
-
-      h = QFontInfo(QtMultiFontString::getQFont( "@groupboxTitle@", font )).pixelSize();
+  int h = spacing;// = 6;
+  if( getTitle().size() ){
+    BUG_DEBUG(" - set title '" << getTitle() << "'");
+    groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
+    // set title alignment
+    std::string alignStr;
+    switch (getTitleAlignment()) {
+    case align_Default:
+    case align_Left:
+      groupbox->setAlignment(Qt::AlignLeft);
+      alignStr = "left";
+      break;
+    case align_Center:
+      groupbox->setAlignment(Qt::AlignHCenter);
+      alignStr = "center";
+      break;
+    case align_Right:
+      groupbox->setAlignment(Qt::AlignRight);
+      alignStr = "right";
+      break;
+    default:
+      groupbox->setAlignment(Qt::AlignLeft);
+      alignStr = "left";
+      break;
     }
+
+    // set font (ignore Bold weight)
+    QString qss(groupbox->styleSheet() +
+                QString::fromStdString(compose(" QGroupBox::title {subcontrol-origin: margin; subcontrol-position: top %1;}", alignStr)));
+    QFont font = groupbox->font();
+    font = QtMultiFontString::getQFont( "@groupboxTitle@", font );
+    // stylesheet font-weight will not be inheritance to childs (unlike font do)
+    if ( (int)font.weight() > QFont::Normal ) {
+      BUG_DEBUG(" - weight not normal");
+      groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
+      font.setWeight(QFont::Normal);
+      qss  += " QGroupBox { font-weight: bold; } ";
+    }
+    groupbox->setStyleSheet( qss  + " QGroupBox { font-weight: bold; } ");
+    groupbox->setFont( font );
+
+    h = QFontInfo(QtMultiFontString::getQFont( "@groupboxTitle@", font )).pixelSize();
+  }
+  groupbox->setFlat( !withFrame());
+  if (withFrame()){
     BUG_DEBUG(" - pixel size = " << h);
     groupbox->setContentsMargins( spacing, h, spacing, spacing );
-    groupbox->setFlat( false );
-  }
-  else{
-    BUG_DEBUG(" - without frame");
-    m_qgroupbox = new QWidget(parent);
-    if (getTitle().size()) {
-      QLabel *label = new QLabel( QtMultiFontString::getQString(getTitle()) );
-      QFont font = m_qgroupbox->font();
-      label->setFont( QtMultiFontString::getQFont( "@groupboxTitle@", font ) );
-      label->setObjectName( QString::fromStdString("GuiGroupBoxTitle") );
-      m_qgroupboxLayout->addWidget(label, 0, 0, 1, -1);
-    }
+  }else{
     m_qgroupbox->setContentsMargins( 0,0,0,0 );
-    m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
   }
   m_qgroupbox->setLayout( m_qgroupboxLayout );
+
   if (m_scrollview)
     dynamic_cast<QScrollArea*>(m_scrollview)->setWidget( m_qgroupbox );
 
@@ -657,29 +681,6 @@ int GuiQtFieldgroup::getStretchFactor( GuiElement::Orientation orient ) {
   return maxStretch;
 }
 
-void GuiQtFieldgroup::setTitleAlignment( GuiElement::Alignment align ){
-  GuiFieldgroup::setTitleAlignment(align);
-
-  if( m_qgroupbox != 0 ){
-    QGroupBox *groupbox = dynamic_cast <QGroupBox*>(m_qgroupbox);
-    switch (align) {
-    case align_Default:
-    case align_Left:
-      groupbox->setAlignment(Qt::AlignLeft);
-      break;
-    case align_Center:
-      groupbox->setAlignment(Qt::AlignHCenter);
-      break;
-    case align_Right:
-      groupbox->setAlignment(Qt::AlignRight);
-      break;
-    default:
-      groupbox->setAlignment(Qt::AlignLeft);
-      break;
-    }
-  }
-}
-
 /* --------------------------------------------------------------------------- */
 /* showColumn --                                                               */
 /* --------------------------------------------------------------------------- */
@@ -774,11 +775,26 @@ GuiElement *GuiQtFieldgroup::getElement(){
   return this;
 }
 
+/* --------------------------------------------------------------------------- */
+/* getSize --                                                                  */
+/* --------------------------------------------------------------------------- */
+
 void GuiQtFieldgroup::getSize(int &w, int &h){
   w = 0; h = 0;
   if (myWidget() && !myWidget()->isVisible()) return;
   GuiQtElement::getSize(w, h);
   BUG_DEBUG("getSize: " << getName() << "  ["<<w << ", " << h << "]");
+}
+
+/* --------------------------------------------------------------------------- */
+/* slot_accordian --                                                           */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtFieldgroup::slot_accordian(bool checked){
+  for(auto c : m_container){
+    for(auto it : static_cast<GuiQtFieldgroupLine*>(c)->m_elements)
+      it->getQtElement()->myWidget()->setVisible(checked);
+  }
 }
 
 /* --------------------------------------------------------------------------- */

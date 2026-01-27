@@ -42,6 +42,8 @@ GuiFieldgroup::GuiFieldgroup( GuiElement *parent, const std::string &name )
   , m_align_fields( false )
   , m_title_alignment( GuiElement::align_Default )
   , m_running_key( 0 )
+  , m_accordion(false)
+  , m_accordion_open(false)
 {
   s_fieldgroupmap.insert( FieldgroupMap::value_type( name, this ) );
 }
@@ -68,6 +70,8 @@ GuiFieldgroup::GuiFieldgroup( const GuiFieldgroup &fg )
   , m_running_key( 0 )
   , m_container( fg.m_container )
   , m_title( fg.m_title  )
+  , m_accordion(false)
+  , m_accordion_open(false)
 {
 }
 
@@ -571,6 +575,10 @@ bool GuiFieldgroup::serializeJson(Json::Value& jsonObj, bool onlyUpdated) {
   jsonSObj["width"] = m_overlayGeometry.width;
   jsonSObj["height"] = m_overlayGeometry.height;
   jsonObj["overlay_geometry"] = jsonSObj;
+  jsonObj["accordion"] = m_accordion;
+  if (m_accordion){
+    jsonObj["accordion_open"] = m_accordion_open;
+  }
   std::string str;
   join(m_cssGridTemplateColumns, ' ', str);
   jsonObj["grid_template_columns"] = str;
@@ -610,6 +618,10 @@ bool GuiFieldgroup::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpda
   element->set_scrollbars(getElement()->withScrollbars());
   if( m_function != 0 )
     element->set_action(m_function->Name());
+  element->set_accordion(m_accordion);
+  if (m_accordion){
+    element->set_accordion_open(m_accordion_open);
+  }
   auto overlay = element->mutable_overlay();
   overlay->set_x(m_overlayGeometry.xpos);
   overlay->set_y(m_overlayGeometry.ypos);

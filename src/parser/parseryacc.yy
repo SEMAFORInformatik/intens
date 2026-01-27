@@ -119,7 +119,7 @@ static XferDataItem::ParameterType parametertype;
 %token  tTABLESIZE tSTEP tRANGE tOFFSET
 %token  tALARM_LEVEL tALARM_COLOR tINVERTED
 %token  tJUSTIFY tJUSTRIGHT tJUSTLEFT tJUSTCENTER tSTRETCH tEXPAND tSCROLL tALIGN
-%token  tOVERLAY
+%token  tOVERLAY tACCORDION
 %token  tTABLE tLIST tSORT_CRITERIA tORIENTATION tHORIZONTAL tVERTICAL tNAVIGATION tMARGIN tROTATE_180
 %token  tPOSITION
 %token  tARROWS
@@ -2383,6 +2383,14 @@ ui_fieldgroup_option /* DOCUMENTATION:DIAGRAM */
   | tSCROLLBARS
     {
       configurator -> fieldgroupWithScrollBar();
+    }
+  | tACCORDION
+    {
+      configurator -> fieldgroupSetAccordion();
+    }
+  | tACCORDION '=' tOPEN
+    {
+      configurator -> fieldgroupSetAccordion(true);
     }
   | tFUNC '=' job_function_pointer
     {

@@ -182,6 +182,7 @@ void Flexer::initRwTabMap(){
   m_rwTabMap.insert(   "ABORT"           ,tABORT       );
   m_rwTabMap.insert(   "ABORTTRANSACTION" ,tABORTTRANSACTION );
   m_rwTabMap.insert(   "ABS"             ,tABS         );
+  m_rwTabMap.insert(   "ACCORDION"       ,tACCORDION   );
   m_rwTabMap.insert(   "ACOS"            ,tACOS        );
   m_rwTabMap.insert(   "ALARM_COLOR"     ,tALARM_COLOR );
   m_rwTabMap.insert(   "ALARM_LEVEL"     ,tALARM_LEVEL );

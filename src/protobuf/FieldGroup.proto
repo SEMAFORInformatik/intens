@@ -24,6 +24,8 @@ message FieldGroup {
   OverlayGeometry overlay = 8;
   bool scrollbars = 9;
   string action = 10;
+  bool accordion = 11;
+  bool accordion_open = 12;
 }
 
 message FieldGroupLine {

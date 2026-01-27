@@ -10,7 +10,7 @@ class QString;
 class QGridLayout;
 class QWidget;
 
-class GuiQtFieldgroup : public GuiFieldgroup, public GuiQtElement
+class GuiQtFieldgroup : public GuiQtElement, public GuiFieldgroup
 {
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -79,25 +79,13 @@ public:
 /* public member functions of GuiFieldgroup                                    */
 /*=============================================================================*/
 public:
-  /* virtual bool setTableSize( int ); */
-  /* virtual int  getTableSize(); */
-  /* virtual bool setTableStep( int ); */
-
-  /* virtual bool setTablePosition( int ); */
-  /* virtual int  getTablePosition(); */
-  /* virtual bool setTableIndexRange( int, int ); */
   virtual void setOrientation(GuiElement::Orientation o) { GuiFieldgroup::setOrientation(o); }
   virtual void setNavigation( GuiElement::Orientation o) { GuiFieldgroup::setNavigation(o); }
   virtual bool handleTableAction(GuiTableActionFunctor &func) { return GuiFieldgroup::handleTableAction(func); }
   virtual void nextTableAction(bool error) { GuiFieldgroup::nextTableAction(error); }
-  virtual void setTitleAlignment(GuiElement::Alignment align);
-  /* virtual bool setMargins( int margin, int spacing); */
   /** get stretch factor */
   virtual int getStretchFactor( GuiElement::Orientation orient );
-  //  virtual GuiFieldgroupLine *addFieldgroupLine();
-  //  virtual bool addArrowbar();
   virtual void attach( GuiElement * ) { assert( false ); }
-  /* virtual const std::string &Name() { return m_name; } */
 
   virtual void showColumn(int columnIdx, bool visible, int rowOffset=0);
 
@@ -115,11 +103,17 @@ public:
   virtual void getSize(int &x, int &y);
 
 /*=============================================================================*/
+/* private slots                                                               */
+/*=============================================================================*/
+  Q_OBJECT
+ private slots:
+  void slot_accordian(bool checked);
+
+/*=============================================================================*/
 /* private member functions                                                    */
 /*=============================================================================*/
 private:
   QWidget* createContainer( QWidget* parent );
-  //  void createArrowbar();
 
 /*=============================================================================*/
 /* private Data                                                                */

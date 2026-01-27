@@ -95,6 +95,10 @@ public:
   };
 
   OverlayGeometry& getOverlayGeometry() { return m_overlayGeometry; }
+  /** set Accordion option */
+  void setAccordion(bool accordion, bool open=false) { m_accordion = accordion; m_accordion_open = open; }
+  bool hasAccordion() { return m_accordion; }
+  bool isAccordionOpen() { return m_accordion_open; }
 
 /*=============================================================================*/
 /* protected                                                                   */
@@ -114,6 +118,7 @@ public:
   int getTableStep() { return m_tablestep; }
   int getMargin() { return m_margin; }
   int getSpacing() { return m_spacing; }
+  GuiElement::Alignment getTitleAlignment() { return m_title_alignment; }
   GuiIndex* getGuiIndex() { return m_index; }
   void setName(const std::string &name) { m_name = name; }
   void doNormalisation();
@@ -192,7 +197,8 @@ protected:
   typedef std::map< std::string, GuiFieldgroup * > FieldgroupMap;
   static FieldgroupMap s_fieldgroupmap;
   OverlayGeometry      m_overlayGeometry;
-
+  bool                 m_accordion;
+  bool                 m_accordion_open;
 };
 
 #endif

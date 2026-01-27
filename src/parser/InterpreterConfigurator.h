@@ -262,6 +262,7 @@ public:
   virtual bool fieldgroupSetClass(const std::string &classname);
   virtual bool fieldgroupSetOverlay(const int xpos, const int ypos, const int width=-1, const int heigth=-1);
   virtual bool fieldgroupWithScrollBar();
+  virtual bool fieldgroupSetAccordion(bool open=false);
   virtual bool attachStringConstant( const std::string &labelstring, GuiElement::Alignment alignment );
   virtual bool attachPixmap( const std::string &pixmapstring, GuiElement::Alignment alignment );
   virtual bool attachVoidField();

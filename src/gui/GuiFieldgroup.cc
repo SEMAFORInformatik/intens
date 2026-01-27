@@ -71,9 +71,9 @@ GuiFieldgroup::GuiFieldgroup( const GuiFieldgroup &fg )
   , m_running_key( 0 )
   , m_container( fg.m_container )
   , m_title( fg.m_title  )
-  , m_accordion(false)
-  , m_accordion_open(false)
-  , m_webapi_publish(false)
+  , m_accordion(fg.m_accordion)
+  , m_accordion_open(fg.m_accordion_open)
+  , m_webapi_publish(fg.m_webapi_publish)
 {
 }
 

@@ -97,8 +97,14 @@ public:
   OverlayGeometry& getOverlayGeometry() { return m_overlayGeometry; }
   /** set Accordion option */
   void setAccordion(bool accordion, bool open=false) { m_accordion = accordion; m_accordion_open = open; }
+  /** has Accordion option */
   bool hasAccordion() { return m_accordion; }
+  /** is Accordion open */
   bool isAccordionOpen() { return m_accordion_open; }
+  /** set WebApi Publish data option */
+  void setWebApiPublish() { m_webapi_publish = true; }
+  /** has WebApi Publish data option */
+  bool hasWebApiPublish() { return m_webapi_publish; }
 
 /*=============================================================================*/
 /* protected                                                                   */
@@ -199,6 +205,7 @@ protected:
   OverlayGeometry      m_overlayGeometry;
   bool                 m_accordion;
   bool                 m_accordion_open;
+  bool                 m_webapi_publish;
 };
 
 #endif

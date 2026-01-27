@@ -1340,10 +1340,148 @@ bool GuiElement::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
   jsonObj["info"] = "Not implemented yet, gui type: " + StringType();
   return false;
 }
+/* --------------------------------------------------------------------------- */
+/* serializeVisibleElements --                                                 */
+/* --------------------------------------------------------------------------- */
+int GuiElement::serializeVisibleElements(Json::Value& jsonAry, bool updateAlways){
+  // alle sichtbaren GuiElement in diesem Form
+  int cnt=0;
+  GuiElementList elist;
+  getVisibleElement(elist);
+  BUG_DEBUG( "serializeElements Form [" <<
+             getName() << "] VisibleElementSize[" <<
+             elist.size() << "]");
+
+  // loop über alle GuiElement in diesem Form
+  for(auto eit: elist) {
+    bool onlyUpdated( !updateAlways );
+
+    // evtl. zwingt uns ein ParentContainer zum GuiUpdate
+    // bzw. die Daten sollen zwingend serialized werden
+    GuiElement* e = eit->myParent(GuiElement::type_Folder);
+
+    while (e) {
+      BUG_DEBUG("-- Parent is " << e->StringType() );
+      BUG_DEBUG("-- last web update is " << e->LastWebUpdated() );
+
+      if( e->LastWebUpdated() >= GuiManager::Instance().LastWebUpdate() ){
+        BUG_DEBUG("   -- update always --");
+        onlyUpdated = false;
+        break;
+      }
+
+      e = e->getParent() ? e->getParent()->myParent(GuiElement::type_Folder) : 0;
+    }
+
+    // cycle or always gui reason (after setIndex, ...)
+    if ( eit->LastWebUpdated() == 0) {
+      eit->setLastWebUpdated();
+      onlyUpdated = false;
+    }
+
+    Json::Value jsonObj = Json::Value( Json::objectValue );
+    if (eit->serializeJson(jsonObj, onlyUpdated)) {
+      if (jsonObj.isMember("value")) {
+        BUG_DEBUG( "++ serializeJson name[" << eit->getName() << "] id[" <<
+                   eit->getElementId() <<
+                   "] fullName[" << jsonObj["fullName"].asString() <<
+                   "] value[" <<
+                   ( jsonObj["value"].isString() ?
+                     jsonObj["value"].asString() :
+                     ( jsonObj.isMember("formatted_value") ?
+                       jsonObj["formatted_value"].asString() :
+                       "" )
+                     ) <<
+                   "]");
+      } else {
+        BUG_DEBUG( "++ serializeJson name[" << eit->getName() << "] id[" <<
+                   eit->getElementId() <<
+                   "] fullName[" << jsonObj["fullName"].asString() <<
+                   "] value[" <<
+                   ( jsonObj.isMember("formatted_value") ?
+                     jsonObj["formatted_value"].asString() :
+                     "" ) <<
+                   "]");
+      }
+      GuiForm *form = eit->getMyForm();
+      if(form){
+        jsonObj["form_id"]   = form->getElement()->getElementId();
+        jsonObj["form_name"] = form->getElement()->getName();
+      }
+
+      jsonAry.append(jsonObj);
+      ++cnt;
+    } else {
+      BUG_DEBUG( "-- Unchanged GuiElement name[" << eit->getName() <<"] id[" <<
+                 eit->getElementId() <<
+                 "]");
+    }
+  }
+  return cnt;
+}
+
 #if HAVE_PROTOBUF
+/* --------------------------------------------------------------------------- */
+/* serializeProtobuf --                                                        */
+/* --------------------------------------------------------------------------- */
 bool GuiElement::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated) {
   BUG_ERROR("SERIALIZING NOT IMPLEMENTED FOR " << StringType() << typeid(this).name());
   return false;
+}
+/* --------------------------------------------------------------------------- */
+/* serializeVisibleElements --                                                 */
+/* --------------------------------------------------------------------------- */
+int  GuiElement::serializeVisibleElements(in_proto::ElementList* eles, bool updateAlways){
+  // alle sichtbaren GuiElement in diesem Form
+  int cnt(0);
+  GuiElementList elist;
+  getVisibleElement(elist);
+  BUG_DEBUG( "serializeElements Form [" <<
+             getName() << "] VisibleElementSize[" <<
+             elist.size() << "]");
+
+  // loop über alle GuiElement in diesem Form
+  for(auto eit: elist) {
+    bool onlyUpdated( !updateAlways );
+
+    // evtl. zwingt uns ein ParentContainer zum GuiUpdate
+    // bzw. die Daten sollen zwingend serialized werden
+    GuiElement* e = eit->myParent(GuiElement::type_Folder);
+
+    while (e) {
+      BUG_DEBUG("-- Parent is " << e->StringType() );
+      BUG_DEBUG("-- last web update is " << e->LastWebUpdated() );
+
+      if( e->LastWebUpdated() >= GuiManager::Instance().LastWebUpdate() ){
+        BUG_DEBUG("   -- update always --");
+        onlyUpdated = false;
+        break;
+      }
+
+      e = e->getParent() ? e->getParent()->myParent(GuiElement::type_Folder) : 0;
+    }
+
+    // cycle or always gui reason (after setIndex, ...)
+    if ( eit->LastWebUpdated() == 0) {
+      eit->setLastWebUpdated();
+      onlyUpdated = false;
+    }
+
+    if (eit->serializeProtobuf(eles, onlyUpdated)) {
+      GuiForm *form = eit->getMyForm();
+      if(form){
+        // jsonObj["form_id"]   = form->getElement()->getElementId();
+        // jsonObj["form_name"] = form->getElement()->getName();
+      }
+
+      ++cnt;
+    } else {
+      BUG_DEBUG( "-- Unchanged GuiElement name[" << eit->getName() <<"] id[" <<
+                 eit->getElementId() <<
+                 "]");
+    }
+  }
+  return cnt;
 }
 #endif
 

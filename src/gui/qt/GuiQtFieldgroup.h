@@ -9,6 +9,7 @@ class QGroupBox;
 class QString;
 class QGridLayout;
 class QWidget;
+class MessageQueuePublisher;
 
 class GuiQtFieldgroup : public GuiQtElement, public GuiFieldgroup
 {
@@ -101,6 +102,8 @@ public:
 /*=============================================================================*/
 public:
   virtual void getSize(int &x, int &y);
+  void timerEvent (QTimerEvent * event);
+  void publishData();
 
 /*=============================================================================*/
 /* private slots                                                               */
@@ -122,8 +125,9 @@ private:
   QWidget              *m_scrollview;
   QWidget              *m_qgroupbox;
   QGridLayout          *m_qgroupboxLayout;
-
   std::vector<GuiQtFieldgroup*> m_clonedFieldgroup;
+  MessageQueuePublisher* m_publisher;
+  static int            s_timerId;
 };
 
 #endif

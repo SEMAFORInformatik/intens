@@ -44,6 +44,7 @@ GuiFieldgroup::GuiFieldgroup( GuiElement *parent, const std::string &name )
   , m_running_key( 0 )
   , m_accordion(false)
   , m_accordion_open(false)
+  , m_webapi_publish(false)
 {
   s_fieldgroupmap.insert( FieldgroupMap::value_type( name, this ) );
 }
@@ -72,6 +73,7 @@ GuiFieldgroup::GuiFieldgroup( const GuiFieldgroup &fg )
   , m_title( fg.m_title  )
   , m_accordion(false)
   , m_accordion_open(false)
+  , m_webapi_publish(false)
 {
 }
 

@@ -3082,8 +3082,13 @@ bool InterpreterConfigurator::fieldgroupSetAccordion(bool open){
   m_rep->fieldgroup->setAccordion(true, open);
   return true;
 }
-
-
+//======================================================================//
+// - fieldgroupSetWebApiPublish
+//======================================================================//
+bool InterpreterConfigurator::fieldgroupSetWebApiPublish(){
+  m_rep->fieldgroup->setWebApiPublish();
+  return true;
+}
 //======================================================================//
 // - setAlignment
 //======================================================================//

@@ -170,78 +170,7 @@ void JobWebApiResponse::serializeElements( Json::Value& jsonElem,
   for( it = m_formList.begin(); it != m_formList.end(); ++it ) {
     if (!(*it)->isShown()) continue;
 
-    // alle sichtbaren GuiElement in diesem Form
-    GuiElementList elist;
-    (*it)->getVisibleElement(elist);
-    BUG_DEBUG( "serializeElements Form [" <<
-               (*it)->getName() << "] VisibleElementSize[" <<
-               elist.size() << "]");
-
-    // loop über alle GuiElement in diesem Form
-    for( eit = elist.begin(); eit != elist.end(); ++eit ) {
-      bool onlyUpdated( !updateAlways );
-
-      // evtl. zwingt uns ein ParentContainer zum GuiUpdate
-      // bzw. die Daten sollen zwingend serialized werden
-      GuiElement* e = (*eit)->myParent(GuiElement::type_Folder);
-
-      while (e) {
-        BUG_DEBUG("-- Parent is " << e->StringType() );
-        BUG_DEBUG("-- last web update is " << e->LastWebUpdated() );
-
-        if( e->LastWebUpdated() >= GuiManager::Instance().LastWebUpdate() ){
-          BUG_DEBUG("   -- update always --");
-          onlyUpdated = false;
-          break;
-        }
-
-        e = e->getParent() ? e->getParent()->myParent(GuiElement::type_Folder) : 0;
-      }
-
-      // cycle or always gui reason (after setIndex, ...)
-      if ( (*eit)->LastWebUpdated() == 0) {
-        (*eit)->setLastWebUpdated();
-         onlyUpdated = false;
-      }
-
-      Json::Value jsonObj = Json::Value( Json::objectValue );
-      if ((*eit)->serializeJson(jsonObj, onlyUpdated)) {
-        if (jsonObj.isMember("value")) {
-          BUG_DEBUG( "++ serializeJson name[" << (*eit)->getName() << "] id[" <<
-                     (*eit)->getElementId() <<
-                     "] fullName[" << jsonObj["fullName"].asString() <<
-                     "] value[" <<
-                     ( jsonObj["value"].isString() ?
-                       jsonObj["value"].asString() :
-                       ( jsonObj.isMember("formatted_value") ?
-                         jsonObj["formatted_value"].asString() :
-                         "" )
-                       ) <<
-                     "]");
-        } else {
-          BUG_DEBUG( "++ serializeJson name[" << (*eit)->getName() << "] id[" <<
-                     (*eit)->getElementId() <<
-                     "] fullName[" << jsonObj["fullName"].asString() <<
-                     "] value[" <<
-                     ( jsonObj.isMember("formatted_value") ?
-                       jsonObj["formatted_value"].asString() :
-                       "" ) <<
-                     "]");
-        }
-        GuiForm *form = (*eit)->getMyForm();
-        if(form){
-          jsonObj["form_id"]   = form->getElement()->getElementId();
-          jsonObj["form_name"] = form->getElement()->getName();
-        }
-
-        jsonAry.append(jsonObj);
-        ++cnt;
-      } else {
-        BUG_DEBUG( "-- Unchanged GuiElement name[" << (*eit)->getName() <<"] id[" <<
-                   (*eit)->getElementId() <<
-                   "]");
-      }
-    }
+    cnt += (*it)->serializeVisibleElements(jsonAry, updateAlways);
   }
   jsonElem["element"] = jsonAry;
   BUG_DEBUG("serializeElements Count: " << cnt << "]");
@@ -257,54 +186,7 @@ void JobWebApiResponse::serializeElements( in_proto::WebAPIResponse* reply,
   for( it = m_formList.begin(); it != m_formList.end(); ++it ) {
     if (!(*it)->isShown()) continue;
 
-    // alle sichtbaren GuiElement in diesem Form
-    GuiElementList elist;
-    (*it)->getVisibleElement(elist);
-    BUG_DEBUG( "serializeElements Form [" <<
-               (*it)->getName() << "] VisibleElementSize[" <<
-               elist.size() << "]");
-
-    // loop über alle GuiElement in diesem Form
-    for( eit = elist.begin(); eit != elist.end(); ++eit ) {
-      bool onlyUpdated( !updateAlways );
-
-      // evtl. zwingt uns ein ParentContainer zum GuiUpdate
-      // bzw. die Daten sollen zwingend serialized werden
-      GuiElement* e = (*eit)->myParent(GuiElement::type_Folder);
-
-      while (e) {
-        BUG_DEBUG("-- Parent is " << e->StringType() );
-        BUG_DEBUG("-- last web update is " << e->LastWebUpdated() );
-
-        if( e->LastWebUpdated() >= GuiManager::Instance().LastWebUpdate() ){
-          BUG_DEBUG("   -- update always --");
-          onlyUpdated = false;
-          break;
-        }
-
-        e = e->getParent() ? e->getParent()->myParent(GuiElement::type_Folder) : 0;
-      }
-
-      // cycle or always gui reason (after setIndex, ...)
-      if ( (*eit)->LastWebUpdated() == 0) {
-         (*eit)->setLastWebUpdated();
-         onlyUpdated = false;
-      }
-
-      if ((*eit)->serializeProtobuf(reply->mutable_elements(), onlyUpdated)) {
-        GuiForm *form = (*eit)->getMyForm();
-        if(form){
-          // jsonObj["form_id"]   = form->getElement()->getElementId();
-          // jsonObj["form_name"] = form->getElement()->getName();
-        }
-
-        ++cnt;
-      } else {
-        BUG_DEBUG( "-- Unchanged GuiElement name[" << (*eit)->getName() <<"] id[" <<
-                   (*eit)->getElementId() <<
-                   "]");
-      }
-    }
+    cnt += (*it)->serializeVisibleElements(reply->mutable_elements(), updateAlways);
   }
   BUG_DEBUG("serializeElements Count: " << cnt << "]");
 }

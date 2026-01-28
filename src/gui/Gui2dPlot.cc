@@ -1929,7 +1929,7 @@ std::string Gui2dPlot::variantMethod(const std::string& method,
 /* --------------------------------------------------------------------------- */
 const std::string Gui2dPlot::getTitle(eAxisType axis) {
   if (axis < AXIS_TYPE_COUNT)
-    return m_title[axis];
+    return UnitManager::extractValue(m_title[axis]);
   return "";
 }
 

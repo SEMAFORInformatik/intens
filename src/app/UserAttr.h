@@ -148,6 +148,8 @@ public:
   const std::string &DbAttr()const;
   const std::string &DbUnit()const;
   const std::string Unit(bool unitManagerFeature=true, DataReference* data_ref=0);
+  /** get origin unit defined in description file */
+  const std::string getOriginUnit();
   const std::string &Pattern()const;
   const std::string &Helptext()const;
   const std::string &Classname(const std::string &fullname=std::string());
@@ -178,6 +180,7 @@ private:
   std::string                 m_Helptext;
   std::string                 m_Label;
   std::string                 m_Unit;
+  std::string                 m_UnitOriginValue;
   std::string                 m_pattern;
   std::string                 m_DataSetName;
   bool                        m_DataSetIndexed;

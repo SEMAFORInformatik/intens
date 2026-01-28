@@ -1149,6 +1149,8 @@ void AppData::displayHelp(){
       std::cout <<"--" << long_options[i].name;
       if(long_options[i].has_arg==2){
         std::cout << "[=<argument>]";
+        if (long_options[i].name == "unitManager")
+          std::cout << " e.g. [comboBox_if_choice]";
       } else {
         std::cout <<" " << (long_options[i].has_arg==1? "<argument>":"");
       }

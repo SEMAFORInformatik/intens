@@ -96,7 +96,7 @@ class UnitManager{
   Unit* getUnitData(const std::string& unit) const;
 
   /** extract value */
-  static bool extractValue(const std::string& json_string, std::string& value);
+  static UserAttr* extractValue(const std::string& json_string, std::string& value);
 
   /** extract value */
   static std::string extractValue(const std::string& json_string);

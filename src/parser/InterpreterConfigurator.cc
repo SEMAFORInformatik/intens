@@ -4792,7 +4792,7 @@ bool InterpreterConfigurator::xrtgraphRegisterIndexContainer(){
 // - xrtgraphSetLabel
 //======================================================================//
 bool InterpreterConfigurator::xrtgraphSetLabel( const std::string &labelstring, Gui2dPlot::eAxisType axistype ){
-  m_rep->plot2d->setLabel( UnitManager::extractValue(labelstring), axistype );
+  m_rep->plot2d->setLabel( labelstring, axistype );
   return true;
 }
 //======================================================================//

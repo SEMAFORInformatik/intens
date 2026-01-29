@@ -37,7 +37,7 @@ OAuthClient::OAuthClient(const QString &clientEndpoint,
   if (scopesString.empty()) {
     oauth2.setScope("profile roles");
   } else {
-    oauth2.setScope(scopesString);
+    oauth2.setScope(QString::fromStdString(scopesString));
   }
 #else
   oauth2.setTokenUrl(QUrl(accessTokenEndpoint));

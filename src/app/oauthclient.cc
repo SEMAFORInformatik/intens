@@ -31,12 +31,26 @@ OAuthClient::OAuthClient(const QString &clientEndpoint,
   BUG_DEBUG("clientEndpoint: " << clientEndpoint.toStdString());
   BUG_DEBUG("accessTokenEndpoint: " << accessTokenEndpoint.toStdString());
 
+  auto scopesString = AppData::Instance().OAuthScopes();
 #if QT_VERSION < 0x060900
   oauth2.setAccessTokenUrl(QUrl(accessTokenEndpoint));
-  oauth2.setScope("profile roles");
+  if (scopesString.empty()) {
+    oauth2.setScope("profile roles");
+  } else {
+    oauth2.setScope(scopesString);
+  }
 #else
   oauth2.setTokenUrl(QUrl(accessTokenEndpoint));
-  oauth2.setRequestedScopeTokens(QSet<QByteArray>{"openid", "profile", "roles"});
+  if (scopesString.empty()) {
+    oauth2.setRequestedScopeTokens(QSet<QByteArray>{"openid", "profile", "roles"});
+  } else {
+    QSet<QByteArray> scopesSet;
+    auto scopesList = QString::fromStdString(scopesString).split(" ");
+    for (auto scope : scopesList) {
+      scopesSet << QByteArray::fromStdString(scope.toStdString());
+    }
+    oauth2.setRequestedScopeTokens(scopesSet);
+  }
 #endif
   oauth2.setAuthorizationUrl(url.toDisplayString(QUrl::RemoveUserInfo));
   oauth2.setClientIdentifier(url.userName());

@@ -77,6 +77,13 @@ void MessageQueuePublisher::setPublishHeader( const std::string& header )  {
 }
 
 //-------------------------------------------------
+// setPublishData
+//-------------------------------------------------
+void MessageQueuePublisher::setPublishData( const std::string& data )  {
+  m_publishData = data;
+}
+
+//-------------------------------------------------
 // MyTimerTask::tick
 //-------------------------------------------------
 void MessageQueuePublisher::MyTimerTask::tick() {
@@ -100,9 +107,20 @@ void MessageQueuePublisher::startPublish(bool duplicateCheck){
   assert( m_publisher );
   int dup=0;
 
-  if (m_publish_out_streams.size() == 0)
-    s_send (*m_publisher, m_publishHeader); // send header
-  else {
+  if (m_publish_out_streams.size() == 0) {
+    if (m_publishData.empty()){
+      publishHeader();
+    }else{
+      if (duplicateCheck && m_lastPublishString.size()){
+        if (m_lastPublishString[0] == m_publishData){
+          return;  // already published
+        }
+        m_lastPublishString[0] = m_publishData;
+      }else{
+        m_lastPublishString.push_back(m_publishData);
+      }
+    }
+  } else {
     int idx=0;
     for(std::vector<Stream*>::iterator it = m_publish_out_streams.begin();
         it != m_publish_out_streams.end(); ++it, ++idx) {
@@ -112,7 +130,7 @@ void MessageQueuePublisher::startPublish(bool duplicateCheck){
         if (idx < m_lastPublishString.size() &&
             m_lastPublishString[idx] == os.str()) {
           BUG_DEBUG("ignore Publish, idx: " << idx);
-	  ++dup;
+          ++dup;
           continue;
         }
         if (idx < m_lastPublishString.size()) {
@@ -121,36 +139,49 @@ void MessageQueuePublisher::startPublish(bool duplicateCheck){
           m_lastPublishString.push_back(os.str());
         }
       } else {
-	m_lastPublishString.push_back(os.str());
+        m_lastPublishString.push_back(os.str());
       }
     }
   }
 
   // publish data
   if (!duplicateCheck || dup < m_lastPublishString.size()) {
-    for (int i=0; i < m_lastPublishString.size(); ++i) {
-      if (!i) { // first time
-	publishHeader();
-      }
-      if (i < m_publish_out_streams.size()-1)
-	s_sendmore (*m_publisher, m_lastPublishString[i]);
-      else
-	s_send (*m_publisher, m_lastPublishString[i]);
-    }
+    publishData();
   }
+
   if (!duplicateCheck) {
     m_lastPublishString.clear();
   }
+  m_publishData.clear();
   if (m_listener)
     m_listener->connectionClosed();
   m_listener = 0;
 }
 
+//-------------------------------------------------
+// publishHeader
+//-------------------------------------------------
 bool MessageQueuePublisher::publishHeader(){
-  if (m_publish_out_streams.size())
+  if (!m_publish_out_streams.empty() || !m_publishData.empty())
     s_sendmore (*m_publisher, m_publishHeader); // send header
   else
     s_send (*m_publisher, m_publishHeader); // send header
+  return true;
+}
+
+//-------------------------------------------------
+// publishData
+//-------------------------------------------------
+bool MessageQueuePublisher::publishData(){
+  for (int i=0; i < m_lastPublishString.size(); ++i) {
+    if (!i) { // first time
+      publishHeader();
+    }
+    if (i < m_publish_out_streams.size()-1)
+      s_sendmore (*m_publisher, m_lastPublishString[i]);
+    else
+      s_send (*m_publisher, m_lastPublishString[i]);
+  }
   return true;
 }
 

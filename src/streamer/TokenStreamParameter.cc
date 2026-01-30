@@ -27,10 +27,13 @@ TokenStreamParameter::TokenStreamParameter(const std::string &value, int length)
     m_width=-m_width;
     m_leftAdjusted=true;
   }
+  // special case UNIT(data.xxx)
+  // token is json data
   std::string text;
   if (AppData::Instance().hasUnitManagerFeature()) {
-    if (UnitManager::Instance().extractValue(value, text)){
-      m_token = text;
+    UserAttr* userAttr = UnitManager::Instance().extractValue(value, text);
+    if (userAttr || !text.empty()){
+      m_token = userAttr ? userAttr->getOriginUnit() : text;
     }
     m_toksiz = m_token.size();
   }

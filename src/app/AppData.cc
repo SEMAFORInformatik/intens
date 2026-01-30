@@ -117,6 +117,7 @@ static struct option long_options[] = {
 #ifdef HAVE_OAUTH
   ,{"oauth",     required_argument, 0,  0}
   ,{"oauthAccessTokenUrl",     required_argument, 0,  0}
+  ,{"oauthScopes",     required_argument, 0,  0}
 #endif
   ,{"opentelemetryMetadata", no_argument,  0,  0}
   ,{"lspWorker", no_argument,  0,  0}
@@ -230,12 +231,12 @@ void AppData::getApplicationResources(){
   char *scale_factor = getenv("QT_SCALE_FACTOR");
   char *screen_scale_factors = getenv("QT_SCREEN_SCALE_FACTORS");
   if (scale_factor) {
-    BUG_INFO("QT_SCALE_FACTOR: " << scale_factor);
+    BUG_DEBUG("QT_SCALE_FACTOR: " << scale_factor);
   }
   if (screen_scale_factors) {
-    BUG_INFO("QT_SCREEN_SCALE_FACTORS: " << screen_scale_factors);
+    BUG_DEBUG("QT_SCREEN_SCALE_FACTORS: " << screen_scale_factors);
   }
-  BUG_INFO("QT_AUTO_SCREEN_SCALE_FACTOR: " << screen_scale);
+  BUG_DEBUG("QT_AUTO_SCREEN_SCALE_FACTOR: " << screen_scale);
 
 }
 
@@ -410,6 +411,7 @@ void AppData::setFeatureMatlab( bool f )                 { m_featureMatlab = f; 
 void AppData::setDisableFeatureSVG( bool f )             { m_disableFeatureSVG = f; }
 void AppData::setOAuth( const std::string &s )           { m_oauth = s; }
 void AppData::setOAuthAccessTokenUrl( const std::string &s )           { m_oauthAccessTokenUrl = s; }
+void AppData::setOAuthScopes( const std::string &s )     { m_oauthScopes = s; }
 
 void AppData::setPersistItemsFilename( const char *filename, bool restdb ){
   m_persistItemsFilename = filename;
@@ -653,6 +655,7 @@ const std::string &AppData::DesFile()const        { return m_desFile; }
 const std::string& AppData::TestModeFunc()        { return m_testModeFunc; }
 const std::string &AppData::OAuth()               { return m_oauth; }
 const std::string &AppData::OAuthAccessTokenUrl()               { return m_oauthAccessTokenUrl; }
+const std::string &AppData::OAuthScopes()               { return m_oauthScopes; }
 void AppData::runOAuthClient(UserPasswordListener* listener) {
   if (!OAuth().size()) return;
 
@@ -804,6 +807,7 @@ void AppData::setDefaultOpts(){
   setSendMessageQueueWithMetadata( false );
   setOAuth( "" );
   setOAuthAccessTokenUrl( "" );
+  setOAuthScopes( "" );
 
 #if HAVE_LOG4CPLUS
   std::string fn = (m_appHome.empty() ? "." : m_appHome) + "/config/log4cplus.properties";
@@ -1068,6 +1072,9 @@ void AppData::getOpt(int &argc, char **argv){
       else if( strcmp( optName, "oauthAccessTokenUrl")==0){
         if (optarg) setOAuthAccessTokenUrl(optarg);
       }
+      else if( strcmp( optName, "oauthScopes")==0){
+        if (optarg) setOAuthScopes(optarg);
+      }
 #endif
       else if( strcmp( optName, "opentelemetryMetadata")==0){
         setOpenTelemetryMetadata();
@@ -1149,6 +1156,8 @@ void AppData::displayHelp(){
       std::cout <<"--" << long_options[i].name;
       if(long_options[i].has_arg==2){
         std::cout << "[=<argument>]";
+        if (long_options[i].name == "unitManager")
+          std::cout << " e.g. [comboBox_if_choice]";
       } else {
         std::cout <<" " << (long_options[i].has_arg==1? "<argument>":"");
       }

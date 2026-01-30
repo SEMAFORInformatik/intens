@@ -1018,7 +1018,7 @@ bool DataPoolIntens::checkTargetStreams( DataReference *ref, std::string& error_
   TargetStreamList::iterator it;
   for( it = targets->begin(); it != targets->end(); ++it ){
     if( (*it)->checkTargetStreams( timestamp ) ){
-      BUG_INFO(compose(_("a target from input stream named '%1' is valid"), (*it)->Name()) );
+      BUG_DEBUG(compose(_("a target from input stream named '%1' is valid"), (*it)->Name()) );
       error_msg += "\n" + (*it)->getErrorMessage();
     }
   }

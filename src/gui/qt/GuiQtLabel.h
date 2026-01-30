@@ -18,7 +18,7 @@ class GuiQtLabel : public GuiQtElement, public GuiLabel
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
 public:
-  GuiQtLabel( GuiElement *parent );
+  GuiQtLabel(GuiElement *parent, std::string label=std::string());
   virtual ~GuiQtLabel();
 protected:
   GuiQtLabel( const GuiQtLabel &label );

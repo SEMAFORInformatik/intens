@@ -46,22 +46,26 @@ OPERATOR
     "JSON"
   , FILTER="JSON (*.json)"
   , DIRNAME="./data/"
+  , NO_LOG, HIDDEN
   };
   FILESTREAM jsonNoHiddenFs = json_hidden_stream {
     "JSON"
   , FILTER="JSON (*.json)"
   , DIRNAME="./data/"
+  , NO_LOG, HIDDEN
   };
   FILESTREAM jsonNoTransientFs = json_no_transient_stream {
     "JSON"
   , FILTER="JSON (*.json)"
   , DIRNAME="./data/"
+  , NO_LOG, HIDDEN
   };
 
   FILESTREAM jsonInputFs = jsonInputstream {
     "JSON"
   , FILTER="JSON (*.json)"
   , DIRNAME="./data/"
+  , NO_LOG, HIDDEN
   };
 END OPERATOR;
 

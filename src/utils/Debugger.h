@@ -196,14 +196,14 @@ enum BugCategory {
 
 #if HAVE_LOG4CPLUS
 #define INIT_DESLOGGER() \
-  static log4cplus::Logger __desLogger__ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(Debugger::getFileLoggerName("DescriptionFile").c_str())); \
+  static log4cplus::Logger __desLogger__ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(Debugger::getFileLoggerName("DescriptionTraceFile").c_str())); \
   static bool __debugDesLogger__   = false; \
   static bool __infoDesLogger__   = false; \
   static bool __notInitDebugDesLogger__ = true; \
   static bool __notInitInfoDesLogger__ = true;
 
 #define INIT_PYTHONLOGGER() \
-  static log4cplus::Logger __pyLogLogger__ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(Debugger::getFileLoggerName("PythonLogFile").c_str())); \
+  static log4cplus::Logger __pyLogLogger__ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(Debugger::getFileLoggerName("PythonTraceFile").c_str())); \
   static bool __debugPyLogLogger__   = false; \
   static bool __infoPyLogLogger__   = false; \
   static bool __notInitDebugPyLogLogger__ = true; \
@@ -453,10 +453,6 @@ public:
    */
   static void InitializeDebugger();
 
-  /** Die Funktion teilt mit, ob der Debugger bereits initialisiert ist.
-   */
-  bool DebuggerOnline() const;
-
   /** Die Funktion setzt die gewünschte Debug-Category auf den Wert status.
       @param cat Debug-Category
       @param status aktivieren oder deaktivieren der Debug-Category
@@ -479,7 +475,12 @@ public:
    */
   static bool DebugFlagEnabled(BugCategory Cat);
 
-  static std::ostream &BugStream();
+  /** 2026-01-29 amg temporary code
+      please remove this code if all log4cplus.properties
+      use new base category path
+      ch.semafor.intens
+   */
+  static void overrideBaseCategoryPath(const std::string& path);
 
 // ================================================================ //
 // private member functions                                         //
@@ -498,14 +499,10 @@ private:
   typedef std::map< BugCategory, log4cplus::Logger> LoggerCategoryMap;
   static LoggerCategoryMap s_LoggerCategoryMap;
 #endif
-  static std::ostream&   s_BugOutFile;
-  static bool            s_BugFile_open;
   static bool            s_BugIsEnabled[BugMax];
-  static bool            s_BugInitialized;
-  static int             s_indent;
   static CategoryMap     s_categoryMap;
 
-  std::string            m_funktion;
+  static std::string     s_baseCategoryPath;
 };
 
 #endif // _INTENS_DEBUGGER_H_INCLUDED_

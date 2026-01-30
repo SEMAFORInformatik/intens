@@ -3082,8 +3082,13 @@ bool InterpreterConfigurator::fieldgroupSetAccordion(bool open){
   m_rep->fieldgroup->setAccordion(true, open);
   return true;
 }
-
-
+//======================================================================//
+// - fieldgroupSetWebApiPublish
+//======================================================================//
+bool InterpreterConfigurator::fieldgroupSetWebApiPublish(){
+  m_rep->fieldgroup->setWebApiPublish();
+  return true;
+}
 //======================================================================//
 // - setAlignment
 //======================================================================//
@@ -4787,7 +4792,7 @@ bool InterpreterConfigurator::xrtgraphRegisterIndexContainer(){
 // - xrtgraphSetLabel
 //======================================================================//
 bool InterpreterConfigurator::xrtgraphSetLabel( const std::string &labelstring, Gui2dPlot::eAxisType axistype ){
-  m_rep->plot2d->setLabel( UnitManager::extractValue(labelstring), axistype );
+  m_rep->plot2d->setLabel( labelstring, axistype );
   return true;
 }
 //======================================================================//

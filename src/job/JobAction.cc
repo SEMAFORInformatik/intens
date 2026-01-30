@@ -388,7 +388,6 @@ void JobAction::WebReplyResultData::sendWebReplyResult() {
     std::ostringstream os;
     webApiSetResponse(os);
     s_replyResultData->m_xfer->setValue(os.str());
-    //    BUG_DEBUG("Response: "<<os.str());
     BUG_INFO("Response: "<<os.str().substr(0, 50)<<"... , Len: "<<os.str().size());
     // send result
     m_mqReply->setStatus(MessageQueueReplyThread::RECEIVE_DONE);

@@ -141,18 +141,18 @@ std::string UnitManager::getComboBoxData(const std::string &unit,
     return "";
   }
   std::string _unit(unit);
+  std::string unitSetting;
 #if HAVE_QT
   if (data_ref && AppData::Instance().PersistItemsFilename().empty()) {
     QSettings *settings = GuiQtManager::Settings();
     settings->beginGroup(QString::fromStdString("UnitManager"));
-    std::string s;
     if (data_ref)
-      s = settings->value(QString::fromStdString(data_ref->fullName()),
-                          QString::fromStdString(unit)).toString().toStdString();
+      unitSetting = settings->value(QString::fromStdString(data_ref->fullName()),
+                                    QString::fromStdString(unit)).toString().toStdString();
     settings->endGroup();
-    if (s != unit) {
-      _unit = s;
-      userattr->SetUnit(s);
+    if (unitSetting != unit) {
+      _unit = unitSetting;
+      userattr->SetUnit(unitSetting);
     }
   }
 #endif
@@ -423,17 +423,17 @@ std::string UnitManager::extractValue(const std::string& json_string_or_text) {
   return value;
 }
 
-bool UnitManager::extractValue(const std::string& json_string_or_text, std::string& value) {
+UserAttr* UnitManager::extractValue(const std::string& json_string_or_text, std::string& value) {
   value = json_string_or_text;
   if (!AppData::Instance().hasUnitManagerFeature())
-    return false;
+    return 0;
   std::string text;
   std::string bStr("{\"input\":");
   std::string eStr("\"}");
   std::size_t posB  = json_string_or_text.find(bStr);
   std::size_t posE  = json_string_or_text.find_last_of(eStr);
   if (posB == std::string::npos || posE == std::string::npos)
-    return false;
+    return 0;
   // parse json
   std::string s(json_string_or_text.substr(posB, posE+1));
   Json::Value valueObject = ch_semafor_intens::JsonUtils::parseJsonObjectComboBox(s);
@@ -450,14 +450,20 @@ bool UnitManager::extractValue(const std::string& json_string_or_text, std::stri
         text = "";
       else {
         std::cerr <<"' ERROR: could not handle this jsonObject '" << json_string_or_text << "'\n";
-        return false;
+        return 0;
       }
       text = os.str();
     }
-    value = json_string_or_text.substr(0, posB) + text + json_string_or_text.substr(posE+1);
-    return true;
+    // get userattr and actual unit value
+    void *pvoid;
+    std::istringstream (valueObject["ptr_userattr"].asString()) >> pvoid;
+    auto userAttr = static_cast<UserAttr*>(pvoid);
+    std::string unitAttr(userAttr->Unit(false));
+    value = json_string_or_text.substr(0, posB) + unitAttr + json_string_or_text.substr(posE+1);
+    //    value = json_string_or_text.substr(0, posB) + text + json_string_or_text.substr(posE+1);
+    return userAttr;
   }
-  return false;
+  return 0;
 }
 
 /* --------------------------------------------------------------------------- */

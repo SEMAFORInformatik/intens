@@ -620,7 +620,7 @@ void GuiQtElement::saveFile( FileJobAction *action ){
 bool GuiQtElement::generateFileWithSvgGenerator(QIODevice* ioDevice, std::string& filename, bool bPrinter) {
   QSvgGenerator svg;
   QTemporaryFile tmp_svg(QString::fromStdString(compose("%1%2tmpXXXXXX.svg", QDir::tempPath().toStdString(),QDir::separator().toLatin1())));
-  tmp_svg.open();
+  if(!tmp_svg.open()) return false;
   ReportGen::Instance().newTmpFile( tmp_svg.fileName().toStdString() );
 
   // set svg properties
@@ -701,7 +701,7 @@ bool GuiQtElement::processConvert( const std::string &inFilename, std::string &o
   if (outFilename.size() == 0) {
     std::string tmp_out_filename;
     QTemporaryFile tmp_eps( QString::fromStdString(compose("%1%2XXXXXX.%3", QDir::tempPath().toStdString(),QDir::separator().toLatin1(), suffix.toStdString())) );
-    tmp_eps.open();
+    if(!tmp_eps.open()) return false;
     //  tmp_out_filename
     outFilename =  tmp_eps.fileName().toStdString();
     ReportGen::Instance().newTmpFile( outFilename );

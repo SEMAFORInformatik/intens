@@ -55,7 +55,7 @@ char RealConverter::decimalPoint() {
     }
 #endif
     _decimalSymbol = defaultDecimalPoint();
-    BUG_INFO("decimalSymbol: "<< _decimalSymbol);
+    BUG_DEBUG("decimalSymbol: "<< _decimalSymbol);
   }
   return _decimalSymbol;
 }
@@ -69,7 +69,7 @@ char RealConverter::getDecimalPoint() const {
 
 void RealConverter::resetDecimalPoint() {
   _decimalSymbol = '0';
-  BUG_INFO("decimalSymbol RESET");
+  BUG_DEBUG("decimalSymbol RESET");
 }
 
 char RealConverter::defaultDecimalPoint() {
@@ -431,8 +431,8 @@ static bool stringToDouble( char *str, double &d, double scale, double shift, ch
   // WEBAPI
   if (_decimalSymbol == '0') {
     decimalpoint = RealConverter::decimalPoint();
-    BUG_INFO("New decimalSymbol: "<< decimalpoint
-             << ", default_radix_char: " <<  default_radix_char
+    BUG_DEBUG("New decimalSymbol: "<< decimalpoint
+              << ", default_radix_char: " <<  default_radix_char
 #if QT_VERSION >= 0x060000
              << " - " << QGuiApplication::inputMethod()->locale().decimalPoint().toLatin1().back()
              << " - " << QGuiApplication::inputMethod()->locale().system().decimalPoint().toLatin1().back()

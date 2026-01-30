@@ -981,7 +981,7 @@ bool Stream::addLabel( DataReference *data_ref  ){
 /* --------------------------------------------------------------------------- */
 
 bool Stream::addUnits( DataReference *data_ref ){
-  std::string  units = static_cast<UserAttr*>(data_ref->getUserAttr())->Unit();
+  std::string  units = static_cast<UserAttr*>(data_ref->getUserAttr())->getOriginUnit();
   StreamParameter *p = addToken(units, units.size() );
   if( p == 0 ){
     return false;

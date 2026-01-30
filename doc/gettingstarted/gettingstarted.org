@@ -1454,6 +1454,9 @@ Intens requires two command line arguments to use OIDC, with the client name bei
   --oauthAccessTokenUrl "https://keycloak.example.com/realms/semafor/protocol/openid-connect/token" \
 #+end_example
 
+There is an additional argument you can pass called --oauthAccessTokenUrl containing a list of the requested scopes from
+your OAuth provider.
+If the option is not set, it will request the default list of scopes "openid profile roles".
 
 ** Deploying to the cloud
 

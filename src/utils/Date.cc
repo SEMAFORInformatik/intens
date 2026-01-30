@@ -373,20 +373,18 @@ std::string Date::getDateTimeElapsed(const std::string& isoBegin, const std::str
 
 std::string Date::durationAsString(int msecs, bool bAppendix, const std::string& label) {
   std::ostringstream os;
-  if (msecs) {
-    if (bAppendix)
-      os << ", ";
-    if (!label.empty())
-      os << label;
-    if (msecs >= 1000) {
-      if (label.empty())
-        os << "duration in secs: ";
-      os << msecs/1000 << "." <<  std::setfill('0') << std::setw(3)  << msecs%1000 << "s";
-    } else {
-      if (label.empty())
-        os << "duration in msecs: ";
-      os << msecs  << "ms";
-    }
+  if (bAppendix)
+    os << ", ";
+  if (!label.empty())
+    os << label;
+  if (msecs >= 1000) {
+    if (label.empty())
+      os << "duration in secs: ";
+    os << msecs/1000 << "." <<  std::setfill('0') << std::setw(3)  << msecs%1000 << "s";
+  } else {
+    if (label.empty())
+      os << "duration in msecs: ";
+    os << msecs  << "ms";
   }
   return os.str();
 }

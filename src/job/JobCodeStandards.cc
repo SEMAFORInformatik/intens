@@ -164,7 +164,7 @@ JobElement::OpStatus JobCodeExitIntens::execute( JobEngine *eng ){
     QuitApplication *quit = QuitApplication::Instance();
     quit->confirmYesButtonPressed();
     }
-    BUG_INFO("EXIT (flag)");
+    BUG_DEBUG("EXIT (flag)");
   }
   return op_Ok;
 }
@@ -333,7 +333,7 @@ JobElement::OpStatus JobCodeIcon::execute( JobEngine *eng ){
 /* --------------------------------------------------------------------------- */
 
 JobElement::OpStatus JobCodeCompare::execute( JobEngine *eng ){
-  BUG_INFO("JobCodeCompare::execute");
+  BUG_DEBUG("JobCodeCompare::execute");
 
   // first stack data item
   JobStackDataPtr dA( eng->pop() );
@@ -483,7 +483,7 @@ JobElement::OpStatus JobCodeClass::execute( JobEngine *eng ){
 /* --------------------------------------------------------------------------- */
 
 JobElement::OpStatus JobCodeSetResource::execute( JobEngine *eng ){
-  BUG_INFO("JobCodeSetResource::execute");
+  BUG_DEBUG("JobCodeSetResource::execute");
 
   if (m_useValue) {
     AppData::Instance().setResource(m_key, m_value);

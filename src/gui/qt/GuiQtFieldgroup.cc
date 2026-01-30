@@ -15,14 +15,18 @@
 #include "gui/qt/GuiQtDataField.h"
 #include "gui/qt/GuiQtIndex.h"
 #include "gui/qt/QtMultiFontString.h"
+#include "gui/qt/QtDialogProgressBar.h"
 #include "gui/GuiFolder.h"
 #include "gui/GuiStretch.h"
 #include "gui/GuiVoid.h"
 #include "app/Plugin.h"
+#include "operator/MessageQueuePublisher.h"
 
 #include "utils/Debugger.h"
 
 INIT_LOGGER();
+
+int GuiQtFieldgroup::s_timerId(0);
 
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -34,6 +38,7 @@ GuiQtFieldgroup::GuiQtFieldgroup( GuiElement *parent, const std::string &name )
   , m_scrollview(0)
   , m_qgroupbox( 0 )
   , m_qgroupboxLayout( 0 )
+  , m_publisher(0)
 {}
 
 GuiQtFieldgroup::GuiQtFieldgroup( const GuiQtFieldgroup &fg )
@@ -41,6 +46,7 @@ GuiQtFieldgroup::GuiQtFieldgroup( const GuiQtFieldgroup &fg )
   , m_scrollview(0)
   , m_qgroupbox( 0 )
   , m_qgroupboxLayout( 0 )
+  , m_publisher(0)
 {
   std::ostringstream myname;
   myname << fg.Name() << "#" << getElement()->getCloneNumber();
@@ -108,7 +114,6 @@ BasicStream* GuiQtFieldgroup::streamableObject() {
 /* --------------------------------------------------------------------------- */
 /* create --                                                                   */
 /* --------------------------------------------------------------------------- */
-#include "gui/qt/QtDialogProgressBar.h"
 
 void GuiQtFieldgroup::create(){
   if (getName() == DialogProgressBar::FIELDGROUP_NAME){
@@ -557,6 +562,9 @@ void GuiQtFieldgroup::manage(){
       }
     }
   }
+  // start timer
+  if (AppData::Instance().HeadlessWebMode() && hasWebApiPublish() && !s_timerId)
+    s_timerId = startTimer(1000);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -853,4 +861,39 @@ GuiElement::Orientation GuiQtFieldgroup::getDialogExpandPolicy() {
 /* --------------------------------------------------------------------------- */
 void GuiQtFieldgroup::setScrollbar( ScrollbarType sb ){
   m_container.setScrollbar( sb );
+}
+
+/* --------------------------------------------------------------------------- */
+/* timerEvent --                                                               */
+/* --------------------------------------------------------------------------- */
+void GuiQtFieldgroup::timerEvent ( QTimerEvent * event ) {
+  BUG_DEBUG("GuiQtFieldgroup::timerEvent");
+  publishData();
+}
+
+/* --------------------------------------------------------------------------- */
+/* publishData --                                                              */
+/* --------------------------------------------------------------------------- */
+void GuiQtFieldgroup::publishData() {
+  ///  if (!AppData::Instance().HeadlessWebMode()) return;
+  Json::Value jsonAry = Json::Value(Json::arrayValue);
+  int cnt = serializeVisibleElements(jsonAry, false);
+
+  ///GuiQtManager::Instance().setWebUpdateTimestamp();
+  BUG_DEBUG("GuiQtFieldgroup::publishData");
+
+  if (!m_publisher) {
+    std::string pubname("mqReply_publisher_mq");
+    m_publisher = MessageQueue::getPublisher(pubname);
+    if (m_publisher) {
+      m_publisher->setPublishHeader("updated_element_data");
+    } else {
+      if (!m_publisher) {
+        BUG_WARN(compose("Undefined '%1' MESSAGE_QUEUE Publisher in MessageQueueReply.inc", pubname));
+      }
+      return;
+    }
+  }
+  m_publisher->setPublishData(ch_semafor_intens::JsonUtils::value2string(jsonAry));
+  m_publisher->startPublish(true);
 }

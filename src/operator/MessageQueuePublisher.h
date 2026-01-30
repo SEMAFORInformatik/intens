@@ -33,6 +33,10 @@ public:
   /** set publish header for next operation
    */
   void setPublishHeader( const std::string& header );
+  /** set publish data for next operation
+      (in case of no outstream exists)
+   */
+  void setPublishData( const std::string& data );
 
   /** start a single reply to message queue publisher
    */
@@ -62,6 +66,7 @@ private slots:
 // -----------------------------------------------------
 private:
   bool publishHeader();
+  bool publishData();
 
   class Trigger : public JobStarter
   {
@@ -97,6 +102,7 @@ private:
 
   std::vector<Stream*>   m_publish_out_streams;
   std::string            m_publishHeader;
+  std::string            m_publishData;
   ConnectionListener    *m_listener;
   std::vector<std::string> m_lastPublishString;
 };

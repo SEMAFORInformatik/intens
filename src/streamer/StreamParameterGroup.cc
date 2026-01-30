@@ -172,7 +172,7 @@ bool StreamParameterGroup::isValid(bool validErrorMsg) {
         // this is done to show what dependencies are cleared
         // in dependency clear confirm dialog
         std::string msg = (*I)->getLabel();
-        BUG_INFO("target stream '" << msg << "' is valid");
+        BUG_DEBUG("target stream '" << msg << "' is valid");
         if (AppData::Instance().TargetStreamInfo())
           (*I) ->getErrorMessageStream() << "- " << msg << "\n";;
       }

@@ -77,6 +77,7 @@ void UserAttr::operator=( const UserAttr &attr ){
   m_Helptext              = attr.m_Helptext;
   m_Label                 = attr.m_Label;
   m_Unit                  = attr.m_Unit;
+  m_UnitOriginValue       = attr.m_UnitOriginValue;
   m_pattern               = attr.m_pattern;
   m_DataSetName           = attr.m_DataSetName;
   m_DataSetIndexed        = attr.m_DataSetIndexed;
@@ -232,7 +233,13 @@ void UserAttr::SetLabel(const std::string &label)       { m_Label = label; }
 void UserAttr::SetDbAttr(const std::string &name)       { m_dbattrname = name; }
 void UserAttr::SetDbUnit(const std::string &name)       { m_dbunitname = name; }
 void UserAttr::SetDbTransient()                         { m_dbtransient = true; }
-void UserAttr::SetUnit(const std::string &unit)         { m_Unit = unit; }
+void UserAttr::SetUnit(const std::string &unit)         {
+  // save origin value from description file
+  if (m_UnitOriginValue.empty() && m_Unit.empty()){
+    m_UnitOriginValue = unit;
+  }
+  m_Unit = unit;
+}
 void UserAttr::SetPattern(const std::string &pattern)   { m_pattern = pattern; }
 void UserAttr::SetHelptext(const std::string &text)     { m_Helptext = text; }
 void UserAttr::SetClassname(const std::string &name, const std::string &fullname) {
@@ -283,6 +290,7 @@ const std::string UserAttr::Unit(bool unitManagerFeature, DataReference* data_re
   }
   return m_Unit;
 }
+const std::string UserAttr::getOriginUnit() { return m_UnitOriginValue; }
 const std::string &UserAttr::Pattern() const { return m_pattern; }
 const std::string &UserAttr::Helptext() const { return m_Helptext; }
 const std::string &UserAttr::Classname(const std::string &fullname) {

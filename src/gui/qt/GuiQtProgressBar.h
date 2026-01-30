@@ -42,7 +42,6 @@ public:
   /** Fragt nach der ExpandPolicy des QtElements fuer den Dialog.
    */
   virtual GuiElement::Orientation getDialogExpandPolicy();
-  void timerEvent (QTimerEvent * event);
 
 /*=============================================================================*/
 /* public member functions of ConfirmationListener                             */
@@ -55,6 +54,7 @@ public:
   /* private functions                                                           */
   /*=============================================================================*/
 private:
+  void timerEvent (QTimerEvent * event);
   void publishData();
   /*=============================================================================*/
   /* private members                                                             */
@@ -63,7 +63,7 @@ private:
   QProgressBar *m_progressBar;
   std::vector<GuiQtProgressBar*> m_cloned;
   MessageQueuePublisher* m_publisher;
-  int                    m_timerId;
+  static int             s_timerId;
 };
 
 #endif

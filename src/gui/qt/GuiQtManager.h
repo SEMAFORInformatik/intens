@@ -256,7 +256,6 @@ private:
 protected:
   void timerEvent( QTimerEvent *event );
 private slots:
-  void slot_quitApplication();
   void slot_GuiUpdateEvent();
   void slot_desktop_workAreaResized(int);
   void slot_writeToDatapool(const std::string varnameData, const std::string& data, int maxlen);

@@ -200,6 +200,7 @@
   ],
   "keyword": [
     "ABORTTRANSACTION",
+    "ACCORDION",
     "ALARM_COLOR",
     "ALARM_LEVEL",
     "ALIGN",
@@ -375,6 +376,8 @@
     "PREVIEW",
     "PRINTSTYLE",
     "PRIORITY",
+    "ProgressDialog",
+    "PROGRESS",
     "PROTO",
     "PSPLOT",
     "PUBLISH",

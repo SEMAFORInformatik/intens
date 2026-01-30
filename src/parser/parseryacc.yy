@@ -2392,6 +2392,8 @@ ui_fieldgroup_option /* DOCUMENTATION:DIAGRAM */
     {
       configurator -> fieldgroupSetAccordion(true);
     }
+  | tWEBAPI '=' tPUBLISH
+      { configurator -> fieldgroupSetWebApiPublish(); }
   | tFUNC '=' job_function_pointer
     {
       configurator -> setFieldgroupFunction();

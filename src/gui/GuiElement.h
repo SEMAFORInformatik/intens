@@ -506,8 +506,10 @@ public:
       param @onlyUpdated nur GuiElemente auflisten, die seit dem letzten GuiUpdate geändert haben
   */
   virtual bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false);
+  int serializeVisibleElements(Json::Value& jsonElem, bool updateAlways);
 #if HAVE_PROTOBUF
   virtual bool serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated = false);
+  int serializeVisibleElements(in_proto::ElementList* eles, bool updateAlways);
 #endif
   virtual void getVisibleElement(GuiElementList& res) { }
   static bool isVisibleElementType(ElementType type);

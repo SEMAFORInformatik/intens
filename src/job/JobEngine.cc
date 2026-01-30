@@ -29,7 +29,7 @@ JobEngine::JobEngine( JobFunction *function )
   , m_current_addr( 0 )
   , m_error( false )
   , m_messagestream( 0 ){
-  BUG_INFO("Begin of FUNC "<< function->Name());
+  BUG_DEBUG("Begin of FUNC "<< function->Name());
   pushReturnControl( function->Name() );
   m_code = function->getCodeStream();
 }
@@ -144,8 +144,12 @@ void JobEngine::cancel(){
 JobElement::OpStatus JobEngine::restoreCode( JobStackReturn &ret ){
   std::string name;
   OpStatus status = ret.getCodeStream( m_code, m_current_addr, name );
-  BUG_INFO("End of FUNC " << name
-           << Date::durationAsString(ret.getStartTime().msecsTo(QTime::currentTime())));
+  int msec = ret.getStartTime().msecsTo(QTime::currentTime());
+  if (msec < 1000){
+    BUG_DEBUG("End of FUNC " << name << Date::durationAsString(msec));
+  }else{
+    BUG_INFO("End of FUNC " << name << Date::durationAsString(msec));
+  }
   return status;
 }
 

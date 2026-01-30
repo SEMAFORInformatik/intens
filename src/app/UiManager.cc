@@ -91,7 +91,7 @@ UImanager::UImanager()
   , m_save_menu_with_remaining_entries( true )
   , m_data_undo_listener( true )
   , m_data_redo_listener( false )
-  , m_desFuncName("intens_script_func") {
+  , m_desFuncName("intens_trace_func") {
   createBasicElements();
 }
 
@@ -1198,20 +1198,20 @@ void UImanager::createApplication(){
 /* --------------------------------------------------------------------------- */
 
 void UImanager::startApplication(){
-  DES_INFO(compose("FUNC %1 ", m_desFuncName));
+  DES_DEBUG(compose("FUNC %1 ", m_desFuncName));
   JobAction *action = 0;
   m_pylogger_file.setToggleStatus( false );  // Disable PyLog is default
 
-  BUG_INFO("startApplication, headlessMode:" << AppData::Instance().HeadlessWebMode()
+  BUG_DEBUG("startApplication, headlessMode:" << AppData::Instance().HeadlessWebMode()
            << " NoInitFunc:" << AppData::Instance().NoInitFunc());
   if (AppData::Instance().HeadlessWebMode() ||
       AppData::Instance().NoInitFunc()) {
-    BUG_INFO("startApplication with HeadlessWebMode");
+    BUG_DEBUG("startApplication with HeadlessWebMode");
   } else {
     if (AppData::Instance().ReplyPort() > 0) {
       BUG_WARN("startApplication with DesktopMode, replyPort: " << AppData::Instance().ReplyPort());
     } else {
-      BUG_INFO("startApplication with DesktopMode");
+      BUG_DEBUG("startApplication with DesktopMode");
     }
     action = JobManager::Instance().getInitialAction( "INIT" );
     if( action ){
@@ -1284,25 +1284,25 @@ void UImanager::startApplication(){
 
 void UImanager::closeDescriptionFunction(){
   // close function
-  DES_INFO(compose("}; // End of %1", m_desFuncName));
+  DES_DEBUG(compose("}; // End of %1", m_desFuncName));
   if (!m_desfileFuncArgs.empty()) {
 
 	// define pre_<funcName>
-	DES_INFO(compose("FUNC pre_%1 {", m_desFuncName));
+	DES_DEBUG(compose("FUNC pre_%1 {", m_desFuncName));
 	std::map<std::string, argumentValues>::iterator it = m_desfileFuncArgs.begin();
 	for(; it != m_desfileFuncArgs.end(); ++it) {
-	  DES_INFO(compose("  SET_RESOURCE(\"Arg@%1\", \"%2\");",
+	  DES_DEBUG(compose("  SET_RESOURCE(\"Arg@%1\", \"%2\");",
 			   it->first, it->second[0]));
 	}
-	DES_INFO("};");  // close function
+	DES_DEBUG("};");  // close function
 
 	// define post_<funcName>
-	DES_INFO(compose("FUNC post_%1 {", m_desFuncName));
+	DES_DEBUG(compose("FUNC post_%1 {", m_desFuncName));
 	it = m_desfileFuncArgs.begin();
 	for(; it != m_desfileFuncArgs.end(); ++it) {
-	  DES_INFO(compose("  SET_RESOURCE(\"Arg@%1\", \"\");", it->first));
+	  DES_DEBUG(compose("  SET_RESOURCE(\"Arg@%1\", \"\");", it->first));
 	}
-	DES_INFO("};");  // close function
+	DES_DEBUG("};");  // close function
   }
 }
 
@@ -1472,7 +1472,7 @@ void UImanager::DebugDescriptionFileListener::ToggleStatusChanged(bool state) {
 	GuiManager::Instance().setWaitingModalDialog( oldValue );
 
 	UImanager::Instance().setDesFuncName(funcName);
-	DES_INFO(compose("FUNC %1 {", funcName));
+	DES_DEBUG(compose("FUNC %1 {", funcName));
   }
 
 }

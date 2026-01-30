@@ -231,12 +231,12 @@ void AppData::getApplicationResources(){
   char *scale_factor = getenv("QT_SCALE_FACTOR");
   char *screen_scale_factors = getenv("QT_SCREEN_SCALE_FACTORS");
   if (scale_factor) {
-    BUG_INFO("QT_SCALE_FACTOR: " << scale_factor);
+    BUG_DEBUG("QT_SCALE_FACTOR: " << scale_factor);
   }
   if (screen_scale_factors) {
-    BUG_INFO("QT_SCREEN_SCALE_FACTORS: " << screen_scale_factors);
+    BUG_DEBUG("QT_SCREEN_SCALE_FACTORS: " << screen_scale_factors);
   }
-  BUG_INFO("QT_AUTO_SCREEN_SCALE_FACTOR: " << screen_scale);
+  BUG_DEBUG("QT_AUTO_SCREEN_SCALE_FACTOR: " << screen_scale);
 
 }
 

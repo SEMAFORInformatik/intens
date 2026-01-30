@@ -6,7 +6,6 @@
 #include <winsock2.h>
 #endif
 #include "job/JobManager.h"
-#include <filesystem>
 
 #if HAVE_LOG4CPLUS
 #include <log4cplus/logger.h>
@@ -224,8 +223,6 @@ App::App( int &argc, char **argv )
   setlocale( LC_ALL, "" );   /* use the internationalization utilities */
   AppData &appdata = AppData::Instance();
 
-  Debugger::InitializeDebugger();
-
   std::string home=getHomeDir();
   std::string::size_type pos = home.size();
   if( pos > 0 ){
@@ -256,6 +253,18 @@ App::App( int &argc, char **argv )
   std::string fn = appdata.Log4cplusPropertiesFilename();
   if (!appdata.LspWorker() && std::filesystem::exists(fn)) {
 #if HAVE_LOG4CPLUS
+    // tempoary check "ch.semafor.intens" or "org.semafor.intens"
+    QFile f(fn.c_str());
+    if (f.open(QIODeviceBase::ReadOnly)){
+      std::string oldPath("ch.semafor.intens");
+      auto ret = f.readAll().contains(oldPath);
+      if (ret) {
+        Debugger::overrideBaseCategoryPath(oldPath);
+        BUG_WARN("Deprecated Category path: '" << oldPath << "' please use 'ch.semafor.intens'");
+      }
+      f.close();
+    }
+    // do configure
     log4cplus::PropertyConfigurator::doConfigure(fn);
 #endif
   }else{
@@ -275,6 +284,9 @@ App::App( int &argc, char **argv )
     log4cplus::Logger::getRoot().shutdown();
 #endif
   }
+
+  // init debugger
+  Debugger::InitializeDebugger();
 
   // debug info
   lconv *lc = localeconv();

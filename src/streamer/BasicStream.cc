@@ -90,7 +90,7 @@ void BasicStream::addTargetStream( BasicStream *s, bool autoClear ){
       return; // exists already
     }
   }
-  BUG_INFO("Stream '" << Name() << "' Add TargetStream '" << s->Name() <<"'");
+  BUG_DEBUG("Stream '" << Name() << "' Add TargetStream '" << s->Name() <<"'");
   m_targetstreams.insert ( std::pair<BasicStream *, bool>(s, autoClear) );
   //  m_targetstreams.push_back( s );
 
@@ -159,7 +159,7 @@ void BasicStream::clearAsTargetStream( TransactionNumber timestamp ){
 bool BasicStream::checkTargetStreams( TransactionNumber timestamp ){
   BUG_DEBUG("checkTargetStreams, name: " << m_name );
   if (!DataItemsAreValid(false)) {  // test source stream
-    BUG_INFO(compose(_("unused target, input stream named '%1' is not valid (%2)\n"), Name()));
+    BUG_DEBUG(compose(_("unused target, input stream named '%1' is not valid (%2)\n"), Name()));
     return false;
   }
   getErrorMessage(); // clear this message from input stream
@@ -236,7 +236,7 @@ bool BasicStream::checkTargets( TransactionNumber timestamp ){
         (*it).first->getErrorMessage();   // clear
         continue;
       }
-      BUG_INFO("checkTargets ConsistencyCheck Stream named: '"<<Name()<<"', CLEAR targetStream  '"<<(*it).first->Name()<<"' !!!");
+      BUG_INFO("checkTargets (ConsistencyCheck) Stream '"<<Name()<<"', CLEAR targetStream '"<<(*it).first->Name()<<"' !!!");
       ret = true;
     }
   }

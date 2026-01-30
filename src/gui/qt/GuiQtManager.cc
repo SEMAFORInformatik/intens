@@ -636,7 +636,9 @@ void GuiQtManager::update( GuiElement::UpdateReason reason ){
   m_gui_transaction = DataPoolIntens::NewTransaction();
   m_gui_cycle       = DataPoolIntens::Instance().currentCycle();
   int msec = startTime.msecsTo(QTime::currentTime());
-  if (msec >= 0) {
+  if (msec < 1000){
+    BUG_DEBUG("GuiUpdate: " << Date::durationAsString(msec, false));
+  }else{
     BUG_INFO("GuiUpdate: " << Date::durationAsString(msec, false));
   }
   BUG_EXIT("New Transaction " << m_gui_transaction);
@@ -678,9 +680,6 @@ void GuiQtManager::initApplication( int *argc, char **argv, const std::string & 
     popupStartupBanner();
 
     m_toplevel = new  MainWidget();
-    connect( m_qapp, SIGNAL(aboutToQuit()), this, SLOT(slot_quitApplication()) );
-    connect( m_qapp, SIGNAL(lastWindowClosed ()), this, SLOT(slot_quitApplication()) );
-    connect( m_qapp, SIGNAL(destroyed(QObject*)), this, SLOT(slot_quitApplication()) );
 #if QT_VERSION < 0x060000
     connect( QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(slot_desktop_workAreaResized(int)) );
 #endif
@@ -721,14 +720,6 @@ void GuiQtManager::slot_desktop_workAreaResized(int screen) {
     if ((*it)->getQtElement()->myWidget())  // is created?
       (*it)->getQtElement()->getQtForm()->setMaximumSize(true);
   }
-}
-
-/* --------------------------------------------------------------------------- */
-/* slot_quitApplication --                                                     */
-/* --------------------------------------------------------------------------- */
-
-void GuiQtManager::slot_quitApplication() {
-  BUG_INFO("slot_quitApplication()");
 }
 
 /* --------------------------------------------------------------------------- */
@@ -779,11 +770,11 @@ void GuiQtManager::timerEvent( QTimerEvent *event ) {
           !AppData::Instance().HeadlessWebMode()) {
     killTimer( m_updateStylesheet );
     m_updateStylesheet = -1;
-    BUG_INFO("timerEvent,  m_stylesheetApply: " << m_stylesheetApply);
+    BUG_DEBUG("timerEvent,  m_stylesheetApply: " << m_stylesheetApply);
     if (m_stylesheetApply == STYLESHEET_APPLY_BOTH){
       GuiQtManager::Instance().myWidget()->setStyleSheet(qApp->styleSheet());  // only mainwindow
     } else if (m_stylesheetApply == STYLESHEET_APPLY_SHOWN){
-      BUG_INFO("timerEvent,  m_stylesheetName: " << m_stylesheetName);
+      BUG_DEBUG("timerEvent,  m_stylesheetName: " << m_stylesheetName);
       GuiQtManager::Instance().setStylesheetName( m_stylesheetName );
     }
   }
@@ -1193,11 +1184,7 @@ void GuiQtManager::popupStartupBanner(){
       //      splash->showMessage( QString::fromStdString(copyright_text), Qt::AlignHCenter); //, Qt::AlignLeft,  m_highlightedTextColor );
       splash->setMask(pixmap.mask());
       m_startup = splash;
-#if QT_VERSION < 0x060000
-      QRect drect = QApplication::desktop()->screenGeometry(m_startup);
-#else
       QRect drect = QGuiApplication::primaryScreen()->availableGeometry();
-#endif
       m_startup->show();
       if (drect.width() > m_startup->width() && drect.height() > m_startup->height())
         m_startup->move((drect.width()-m_startup->width())/2, (drect.height()-m_startup->height())/2 );
@@ -1358,7 +1345,7 @@ std::set<std::string> GuiQtManager::getAvailableStylesheets(bool bAbsolutPath) {
 static const char* resImgName = "images";
 static QStringList _spath = QDir::searchPaths ( resImgName ) ;
 std::string GuiQtManager::setStylesheetName(const std::string& stylesheet) {
-  BUG_INFO( "stylesheet: " << stylesheet );
+  BUG_DEBUG( "stylesheet: " << stylesheet );
   if (AppData::Instance().HeadlessWebMode()) return "";
 
   std::set<std::string> list = getAvailableStylesheets(true);
@@ -1393,12 +1380,11 @@ std::string GuiQtManager::setStylesheetName(const std::string& stylesheet) {
   }
 
   QFile file( QString::fromStdString(fname) );
-  if (file.exists()) {
+  if (file.exists() && file.open(QFile::ReadOnly)) {
     m_stylesheetName = stylesheet;
-    file.open(QFile::ReadOnly);
     QString styleSheet = file.readAll();
     //    styleSheet.replace(QRegularExpression("url[\(]([^:,^\\.]+\\.)"), "url("+QString(resImgName)+":\\1");
-    BUG_INFO("QSS String: " << styleSheet.toStdString());
+    BUG_DEBUG("QSS String: " << styleSheet.toStdString());
 
     // set QDir::setSearchPaths for images resources
     QFileInfo fi( QString::fromStdString(fname) );
@@ -1416,7 +1402,6 @@ std::string GuiQtManager::setStylesheetName(const std::string& stylesheet) {
       update( reason_Always );
     }
     file.close();
-
     return fname;
   }
   BUG_WARN("stylesheet '" << fname << "' not found");
@@ -1576,7 +1561,7 @@ bool GuiQtManager::loadResourceFile( const std::string &resfilename ){
   }
   if (m_stylesheetApply == STYLESHEET_APPLY_INIT || m_stylesheetApply == STYLESHEET_APPLY_BOTH)
     GuiQtManager::Instance().setStylesheetName( m_stylesheetName );
-  BUG_INFO("read qss styleseheet : " << m_stylesheetName << ", styleseheetApply: " << m_stylesheetApply);
+  BUG_DEBUG("read qss styleseheet : " << m_stylesheetName << ", styleseheetApply: " << m_stylesheetApply);
 
   // read Intens Version (of Intens, who previously wrote settings file)
   m_prevSettingFileVersion = m_settings->value("Intens.VersionString", "").toString().toStdString();
@@ -1607,7 +1592,7 @@ bool GuiQtManager::writeResourceFile(){
     return false;
 
 #ifdef Q_OS_UNIX
-  BUG_INFO(compose(_("Writing resource file....[%1]"), AppData::Instance().newResFileName()))
+  BUG_DEBUG(compose(_("Writing resource file....[%1]"), AppData::Instance().newResFileName()))
 
   QFileInfo fi( QString::fromStdString(AppData::Instance().newResFileName()) );
   QString existFileName("");
@@ -1660,8 +1645,8 @@ bool GuiQtManager::writeResourceFile(){
   }
 
 #endif
-  BUG_INFO("Create File ["<<fi.fileName().toStdString()<<"]["<<settings.fileName().toStdString()<<"]");
-  BUG_INFO("Create File ["<<AppData::Instance().newResFileName()<<"]["
+  BUG_DEBUG("Create File ["<<fi.fileName().toStdString()<<"]["<<settings.fileName().toStdString()<<"]");
+  BUG_DEBUG("Create File ["<<AppData::Instance().newResFileName()<<"]["
            <<  fi.absoluteFilePath().toStdString() <<"]");
 
   settings.setValue( "Intens/apptitle.text", "I N T E N S" );
@@ -1914,7 +1899,7 @@ void GuiQtManager::printSizeInfo(std::ostream& os, int intent, bool onlyMaxChild
 /* --------------------------------------------------------------------------- */
 
 void GuiQtManager::runJobAfterUpdateFormsFunction( JobElement::CallReason reason){
-  BUG_INFO("runJobAfterUpdateFormsFunction Started");
+  BUG_DEBUG("runJobAfterUpdateFormsFunction Started");
 
   if( m_jobAfterUpdateFormsFunction == 0 ){
     BUG_DEBUG("no Job available");
@@ -1944,7 +1929,7 @@ void GuiQtManager::Trigger::backFromJobStarter( JobAction::JobResult result  ){
   if (getReason() == JobElement::cll_GuiUpdate) {
     m_manager->m_toplevel->blockSignals(false);
   }
-  BUG_INFO("runJobAfterUpdateFormsFunction Ended");
+  BUG_DEBUG("runJobAfterUpdateFormsFunction Ended");
 }
 
 /* --------------------------------------------------------------------------- */

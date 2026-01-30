@@ -252,8 +252,7 @@ void JobStarter::tryAgain( JobStarter *caller ) {
     return;
   }
   s_waitName=s->m_function->Name();
-  BUG_MSG("function " << s->m_function->Name() << " starts");
-  BUG_INFO(">> function " << s->m_function->Name() << " starts (queue size " << s_jobqueue.size() << ")");
+  BUG_DEBUG("function " << s->m_function->Name() << " starts (queue size " << s_jobqueue.size() << ")");
   s->startNow();
   if( s != caller ){
     s_to_delete=caller;
@@ -329,7 +328,7 @@ void JobStarter::startNow(){
   if (it == noLogFunc.end() &&
       m_function->Name() != "ON_CYCLE_SWITCH") {
     if (false && AppData::Instance().PyLogMode()) {
-      PYLOG_INFO(compose(PYLOG_CALL_PROCESS, m_function->Name(), "FunctionXX"));
+      PYLOG_INFO(compose(PYLOG_CALL_PROCESS, m_function->Name(), "Function"));
       std::cerr << "<abort> JobStarter::startNow()\n";
       return;
     }
@@ -355,8 +354,7 @@ void JobStarter::backFromJobController( JobAction::JobResult rslt ){
   BUG_PARA(BugJobStart,"JobStarter::backFromJobController", this );
 
   assert( s_wait );
-  BUG_MSG("function " << m_function->Name() << " is done");
-  BUG_INFO("<< function " << m_function->Name() << " is done");
+  BUG_DEBUG("<< function " << m_function->Name() << " is done");
 
   backFromJobStarter( rslt );
 

@@ -69,7 +69,7 @@ JobElement::OpStatus JobCodeOpenFile::execute( JobEngine *eng ){
      else{
        jobaction = m_fileStream->getOpenAction( 0 );
      }
-     BUG_INFO("JobCodeOpenFile::execute fileName["<<s<<"]");
+     BUG_DEBUG("JobCodeOpenFile::execute fileName["<<s<<"]");
    }
 
    if( jobaction ){

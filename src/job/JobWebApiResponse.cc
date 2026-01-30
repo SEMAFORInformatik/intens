@@ -96,7 +96,7 @@ void JobWebApiResponse::serializeForms(Json::Value& jsonElem) {
   }
   jsonElem["form"] = jsonAry;
   jsonElem["form_top_name"] = GuiElement::getTopFormName();
-  BUG_INFO("TopForm: " << GuiElement::getTopFormName());
+  BUG_DEBUG("TopForm: " << GuiElement::getTopFormName());
 }
 
 #if HAVE_PROTOBUF
@@ -116,7 +116,7 @@ void JobWebApiResponse::serializeForms(in_proto::WebAPIResponse* reply) {
     }
   }
   reply->set_top_form(GuiElement::getTopFormName());
-  BUG_INFO("TopForm: " << GuiElement::getTopFormName());
+  BUG_DEBUG("TopForm: " << GuiElement::getTopFormName());
 }
 #endif
 
@@ -236,9 +236,6 @@ void JobWebApiResponse::serializeFolderTab(Json::Value& jsonElem) {
     jsonElem["id"] = jsonAry;
 
     jsonObj[(*it)->getName()] = jsonElem;
-    if ((*it)->getName() == "main_window_apc_folder") {
-      BUG_INFO("serializeFolderTab main_window_apc_folder: " << ch_semafor_intens::JsonUtils::value2string(jsonElem))
-    }
   }
 
   jsonElem["folder"] = jsonObj;
@@ -339,9 +336,9 @@ void JobWebApiResponse::serializeFunctionStatus(Json::Value& jsonElem, JobAction
   jsonObj["message"] = message;
   jsonObj["name"] = func.Name();
   jsonElem["function"] = jsonObj;
-  BUG_INFO("Function StatusResponse: "<< ch_semafor_intens::JsonUtils::value2string(jsonObj));
+  BUG_DEBUG("Function StatusResponse: "<< ch_semafor_intens::JsonUtils::value2string(jsonObj));
   if (QuitApplication::Instance()->ExitFlag()) {
-    BUG_INFO("Reset Exit Flag");
+    BUG_DEBUG("Reset Exit Flag");
     QuitApplication::Instance()->setExitFlag(false);
   }
 }
@@ -391,7 +388,7 @@ void JobWebApiResponse::serializeFunctionStatus(in_proto::WebAPIResponse* reply,
   function->set_message(message);
   function->set_name(func.Name());
   if (QuitApplication::Instance()->ExitFlag()) {
-    BUG_INFO("Reset Exit Flag");
+    BUG_DEBUG("Reset Exit Flag");
     QuitApplication::Instance()->setExitFlag(false);
   }
 }

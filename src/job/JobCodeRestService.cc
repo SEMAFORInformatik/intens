@@ -48,7 +48,7 @@ JobElement::OpStatus JobCodeRestServiceGet::execute( JobEngine* eng ){
 
     JobElement::OpStatus ret = RestService::Instance().get();
     eng->pushTrue( ret == op_Ok );
-    BUG_INFO("End of RestServiceGet "
+    BUG_DEBUG("End of RestServiceGet "
              << Date::durationAsString(startTime.msecsTo(QTime::currentTime())));
     return ret;
   }
@@ -222,7 +222,7 @@ JobElement::OpStatus JobCodeRestServiceLogon::execute( JobEngine* eng ){
       trim(password);
     }
     delete[] output;
-    BUG_INFO("Read Authentification from Settins, urL: " << baseUrl);
+    BUG_DEBUG("Read Authentification from Settins, urL: " << baseUrl);
     m_baseUrl->setValue( baseUrl );
     m_username->setValue( username );
     m_password->setValue( password );

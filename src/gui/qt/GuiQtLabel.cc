@@ -64,7 +64,7 @@ private:
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
-GuiQtLabel::GuiQtLabel( GuiElement *parent )
+GuiQtLabel::GuiQtLabel( GuiElement *parent, std::string label )
   : GuiQtElement( parent )
   , m_labelwidget( 0 )
   , m_combobox( 0 )
@@ -75,6 +75,8 @@ GuiQtLabel::GuiQtLabel( GuiElement *parent )
   , m_orientation( orient_Default )
   , m_userattr(0)
 {
+  if (!label.empty())
+    setLabel(label);
 }
 
 GuiQtLabel::~GuiQtLabel(){}

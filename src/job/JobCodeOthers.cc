@@ -152,8 +152,8 @@ JobElement::OpStatus JobCodeSetStylesheet::execute( JobEngine *eng ){
 /* --------------------------------------------------------------------------- */
 
 JobElement::OpStatus JobCodeReplaceGuiElement::execute( JobEngine *eng ){
-  BUG_INFO("JobCodeReplaceGuiElement::execute "
-           << m_old_element->getName() << " by " << m_new_element->getName());
+  BUG_DEBUG("JobCodeReplaceGuiElement::execute "
+            << m_old_element->getName() << " by " << m_new_element->getName());
   if( !GuiFactory::Instance()->replace( m_old_element, m_new_element ) ){
     eng->ErrorStream() << "Replace of a GuiElement failed. Old Element not found";
     eng->flushErrorStream();
@@ -503,11 +503,6 @@ JobElement::OpStatus JobCodeMap::execute( JobEngine *eng ){
         }
 
         // activate folder tab by index
-        if (AppData::Instance().HeadlessWebMode()) {
-          BUG_INFO("?? FOLDERTAB activePage=" << index);
-          ///          guiElem->getFolder()->getHiddenIndex(index);
-          BUG_INFO("=> FOLDERTAB activePage=" << index);
-        }
         guiElem->getFolder()->activatePage(index, GuiFolderGroup::omit_Default, false );
         // GuiUpdate bzw. serialize erwzingen
         guiElem->getFolder()->getPage(index)->setLastGuiUpdated(0);
@@ -541,7 +536,7 @@ JobElement::OpStatus JobCodeUnmap::execute( JobEngine *eng ){
   if (data->reference().getDataReference()->GetValue_PreInx( name )){
     guiElem = GuiElement::findElement( name );
   }
-  BUG_INFO("JobCodeUnmap name: " << name << ", guiElem: " << guiElem);
+  BUG_DEBUG("JobCodeUnmap name: " << name << ", guiElem: " << guiElem);
   if (guiElem) {
     switch (guiElem->Type()) {
     case GuiElement::type_Form:

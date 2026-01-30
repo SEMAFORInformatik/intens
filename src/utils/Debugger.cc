@@ -20,16 +20,8 @@ using namespace std;
 // ================================================================ //
 
 bool            Debugger::s_BugIsEnabled[BugMax];
-bool            Debugger::s_BugInitialized = false;
-int             Debugger::s_indent = 0;
 Debugger::CategoryMap Debugger::s_categoryMap;
-
-#if defined _WIN32
-std::ostream&  Debugger::s_BugOutFile = std::cout;
-#else
-static std::ofstream* _BugOutFile = new std::ofstream("IntensBugFile");
-std::ostream&  Debugger::s_BugOutFile = *_BugOutFile;
-#endif
+std::string     Debugger::s_baseCategoryPath("ch.semafor.intens.");
 
 #if defined HAVE_LOG4CPLUS
 Debugger::LoggerCategoryMap  Debugger::s_LoggerCategoryMap;
@@ -65,14 +57,10 @@ Debugger::~Debugger(){}
 // ---------------------------------------------------------------- //
 
 void Debugger::InitializeDebugger(){
-  s_BugOutFile.precision(14);
-  s_BugOutFile.setf( (std::_Ios_Fmtflags)0, ios::floatfield );
-
   ModifyAllDebugFlags( false );
-  s_BugInitialized = true;
 
-  s_categoryMap.insert( CategoryMap::value_type( "DescriptionFile", BugDescriptionFile ) );
-  s_categoryMap.insert( CategoryMap::value_type( "PythonLogFile", BugPythonLogFile ) );
+  s_categoryMap.insert( CategoryMap::value_type( "DescriptionTraceFile", BugDescriptionFile ) );
+  s_categoryMap.insert( CategoryMap::value_type( "PythonTraceFile", BugPythonLogFile ) );
   s_categoryMap.insert( CategoryMap::value_type( "Data", BugData ) );
   s_categoryMap.insert( CategoryMap::value_type( "Ref", BugRef ) );
   s_categoryMap.insert( CategoryMap::value_type( "Dict", BugDict ) );
@@ -111,7 +99,7 @@ void Debugger::InitializeDebugger(){
   // initialize LoggerCategoryMap
   CategoryMap::iterator it = s_categoryMap.begin();
   for (; it != s_categoryMap.end(); ++it) {
-    std::string key = "org.semafor.intens."+ it->first;
+    std::string key = s_baseCategoryPath + it->first;
     BUG_DEBUG("key: " << key.c_str() << " LoggerName: "
               << log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(key.c_str())).getName()
               << " LogLevel: " << log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(key.c_str())).getLogLevel());
@@ -128,12 +116,6 @@ void Debugger::InitializeDebugger(){
 
 void Debugger::TerminateDebugger(){
   ModifyAllDebugFlags( false );
-#if defined _WIN32
-#else
-    if( s_BugOutFile.good() ){
-      dynamic_cast<std::ofstream&>(s_BugOutFile).close();
-  }
-#endif
 }
 
 // ---------------------------------------------------------------- //
@@ -163,14 +145,6 @@ double Debugger::getTimestamp() const{
 
 double Debugger::elapsedSeconds( double ts_alt ) const{
   return runden( getTimestamp() - ts_alt, 5 );
-}
-
-// ---------------------------------------------------------------- //
-// DebuggerOnline --                                                //
-// ---------------------------------------------------------------- //
-
-bool Debugger::DebuggerOnline() const{
-  return s_BugInitialized;
 }
 
 // ---------------------------------------------------------------- //
@@ -223,14 +197,6 @@ bool Debugger::DebugFlagEnabled( BugCategory cat ){
   return s_BugIsEnabled[cat];
 }
 
-// ---------------------------------------------------------------- //
-// BugStream --                                                     //
-// ---------------------------------------------------------------- //
-
-std::ostream &Debugger::BugStream(){
-  return s_BugOutFile;
-}
-
 #if HAVE_LOG4CPLUS
 // ---------------------------------------------------------------- //
 // castLogger --                                                    //
@@ -254,6 +220,13 @@ const std::string Debugger::getFileLoggerName(const char* filename) {
     fn = fn.parent_path();
     afn = fn.filename().string() + "." + afn;
   }
-  return "org.semafor.intens." + afn;
+  return s_baseCategoryPath + afn;
  }
 #endif
+
+// ---------------------------------------------------------------- //
+// overrideBaseCategoryPath --                                      //
+// ---------------------------------------------------------------- //
+void Debugger::overrideBaseCategoryPath(const std::string& path){
+  s_baseCategoryPath = path;
+}

@@ -38,7 +38,7 @@ bool CharDataStreamParameter::read( std::istream &is ){
       if (is.good())
 	os << c;
     }
-  BUG_INFO("read(" << getName() << "): " << os.str().size());
+  BUG_DEBUG("read(" << getName() << "): " << os.str().size());
 #endif
   // !! append option set ?
   if (hasAppendOption()) {

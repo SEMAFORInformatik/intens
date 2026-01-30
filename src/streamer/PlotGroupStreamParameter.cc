@@ -158,10 +158,11 @@ bool PlotGroupStreamParameter::write( std::ostream &os ){
   // gelöscht wird.
   {
     QTemporaryFile tmp_pdf(QString::fromStdString(compose("%1%2%3XXXXXX.%4", QDir::tempPath().toStdString(),QDir::separator().toLatin1(), m_name, ext)));
-    tmp_pdf.open();
-    ///    tmp_pdf.setAutoRemove( true );
-    tmpFileName = tmp_pdf.fileName().toStdString();
-    tmp_pdf.close();
+    if(tmp_pdf.open()){
+      ///    tmp_pdf.setAutoRemove( true );
+      tmpFileName = tmp_pdf.fileName().toStdString();
+      tmp_pdf.close();
+    }
   }
   /// ReportGen::Instance().newTmpFile( tmpFileName );
   std::string repstr("_"); //_.

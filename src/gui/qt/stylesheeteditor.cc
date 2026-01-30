@@ -51,7 +51,6 @@ StyleSheetEditor::StyleSheetEditor(QWidget *parent)
     ui.styleCombo->addItems(QStyleFactory::keys());
     ui.styleCombo->setCurrentIndex(ui.styleCombo->findText(defaultStyle));
     ui.styleSheetCombo->setCurrentIndex(ui.styleSheetCombo->findText("Coffee"));
-    //    loadStyleSheet("Coffee");
 
     // load stylesheet combobox
     std::set<std::string> list = GuiManager::Instance().getAvailableStylesheets();
@@ -95,13 +94,11 @@ void StyleSheetEditor::loadStyleSheet(const QString &sheetName)
 {
   std::string sname = GuiManager::Instance().setStylesheetName( sheetName.toStdString() );
   if (sname.size() == 0) return;
-  
+
   QFile file( QString::fromStdString(sname) );
-  if (file.exists()) {
-    file.open(QFile::ReadOnly);
+  if (file.exists() && file.open(QFile::ReadOnly)) {
     QString styleSheet = file.readAll();
     ui.styleTextEdit->setPlainText(styleSheet);
-//     qApp->setStyleSheet(styleSheet);
     ui.applyButton->setEnabled(false);
     file.close();
   }

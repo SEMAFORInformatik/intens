@@ -331,7 +331,7 @@ void GuiQtText::update( UpdateReason reason ){
       m_webview->setHtml( qtext, url );
     } else
 #else
-    BUG_INFO("- Text content ["<<qtext.left(10).toStdString()<<"]");
+    BUG_DEBUG("- Text content ["<<qtext.left(10).toStdString()<<"]");
     if (mimeTypeData == "text/html") {
       if (!m_webview) {
         m_webview = new MyQTextBrowser(this);

@@ -441,63 +441,72 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
   m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
   m_qgroupboxLayout->setOriginCorner(Qt::TopLeftCorner );
 
-  BUG_DEBUG(" - with frame: " << withFrame());
-  QGroupBox* groupbox = new QGroupBox(QtMultiFontString::getQString(getTitle()), parent);
-  m_qgroupbox = groupbox;
-  QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordian(bool)) );
-  if (hasAccordion()) {
-    groupbox->setCheckable(true);
-  }
-
-  int h = spacing;// = 6;
-  if( getTitle().size() ){
-    BUG_DEBUG(" - set title '" << getTitle() << "'");
-    groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
-    // set title alignment
-    std::string alignStr;
-    switch (getTitleAlignment()) {
-    case align_Default:
-    case align_Left:
-      groupbox->setAlignment(Qt::AlignLeft);
-      alignStr = "left";
-      break;
-    case align_Center:
-      groupbox->setAlignment(Qt::AlignHCenter);
-      alignStr = "center";
-      break;
-    case align_Right:
-      groupbox->setAlignment(Qt::AlignRight);
-      alignStr = "right";
-      break;
-    default:
-      groupbox->setAlignment(Qt::AlignLeft);
-      alignStr = "left";
-      break;
+  if( withFrame() || hasAccordion()) { // es gibt nur einen Typ
+    BUG_DEBUG(" - with frame: " << withFrame());
+    QGroupBox* groupbox = new QGroupBox(QtMultiFontString::getQString(getTitle()), parent);
+    m_qgroupbox = groupbox;
+    if (hasAccordion()) {
+      QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordian(bool)) );
+      groupbox->setCheckable(true);
     }
 
-    // set font (ignore Bold weight)
-    QString qss(groupbox->styleSheet() +
-                QString::fromStdString(compose(" QGroupBox::title {subcontrol-origin: margin; subcontrol-position: top %1;}", alignStr)));
-    QFont font = groupbox->font();
-    font = QtMultiFontString::getQFont( "@groupboxTitle@", font );
-    // stylesheet font-weight will not be inheritance to childs (unlike font do)
-    if ( (int)font.weight() > QFont::Normal ) {
-      BUG_DEBUG(" - weight not normal");
+    int h = spacing;// = 6;
+    if( getTitle().size() ){
+      BUG_DEBUG(" - set title '" << getTitle() << "'");
       groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
-      font.setWeight(QFont::Normal);
-      qss  += " QGroupBox { font-weight: bold; } ";
-    }
-    groupbox->setStyleSheet( qss  + " QGroupBox { font-weight: bold; } ");
-    groupbox->setFont( font );
+      // set title alignment
+      std::string alignStr;
+      switch (getTitleAlignment()) {
+      case align_Default:
+      case align_Left:
+        groupbox->setAlignment(Qt::AlignLeft);
+        alignStr = "left";
+        break;
+      case align_Center:
+        groupbox->setAlignment(Qt::AlignHCenter);
+        alignStr = "center";
+        break;
+      case align_Right:
+        groupbox->setAlignment(Qt::AlignRight);
+        alignStr = "right";
+        break;
+      default:
+        groupbox->setAlignment(Qt::AlignLeft);
+        alignStr = "left";
+        break;
+      }
 
-    h = QFontInfo(QtMultiFontString::getQFont( "@groupboxTitle@", font )).pixelSize();
+      // set font (ignore Bold weight)
+      QString qss(groupbox->styleSheet() +
+                  QString::fromStdString(compose(" QGroupBox::title {subcontrol-origin: margin; subcontrol-position: top %1;}", alignStr)));
+      QFont font = groupbox->font();
+      font = QtMultiFontString::getQFont( "@groupboxTitle@", font );
+      // stylesheet font-weight will not be inheritance to childs (unlike font do)
+      if ( (int)font.weight() > QFont::Normal ) {
+        BUG_DEBUG(" - weight not normal");
+        groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
+        font.setWeight(QFont::Normal);
+        qss  += " QGroupBox { font-weight: bold; } ";
+      }
+      groupbox->setStyleSheet( qss  + " QGroupBox { font-weight: bold; } ");
+      groupbox->setFont( font );
+
+      h = QFontInfo(QtMultiFontString::getQFont( "@groupboxTitle@", font )).pixelSize();
+    }
+    groupbox->setFlat( !withFrame());
   }
-  groupbox->setFlat( !withFrame());
-  if (withFrame()){
-    BUG_DEBUG(" - pixel size = " << h);
-    groupbox->setContentsMargins( spacing, h, spacing, spacing );
-  }else{
+  else{
+    BUG_DEBUG(" - without frame");
+    m_qgroupbox = new QWidget(parent);
+    if (getTitle().size()) {
+      QLabel *label = new QLabel( QtMultiFontString::getQString(getTitle()) );
+      QFont font = m_qgroupbox->font();
+      label->setFont( QtMultiFontString::getQFont( "@groupboxTitle@", font ) );
+      label->setObjectName( QString::fromStdString("GuiGroupBoxTitle") );
+      m_qgroupboxLayout->addWidget(label, 0, 0, 1, -1);
+    }
     m_qgroupbox->setContentsMargins( 0,0,0,0 );
+    m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
   }
   m_qgroupbox->setLayout( m_qgroupboxLayout );
 

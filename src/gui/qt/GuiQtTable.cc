@@ -85,9 +85,12 @@ GuiQtTable::~GuiQtTable(){
 /* --------------------------------------------------------------------------- */
 GuiElement* GuiQtTable::clone() {
   GuiElement* baseElem = findElement( getName() );
-  if (baseElem == this->getElement())
+  if (baseElem == this->getElement()) {
+    getPopupMenu();
+    getRowMenu();
+    getColumnMenu();
     m_clonedTable.push_back( new GuiQtTable( *this ) );
-  else
+  } else
     return baseElem->clone();
   return m_clonedTable.back();
 }

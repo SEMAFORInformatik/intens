@@ -288,6 +288,9 @@ class Configurator {
   virtual bool fieldgroupSetOverlay(const int xpos, const int ypos, const int width=-1, const int heigth=-1) = 0;
   virtual bool fieldgroupWithScrollBar() = 0;
   virtual bool fieldgroupSetAccordion(bool open=false) = 0;
+  virtual bool fieldgroupSetTitleIcon(const std::string &icon) = 0;
+  virtual bool fieldgroupSetAccordionOpenIcon(const std::string &icon) = 0;
+  virtual bool fieldgroupSetAccordionClosedIcon(const std::string &icon) = 0;
   virtual bool fieldgroupSetWebApiPublish() = 0;
   virtual bool attachStringConstant( const std::string &labelstring, GuiElement::Alignment alignment ) = 0;
   virtual bool attachPixmap( const std::string &pixmapstring, GuiElement::Alignment alignment ) = 0;

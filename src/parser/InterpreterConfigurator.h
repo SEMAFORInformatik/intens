@@ -255,6 +255,7 @@ public:
   virtual bool setAlignFields();
   virtual bool newFieldgroupLine();
   virtual bool addArrowBar();
+  virtual bool fieldgroupSetTitleIcon(const std::string &icon);
   virtual bool fieldgroupSetFrameOn();
   virtual bool fieldgroupSetUseRuler();
   virtual bool fieldgroupSetMargin( const int margin, const int spacing );
@@ -263,6 +264,8 @@ public:
   virtual bool fieldgroupSetOverlay(const int xpos, const int ypos, const int width=-1, const int heigth=-1);
   virtual bool fieldgroupWithScrollBar();
   virtual bool fieldgroupSetAccordion(bool open=false);
+  virtual bool fieldgroupSetAccordionOpenIcon(const std::string &icon);
+  virtual bool fieldgroupSetAccordionClosedIcon(const std::string &icon);
   virtual bool fieldgroupSetWebApiPublish();
   virtual bool attachStringConstant( const std::string &labelstring, GuiElement::Alignment alignment );
   virtual bool attachPixmap( const std::string &pixmapstring, GuiElement::Alignment alignment );

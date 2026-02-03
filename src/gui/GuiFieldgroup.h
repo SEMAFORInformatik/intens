@@ -50,6 +50,7 @@ public:
   virtual void setNavigation(GuiElement::Orientation n) { m_navigation = n; };
   virtual void setTitle(const std::string &title);
   virtual void setTitleAlignment(GuiElement::Alignment align) { m_title_alignment = align; }
+  virtual void setTitleIcon(const std::string &icon) { m_title_icon = icon; }
 
   virtual void setIndexAlignment( GuiElement::Alignment align );
   virtual void setAlignFields() { m_align_fields = true; }
@@ -101,6 +102,15 @@ public:
   bool hasAccordion() { return m_accordion; }
   /** is Accordion open */
   bool isAccordionOpen() { return m_accordion_open; }
+  /** set Accordion open icon */
+  void setAccordionOpenIcon(const std::string &icon) { m_accordion_open_icon = icon; }
+  /** get Accordion open icon */
+  std::string& getAccordionOpenIcon() { return m_accordion_open_icon; }
+  /** set Accordion closed icon */
+  void setAccordionClosedIcon(const std::string &icon) { m_accordion_closed_icon = icon; }
+  /** get Accordion closed icon */
+  std::string& getAccordionClosedIcon() { return m_accordion_closed_icon; }
+
   /** set WebApi Publish data option */
   void setWebApiPublish() { m_webapi_publish = true; }
   /** has WebApi Publish data option */
@@ -125,6 +135,7 @@ public:
   int getMargin() { return m_margin; }
   int getSpacing() { return m_spacing; }
   GuiElement::Alignment getTitleAlignment() { return m_title_alignment; }
+  std::string&  getTitleIcon() { return m_title_icon; }
   GuiIndex* getGuiIndex() { return m_index; }
   void setName(const std::string &name) { m_name = name; }
   void doNormalisation();
@@ -193,6 +204,7 @@ protected:
   bool                  m_align_fields;
 
   GuiElement::Alignment m_title_alignment;
+  std::string           m_title_icon;
   int                   m_running_key;
   std::vector<std::string> m_cssGridTemplateColumns;
   std::vector<std::string> m_stretchFactorColumns;
@@ -205,6 +217,8 @@ protected:
   OverlayGeometry      m_overlayGeometry;
   bool                 m_accordion;
   bool                 m_accordion_open;
+  std::string          m_accordion_open_icon;
+  std::string          m_accordion_closed_icon;
   bool                 m_webapi_publish;
 };
 

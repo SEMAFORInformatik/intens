@@ -21,7 +21,7 @@ using namespace std;
 
 bool            Debugger::s_BugIsEnabled[BugMax];
 Debugger::CategoryMap Debugger::s_categoryMap;
-std::string     Debugger::s_baseCategoryPath("ch.semafor.intens.");
+std::string     Debugger::s_baseCategoryPath("ch.semafor.intens");
 
 #if defined HAVE_LOG4CPLUS
 Debugger::LoggerCategoryMap  Debugger::s_LoggerCategoryMap;
@@ -220,7 +220,7 @@ const std::string Debugger::getFileLoggerName(const char* filename) {
     fn = fn.parent_path();
     afn = fn.filename().string() + "." + afn;
   }
-  return s_baseCategoryPath + afn;
+  return s_baseCategoryPath + "." + afn;
  }
 #endif
 

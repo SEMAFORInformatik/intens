@@ -8,7 +8,7 @@
 
 #include "utils/Debugger.h"
 
-static log4cplus::Logger loggerDes = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(Debugger::getFileLoggerName("Des").c_str()));
+static log4cplus::Logger loggerDes = log4cplus::Logger::getInstance("ch.semafor.intens.Des");
 #define LOG_MSG(level, msg) \
   {\
     std::ostringstream __log_tmp_oss; \

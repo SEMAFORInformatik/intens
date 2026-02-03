@@ -497,53 +497,55 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
     }
     groupbox->setFlat( !withFrame());
   }
-  else if (!getTitle().empty() || hasAccordion()){
-    BUG_DEBUG(" - without frame");
+  else {
     m_qgroupbox = new QWidget(parent);
-    auto w = new QWidget();
-    QHBoxLayout *layout = new QHBoxLayout(w);
-    // add title icon
-    if (!getTitleIcon().empty()) {
-      auto label = new QLabel();
-      QPixmap icon;
-      if( QtIconManager::Instance().getPixmap(getTitleIcon(), icon ) ){
-        label->setPixmap( icon );
-      }
-      label->setMaximumSize(icon.size());
-      layout->addWidget(label, Qt::AlignLeft);
-    }
-    // add accordion
-    if (hasAccordion()) {
-      QPixmap icon;
-      QPushButton *button;
-      if(isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionOpenIcon(), icon)){
-        button = new QPushButton(icon, QString::fromStdString(getTitle()));
-      }else
-        if(!isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon)){
-          button = new QPushButton(icon, QString::fromStdString(getTitle()));
-        }else{
-          std::string s(isAccordionOpen() ?  "🞃" : "🞂");
-          button = new QPushButton(QString::fromStdString(s + " " + getTitle()));
+    if (!getTitle().empty() || hasAccordion()){
+      BUG_DEBUG(" - without frame");
+      auto w = new QWidget();
+      QHBoxLayout *layout = new QHBoxLayout(w);
+      // add title icon
+      if (!getTitleIcon().empty()) {
+        auto label = new QLabel();
+        QPixmap icon;
+        if( QtIconManager::Instance().getPixmap(getTitleIcon(), icon ) ){
+          label->setPixmap( icon );
         }
-      button->setFlat(true);
-      button->setCheckable(true);
-      auto s = button->sizeHint();
-      s.setHeight(0.8* s.height());
-      button->setMaximumSize(s);
-      QObject::connect( button, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
-      layout->addWidget(button, Qt::AlignLeft);
-    } else
-    // add title
-    if (!getTitle().empty()) {
-      QLabel *label = new QLabel( QtMultiFontString::getQString(getTitle()) );
-      QFont font = m_qgroupbox->font();
-      label->setFont( QtMultiFontString::getQFont( "@groupboxTitle@", font ) );
-      label->setObjectName( QString::fromStdString("GuiGroupBoxTitle") );
-      layout->addWidget(label, Qt::AlignLeft);
+        label->setMaximumSize(icon.size());
+        layout->addWidget(label, Qt::AlignLeft);
+      }
+      // add accordion
+      if (hasAccordion()) {
+        QPixmap icon;
+        QPushButton *button;
+        if(isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionOpenIcon(), icon)){
+          button = new QPushButton(icon, QString::fromStdString(getTitle()));
+        }else
+          if(!isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon)){
+            button = new QPushButton(icon, QString::fromStdString(getTitle()));
+          }else{
+            std::string s(isAccordionOpen() ?  "🞃" : "🞂");
+            button = new QPushButton(QString::fromStdString(s + " " + getTitle()));
+          }
+        button->setFlat(true);
+        button->setCheckable(true);
+        auto s = button->sizeHint();
+        s.setHeight(0.8* s.height());
+        button->setMaximumSize(s);
+        QObject::connect( button, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
+        layout->addWidget(button, Qt::AlignLeft);
+      } else
+        // add title
+        if (!getTitle().empty()) {
+          QLabel *label = new QLabel( QtMultiFontString::getQString(getTitle()) );
+          QFont font = m_qgroupbox->font();
+          label->setFont( QtMultiFontString::getQFont( "@groupboxTitle@", font ) );
+          label->setObjectName( QString::fromStdString("GuiGroupBoxTitle") );
+          layout->addWidget(label, Qt::AlignLeft);
+        }
+      m_qgroupboxLayout->addWidget(w, 0, 0, 1, -1, Qt::AlignLeft);
+      m_qgroupbox->setContentsMargins( 0,0,0,0 );
+      m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
     }
-    m_qgroupboxLayout->addWidget(w, 0, 0, 1, -1, Qt::AlignLeft);
-    m_qgroupbox->setContentsMargins( 0,0,0,0 );
-    m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
   }
   m_qgroupbox->setLayout( m_qgroupboxLayout );
 

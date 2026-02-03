@@ -64,6 +64,7 @@
 #include <qglobal.h>
 #include <QApplication>
 #endif
+#include <QFile>
 
 #include <ltdl.h>
 
@@ -253,10 +254,10 @@ App::App( int &argc, char **argv )
   std::string fn = appdata.Log4cplusPropertiesFilename();
   if (!appdata.LspWorker() && std::filesystem::exists(fn)) {
 #if HAVE_LOG4CPLUS
-    // tempoary check "ch.semafor.intens" or "org.semafor.intens"
+    // deprecation check "org.semafor.intens" (backwards compatibility)
     QFile f(fn.c_str());
     if (f.open(QIODeviceBase::ReadOnly)){
-      std::string oldPath("ch.semafor.intens");
+      std::string oldPath("org.semafor.intens");
       auto ret = f.readAll().contains(oldPath);
       if (ret) {
         Debugger::overrideBaseCategoryPath(oldPath);

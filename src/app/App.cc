@@ -260,7 +260,6 @@ App::App( int &argc, char **argv )
       std::string oldPath("org.semafor.intens");
       auto content = f.readAll();
       if (content.contains(oldPath)) {
-        auto a = f.readAll();
         fn = "/tmp/log4cplus-replace.properties";
         std::ofstream ofs(fn.c_str());
         ofs << content.replace("org.semafor.intens", "ch.semafor.intens").data();

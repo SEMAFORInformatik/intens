@@ -724,9 +724,6 @@ void GuiQtDiagram::getPixmap(QPixmap& icon, const std::string& name, bool bVarna
     // try to get type (".type") icon
     if (sourceNodeName) {
       sourceNodeName->getValue(node_name);
-      if (node_name.size()) {
-        std::cout << "NodeName ===> <GuiQtDiagram::getPixmap> node_name: " << node_name << std::endl;
-      }
       delete sourceNodeName;
     }
 

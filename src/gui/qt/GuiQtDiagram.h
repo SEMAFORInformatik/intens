@@ -139,7 +139,7 @@ private:
     int findPiece(const QRect &pieceRect) const;
     const QRect targetSquare(const QPoint &position, const QPixmap& icon=QPixmap()) const;
     QPointF mapViewToSceneCenteredGridPoint(const QPoint& pos, const QPixmap& pixmap) const;
-    static void getDiagramPixmap(QPixmap& icon, const std::string& name);
+    static void getDiagramPixmap(QPixmap& icon, const std::string& name, const std::string& node_name=std::string());
 
     void call_function(std::string varname, JobElement::CallReason reason);
     void call_function(const std::vector<std::string>& varnames, JobElement::CallReason reason);

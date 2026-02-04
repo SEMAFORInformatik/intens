@@ -714,7 +714,21 @@ void GuiQtDiagram::getPixmap(QPixmap& icon, const std::string& name, bool bVarna
     DataReference *ref= DataPoolIntens::getDataReference( name );
     DataReference *refType= DataPoolIntens::getDataReference( name + ".type");
     DataReference *refDisabled= DataPoolIntens::getDataReference( name + ".disabled");
-    XferDataItem *sourceType = 0, *sourceDisabled = 0;
+    DataReference *refNode= DataPoolIntens::getDataReference( name + ".node_name");
+    XferDataItem *sourceType = 0, *sourceDisabled = 0, *sourceNodeName = 0;
+    std::string node_name;
+
+    // get node name
+    if( refNode != 0 )
+      sourceNodeName = new XferDataItem( refNode );
+    // try to get type (".type") icon
+    if (sourceNodeName) {
+      sourceNodeName->getValue(node_name);
+      if (node_name.size()) {
+        std::cout << "NodeName ===> <GuiQtDiagram::getPixmap> node_name: " << node_name << std::endl;
+      }
+      delete sourceNodeName;
+    }
 
     // get pixmap of component type
     if( refType != 0 )
@@ -722,9 +736,9 @@ void GuiQtDiagram::getPixmap(QPixmap& icon, const std::string& name, bool bVarna
     // try to get type (".type") icon
     if (sourceType) {
       std::string s;
-       sourceType->getValue(s);
-       if (s.size()) {
-	getDiagramPixmap(icon, s);
+      sourceType->getValue(s);
+      if (s.size()) {
+        getDiagramPixmap(icon, s, node_name);
       }
       delete sourceType;
     }
@@ -785,26 +799,33 @@ double GuiQtDiagram::getDiagramConnectionRatio() {
 //---------------------------------------------------------------------
 // getDiagramPixmap
 //---------------------------------------------------------------------
-void GuiQtDiagram::getDiagramPixmap(QPixmap& icon, const std::string& name) {
+void GuiQtDiagram::getDiagramPixmap(QPixmap& icon, const std::string& name, const std::string& node_name) {
+  // try to find node_name icon
+  if (!node_name.empty()){
+    if( QtIconManager::Instance().getPixmap(node_name, icon ) ){
+      BUG_DEBUG("Found pixmap for node_name: "<< node_name);
+      return;
+    }
+  }
+
   // try to find a icon
   std::string str = "Diagram/"+name+".iconPixmap";
   QString pm=GuiQtManager::Settings()->value
     (QString::fromStdString(str), QString::fromStdString(name)).toString();
-  if( QtIconManager::Instance().getPixmap( pm.toStdString(), icon ) ){
-  } else
-    if( QtIconManager::Instance().getPixmap( ::lower(name), icon ) ){
-    } else
+  if(!QtIconManager::Instance().getPixmap( pm.toStdString(), icon ) ){
+    if(!QtIconManager::Instance().getPixmap( ::lower(name), icon ) ){
       QtIconManager::Instance().getPixmap( ::lower(name+"-small"), icon );
-  if (icon.isNull()) {
- //    std::cout << "DIAGRAM  NICHT GEFUNDEN ["<<str<<"] pm["<<pm.toStdString()<<"]\n";
-    BUG_INFO("DIAGRAM Pixmap not found["<<str<<"] name["<<name<<"] pm["<<pm.toStdString()<<"]");
-    if (name != "default") {
-      getDiagramPixmap(icon, "default");
- //      std::cout << "DIAGRAM  NICHT GEFUNDEN ["<<str<<"]\n";
+      if (icon.isNull()) {
+        //    std::cout << "DIAGRAM  NICHT GEFUNDEN ["<<str<<"] pm["<<pm.toStdString()<<"]\n";
+        BUG_INFO("DIAGRAM Pixmap not found["<<str<<"] name["<<name<<"] pm["<<pm.toStdString()<<"]");
+        if (name != "default") {
+          getDiagramPixmap(icon, "default");
+          //      std::cout << "DIAGRAM  NICHT GEFUNDEN ["<<str<<"]\n";
+        }
+      }
     }
   }
 }
-
 /* --------------------------------------------------------------------------- */
 /* isCompositePixmap --                                                        */
 /* --------------------------------------------------------------------------- */
@@ -869,27 +890,27 @@ void GuiQtDiagram::getCompositePixmap(QPixmap& icon, const std::string& varname,
       CompositePixmap img;
       img.setScale( scale );
       for( int i = 0; i < dims[0]; i++ ){
-	xferX->setIndex( 0, i );
-	xferY->setIndex( 0, i );
-	xferT->setIndex( 0, i );
-	if( xferX->getValue(xpos) && xferY->getValue(ypos) &&
-	    xferT->getValue(type) ){
-	  QPixmap pixmap;
-	  getDiagramPixmap(pixmap, type);
-	  if (pixmap.isNull()) continue;
-	  QRect rect(xpos*GRID_LEN_X, ypos*GRID_LEN_Y,
-		     pixmap.width(), pixmap.height());
-	  img.addPixmap(pixmap, rect);
-	}
-	else {
-	  BUG_MSG("INVALID composite component varname["<<varname<<"] XPos["<<xpos
-		  <<"] YPos["<<ypos<<"] Type["<<type<<"]");
-	}
+        xferX->setIndex( 0, i );
+        xferY->setIndex( 0, i );
+        xferT->setIndex( 0, i );
+        if( xferX->getValue(xpos) && xferY->getValue(ypos) &&
+            xferT->getValue(type) ){
+          QPixmap pixmap;
+          getDiagramPixmap(pixmap, type);
+          if (pixmap.isNull()) continue;
+          QRect rect(xpos*GRID_LEN_X, ypos*GRID_LEN_Y,
+                     pixmap.width(), pixmap.height());
+          img.addPixmap(pixmap, rect);
+        }
+        else {
+          BUG_MSG("INVALID composite component varname["<<varname<<"] XPos["<<xpos
+                  <<"] YPos["<<ypos<<"] Type["<<type<<"]");
+        }
       }
       if (dims[0]) {
         icon = QPixmap(scale * img.getBoundingBox().width(),
                        scale * img.getBoundingBox().height());
-	img.render(&icon);
+        img.render(&icon);
       }
     }
     delete xferC;

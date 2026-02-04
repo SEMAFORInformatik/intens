@@ -21,7 +21,6 @@ using namespace std;
 
 bool            Debugger::s_BugIsEnabled[BugMax];
 Debugger::CategoryMap Debugger::s_categoryMap;
-std::string     Debugger::s_baseCategoryPath("ch.semafor.intens");
 
 #if defined HAVE_LOG4CPLUS
 Debugger::LoggerCategoryMap  Debugger::s_LoggerCategoryMap;
@@ -99,7 +98,7 @@ void Debugger::InitializeDebugger(){
   // initialize LoggerCategoryMap
   CategoryMap::iterator it = s_categoryMap.begin();
   for (; it != s_categoryMap.end(); ++it) {
-    std::string key = s_baseCategoryPath + it->first;
+    std::string key = "ch.semafor.intens." + it->first;
     BUG_DEBUG("key: " << key.c_str() << " LoggerName: "
               << log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(key.c_str())).getName()
               << " LogLevel: " << log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(key.c_str())).getLogLevel());
@@ -220,13 +219,6 @@ const std::string Debugger::getFileLoggerName(const char* filename) {
     fn = fn.parent_path();
     afn = fn.filename().string() + "." + afn;
   }
-  return s_baseCategoryPath + "." + afn;
+  return "ch.semafor.intens." + afn;
  }
 #endif
-
-// ---------------------------------------------------------------- //
-// overrideBaseCategoryPath --                                      //
-// ---------------------------------------------------------------- //
-void Debugger::overrideBaseCategoryPath(const std::string& path){
-  s_baseCategoryPath = path;
-}

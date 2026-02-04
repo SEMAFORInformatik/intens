@@ -258,9 +258,13 @@ App::App( int &argc, char **argv )
     QFile f(fn.c_str());
     if (f.open(QIODeviceBase::ReadOnly)){
       std::string oldPath("org.semafor.intens");
-      auto ret = f.readAll().contains(oldPath);
-      if (ret) {
-        Debugger::overrideBaseCategoryPath(oldPath);
+      auto content = f.readAll();
+      if (content.contains(oldPath)) {
+        auto a = f.readAll();
+        fn = "/tmp/log4cplus-replace.properties";
+        std::ofstream ofs(fn.c_str());
+        ofs << content.replace("org.semafor.intens", "ch.semafor.intens").data();
+        ofs.close();
         BUG_WARN("Deprecated Category path: '" << oldPath << "' please use 'ch.semafor.intens'");
       }
       f.close();

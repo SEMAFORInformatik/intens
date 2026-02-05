@@ -254,7 +254,9 @@ data statement    & description \\
 \ASSIGNCONSISTENCY & Assign the (value of the) second argument to the first. \newline
                     \INVALID: clear the first arguments value. \newline
                     Then, clear all dependent results
-                    (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}). \\
+                    (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}). \newline
+                    Dependency checking is otherwise only done when a value is entered in the gui, but not
+                    with a normal assignment (a = b;). \\
 \end{tabularx}
 
 \input{diagrams/file_statement}
@@ -1130,7 +1132,9 @@ function expression & description\\
 \ASSIGNCONSISTENCY & Assign the (value of the) second argument to the first. \newline
                     \INVALID: clear the first arguments value. \newline
                     Then, clear all dependent results
-                    (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}).
+                    (see paragraph \nameref{par:stdependency} on page \pageref{par:stdependency}). \newline
+                    Dependency checking is otherwise only done when a value is entered in the gui, but not
+                    with a normal assignment (a = b;). \\
 \end{tabularx}
 
 

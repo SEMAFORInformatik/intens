@@ -1053,7 +1053,7 @@ bool DataItem::writeJSON( std::ostream &ostr,
   }
   if(flags & APPLYdbUnit) {  // stream apply DBUNIT to real und integer values
     std::string dbUnit = getDbUnit();
-    if(!dbUnit.empty()) {  // DBUNIT is given
+    if(AppData::Instance().hasUnitManagerFeature() && !dbUnit.empty()) {  // DBUNIT is given
       UnitManager::Unit* db_unit = UnitManager::Instance().getUnitData(dbUnit);
       if (db_unit && db_unit->factor != 1.) {
         BUG_INFO("DbUnit(" << name << ") => (" << db_unit->factor << ")");

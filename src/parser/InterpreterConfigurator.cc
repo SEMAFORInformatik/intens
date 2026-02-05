@@ -119,6 +119,7 @@ public:
     , dataitem( 0 )
     , dataitemindex( 0 )
     , xfer_web_response( 0 )
+    , xfer_web_response_proto( 0 )
     , dataref( 0 )
     , datalevel( 0 )
     , dataset( 0 )

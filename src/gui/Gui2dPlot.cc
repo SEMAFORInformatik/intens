@@ -2649,7 +2649,7 @@ bool Gui2dPlot::isScaleUnitUpdated(){
         yFactor = yUnit ? yUnit->factor : 1.;
         yShift = yUnit ? yUnit->shift : 0;
         xFactor = xUnit ? xUnit->factor : 1.;
-        xShift = yUnit ? xUnit->shift : 0;
+        xShift = xUnit ? xUnit->shift : 0;
         if (yFactor != yFactorOld || yShift != yShift) {
           use_divide = yUnit ? yUnit->use_divide : false;
           yItem->setScale(new Scale(yFactor, (use_divide ? '/' : '*'), yShift));

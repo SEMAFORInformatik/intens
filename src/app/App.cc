@@ -571,8 +571,10 @@ bool App::parse( int &argc, char ** argv ){
     StreamManager::Instance().fixupAllItemStreams();
     // parse MessageQueueReply.inc
     MessageQueue::parseIncludeFile();
-    // parse UnitManager.inc
-    UnitManager::Instance().parseIncludeFile();
+    if (AppData::Instance().hasUnitManagerFeature()) {
+      // parse UnitManager.inc
+      UnitManager::Instance().parseIncludeFile();
+    }
   }
 #ifndef _PARSER_ONLY
 

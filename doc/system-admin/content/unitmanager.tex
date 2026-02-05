@@ -1,7 +1,7 @@
 \section{Unit Manager} \label{sec:unitmanager}
 
-The Unit Manager is an INTENS component that handles the automatic
-scaling of values in the user interface.
+The Unit Manager is an INTENS component that handles the
+scaling of values in the user interface automatically.
 
 We recommend having values in their base units in the datapool, and then
 scale them for the user interface. This way, the values passed
@@ -73,8 +73,8 @@ DATAPOOL. This is where the Unit Manager comes in.
 You activate the Unit Manager using the INTENS
 command line option \texttt{--}unitManager.
 
-As mentioned, the Unit Manager handles the automatic scaling of values
-in the user interface.
+As mentioned, the Unit Manager handles the scaling of values
+in the user interface automatically.
 
 You no longer provide the scale factor:
 \begin{intens}
@@ -84,6 +84,8 @@ FIELDGROUP motor_properties_fg(
   ...
 );
 \end{intens}
+
+In fact, you could even keep the scale factors, as they are all ignored in Unit Manager mode.
 
 As you defined the UNIT ``mH'' in the variable definition, INTENS
 knows that you want to see motor.Lls in ``mH''.

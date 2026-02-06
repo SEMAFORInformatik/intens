@@ -242,7 +242,8 @@ bool GuiQtLabel::destroy(){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtLabel::update( UpdateReason reason ){
-  if (m_combobox && reason == reason_Unit) {
+  if (AppData::Instance().hasUnitManagerFeature() &&
+      m_combobox && reason == reason_Unit) {
     std::string value(UnitManager::extractValue(m_label));
     std::string valueAttr(m_userattr->Unit(false));
     if (value != valueAttr) {

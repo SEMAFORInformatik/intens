@@ -110,7 +110,7 @@ public:
 /*=============================================================================*/
   Q_OBJECT
  private slots:
-  void slot_accordian(bool checked);
+  void slot_accordion(bool checked);
 
 /*=============================================================================*/
 /* private member functions                                                    */

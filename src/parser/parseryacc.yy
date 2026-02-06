@@ -194,7 +194,7 @@ static XferDataItem::ParameterType parametertype;
 %token  tLINESTYLE tDISCRETE tLINEAR tBAR tSTACKING_BAR tPLOT tAREA tPOLAR tDOTS
 %token  tHELPFILE tHELPKEY tHELPTEXT tCLASS tCLASSNAME tPATTERN tMAX_OCCURS tOPEN_FILE tOPEN_URL
 %token  tPLACEHOLDER
-%token  tALWAYS tSAME_YRANGE tLABEL tPIXMAP tDATASET_TEXT tUNIT tDISPLAY tNONE
+%token  tALWAYS tSAME_YRANGE tLABEL tPIXMAP tPIXMAP_OPEN tPIXMAP_CLOSED tDATASET_TEXT tUNIT tDISPLAY tNONE
 %token  tSTRING_DATE tSTRING_TIME tSTRING_DATETIME tSTRING_VALUE tPASSWORD tWHEEL_EVENT
 %token  tFROM_STRING_DATETIME tTO_STRING_DATETIME tTO_STRING_TIME
 %token  tCOLSPAN tROWSPAN tCHANGED
@@ -2391,6 +2391,15 @@ ui_fieldgroup_option /* DOCUMENTATION:DIAGRAM */
   | tACCORDION '=' tOPEN
     {
       configurator -> fieldgroupSetAccordion(true);
+    }
+  | tPIXMAP '=' id_or_string_constant {
+      configurator -> fieldgroupSetTitleIcon((*$3));
+    }
+  | tPIXMAP_OPEN '=' id_or_string_constant {
+      configurator -> fieldgroupSetAccordionOpenIcon((*$3));
+    }
+  | tPIXMAP_CLOSED '=' id_or_string_constant {
+      configurator -> fieldgroupSetAccordionClosedIcon((*$3));
     }
   | tWEBAPI '=' tPUBLISH
       { configurator -> fieldgroupSetWebApiPublish(); }

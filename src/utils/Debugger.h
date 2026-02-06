@@ -475,13 +475,6 @@ public:
    */
   static bool DebugFlagEnabled(BugCategory Cat);
 
-  /** 2026-01-29 amg temporary code
-      please remove this code if all log4cplus.properties
-      use new base category path
-      ch.semafor.intens
-   */
-  static void overrideBaseCategoryPath(const std::string& path);
-
 // ================================================================ //
 // private member functions                                         //
 // ================================================================ //
@@ -501,8 +494,6 @@ private:
 #endif
   static bool            s_BugIsEnabled[BugMax];
   static CategoryMap     s_categoryMap;
-
-  static std::string     s_baseCategoryPath;
 };
 
 #endif // _INTENS_DEBUGGER_H_INCLUDED_

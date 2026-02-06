@@ -11,6 +11,9 @@
 #include "gui/GuiFactory.h"
 #include "job/JobManager.h"
 #include "utils/StringUtils.h"
+#include "gui/qt/QtIconManager.h"
+
+#include <QPixmap>
 
 GuiFieldgroup::FieldgroupMap GuiFieldgroup::s_fieldgroupmap;
 
@@ -577,10 +580,24 @@ bool GuiFieldgroup::serializeJson(Json::Value& jsonObj, bool onlyUpdated) {
   jsonSObj["width"] = m_overlayGeometry.width;
   jsonSObj["height"] = m_overlayGeometry.height;
   jsonObj["overlay_geometry"] = jsonSObj;
+  // accordion
   jsonObj["accordion"] = m_accordion;
   if (m_accordion){
     jsonObj["accordion_open"] = m_accordion_open;
   }
+  QPixmap icon;
+  std::string content;
+  if (QtIconManager::Instance().getPixmap(getAccordionOpenIcon(), icon) &&
+      IconManager::Instance().getDataUrlContent(icon, content)) {
+    jsonObj["accordion_icon_open"] = content;
+  }else
+    jsonObj["accordion_icon_open"] = "🞃";
+  if (QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon) &&
+      IconManager::Instance().getDataUrlContent(icon, content)) {
+    jsonObj["accordion_icon_closed"] = content;
+  }else
+    jsonObj["accordion_icon_closed"] = "🞂";
+
   std::string str;
   join(m_cssGridTemplateColumns, ' ', str);
   jsonObj["grid_template_columns"] = str;
@@ -620,10 +637,24 @@ bool GuiFieldgroup::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpda
   element->set_scrollbars(getElement()->withScrollbars());
   if( m_function != 0 )
     element->set_action(m_function->Name());
+  // accordion
   element->set_accordion(m_accordion);
   if (m_accordion){
     element->set_accordion_open(m_accordion_open);
   }
+  QPixmap icon;
+  std::string content;
+  if (QtIconManager::Instance().getPixmap(getAccordionOpenIcon(), icon) &&
+      IconManager::Instance().getDataUrlContent(icon, content)) {
+    element->set_accordion_icon_open(content);
+  }else
+    element->set_accordion_icon_open("🞃");
+  if (QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon) &&
+      IconManager::Instance().getDataUrlContent(icon, content)) {
+    element->set_accordion_icon_closed(content);
+  }else
+    element->set_accordion_icon_closed("🞂");
+
   auto overlay = element->mutable_overlay();
   overlay->set_x(m_overlayGeometry.xpos);
   overlay->set_y(m_overlayGeometry.ypos);

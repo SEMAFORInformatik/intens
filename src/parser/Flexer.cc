@@ -453,6 +453,8 @@ void Flexer::initRwTabMap(){
   m_rwTabMap.insert(   "PERIOD"          ,tPERIOD      );
   m_rwTabMap.insert(   "PERSISTENT"      ,tPERSISTENT  );
   m_rwTabMap.insert(   "PIXMAP"          ,tPIXMAP      );
+  m_rwTabMap.insert(   "PIXMAP_CLOSED"   ,tPIXMAP_CLOSED);
+  m_rwTabMap.insert(   "PIXMAP_OPEN"     ,tPIXMAP_OPEN );
   m_rwTabMap.insert(   "PLACEHOLDER"     ,tPLACEHOLDER );
   m_rwTabMap.insert(   "PLOT"            ,tPLOT        );
   m_rwTabMap.insert(   "PLOT2D"          ,tPLOT2D      );

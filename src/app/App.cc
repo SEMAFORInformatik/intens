@@ -64,6 +64,7 @@
 #include <qglobal.h>
 #include <QApplication>
 #endif
+#include <QFile>
 
 #include <ltdl.h>
 
@@ -253,13 +254,16 @@ App::App( int &argc, char **argv )
   std::string fn = appdata.Log4cplusPropertiesFilename();
   if (!appdata.LspWorker() && std::filesystem::exists(fn)) {
 #if HAVE_LOG4CPLUS
-    // tempoary check "ch.semafor.intens" or "org.semafor.intens"
+    // deprecation check "org.semafor.intens" (backwards compatibility)
     QFile f(fn.c_str());
     if (f.open(QIODeviceBase::ReadOnly)){
-      std::string oldPath("ch.semafor.intens");
-      auto ret = f.readAll().contains(oldPath);
-      if (ret) {
-        Debugger::overrideBaseCategoryPath(oldPath);
+      std::string oldPath("org.semafor.intens");
+      auto content = f.readAll();
+      if (content.contains(oldPath)) {
+        fn = "/tmp/log4cplus-replace.properties";
+        std::ofstream ofs(fn.c_str());
+        ofs << content.replace("org.semafor.intens", "ch.semafor.intens").data();
+        ofs.close();
         BUG_WARN("Deprecated Category path: '" << oldPath << "' please use 'ch.semafor.intens'");
       }
       f.close();
@@ -567,8 +571,10 @@ bool App::parse( int &argc, char ** argv ){
     StreamManager::Instance().fixupAllItemStreams();
     // parse MessageQueueReply.inc
     MessageQueue::parseIncludeFile();
-    // parse UnitManager.inc
-    UnitManager::Instance().parseIncludeFile();
+    if (AppData::Instance().hasUnitManagerFeature()) {
+      // parse UnitManager.inc
+      UnitManager::Instance().parseIncludeFile();
+    }
   }
 #ifndef _PARSER_ONLY
 

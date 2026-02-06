@@ -400,7 +400,8 @@ void GuiQtList::update( UpdateReason reason ) {
   switch( reason ){
   case reason_Process:
   case reason_FieldInput:
-    if( !isDataItemUpdated( GuiManager::Instance().LastGuiUpdate() ) ){
+    if( reason != reason_Unit &&
+        !isDataItemUpdated( GuiManager::Instance().LastGuiUpdate() ) ){
       return;
     }
   case reason_Unit:

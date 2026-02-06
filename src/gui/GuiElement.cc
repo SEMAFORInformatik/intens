@@ -1771,7 +1771,7 @@ void GuiElement::setTopForm(GuiForm* form) {
 /* updateScale --                                                              */
 /* --------------------------------------------------------------------------- */
 bool GuiElement::updateScale(XferDataParameter* param) {
-  if (!param || !param->DataItem())
+  if (!AppData::Instance().hasUnitManagerFeature() || !param || !param->DataItem())
     return false;
   DataDictionary::DataType dataType(param->DataItem()->getDataType());
   if (dataType != DataDictionary::type_Real &&

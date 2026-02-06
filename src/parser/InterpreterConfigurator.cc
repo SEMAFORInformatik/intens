@@ -119,6 +119,7 @@ public:
     , dataitem( 0 )
     , dataitemindex( 0 )
     , xfer_web_response( 0 )
+    , xfer_web_response_proto( 0 )
     , dataref( 0 )
     , datalevel( 0 )
     , dataset( 0 )
@@ -3082,6 +3083,37 @@ bool InterpreterConfigurator::fieldgroupSetAccordion(bool open){
   m_rep->fieldgroup->setAccordion(true, open);
   return true;
 }
+//======================================================================//
+// - fieldgroupSetTitleIcon
+//======================================================================//
+bool InterpreterConfigurator::fieldgroupSetTitleIcon(const std::string &icon){
+  if( m_rep->fieldgroup->getTitle().empty() ){
+    ParserError( _("Fieldgroup with icon option must have a Title.") );
+  }
+  m_rep->fieldgroup->setTitleIcon(icon);
+  return true;
+}
+//======================================================================//
+// - fieldgroupSetAccordionOpenIcon
+//======================================================================//
+bool InterpreterConfigurator::fieldgroupSetAccordionOpenIcon(const std::string &icon){
+  if(!m_rep->fieldgroup->hasAccordion()){
+    ParserError( _("Fieldgroup with open icon must have accordion option.") );
+  }
+  m_rep->fieldgroup->setAccordionOpenIcon(icon);
+  return true;
+}
+//======================================================================//
+// - fieldgroupSetAccordionClosedIcon
+//======================================================================//
+bool InterpreterConfigurator::fieldgroupSetAccordionClosedIcon(const std::string &icon){
+  if(!m_rep->fieldgroup->hasAccordion()){
+    ParserError( _("Fieldgroup with closed icon must have accordion option.") );
+  }
+  m_rep->fieldgroup->setAccordionClosedIcon(icon);
+  return true;
+}
+
 //======================================================================//
 // - fieldgroupSetWebApiPublish
 //======================================================================//

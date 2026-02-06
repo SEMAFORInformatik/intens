@@ -201,7 +201,7 @@ void UserAttr::write( std::ostream &ostr, const std::vector<std::string> &attrs 
     else if( *iter == "dbattr" && m_dbattrname.size()>0 )
       ostr << " dbattr = \"" << m_dbattrname << "\"";
     else if( *iter == "dbunit" ){
-      std::string dbunit = m_dbunitname.empty() ? UnitManager::Instance().getDbUnit(m_Unit)
+        std::string dbunit = AppData::Instance().hasUnitManagerFeature() && m_dbunitname.empty() ? UnitManager::Instance().getDbUnit(m_Unit)
         : m_dbunitname;
       if(!dbunit.empty()){
         ostr << " dbunit = \"" << dbunit << "\"";

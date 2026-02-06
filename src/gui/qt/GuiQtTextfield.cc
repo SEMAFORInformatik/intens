@@ -756,11 +756,13 @@ bool GuiQtTextfield::setThousandSep(){
 /* --------------------------------------------------------------------------- */
 
 bool GuiQtTextfield::setScalefactor( Scale *scale ){
-  UnitManager::Unit* unit = UnitManager::Instance().getUnitData(m_param->DataItem()->getUserAttr()->Unit(false));
-  double factor = unit ? unit->factor : 1.;
-  BUG_DEBUG("Varname["<<m_param->DataItem()->getFullName(true)<<"] Unit["
-            <<m_param->DataItem()->getUserAttr()->Unit()<<"] Factor["
-            << factor << "]");
+  if (AppData::Instance().hasUnitManagerFeature()) {
+    UnitManager::Unit* unit = UnitManager::Instance().getUnitData(m_param->DataItem()->getUserAttr()->Unit(false));
+    double factor = unit ? unit->factor : 1.;
+    BUG_DEBUG("Varname["<<m_param->DataItem()->getFullName(true)<<"] Unit["
+              <<m_param->DataItem()->getUserAttr()->Unit()<<"] Factor["
+              << factor << "]");
+  }
   return m_param->setScalefactor( scale );
 }
 

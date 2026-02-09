@@ -594,7 +594,7 @@ void GuiQtManager::update( GuiElement::UpdateReason reason ){
 
   DataTTrailUndoDisable undo_disabler( true );
 
-  if( reason != reason_Cycle && reason != reason_Always ){
+  if( reason != reason_Unit &&  reason != reason_Cycle && reason != reason_Always ){
     if( m_gui_cycle != DataPoolIntens::Instance().currentCycle() ){
       reason = reason_Cycle;
     }
@@ -831,6 +831,9 @@ bool GuiQtManager::runApplication(){
   // Unter Umständen ist der Datapool bereits mit gültigen Werten gefüllt.
   // Darum muss bereits zu Beginn für die Main-Form ein update durchgeführt werden.
   update( reason_Always );
+  if (AppData::Instance().hasUnitManagerFeature()) {
+    update( reason_Unit );
+  }
 
   destroyStartupBanner();
   InitialWorker::Instance().startJobAction();

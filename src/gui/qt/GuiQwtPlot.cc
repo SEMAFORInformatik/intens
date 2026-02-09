@@ -1240,6 +1240,7 @@ void GuiQWTPlot::update( GuiElement::UpdateReason reason ){
 #endif
        reason != reason_Always && // reason_Always: update durchführen, es könnte z.B. ein SAVE folgen!
        reason != reason_Cycle &&
+       reason != reason_Unit &&
        reason != reason_Cancel
       )
      ) return; // interessiert uns (noch) nicht

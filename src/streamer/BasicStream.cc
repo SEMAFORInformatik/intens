@@ -540,7 +540,7 @@ void BasicStream::setDataItemsValid(bool target){
   int n = target ? DataPoolIntens::LastSourceStreamTransaction() : DataPoolIntens::CurrentTransaction();
   BUG_DEBUG("CurrentTransaction: " << DataPoolIntens::CurrentTransaction()
             << ", use useTransaction: << " << n << ", Name:  " << Name()
-            << (target ? ", TARGET, " : ", SOURCE")
+            << (target ? ", TARGET" : ", SOURCE")
             << ", m_data_valid: " << m_data_valid
             << ", m_data_source_valid: " << m_data_source_valid);
   if( target && m_data_valid != 0 ) {

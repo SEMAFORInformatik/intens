@@ -537,12 +537,20 @@ void BasicStream::setDataItemsValid(bool target){
     BUG_DEBUG("Return, no valid setDataItemsValid call");
     return;
   }
-  int n = DataPoolIntens::CurrentTransaction();
+  int n = target ? DataPoolIntens::LastSourceStreamTransaction() : DataPoolIntens::CurrentTransaction();
+  BUG_DEBUG("CurrentTransaction: " << DataPoolIntens::CurrentTransaction()
+            << ", use useTransaction: << " << n << ", Name:  " << Name()
+            << (target ? ", TARGET, " : ", SOURCE")
+            << ", m_data_valid: " << m_data_valid
+            << ", m_data_source_valid: " << m_data_source_valid);
   if( target && m_data_valid != 0 ) {
     m_data_valid->SetValue( n );
   }
   if( !target && m_data_source_valid != 0 ) {
 #if 1
+    // set our transaction id for following target streams
+    DataPoolIntens::setLastSourceStreamTransaction(n);
+
     DataVector vec;
     int iVal(0);
     int id[1] = { -1  };

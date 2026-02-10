@@ -655,6 +655,10 @@ bool GuiFieldgroup::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpda
   }else
     element->set_accordion_icon_closed("🞂");
 
+  if (QtIconManager::Instance().getPixmap(getTitleIcon(), icon) &&
+      IconManager::Instance().getDataUrlContent(icon, content)) {
+    element->set_title_icon(content);
+  }
   auto overlay = element->mutable_overlay();
   overlay->set_x(m_overlayGeometry.xpos);
   overlay->set_y(m_overlayGeometry.ypos);

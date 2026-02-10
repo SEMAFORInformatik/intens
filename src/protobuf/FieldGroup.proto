@@ -28,6 +28,7 @@ message FieldGroup {
   bool accordion_open = 12;
   string accordion_icon_open = 13;
   string accordion_icon_closed = 14;
+  string title_icon = 15;
 }
 
 message FieldGroupLine {

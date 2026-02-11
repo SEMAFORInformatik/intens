@@ -321,8 +321,8 @@ std::string Date::getDateTimeElapsed(const std::string& isoBegin, const std::str
   QTime timeEnd  = QTime::fromString(QString::fromStdString(isoEnd), ISO_DATE_FORMAT);
 
   if (time.isValid() && timeEnd.isValid()) {
-    int msecs = timeEnd.msecsTo(time);
-    int secs = timeEnd.secsTo(time);
+    int msecs = time.msecsTo(timeEnd);
+    int secs = msecs / 1000;  // don't use time.secsTo(timeEnd), that ignores msecs and often is 1 seconds off
     QTime res((abs(secs)/3600)%24,(abs(secs)/60)%60,abs(secs)%60, abs(msecs)%1000);
     BUG_MSG(" ===> Result valid["<<res.isValid()<<"] ["<<res.toString("hh:mm:ss.zzz").toStdString());
     std::string pStr;

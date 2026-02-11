@@ -102,6 +102,8 @@ public:
 
   static TransactionNumber NewTransaction();
   static TransactionNumber CurrentTransaction();
+  static TransactionNumber LastSourceStreamTransaction();
+  static void setLastSourceStreamTransaction(TransactionNumber transId);
 
   void BeginDataPoolTransaction( TransactionOwner *owner );
   void RollbackDataPoolTransaction( TransactionOwner *owner );
@@ -174,6 +176,7 @@ private:
   static DataPool           *s_datapool;
   static DataDictionary     *s_root_dict;
   static TransactionNumber   s_transaction;
+  static TransactionNumber   s_transaction_last_source_stream;
 
   std::string                     m_namespace;
   DataDictionary            *m_namespace_dict;

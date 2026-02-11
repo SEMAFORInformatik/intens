@@ -2,6 +2,7 @@
 #if !defined(QTICONMANAGER_H)
 #define QTICONMANAGER_H
 
+#include <QFont>
 #include <map>
 #include <string>
 #include "gui/IconManager.h"

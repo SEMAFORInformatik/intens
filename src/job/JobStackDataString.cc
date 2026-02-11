@@ -133,7 +133,7 @@ JobElement::OpStatus JobStackDataString::subtract( JobEngine *eng, JobStackDataP
   if (dat->getDataType() == DataDictionary::type_String) {
     std::string s;
     dat->getStringValue(s);
-    s = Date::getDateTimeElapsed(m_value, s);
+    s = Date::getDateTimeElapsed(s, m_value);
     if (s.size()) {
       eng->push( new JobStackDataString( s ) );
       return op_Ok;

@@ -31,6 +31,7 @@ DataPoolIntens   *DataPoolIntens::s_instance    = 0;
 DataPool         *DataPoolIntens::s_datapool    = 0;
 DataDictionary   *DataPoolIntens::s_root_dict   = 0;
 TransactionNumber DataPoolIntens::s_transaction = 0;
+TransactionNumber DataPoolIntens::s_transaction_last_source_stream = 0;
 
 /*=============================================================================*/
 /* member functions                                                            */
@@ -601,6 +602,22 @@ TransactionNumber DataPoolIntens::NewTransaction(){
 
 TransactionNumber DataPoolIntens::CurrentTransaction(){
   return s_transaction;
+}
+
+/* --------------------------------------------------------------------------- */
+/* LastSourceStreamTransaction --                                              */
+/* --------------------------------------------------------------------------- */
+
+TransactionNumber DataPoolIntens::LastSourceStreamTransaction(){
+  return s_transaction_last_source_stream;
+}
+
+/* --------------------------------------------------------------------------- */
+/* setLastSourceStreamTransaction --                                           */
+/* --------------------------------------------------------------------------- */
+
+void DataPoolIntens::setLastSourceStreamTransaction(TransactionNumber transId){
+  s_transaction_last_source_stream = transId;
 }
 
 /* --------------------------------------------------------------------------- */

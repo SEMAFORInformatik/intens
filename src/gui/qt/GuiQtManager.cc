@@ -98,6 +98,7 @@ public :
     , m_timerId(-1)
     , m_receiver(0)
     , m_guiManager( manager ){
+    setDesktopFileName("intens");
 #if QT_VERSION < 0x060000
     QTextCodec::setCodecForLocale( QTextCodec::codecForName ( "UTF-8" ) );
 #endif

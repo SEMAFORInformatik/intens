@@ -281,6 +281,12 @@ The FIELDGROUP options define the behaviour and appearance of the fieldgroup.
 %%(not implemented in intens-qt) \index{JUSTIFY@\JUSTIFY!fieldgroup option}
 \index{INDEX@\INDEX!fieldgroup option}
 \index{CLASS@\CLASS!fieldgroup option}
+\index{ACCORDION@\ACCORDION!fieldgroup option}
+\index{OPEN@\OPEN!fieldgroup option (\ACCORDION)}
+\index{PIXMAP@\PIXMAP!fieldgroup option (\ACCORDION)}
+\index{PIXMAP\_OPEN@\PIXMAPOPEN!fieldgroup option (\ACCORDION)}
+\index{PIXMAP\_CLOSE@\PIXMAPCLOSE!fieldgroup option (\ACCORDION)}
+\index{FUNC@\FUNC!fieldgroup option}
 \begin{tabularx}{\textwidth}{l|X}
 option              & description \\
 \hline
@@ -318,7 +324,11 @@ option              & description \\
                       This makes it possible to set and read the value of
                       the \FIELDGROUP{} \INDEX{}. \newline
                       Is used in conjunction with option \TABLESIZE. \\
-\CLASS               & set \CLASS{} property of the \FIELDGROUP{} (used in qt style sheets) \\
+\CLASS              & set \CLASS{} property of the \FIELDGROUP{} (used in qt style sheets) \\
+\ACCORDION          & the \FIELDGROUP{} has a header and a body... TBD \\
+\ACCORDION{} = \OPEN & the body part of the \FIELDGROUP{} is shown at start TBD \\
+\PIXMAPOPEN{}       & use this pixmap for ... TBD \\
+\PIXMAPCLOSE{}      & use this pixmap for ... TBD \\
 \end{tabularx}
 %
 

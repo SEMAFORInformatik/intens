@@ -62,7 +62,9 @@ the tab button. Other functions of tab buttons,
 which belong to the same tab group are ignored.
 \vspace{1cm}
 
-\index{FUNC@\FUNC!folder}
+\index{FUNC@\FUNC!folder tab option}
+\index{PIXMAP@\PIXMAP!folder tab option}
+\index{HIDDEN@\HIDDEN!folder tab option}
 \begin{tabularx}{\textwidth}{l|X}
 folder entries           & description \\
 \hline
@@ -70,9 +72,10 @@ folder entries           & description \\
 {\verb+label string+}    & label of folder tab \\
 {\verb+group identifier+} & by selecting a folder having same id as other folders, each other folder will be selected also \\
 \FUNC                    & identifier of previously defined function, witch will be executed by selecting the folder \\
-\PIXMAP                  & TODO \\
-\HIDDEN                  & folder button is not created when string evaluates to \TRUE{}
-                           (not empty(``''), ``0'' or ``false'' (case insensitive)).
+\PIXMAP                  & show the pixmap in the folder tab, left of the label \\
+\HIDDEN                  & folder button is not created when string or int evaluates to \TRUE{}
+                           (string: not empty(``''), ``0'' or ``false'' (case insensitive),
+                            int: not 0). \newline
                            This makes it easy to hide or show a folder button using
                            \HIDDEN{} = RESOURCE(``...'') \\
 \end{tabularx}

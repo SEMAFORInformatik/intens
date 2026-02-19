@@ -222,6 +222,7 @@ Attributes       & Description \\ \hline
 \index{HELPTEXT@\HELPTEXT!datapool item option}
 \index{BUTTON@\BUTTON!datapool item option}
 \index{SLIDER@\SLIDER!datapool item option}
+\index{PROGRESS@\PROGRESS!datapool item option}
 \index{RANGE@\RANGE!datapool item option}
 \index{STEP@\STEP!datapool item option}
 \index{TOGGLE@\TOGGLE!datapool item option}
@@ -276,12 +277,21 @@ Options          & Description \\ \hline
                     Activating the button executes the associated function
                    (see above \FUNC).\\
 \SLIDER          & The item is displayed as a slider. \\
+\PROGRESS        & The item is displayed as a progress bar. \newline
+                   This makes it possible to show a progress bar inside a \FIELDGROUP{}. Assign the desired
+                   value (from 0 to 100) to the (integer) variable and the item shows the progress. \\
 \RANGE           & Minimal and maximal values for a \SLIDER. \\
 \STEP            & Difference between the labels of \SLIDER. \\
 \TOGGLE          & The item is displayed as Toggle on the user interface.
-                   Activating the toggle changes the value from 0 to 1.\\
+                   Activating the toggle changes the value from 0 to 1,
+                   deactivating changes the value from 1 to 0.
+                   A variable that has no value (invalid) is shown as a deactivated toggle,
+                   just as a variable with the value 0. \\
 \RADIO           & The item is displayed as ragio button on the user interface.
-                   Activating the radio button changes the value from 0 to 1.\\
+                   Activating the radio button changes the value from 0 to 1,
+                   deactivating changes the value from 1 to 0.
+                   A variable that has no value (invalid) is shown as a deactivated radio button,
+                   just as a variable with the value 0. \\
 \LABEL           & The item is displayed as a label (not editable).\\
 \CLASSNAME       & Data items having a classname are transferred as objects to the Matlab workspace. \newline
                    The \CLASSNAME{} can also be used in \FUNCTIONS: \CLASSNAME(item) \\

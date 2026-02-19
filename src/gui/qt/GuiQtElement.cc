@@ -915,33 +915,26 @@ void GuiQtElement::updateWidgetProperty(){
   if (!myWidget())
     return;
   // set class name
-  QString qstrOld(myWidget()->property("class").toString());
+  // myWidget()->property("class") may be QString or QStringList
+  // .toStringList().join(" ") works for both
+  QString qstrOld(myWidget()->property("class").toStringList().join(" "));
   if (QString::compare(qstrOld, Class().c_str()) == 0)
     return;
   setAttributeChangedFlag(true);
-  if (!Class().empty()){
-    QStringList slist = QString::fromStdString(Class()).split(" ");
-    if (slist.size() > 1) {
-      const QVariant qvar(slist);
-      myWidget()->setProperty("class", qvar);
-
-      myWidget()->style()->unpolish(myWidget());
-      myWidget()->style()->polish(myWidget());
-
-      myWidget()->update();
-    } else {
-      myWidget()->setProperty("class", QString::fromStdString(Class()));
-
-      myWidget()->style()->unpolish(myWidget());
-      myWidget()->style()->polish(myWidget());
-
-      myWidget()->update();
-    }
-    BUG_DEBUG("Set class property to: " << Class()
-              << "(Type: " << Type() << ")");
+  QStringList slist = QString::fromStdString(Class()).split(" ");
+  if (slist.size() > 1) {
+    const QVariant qvar(slist);
+    myWidget()->setProperty("class", qvar);
   } else {
-    myWidget()->setProperty("class", "");
+    myWidget()->setProperty("class", QString::fromStdString(Class()));
   }
+  BUG_DEBUG("Set class property to: " << Class()
+            << "(Type: " << Type() << ", Name: " << getName() << ")");
+
+  myWidget()->style()->unpolish(myWidget());
+  myWidget()->style()->polish(myWidget());
+
+  myWidget()->update();
 }
 
 /* -------------------------------------------------------------------------- */

@@ -158,7 +158,7 @@ void MyQPrintDialog::init() {
   if (m_locationLbl) {
     QComboBox* cb_priners = findChild<QComboBox *>("printers");
     if (cb_priners) {
-      connect(cb_priners, SIGNAL(activated(const QString&)),
+      connect(cb_priners, SIGNAL(textActivated(const QString&)),
 	      SLOT(slot_printerChanged(const QString&)));
       slot_printerChanged( cb_priners->currentText() );
     }

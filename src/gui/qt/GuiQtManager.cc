@@ -939,6 +939,11 @@ bool GuiQtManager::runApplication(){
     BUG_DEBUG(">>>>>= MAXIMUM WINDOW SIZES  =<<<<\n" << os.str());
   }
 
+  // UnitManager
+  if(AppData::Instance().hasUnitManagerFeature()){
+    update(reason_Unit);
+  }
+
   // Eventloop starten
   m_updateStylesheet=startTimer(500);
   m_qapp->exec();

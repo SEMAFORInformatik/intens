@@ -10,6 +10,12 @@
 #include <QtSvg/QSvgGenerator>
 #include <QTemporaryFile>
 #include <QLabel>
+ #include <QHBoxLayout>
+ #include <QSlider>
+ #include <QPainter>
+ #include <QColormap>
+ #include <QPushButton>
+ #include <QScrollArea>
 
 #include "utils/gettext.h"
 #include "utils/Date.h"
@@ -17,8 +23,6 @@
 #include "gui/qt/GuiQtScrolledText.h"
 
 #include "app/UiManager.h"
-
-
 #include "operator/InputChannelEvent.h"
 
 #include "gui/qt/GuiQtForm.h"
@@ -40,6 +44,7 @@
 #endif
 #include "gui/GuiFieldgroup.h"
 #include "gui/qt/GuiQtFieldgroupLine.h"
+#include "gui/GuiOrientationContainer.h"
 #include "gui/qt/GuiQtLabel.h"
 #include "gui/qt/GuiQtToggle.h"
 #include "gui/GuiPlotDataItem.h"
@@ -49,6 +54,7 @@
 #include "gui/qt/GuiQwtScaleEngine.h"
 #include "gui/qt/GuiQwtBasePlot.h"
 #include "gui/GuiFactory.h"
+#include "app/DataSet.h"
 typedef std::map<std::string, GuiPlotDataItem*> DataItemType;
 
 INIT_LOGGER();
@@ -56,7 +62,19 @@ INIT_LOGGER();
 /*******************************************************************************/
 /* public member functions                                                     */
 /*******************************************************************************/
-#if !HAVE_QGRAPHS
+#if HAVE_QGRAPHS
+class ColorMapWidget : public QWidget {
+public:
+    void paintEvent(QPaintEvent *event) override {
+        QPainter painter(this);
+        QLinearGradient gradient(0, 0, 0, height());
+        gradient.setColorAt(0, Qt::red);
+        gradient.setColorAt(0.5, Qt::green);
+        gradient.setColorAt(1, Qt::blue);
+        painter.fillRect(rect(), gradient);
+    }
+};
+#else
 QwtLinearColorMap* GuiQt3dPlot::createColorMap() {
   QwtLinearColorMap* colormap;
   int num = std::max( m_valueList.size(), m_colorList.size() );
@@ -87,6 +105,7 @@ GuiQt3dPlot::GuiQt3dPlot( GuiElement *parent, const std::string& name )
 #if HAVE_QGRAPHS
   , m_barWidget( 0 )
 #endif
+  , m_widget( 0 )
   , m_widgetStack( 0 )
   , m_name( name )
   , m_keyShiftPressed( false )
@@ -108,16 +127,25 @@ GuiQt3dPlot::GuiQt3dPlot( GuiElement *parent, const std::string& name )
   , m_drawZonesButtonListener( this )
   , m_configButtonListener( this )
   , m_drefStruct( 0 )
+  , m_drefRangeMinX( 0 )
+  , m_drefRangeMaxX( 0 )
+  , m_drefRangeX( 0 )
+  , m_drefRangeMinY( 0 )
+  , m_drefRangeMaxY( 0 )
+  , m_drefRangeY( 0 )
   , m_drefCameraRotationX( 0 )
   , m_drefCameraRotationY( 0 )
-  , m_drefDistnMethod( 0 )
-  , m_drefDistnTable( 0 )
+  , m_drefCameraZoom( 0 )
+  , m_drefOrthograghic(0)
+  , m_drefPlotType(0)
+  , m_drefSelectionMode(0)
+  , m_drefShowGrid(0)
+  , m_drefShowMesh(0)
+  , m_drefShowSmooth(0)
   , m_configDialog( 0 )
+  , m_configGuiElement( 0 )
   , m_cDresetButtonListener( 0 )
   , m_cDcloseButtonListener( 0 )
-  , m_fieldNumDistnLevels( 0 )
-  , m_fieldDistnTable( 0 )
-  , m_lineDistnTable( 0 )
   , m_popupMenu( 0 )
   , m_PopupMenuCreated( false )
   , m_currentFileFormat( HardCopyListener::Postscript ) {
@@ -137,6 +165,7 @@ GuiQt3dPlot::GuiQt3dPlot( const GuiQt3dPlot &plot)
 #if HAVE_QGRAPHS
   , m_barWidget( 0 )
 #endif
+  , m_widget( 0 )
   , m_widgetStack( 0 )
   , m_name( plot.m_name )
   , m_keyShiftPressed( plot.m_keyShiftPressed )
@@ -158,16 +187,25 @@ GuiQt3dPlot::GuiQt3dPlot( const GuiQt3dPlot &plot)
   , m_drawZonesButtonListener( this )
   , m_configButtonListener( this )
   , m_drefStruct( 0 )
+  , m_drefRangeMinX( 0 )
+  , m_drefRangeMaxX( 0 )
+  , m_drefRangeX( 0 )
+  , m_drefRangeMinY( 0 )
+  , m_drefRangeMaxY( 0 )
+  , m_drefRangeY( 0 )
   , m_drefCameraRotationX( 0 )
   , m_drefCameraRotationY( 0 )
-  , m_drefDistnMethod( 0 )
-  , m_drefDistnTable( 0 )
+  , m_drefCameraZoom( 0 )
+  , m_drefOrthograghic(0)
+  , m_drefPlotType(0)
+  , m_drefSelectionMode(0)
+  , m_drefShowGrid(0)
+  , m_drefShowMesh(0)
+  , m_drefShowSmooth(0)
   , m_configDialog( 0 )
+  , m_configGuiElement( 0 )
   , m_cDresetButtonListener( 0 )
   , m_cDcloseButtonListener( 0 )
-  , m_fieldNumDistnLevels( 0 )
-  , m_fieldDistnTable( 0 )
-  , m_lineDistnTable( 0 )
   , m_popupMenu( 0 )
   , m_PopupMenuCreated( false )
   , m_currentFileFormat( HardCopyListener::Postscript )
@@ -280,6 +318,7 @@ void GuiQt3dPlot::setAxesData() {
 /* create --                                                                   */
 /* --------------------------------------------------------------------------- */
 
+///#include "GuiQwtPlotScalePicker.h"
 void GuiQt3dPlot::create(){
 
   BUG(BugGui,"GuiQt3dPlot::create");
@@ -288,16 +327,37 @@ void GuiQt3dPlot::create(){
   getPlotSize(width, height);
   readSettings();
 
-  // create data object
+  // create frame widget & colorbar
+  m_widget = new QWidget();
+  QHBoxLayout *layout = new QHBoxLayout(m_widget);
   m_widgetStack = new QStackedWidget();
+  layout->addWidget(m_widgetStack);
 
 #if HAVE_QGRAPHS
+  ColorMapWidget *colorMap = new ColorMapWidget();
+  colorMap->setMinimumSize(QSize(20, 30));
+  layout->addWidget(colorMap);
+
+  // test qwt color scale widget
+  QwtScaleWidget *rightAxis = new QwtScaleWidget();
+  rightAxis->setColorBarEnabled(true);
+  layout->addWidget(rightAxis);
+
+  // test property button
+  auto btn = new QPushButton("Props");
+  layout->addWidget(btn);
+  connect(btn, SIGNAL(clicked()), this, SLOT(show_config_properties()));
+
+  // create data object
   m_data = new GuiQt3dData(m_dataitems);
   BUG_DEBUG("Create PlotStyle: "<<m_plotStyle.getStyle());
   if (isSurfaceType()) {
     assert(!m_contourWidget);
     m_contourWidget = new GuiQtSurfaceGraph(this);
     m_widgetStack->addWidget(m_contourWidget);
+    QwtInterval interval(0,90);
+    rightAxis->setColorMap(interval,
+                           m_contourWidget->getQwtColorMap());
   }else if (isBarType()){
     assert(!m_barWidget);
     m_barWidget = new GuiQtBarGraph(this);
@@ -328,10 +388,12 @@ void GuiQt3dPlot::create(){
     height = hsNew.height();
   }
   ////widgetStack->setMinimumSize(QSize(width, height));
-  m_widgetStack->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,
-                                           QSizePolicy::MinimumExpanding));
+  myWidget()->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,
+                                        QSizePolicy::MinimumExpanding));
 
   setAxesData();
+  m_configData.init(m_plotStyle.getStyle());
+  writeConfigDataToDataPool(true); // to set configData to ConfigWidget
 
   // Popup Menue installieren
   createPopupMenu();
@@ -364,6 +426,7 @@ void GuiQt3dPlot::createPopupMenu() {
   m_popupMenu->setTearOff( true );
   GuiQtMenuButton *button = 0;
 
+#if 0
   // Redraw Button generieren und an das Popup Menue anfuegen
   button = new GuiQtMenuButton( m_popupMenu, &m_redrawButtonListener );
   m_popupMenu->attach( button );
@@ -375,7 +438,6 @@ void GuiQt3dPlot::createPopupMenu() {
     m_popupMenu->attach( button );
     button->setDialogLabel( _("Print") );
   }
-#if 1
   // ResetScale Button generieren und an das Popup Menue anfuegen
   button = new GuiQtMenuButton( m_popupMenu, &m_resetScaleButtonListener );
   m_popupMenu->attach( button );
@@ -422,8 +484,10 @@ void GuiQt3dPlot::createPopupMenu() {
   m_buttonShowText->setLabel( _("Show Text Objects") );
   m_buttonShowText->setToggleStatus( m_showText );
 #endif
+#if !HAVE_QGRAPHS
   // Pulldown Menue PlotDeatails generieren und an das Popup Menue anfuegen
   createDetailMenu( m_popupMenu );
+#endif
 #if 1
   // Config Button generieren und an das Popup Menue anfuegen
   button = new GuiQtMenuButton( m_popupMenu, &m_configButtonListener );
@@ -483,126 +547,228 @@ void GuiQt3dPlot::createDetailMenu( GuiPopupMenu *menu ){
 /* buildConfigDialog --                                                        */
 /* --------------------------------------------------------------------------- */
 
-void GuiQt3dPlot::buildConfigDialog() {
-  GuiFieldgroup     *group = 0;
-  GuiQtFieldgroupLine *line = 0;
-  GuiQtLabel     *label = 0;
-  GuiQtMenuToggle     *toggle = 0;
-  DataReference     *dref = 0;
-  XferDataItem      *dataitem = 0;
+void GuiQt3dPlot::buildConfigDialog(GuiElement* parent) {
+  GuiFieldgroup   *group = 0;
+  GuiFieldgroupLine *line(0),  *lineOut(0);
+  GuiQtLabel      *label = 0;
+  GuiQtMenuToggle *toggle = 0;
+  DataReference   *dref = 0;
+  XferDataItem    *dataitem = 0;
+  GuiFieldgroup   *container = 0;
 
-  std::string formname;
-  formname = "@Gui3dPlotConfigDialog" + m_name;
-  GuiForm *form = GuiFactory::Instance()->createForm( formname );
+  // create dataset
+  DataPoolIntens &dpi = DataPoolIntens::Instance();
+  std::string dataSetItem[2] = {
+    "@Gui3dPlotType",
+    "@Gui3dPlotSelectionModeSet"
+  };
+  DataSet* ds(0);
+  for (auto si: dataSetItem) {
+    std::string ostrsetStr;
+    // dataset
+    ds = dpi.getDataSet( si );
+    if (!ds) {// plot is cloned
+      ds = dpi.newDataSet( si, true, true );
+      ds->resetInvalidEntry();
+      if (si == "@Gui3dPlotType"){
+        // values corresponding with enum class Gui3dPlot
+        ds->setItemValues( _("Style bar"), "BAR" );
+        ds->setItemValues( _("Style surface"), "SURFACE" );
+        ds->setItemValues( _("Style contour"), "CONTOUR" );
+        ///        ds->setItemValues( _("Style scatter"), "SCATTER" );
+        ds->create(si);
+      }
+      if (si == "@Gui3dPlotSelectionModeSet"){
+        // values corresponding with enum class QtGraphs3D::SelectionFlags
+        ds->setItemValues( _("No"), 0 );
+        ds->setItemValues( _("Item"), 1 );
+        ds->setItemValues( _("Row Slice"), 27 );
+        ds->setItemValues( _("Column Slice"), 29 );
+        ds->create(si);
+      }
+    }
+  }
 
-  m_configDialog = form->getElement()->getQtElement()->getQtForm();
-  m_configDialog->setTitle( _("ConfigDialog") );
-  m_configDialog->resetCycleButton();
-  m_configDialog->resetStandardForm();
-//   m_configDialog->setApplicationModal();
+  // content
+  if (!parent){
+    std::string formname("@Gui3dPlotConfigDialog" + m_name);
+    GuiForm *form = GuiFactory::Instance()->createForm( formname );
+    form->getElement()->setScrollbar(scrollbar_ON);
 
-  // Camera Axes Rotation
-  group = GuiFactory::Instance() -> createFieldgroup( m_configDialog->getElement(), "ConfigParameters1");
-  // Camera Axes Rotation
-  line = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  assert( line != 0 );
-  label = new GuiQtLabel( line );
-  label->setLabel( _("Camera Axes Rotation") );
-  line->attach( label );
+    m_configDialog = form->getElement()->getQtElement()->getQtForm();
+    m_configDialog->setTitle( _("ConfigDialog") );
+    m_configDialog->resetCycleButton();
+    m_configDialog->resetStandardForm();
+    //   m_configDialog->setApplicationModal();
+  } else {
+    container = GuiFactory::Instance()-> createFieldgroup(parent, getName() +  "@Config Properties");
+    m_configGuiElement = container->getElement();
+    lineOut = static_cast<GuiFieldgroupLine*>(container->addFieldgroupLine());
+  }
+  auto parentWidget = container ? container->getElement() : m_configDialog->getElement();
+  m_configGuiElement = parentWidget;
 
-  // x axis
-  line = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  label = new GuiQtLabel( line );
-  label->setLabel("X");
-  line->attach( label );
+  // Camera Properties
+  group = GuiFactory::Instance() -> createFieldgroup(parentWidget, getName() + "@ConfigCamera");
+  if (lineOut){
+    lineOut->attach( group->getElement() );}
+  else{
+    m_configDialog->getElement()->attach( group -> getElement() );
+  }
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  auto range_lbl = new GuiQtLabel(line->getElement(), _("Ranges"));
+  range_lbl->setColSpan(1);
+  line->attach(range_lbl);
+  line->attach(new GuiQtLabel(line->getElement(), _("Minimum")));
+  line->attach(new GuiQtLabel(line->getElement(), _("Maximum")));
+  line->attach(new GuiQtLabel(line->getElement(), _("Enable")));
 
-  // create slider
-  line = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  dref = DataPoolIntens::getDataReference( m_drefStruct, "rotationX" );
-  assert( dref != 0 );
-m_drefCameraRotationX->SetValue(60);
- auto userAttr =  dynamic_cast<UserAttr*>(m_drefCameraRotationX->getUserAttr());
-  userAttr->SetRange(-90, 90);
-  userAttr->SetStep(10);
-  dataitem = new XferDataItem();
-  dataitem->setDataReference(m_drefCameraRotationX);
-  auto *dataFieldRotX = dynamic_cast<GuiQtDataField*>(GuiFactory::Instance()->createDataField( line, dataitem ));
-  dataFieldRotX->setLength(1);
-  line->attach(dataFieldRotX);
+  // x range
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Horizontally")));
+  auto userAttr =  dynamic_cast<UserAttr*>(m_drefRangeMinX->getUserAttr());
+  auto *dataField = GuiFactory::Instance()->createDataField(line->getElement(),
+                                                            new XferDataItem(m_drefRangeMinX));
+  dataField->setLength(8);
+  line->attach(dataField->getElement());
+  auto x = new XferDataItem(m_drefRangeMaxX);
+  dataField = GuiFactory::Instance()->createDataField(line->getElement(),
+                                                      new XferDataItem(m_drefRangeMaxX));
+  dataField->setLength(8);
+  line->attach(dataField->getElement());
+  line->attach(GuiFactory::Instance()
+               ->createDataField(line->getElement(), new XferDataItem(m_drefRangeX))->getElement());
 
-  // y axis
-  line = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  label = new GuiQtLabel( line );
-  label->setLabel("Y");
-  line->attach( label );
+  // y range
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Vertically")));
+  userAttr =  dynamic_cast<UserAttr*>(m_drefRangeMinY->getUserAttr());
+  dataField = GuiFactory::Instance()->createDataField(line->getElement(),
+                                                      new XferDataItem(m_drefRangeMinY));
+  dataField->setLength(8);
+  line->attach(dataField->getElement());
+  dataField = GuiFactory::Instance()->createDataField(line->getElement(),
+                                                      new XferDataItem(m_drefRangeMaxY));
+  dataField->setLength(8);
+  line->attach(dataField->getElement());
+  line->attach(GuiFactory::Instance()
+               ->createDataField(line->getElement(), new XferDataItem(m_drefRangeY))->getElement());
 
-  // create slider
-  line = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  dref = DataPoolIntens::getDataReference( m_drefStruct, "rotationY" );
-  assert( dref != 0 );
-m_drefCameraRotationY->SetValue(20);
+  // x rotation
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Camera Properties")));
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Rotate Horizontally / °")));
+  userAttr =  dynamic_cast<UserAttr*>(m_drefCameraRotationX->getUserAttr());
+  userAttr->SetRange(-180, 180);
+  dataField = GuiFactory::Instance()
+    ->createDataField(line->getElement(), new XferDataItem(m_drefCameraRotationX));
+  dataField->setLength(8);
+  line->attach(dataField->getElement());
+
+  // y rotation
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Rotate Vertically / °")));
   userAttr =  dynamic_cast<UserAttr*>(m_drefCameraRotationY->getUserAttr());
-  userAttr->SetRange(-90, 90);
-  userAttr->SetStep(10);
-  dataitem = new XferDataItem();
-  dataitem->setDataReference(m_drefCameraRotationY);
-  auto *dataFieldRotY = dynamic_cast<GuiQtDataField*>(GuiFactory::Instance()->createDataField( line, dataitem ));
-  dataFieldRotY->setLength(1);
-  line->attach(dataFieldRotY);
+  userAttr->SetRange(-180, 180);
+  dataField = GuiFactory::Instance()
+    ->createDataField(line->getElement(), new XferDataItem(m_drefCameraRotationY));
+  dataField->setLength(8);
+  line->attach(dataField->getElement());
 
-  
-  // dref = DataPoolIntens::getDataReference( m_drefStruct, "NumDistnLevels" );
-  // assert( dref != 0 );
-  // dataitem = new XferDataItem();
-  // dataitem->setDataReference( dref );
-  // m_fieldNumDistnLevels = dynamic_cast<GuiQtDataField*>(GuiFactory::Instance()->createDataField( line, dataitem ));
-  // m_fieldNumDistnLevels->setLength( 10 );
+  // zoom
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  label = new GuiQtLabel( line->getElement() );
+  label->setLabel(_("Zoom / %"));
+  line->attach( label );
+  userAttr =  dynamic_cast<UserAttr*>(m_drefCameraZoom->getUserAttr());
+  userAttr->SetRange(20, 300);
+  dataField = GuiFactory::Instance()
+    ->createDataField(line->getElement(), new XferDataItem(m_drefCameraZoom));
+  dataField->setLength(5);
+  line->attach(dataField->getElement());
 
-  // // Customizing the Distribution Table
-  // line = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  // assert( line != 0 );
-  // label = new GuiQtLabel( line );
-  // label->setLabel( _("Customizing the Distribution Table") );
-  // line->attach( label );
+  // Plot Style Properties
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Plot Style Properties")));
 
-  // m_configDialog->getElement()->attach(group->getElement());
+  // perspective/orthographic
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(),  _("Orthographic")));
+  line->attach(GuiFactory::Instance()
+               ->createDataField(line->getElement(), new XferDataItem(m_drefOrthograghic))->getElement());
 
-  // // Distribution Table
-  // group = GuiFactory::Instance() -> createFieldgroup( m_configDialog->getElement(), "ConfigParameters2" );
+  // style mode
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Style Mode")));
+  userAttr =  dynamic_cast<UserAttr*>(m_drefPlotType->getUserAttr());
+  userAttr->SetDataSetName( dataSetItem[0] );
+  userAttr->SetCombobox();
+  dataField = GuiFactory::Instance()
+    ->createDataField(line->getElement(), new XferDataItem(m_drefPlotType));
+  dataField->setLength(7);
+  dataField->getElement()->setColSpan(2);
+  line->attach(dataField->getElement());
 
-  // group->setTitle( _("Distribution Table") );
-  // group->setTableSize( 5 );
-  // group->setTableStep( 4 );
+  // selection mode
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Selection Mode")));
+  userAttr =  dynamic_cast<UserAttr*>(m_drefSelectionMode->getUserAttr());
+  userAttr->SetDataSetName( dataSetItem[1] );
+  userAttr->SetCombobox();
+  dataField->getElement()->setColSpan(2);
+  dataField = GuiFactory::Instance()
+    ->createDataField(line->getElement(), new XferDataItem(m_drefSelectionMode));
+  dataField->setLength(6);
+  line->attach(dataField->getElement());
 
-  // m_lineDistnTable = static_cast<GuiQtFieldgroupLine*>(group->addFieldgroupLine());
-  // assert( m_lineDistnTable != 0 );
+  // show grid/mesh/smooth
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(),  _("Show Grid")));
+  line->attach(GuiFactory::Instance()
+               ->createDataField(line->getElement(), new XferDataItem(m_drefShowGrid))->getElement());
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Show Mesh")));
+  line->attach(GuiFactory::Instance()
+               ->createDataField(line->getElement(), new XferDataItem(m_drefShowMesh))->getElement());
+  line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+  line->attach(new GuiQtLabel(line->getElement(), _("Show Smooth")));
+  line->attach(GuiFactory::Instance()
+               ->createDataField(line->getElement(), new XferDataItem(m_drefShowSmooth))->getElement());
 
-  // dref = DataPoolIntens::getDataReference( m_drefStruct, "DistnTable" );
-  // assert( dref != 0 );
-  // dataitem = new XferDataItem();
-  // dataitem->setDataReference( dref );
-  // XferDataItemIndex *index = dataitem->newDataItemIndex( 1 );
-  // m_fieldDistnTable = dynamic_cast<GuiQtDataField*>(GuiFactory::Instance()->createDataField( m_lineDistnTable->getElement(), dataitem ));
-  // m_fieldDistnTable->setLength( 10 );
-  // label = new GuiQtLabel( line );
-  // label->setLabel( _("Entries") );
-  // m_lineDistnTable->attach( label );
-  // m_lineDistnTable->attach( m_fieldDistnTable->getElement() );
-  
-  // Buttonbar generieren
-  GuiButtonbar *bar = GuiFactory::Instance() -> createButtonbar( m_configDialog->getElement() );
-  ///  m_configDialog->getElement()->attach( bar->getElement() );
+  GuiElement* elemParent(0); // = m_configDialog ? bar->getElement() : line->getElement();
+  if (m_configDialog){
+    elemParent = GuiFactory::Instance() -> createButtonbar(parentWidget)->getElement();
+  }else{
+    line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+    elemParent = line->getElement();
+  }
+
+  // add buttons
   GuiButton *button;
-  // Reset Button generieren und an das Buttonbar anfuegen
-  m_cDresetButtonListener = new CDresetButtonListener( this );
-  button = GuiFactory::Instance() -> createButton( bar->getElement(), m_cDresetButtonListener );
-  button->setLabel( _("Reset") );
-  // Close Button generieren und an das Buttonbar anfuegen
-  m_cDcloseButtonListener = new CDcloseButtonListener( this );
-  button = GuiFactory::Instance() -> createButton( bar->getElement(), m_cDcloseButtonListener );
-  button->setLabel( _("Close") );
+  GuiButtonListener* _buttonListener = new RedrawButtonListener( this );
+  button = GuiFactory::Instance() -> createButton( elemParent, _buttonListener );
+  button->setLabel( _("Redraw") );
+  _buttonListener = new ResetRotationButtonListener( this );
+  button = GuiFactory::Instance() -> createButton( elemParent, _buttonListener );
+  button->setLabel( _("Reset rotation") );
+  _buttonListener = new ResetScaleButtonListener( this );
+  button = GuiFactory::Instance() -> createButton( elemParent, _buttonListener );
+  button->setLabel( _("Reset scale") );
+  _buttonListener = new PrintButtonListener( this );
+  button = GuiFactory::Instance() -> createButton( elemParent, _buttonListener );
+  button->setLabel( _("Print") );
 
-  m_configDialog->getElement()->attach(group->getElement());
+  if (!m_configDialog){
+    line = static_cast<GuiFieldgroupLine*>(group->addFieldgroupLine());
+    elemParent = line->getElement();
+  }
+  _buttonListener = new CDresetButtonListener( this );
+  button = GuiFactory::Instance() -> createButton( elemParent, _buttonListener );
+  button->setLabel( _("Reset") );
+  _buttonListener = new CDcloseButtonListener( this );
+  button = GuiFactory::Instance() -> createButton( elemParent, _buttonListener );
+    button->setLabel( _("Close") );
 }
 
 /* --------------------------------------------------------------------------- */
@@ -632,16 +798,39 @@ void GuiQt3dPlot::createDataReference() {
   assert( m_drefStruct != 0 );
   static_cast<UserAttr*>(m_drefStruct->getUserAttr())->SetEditable();
 
+  m_drefRangeMinX = DataPoolIntens::getDataReference( m_drefStruct, "rangeX" );
+  m_drefRangeMaxX = DataPoolIntens::getDataReference( m_drefStruct, "rangeX" );
+  m_drefRangeX= DataPoolIntens::getDataReference( m_drefStruct, "rangeXEnabled" );
+  m_drefRangeMinY = DataPoolIntens::getDataReference( m_drefStruct, "rangeY" );
+  m_drefRangeMaxY = DataPoolIntens::getDataReference( m_drefStruct, "rangeY" );
+  m_drefRangeY = DataPoolIntens::getDataReference( m_drefStruct, "rangeYEnabled" );
+  int i(1);
+  m_drefRangeMaxX->SetDimensionIndizes(0, 1, &i);
+  m_drefRangeMaxY->SetDimensionIndizes(0, 1, &i);
   m_drefCameraRotationX = DataPoolIntens::getDataReference( m_drefStruct, "rotationX" );
-  assert( m_drefCameraRotationX != 0 );
   m_drefCameraRotationY = DataPoolIntens::getDataReference( m_drefStruct, "rotationY" );
+  m_drefCameraZoom = DataPoolIntens::getDataReference( m_drefStruct, "zoom" );
+  m_drefOrthograghic = DataPoolIntens::getDataReference( m_drefStruct, "orthographic" );
+  m_drefPlotType = DataPoolIntens::getDataReference( m_drefStruct, "plotType" );
+  m_drefSelectionMode = DataPoolIntens::getDataReference( m_drefStruct, "selectionMode" );
+  m_drefShowGrid = DataPoolIntens::getDataReference( m_drefStruct, "showGrid" );
+  m_drefShowMesh = DataPoolIntens::getDataReference( m_drefStruct, "showMesh" );
+  m_drefShowSmooth = DataPoolIntens::getDataReference( m_drefStruct, "showSmooth" );
+  assert( m_drefRangeMinX != 0 );
+  assert( m_drefRangeMaxX != 0 );
+  assert( m_drefRangeX != 0 );
+  assert( m_drefRangeMinY != 0 );
+  assert( m_drefRangeMaxY != 0 );
+  assert( m_drefRangeY != 0 );
+  assert( m_drefCameraRotationX != 0 );
   assert( m_drefCameraRotationY != 0 );
-
-  m_drefDistnMethod = DataPoolIntens::getDataReference( m_drefStruct, "DistnMethod" );
-  assert( m_drefDistnMethod != 0 );
-
-  m_drefDistnTable = DataPoolIntens::getDataReference( m_drefStruct, "DistnTable" );
-  assert( m_drefDistnTable != 0 );
+  assert( m_drefCameraZoom != 0 );
+  assert( m_drefOrthograghic != 0 );
+  assert( m_drefPlotType != 0 );
+  assert( m_drefSelectionMode != 0 );
+  assert( m_drefShowGrid != 0 );
+  assert( m_drefShowMesh != 0 );
+  assert( m_drefShowSmooth != 0 );
 }
 
 /* --------------------------------------------------------------------------- */
@@ -689,7 +878,22 @@ void GuiQt3dPlot::update( UpdateReason reason ){
 #if HAVE_QGRAPHS
     auto plot = dynamic_cast<GuiQt3dBasePlot*>(m_widgetStack->currentWidget());
     plot->update(*m_data);
-    plot->printLog();
+    readConfigDataFromDataPool();
+    auto configUpdate = m_configData.update(*m_data);  // update config data
+    if (m_configGuiElement &&
+        m_configGuiElement->getQtElement()->myWidget()->isVisible()){
+      if (configUpdate)
+        writeConfigDataToDataPool(false); // only set range configData to ConfigWidget
+      // TODO
+      m_configGuiElement->update(reason_Always);
+    }
+    ///    else writeConfigDataToDataPool(false); // only set range configData to ConfigWidget
+
+    if (isSurfaceType() && m_plotStyle.getStyle() != CONTOUR) {
+      m_contourWidget->updateConfigData(m_configData);
+    }else if (isBarType()){
+      m_barWidget->updateConfigData(m_configData);
+    }
 #else
     m_data->updateData();
     m_contourWidget->update(*m_data);
@@ -862,7 +1066,6 @@ HardCopyListener::PrintType GuiQt3dPlot::getPrintType( const HardCopyListener::F
 /* --------------------------------------------------------------------------- */
 
 bool GuiQt3dPlot::write( InputChannelEvent &event ) {
-  ///  assert(false);
   BUG(BugGui, "GuiQt3dPlot::write");
   std::string msg;
   GuiQtPrinterDialog& hardcopy = GuiQtPrinterDialog::Instance();
@@ -1070,6 +1273,8 @@ void GuiQt3dPlot::print(QPrinter* printer) {
   }
   if (m_plotStyle.getStyle() == CONTOUR) {
     m_contourWidget->print(*printer);
+  } if (m_plotStyle.getStyle() == SURFACE) {
+    m_contourWidget->print(*printer);
   } else {
   }
 
@@ -1120,8 +1325,10 @@ void GuiQt3dPlot::setDrawButtons() {
     m_buttonDrawMesh->setToggleStatus( m_plotStyle.getFlagDrawMesh() );
     m_buttonDrawShaded->setToggleStatus( m_plotStyle.getFlagDrawShaded() );
 #endif
+#if !HAVE_QGRAPHS
     m_buttonDrawContours->setToggleStatus( m_plotStyle.getFlagDrawContours() );
     m_buttonDrawZones->setToggleStatus( m_plotStyle.getFlagDrawZones() );
+#endif
   }
 }
 
@@ -1132,7 +1339,7 @@ void GuiQt3dPlot::setDrawButtons() {
 void GuiQt3dPlot::setStyleButtons() {
   if( m_PopupMenuCreated ) {
     Style style = m_plotStyle.getStyle();
-#if 1
+#if 0
     m_buttonStyleBars->setToggleStatus( ( style == BAR ? true : false ) );
     m_buttonStyleSurface->setToggleStatus( ( style == SURFACE ? true : false ) );
     m_buttonStyleContour->setToggleStatus( ( style == CONTOUR ? true : false ) );
@@ -1186,6 +1393,7 @@ void GuiQt3dPlot::setPlotStyleSurface() {
 void GuiQt3dPlot::setPlotStyleContour() {
   m_plotStyle.setStyle( CONTOUR );
   setDetailStyle( false, false, true, true );
+  ///hideConfigWidget();
   if (m_widgetStack){
     update( reason_Always );
 #if HAVE_QGRAPHS
@@ -1451,6 +1659,7 @@ void GuiQt3dPlot::drawHiddenLines() {
 void GuiQt3dPlot::drawPerspective() {
   if (m_plotStyle.getStyle() != CONTOUR) {
     m_plotStyle.setFlagDrawPerspective( !m_plotStyle.getFlagDrawPerspective() );
+    m_configData.orthoProjection = m_plotStyle.getFlagDrawPerspective();
   }
 }
 
@@ -1460,6 +1669,17 @@ void GuiQt3dPlot::drawPerspective() {
 /* --------------------------------------------------------------------------- */
 
 void GuiQt3dPlot::resetScaleParameters() {
+#if HAVE_QGRAPHS
+  GuiQt3dBasePlot::ConfigData configData;
+  configData.init(m_plotStyle.getStyle());
+  m_configData.rangeX = configData.rangeX;
+  m_configData.rangeY = configData.rangeY;
+  writeConfigDataToDataPool(true);
+  if (m_configGuiElement)
+    m_configGuiElement->update(reason_Always);
+  update(reason_Always);
+#endif
+
   if (m_plotStyle.getStyle() == CONTOUR) {
 #if !HAVE_QGRAPHS
     m_contourWidget->resetScale();
@@ -1473,8 +1693,17 @@ void GuiQt3dPlot::resetScaleParameters() {
 /* --------------------------------------------------------------------------- */
 
 void GuiQt3dPlot::resetRotationParameters() {
-  if (m_plotStyle.getStyle() != CONTOUR) {
-  }
+#if HAVE_QGRAPHS
+  GuiQt3dBasePlot::ConfigData configData;
+  configData.init(m_plotStyle.getStyle());
+  m_configData.rotationX = configData.rotationX;
+  m_configData.rotationY = configData.rotationY;
+  m_configData.zoom = configData.zoom;
+  writeConfigDataToDataPool(true);
+  if (m_configGuiElement)
+    m_configGuiElement->update(reason_Always);
+  update(reason_Always);
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1528,14 +1757,60 @@ bool GuiQt3dPlot::putDataItem( const std::string &name, GuiPlotDataItem *item ) 
 /* --------------------------------------------------------------------------- */
 
 void GuiQt3dPlot::openConfigDialog() {
-  if( m_configDialog == 0 )
+#if HAVE_QGRAPHS
+  if( m_configDialog == 0 && m_configGuiElement == 0)
     buildConfigDialog();
 
-  assert( m_drefDistnMethod != 0 );
+  // reread configData from GraphicWidget
+  if (isSurfaceType()) {
+    m_contourWidget->getConfigData(m_configData);
+  }else if (isBarType()){
+    m_barWidget->getConfigData(m_configData);
+  }
+  writeConfigDataToDataPool(true);
 
   int value = 0;
-  m_drefDistnMethod->GetValue( value );
-  m_configDialog->getElement()->manage();
+  if (m_configDialog)
+    m_configDialog->getElement()->manage();
+  else {
+    auto widget = m_configGuiElement->getQtElement()->myWidget();
+    widget->show();
+    widget->raise();
+  }
+  m_configGuiElement->update(reason_Always);
+#endif
+}
+
+/* --------------------------------------------------------------------------- */
+/* createConfigWidget --                                                       */
+/* --------------------------------------------------------------------------- */
+
+void GuiQt3dPlot::createConfigWidget() {
+#if HAVE_QGRAPHS
+  if( m_configGuiElement == 0 ){
+    buildConfigDialog(this);
+  }
+
+  // reread configData from GraphicWidget
+  if (isSurfaceType()) {
+    m_contourWidget->getConfigData(m_configData);
+  }else if (isBarType()){
+    m_barWidget->getConfigData(m_configData);
+  }
+  writeConfigDataToDataPool(true);
+#endif
+}
+
+/* --------------------------------------------------------------------------- */
+/* hideConfigWidget --                                                         */
+/* --------------------------------------------------------------------------- */
+
+void GuiQt3dPlot::hideConfigWidget() {
+  if(m_configGuiElement){
+    auto widget = m_configGuiElement->getQtElement()->myWidget();
+    widget->hide();
+    widget->lower();
+  }
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1543,6 +1818,20 @@ void GuiQt3dPlot::openConfigDialog() {
 /* --------------------------------------------------------------------------- */
 
 void GuiQt3dPlot::cDresetEvent() {
+  switch(m_plotStyle.getInitStyle()){
+  case BAR:
+    setPlotStyleBar();
+    break;
+  case CONTOUR:
+    setPlotStyleContour();
+    break;
+  default:
+    setPlotStyleSurface();
+  }
+  m_configData.init(m_plotStyle.getStyle());
+  writeConfigDataToDataPool(true);
+  m_configGuiElement->update(reason_Always);
+  update(reason_Always);
 //   for( int i=0; i < m_dataItems.size(); i++ ) { !!!!
 //     GuiPlotDataItem* item = m_dataItems[i];
 //     assert( item != 0 );
@@ -1565,7 +1854,10 @@ void GuiQt3dPlot::cDresetEvent() {
 /* --------------------------------------------------------------------------- */
 
 void GuiQt3dPlot::cDcloseEvent() {
-  m_configDialog->getElement()->unmanage();
+  if (m_configDialog)
+    m_configDialog->getElement()->unmanage();
+  else
+    hideConfigWidget();
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1673,7 +1965,7 @@ bool GuiQt3dPlot::setAnnotationLabels(){
 /* myWidget --                                                                 */
 /* --------------------------------------------------------------------------- */
 QWidget* GuiQt3dPlot::myWidget() {
-  return m_widgetStack;
+  return m_widget ? m_widget : m_widgetStack;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1694,3 +1986,103 @@ bool GuiQt3dPlot::isBarType(){
   std::set<int> barStyles = {BAR};
   return barStyles.find(m_plotStyle.getStyle()) != barStyles.end();
 }
+
+/* --------------------------------------------------------------------------- */
+/* show_config_properties --                                                   */
+/* --------------------------------------------------------------------------- */
+void GuiQt3dPlot::show_config_properties(){
+  // config widget
+  createConfigWidget();
+  if (!m_configGuiElement->getQtElement()->myWidget()){
+    m_configGuiElement->getQtElement()->create();
+  }
+  auto widget = m_configGuiElement->getQtElement()->myWidget();
+  m_configGuiElement->update(reason_Always);
+
+  // swap visiblity, hide contour
+  if (widget->isVisible() || m_plotStyle.getStyle() == CONTOUR){
+    widget->hide();
+    widget->lower();
+    return;
+  }
+
+  QSize hs = widget->sizeHint();
+  QSize phs = myWidget()->sizeHint();
+  m_configGuiElement->getQtElement()->manage();
+  widget->setGeometry(5,5,
+                      hs.width(), hs.height());
+  widget->show();
+  widget->raise();
+  hs = widget->sizeHint();
+}
+
+/* --------------------------------------------------------------------------- */
+/* writeConfigDataToDataPool --                                                */
+/* --------------------------------------------------------------------------- */
+
+void GuiQt3dPlot::writeConfigDataToDataPool(bool init){
+  BUG_DEBUG("writeConfigDataToDataPool init: " << init << ", zoom: " << m_configData.zoom);
+  // camera
+  if(init || !m_configData.rangeX){
+    m_drefRangeMinX->SetValue(m_configData.rangeMinX);
+    m_drefRangeMaxX->SetValue(m_configData.rangeMaxX);
+  }
+  m_drefRangeX->SetValue(m_configData.rangeX);
+  if(init || !m_configData.rangeY){
+    m_drefRangeMinY->SetValue(m_configData.rangeMinY);
+    m_drefRangeMaxY->SetValue(m_configData.rangeMaxY);
+  }
+  m_drefRangeY->SetValue(m_configData.rangeY);
+  if(init){
+    m_drefCameraRotationX->SetValue(m_configData.rotationX);
+    m_drefCameraRotationY->SetValue(m_configData.rotationY);
+    m_drefCameraZoom->SetValue(m_configData.zoom);
+    // other
+    m_drefOrthograghic->SetValue((int)m_configData.orthoProjection);
+    m_drefPlotType->SetValue(m_configData.plotType);
+    m_drefSelectionMode->SetValue(m_configData.selectionMode);
+    m_drefShowGrid->SetValue(static_cast<int>(m_configData.showGrid));
+    m_drefShowMesh->SetValue(static_cast<int>(m_configData.showMesh));
+    m_drefShowSmooth->SetValue(static_cast<int>(m_configData.showSmooth));
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* readConfigDataFromDataPool --                                               */
+/* --------------------------------------------------------------------------- */
+
+void GuiQt3dPlot::readConfigDataFromDataPool(){
+  int iVal;
+  std::string plotTypeOld(m_configData.plotType);
+  m_drefRangeMinX->GetValue(m_configData.rangeMinX);
+  m_drefRangeMaxX->GetValue(m_configData.rangeMaxX);
+  if(m_drefRangeX->GetValue(iVal))
+    m_configData.rangeX = (bool) iVal;
+  m_drefRangeMinY->GetValue(m_configData.rangeMinY);
+  m_drefRangeMaxY->GetValue(m_configData.rangeMaxY);
+  if (m_drefRangeY->GetValue(iVal))
+    m_configData.rangeY = (bool) iVal;
+  m_drefCameraRotationX->GetValue(m_configData.rotationX);
+  m_drefCameraRotationY->GetValue(m_configData.rotationY);
+  m_drefCameraZoom->GetValue(m_configData.zoom);
+  m_drefOrthograghic->GetValue(iVal);
+  m_configData.orthoProjection = iVal;
+  m_drefPlotType->GetValue(m_configData.plotType);
+  m_drefSelectionMode->GetValue(m_configData.selectionMode);
+  m_drefShowGrid->GetValue(iVal);
+  m_configData.showGrid = iVal;
+  m_drefShowMesh->GetValue(iVal);
+  m_configData.showMesh = iVal;
+  m_drefShowSmooth->GetValue(iVal);
+  m_configData.showSmooth = iVal;
+  if (plotTypeOld != m_configData.plotType){
+    if(m_configData.plotType == "BAR"){
+      setPlotStyleBar();
+    }else if(m_configData.plotType == "CONTOUR"){
+      setPlotStyleContour();
+    }else{
+      setPlotStyleSurface();
+    }
+  }
+}
+

@@ -7,6 +7,9 @@
 #endif
 
 #include <limits>
+#include <string>
+#include <map>
+#include <vector>
 
 class XferDataItemIndex;
 class GuiPlotDataItem;
@@ -29,8 +32,10 @@ public:
   virtual ~GuiQt3dData();
 
   bool update();
+#if HAVE_QGRAPHS
   const QSurfaceDataArray& getSurfaceDataArray();
   const QBarDataArray& getBarDataArray(QStringList& row_labels, QStringList& column_labels);
+#endif
 
   /**
      get index for datapool or catched data
@@ -110,8 +115,10 @@ private:
   GuiQt3dData& operator=(const GuiQt3dData&);
 
 private:
+#if HAVE_QGRAPHS
   QSurfaceDataArray m_surfaceDataArray;
   QBarDataArray     m_barDataArray;
+#endif
 
   // colormap offsets
   double         minXUser;

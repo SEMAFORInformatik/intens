@@ -1,23 +1,30 @@
-# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-FileCopyrightText: 2025-2026 SEMAFOR Informatik & Energie AG, Basel
 #
 # SPDX-License-Identifier: Apache-2.0
 
 po/*/intens.gmo
 po/intens.pot
 
-# by Walter
-build
-build_windows
+build*
 IntensBugFile
 doc/gettingstarted/*.aux
+doc/gettingstarted/*.fdb_latexmk
+doc/gettingstarted/*.fls
 doc/gettingstarted/*.log
 doc/gettingstarted/*.out
 doc/gettingstarted/*.pdf
 doc/gettingstarted/*.toc
-doc/gettingstarted/*.fdb_latexmk
-doc/gettingstarted/*.fls
 doc/gettingstarted/*.xdv
 doc/gettingstarted/generated
+doc/system-admin/sysadmin.fdb_latexmk
+doc/system-admin/sysadmin.fls
+doc/system-admin/sysadmin.idx
+doc/system-admin/sysadmin.ilg
+doc/system-admin/sysadmin.ind
+doc/system-admin/sysadmin.log
+doc/system-admin/sysadmin.pdf
+doc/system-admin/sysadmin.toc
+doc/system-admin/.texmf-var/
 
 # Created by https://www.toptal.com/developers/gitignore/api/cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=cmake

@@ -66,6 +66,7 @@ void GuiQtBarGraph::contextMenuEvent ( QContextMenuEvent* event ){
     m_plot->popupMenu(event);
     event->accept();
   } else {
+    m_plot->hideConfigWidget();
     QQuickWidget::contextMenuEvent(event);
   }
 }
@@ -74,6 +75,28 @@ void GuiQtBarGraph::contextMenuEvent ( QContextMenuEvent* event ){
 /* print --                                                                    */
 /* --------------------------------------------------------------------------- */
 void GuiQtBarGraph::print(QPaintDevice& pd) {
+}
+
+/* --------------------------------------------------------------------------- */
+/* getConfigData --                                                            */
+/* --------------------------------------------------------------------------- */
+void GuiQtBarGraph::getConfigData(ConfigData& configData){
+  configData.rotationX = m_bars->cameraXRotation();
+  configData.rotationY = m_bars->cameraYRotation();
+  configData.zoom = m_bars->cameraZoomLevel();
+
+  configData.orthoProjection = m_bars->isOrthoProjection();
+}
+
+/* --------------------------------------------------------------------------- */
+/* updateConfigData --                                                         */
+/* --------------------------------------------------------------------------- */
+void GuiQtBarGraph::updateConfigData(ConfigData& configData){
+  m_bars->setCameraXRotation(configData.rotationX);
+  m_bars->setCameraYRotation(configData.rotationY);
+  m_bars->setCameraZoomLevel(configData.zoom);
+
+  m_bars->setOrthoProjection(configData.orthoProjection);
 }
 
 /* --------------------------------------------------------------------------- */

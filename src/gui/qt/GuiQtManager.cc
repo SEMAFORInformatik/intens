@@ -98,6 +98,7 @@ public :
     , m_timerId(-1)
     , m_receiver(0)
     , m_guiManager( manager ){
+    setDesktopFileName("intens");
 #if QT_VERSION < 0x060000
     QTextCodec::setCodecForLocale( QTextCodec::codecForName ( "UTF-8" ) );
 #endif
@@ -936,6 +937,11 @@ bool GuiQtManager::runApplication(){
     std::ostringstream os;
     printSizeInfo(os, 0, true);
     BUG_DEBUG(">>>>>= MAXIMUM WINDOW SIZES  =<<<<\n" << os.str());
+  }
+
+  // UnitManager
+  if(AppData::Instance().hasUnitManagerFeature()){
+    update(reason_Unit);
   }
 
   // Eventloop starten

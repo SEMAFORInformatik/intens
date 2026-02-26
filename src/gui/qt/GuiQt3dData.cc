@@ -124,7 +124,7 @@ const QSurfaceDataArray& GuiQt3dData::getSurfaceDataArray(){
     int cNum = cntColMax;
     int rNum = matrix_data.size();
     for (int r=0; r<cNum; ++r){
-      QSurfaceDataRow dataRow(cntColMax);
+      QSurfaceDataRow dataRow(rNum);
       for (int c=0; c<rNum; ++c){
         int rmin = std::min(r, (int)matrix_data[c].size()-1);
         QVector3D &pt = matrix_data[c][rmin];

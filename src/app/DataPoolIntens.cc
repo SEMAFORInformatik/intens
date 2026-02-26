@@ -422,29 +422,63 @@ void DataPoolIntens::initializeDataPool(){
 				   , INTERNAL_XRT3DPLOT_STRUCT
 				   , DataDictionary::type_StructDefinition );
   dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
-				   , "NumDistnLevels"
-				   , DataDictionary::type_Integer );
-  static_cast<UserAttr*>(dict->GetAttr())->SetEditable();
-  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
-				   , "DistnMethod"
-				   , DataDictionary::type_Integer );
-  static_cast<UserAttr*>(dict->GetAttr())->SetEditable();
-  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
-				   , "DistnTable"
-				   , DataDictionary::type_Real );
-  static_cast<UserAttr*>(dict->GetAttr())->SetEditable();
-
-  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
 				   , "rotationX"
-				   , DataDictionary::type_Integer );
+				   , DataDictionary::type_Real );
   dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
-  dynamic_cast<UserAttr*>(dict->GetAttr())->SetSlider();
   dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
 				   , "rotationY"
+				   , DataDictionary::type_Real );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "rangeX"
+				   , DataDictionary::type_Real );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "rangeXEnabled"
+				   , DataDictionary::type_Real );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetToggle();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "rangeY"
+				   , DataDictionary::type_Real );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "rangeYEnabled"
+				   , DataDictionary::type_Real );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetToggle();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "zoom"
+				   , DataDictionary::type_Real );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "orthographic"
 				   , DataDictionary::type_Integer );
   dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
-  dynamic_cast<UserAttr*>(dict->GetAttr())->SetSlider();
-
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetToggle();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "selectionMode"
+				   , DataDictionary::type_Integer );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "plotType"
+				   , DataDictionary::type_String );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "showGrid"
+				   , DataDictionary::type_Integer );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetToggle();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "showMesh"
+				   , DataDictionary::type_Integer );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetToggle();
+  dict = datapool.AddToDictionary( INTERNAL_XRT3DPLOT_STRUCT
+				   , "showSmooth"
+				   , DataDictionary::type_Integer );
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetEditable();
+  dynamic_cast<UserAttr*>(dict->GetAttr())->SetToggle();
 }
 
 /* --------------------------------------------------------------------------- */

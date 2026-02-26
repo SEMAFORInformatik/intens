@@ -27,7 +27,7 @@ private:
 /*=============================================================================*/
  public:
   enum eAxisType { XAXIS, YAXIS };
-  enum Style { BAR, SURFACE, CONTOUR };
+  enum Style { BAR, SURFACE, CONTOUR, SCATTER, NONE };
 
   virtual GuiElement* getElement() = 0;
 
@@ -107,6 +107,7 @@ private:
   public:
     PlotStyle() :
       m_style(SURFACE),
+      m_initStyle(NONE),
       m_flagDrawMesh(true),
       m_flagDrawShaded(true),
       m_flagDrawContours(true),
@@ -118,6 +119,7 @@ private:
     }
     PlotStyle(const PlotStyle& p) :
       m_style(p.m_style),
+      m_initStyle(p.m_initStyle),
       m_flagDrawMesh( p.m_flagDrawMesh ),
       m_flagDrawShaded( p.m_flagDrawShaded ),
       m_flagDrawContours( p.m_flagDrawContours ),
@@ -130,6 +132,7 @@ private:
 
     /// Gibt den Style
     Style getStyle() {return m_style;}
+    Style getInitStyle() {return m_initStyle;}
     bool getFlagDrawMesh() { return m_flagDrawMesh; }
     bool getFlagDrawShaded() { return m_flagDrawShaded; }
     bool getFlagDrawContours() { return m_flagDrawContours; }
@@ -139,7 +142,7 @@ private:
     double getPerspectiveDepth() { return m_perspectiveDepth; }
     bool getFlagStyleValid() { return m_flagStyleValid; }
 
-    void setStyle( Style style ) {m_style = style;}
+    void setStyle( Style style ) {m_style = style; if (m_initStyle == NONE){m_initStyle = style;}}
     void setFlagDrawMesh( bool flagDrawMesh ) {
       m_flagDrawMesh = flagDrawMesh; }
     void setFlagDrawShaded( bool flagDrawShaded ) {
@@ -159,6 +162,7 @@ private:
 
   private:
     Style            m_style;
+    Style            m_initStyle;
     bool             m_flagDrawMesh;
     bool             m_flagDrawShaded;
     bool             m_flagDrawContours;

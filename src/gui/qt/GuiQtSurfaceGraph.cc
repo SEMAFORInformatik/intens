@@ -2,6 +2,8 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QContextMenuEvent>
+#include <QtGraphs/QSurface3DSeries>
+#include <qwt_color_map.h>
 
 #include "GuiQtSurfaceGraph.h"
 #include "GuiQt3dData.h"
@@ -76,6 +78,7 @@ void GuiQtSurfaceGraph::contextMenuEvent ( QContextMenuEvent* event ){
     m_plot->popupMenu(event);
     event->accept();
   } else {
+    m_plot->hideConfigWidget();
     QQuickWidget::contextMenuEvent(event);
   }
 }
@@ -84,6 +87,7 @@ void GuiQtSurfaceGraph::contextMenuEvent ( QContextMenuEvent* event ){
 /* print --                                                                    */
 /* --------------------------------------------------------------------------- */
 void GuiQtSurfaceGraph::print(QPaintDevice& pd) {
+  render(&pd, QPoint(), QRegion());
 }
 
 /* --------------------------------------------------------------------------- */
@@ -124,8 +128,9 @@ QAbstract3DAxis* GuiQtSurfaceGraph::axisWidget(GuiElement::GuiAxisType axis) con
   return 0;
 }
 
+
 /* --------------------------------------------------------------------------- */
-/* axisWidget --                                                               */
+/* setPlotStyle --                                                             */
 /* --------------------------------------------------------------------------- */
 void GuiQtSurfaceGraph::setPlotStyle(Gui3dPlot::Style plotStyle){
   switch(plotStyle){
@@ -152,16 +157,91 @@ void GuiQtSurfaceGraph::setPlotStyle(Gui3dPlot::Style plotStyle){
   }
 }
 
+/* --------------------------------------------------------------------------- */
+/*getQwtColorMap --                                                            */
+/* --------------------------------------------------------------------------- */
+QwtColorMap* GuiQtSurfaceGraph::getQwtColorMap(){
+  QLinearGradient gradient =  m_series->baseGradient();
+  auto cm = gradient.stops();
+  QwtLinearColorMap* colormap = new QwtLinearColorMap(/*cm.first().first, cm.back().first*/);
+  int i(0);
+  for (const auto &stop : gradient.stops()){
+    //    if (stop == cm.first()) continue;
+    //    if (stop == cm.back()) continue;
+    colormap->addColorStop(stop.first, stop.second);
+  }
+  return colormap;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getConfigData --                                                            */
+/* --------------------------------------------------------------------------- */
+void GuiQtSurfaceGraph::getConfigData(ConfigData& configData){
+  configData.rotationX = m_surface->cameraXRotation();
+  configData.rotationY = m_surface->cameraYRotation();
+  configData.zoom = m_surface->cameraZoomLevel();
+
+  configData.orthoProjection = m_surface->isOrthoProjection();
+  configData.selectionMode = m_surface->selectionMode();
+  configData.showGrid = m_surface->activeTheme()->isGridVisible();
+  configData.showMesh = m_series->drawMode() & QSurface3DSeries::DrawWireframe;
+  configData.showSmooth = m_series->isMeshSmooth();
+
+}
+
+/* --------------------------------------------------------------------------- */
+/* updateConfigData --                                                         */
+/* --------------------------------------------------------------------------- */
+void GuiQtSurfaceGraph::updateConfigData(ConfigData& configData){
+  m_surface->setCameraXRotation(configData.rotationX);
+  m_surface->setCameraYRotation(configData.rotationY);
+  m_surface->setCameraZoomLevel(configData.zoom);
+
+  m_surface->setOrthoProjection(configData.orthoProjection);
+  QtGraphs3D::SelectionFlags sm = static_cast<QtGraphs3D::SelectionFlags>(configData.selectionMode);
+  m_surface->setSelectionMode(static_cast<QtGraphs3D::SelectionFlags>(configData.selectionMode));
+  m_surface->activeTheme()->setGridVisible(configData.showGrid);
+  if (configData.showMesh)
+    m_series->setDrawMode(m_series->drawMode()|QSurface3DSeries::DrawWireframe);
+  else{
+    auto dm = m_series->drawMode();
+    dm &= ~QSurface3DSeries::DrawWireframe;
+    m_series->setDrawMode(dm);
+  }
+  m_series->setMeshSmooth(configData.showSmooth);
+
+  if (configData.rangeMinX != std::numeric_limits<double>::quiet_NaN() &&
+      configData.rangeMaxX != std::numeric_limits<double>::quiet_NaN())  {
+    GuiQt3dData::Interval interval = m_plot->getPlot3dData()->getXInterval();
+    double delta = interval.max - interval.min;
+    // m_surface->axisX()->setRange(interval.min + (configData.rangeMinX/100.) * delta,
+    //                              interval.max);
+    m_surface->axisX()->setRange(configData.rangeMinX, configData.rangeMaxX);
+  }
+  if (configData.rangeMinY != std::numeric_limits<double>::quiet_NaN() &&
+      configData.rangeMaxY != std::numeric_limits<double>::quiet_NaN())  {
+    GuiQt3dData::Interval interval = m_plot->getPlot3dData()->getYInterval();
+    double delta = interval.max - interval.min;
+    // m_surface->axisZ()->setRange(interval.min + (configData.rangeMinY/100.) * delta,
+    //                              interval.max);
+    m_surface->axisZ()->setRange(configData.rangeMinY, configData.rangeMaxY);
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* printLog --                                                                 */
+/* --------------------------------------------------------------------------- */
 void GuiQtSurfaceGraph::printLog(){
   auto p = m_surface->cameraTargetPosition();
   auto pn = p.normalized();
   //m_surface->setAspectRatio(10);
-  std::cout << " cameraTargetPosition: " << p.x() << ", " << p.y()
-            << ", " << p.z() << std::endl;
+  std::cout << " cameraTargetPosition: " << p.x() << ", " << p.y() << ", " << p.z() << std::endl;
+return;
   std::cout << " camera rotation x: " << m_surface->cameraXRotation() << " y: " << m_surface->cameraYRotation() << ", zoom: " << m_surface->cameraZoomLevel() << std::endl;
   std::cout << " camera rotation x: " << m_surface->minCameraXRotation() << ", " << m_surface->maxCameraXRotation() << std::endl;
   std::cout << " camera rotation y: " << m_surface->minCameraYRotation() << ", " << m_surface->maxCameraYRotation() << std::endl;
   std::cout << " aspectRatio: " << m_surface->aspectRatio() << ", " << m_surface->horizontalAspectRatio()  << std::endl;
+  std::cout << " selectionMode: " << m_surface->selectionMode()  << std::endl;
 }
 
 #endif

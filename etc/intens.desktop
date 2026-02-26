@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Intens
+Icon=/usr/local/intens/current/bitmaps/semafor.xpm
+Exec=intens
+Terminal=false

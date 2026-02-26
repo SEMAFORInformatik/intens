@@ -33,6 +33,9 @@ class GuiQtBarGraph : public QQuickWidget, public GuiQt3dBasePlot
         @param paintdevice
      */
     void print(QPaintDevice& paintdevice);
+    void getConfigData(ConfigData& configData);
+    void updateConfigData(ConfigData& configData);
+
     void printLog();
     QWidget* myWidget() {return this;}
 

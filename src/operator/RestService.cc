@@ -360,8 +360,8 @@ void RestService::addFilter( std::string filterString ) {
 void RestService::appendParameter( std::ostringstream& os,
                                    const std::string& name,
                                    const Json::Value& value ) {
-  os << name << "=";
   if ( value.isArray() ) {
+    os << name << "=";
     bool insert_comma = false;
     if ( value.size() > 1 ) os << "(";
     for( Json::ValueConstIterator i=value.begin(); i!=value.end(); ++i ) {
@@ -369,9 +369,19 @@ void RestService::appendParameter( std::ostringstream& os,
       appendParameterValue(os, *i);
     }
     if ( value.size() > 1 ) os << ")";
-  } else { // not an array
-    appendParameterValue(os, value);
-  }
+  } else
+    if ( value.isObject() ) {
+      std::vector<std::string> members = value.getMemberNames();
+      bool insert_sep(false);
+      for (auto member : members) {
+        if (insert_sep) os << "&"; else insert_sep = true;
+        std::string _name(name + "." + member);
+        appendParameter(os, _name, value[member]);
+      }
+    } else { // not an array
+      os << name << "=";
+      appendParameterValue(os, value);
+    }
 }
 
 /* --------------------------------------------------------------------------- */
@@ -386,6 +396,10 @@ void RestService::appendParameterValue( std::ostringstream& os,
     os << s;
   } else if ( value.isInt() ) {
     os << value.asInt();
+  } else if ( value.isDouble() ) {
+    os << "(";
+    os << std::setprecision(8) << value.asDouble() * (1 - 1e-7);
+    os << "," << value.asDouble() * (1 + 1e-7) << ")";
   } else if ( value.isNumeric() ) {
     os << value.asDouble();
   } else {

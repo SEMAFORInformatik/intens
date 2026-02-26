@@ -12,30 +12,34 @@ class GuiQt3dData;
 class Q3DSurfaceWidgetItem;
 class QSurface3DSeries;
 class QValue3DAxis;
+class QwtColorMap;
 
 class GuiQtSurfaceGraph : public QQuickWidget, public GuiQt3dBasePlot
   {
   public:
     GuiQtSurfaceGraph(GuiQt3dPlot* plot);
 
-    /** update data
-        @param data plot data
-     */
     void update(GuiQt3dData& data);
-
-    /** returns axis
-        @param atype axis type
-        @return pointer to axis
-    */
     QAbstract3DAxis *axisWidget(GuiElement::GuiAxisType atype) const;
 
     /**  print to paint device (eg. Printer)
         @param paintdevice
      */
     void print(QPaintDevice& paintdevice);
+
+    /**  set surface or contour plot style
+        @param plotStyle
+     */
     void setPlotStyle(Gui3dPlot::Style plotStyle);
+    /**  get qwt colormap
+     */
+    QwtColorMap* getQwtColorMap();
+
+    void getConfigData(ConfigData& configData);
+    void updateConfigData(ConfigData& configData);
+
     void printLog();
-    QWidget* myWidget() {return this;}
+    ///    QWidget* myWidget() {return this;}
 
   private:
     /** set new data */

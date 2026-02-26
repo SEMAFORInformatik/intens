@@ -4,6 +4,7 @@
 
 #include "gui/qt/GuiQtElement.h"
 #include "gui/qt/GuiQtPopupMenu.h"
+#include "gui/qt/GuiQt3dBasePlot.h"
 #include "gui/GuiToggleListener.h"
 #include "gui/Gui3dPlot.h"
 
@@ -41,6 +42,7 @@ class Plot3dData;
 
 class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
 {
+  Q_OBJECT
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
@@ -291,6 +293,8 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
 
   /// Oeffnet den Konfigurationsdialog
   void openConfigDialog();
+  void createConfigWidget();
+  void hideConfigWidget();
   /// Ereignis vom Button 'Reset' des Konfigurationsdialoges
   void cDresetEvent();
   /// Ereignis vom Button 'Close' des Konfigurationsdialoges
@@ -310,15 +314,18 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
   void drawContours(bool flag);
   void drawZones(bool flag);
   void showText( bool state );
-#if HAVE_QTPLOT3D
+#if HAVE_QGRAPHS
   /** get 3d plot data */
-  Plot3dData* getPlot3dData() { return m_data;  }
+  GuiQt3dData* getPlot3dData() { return m_data;  }
 #endif
   /** draw marker line(s) */
   void drawMarkerLine();
 
   /** get count of displayed countour levels */
   int getCountContourLevels() { return m_contourLevels; }
+public slots:
+  void show_config_properties();
+
 /*=============================================================================*/
 /* private Functions                                                           */
 /*=============================================================================*/
@@ -329,7 +336,7 @@ private:
   void setAxesData();
   void createPopupMenu();
   void createDetailMenu( GuiPopupMenu *menu );
-  void buildConfigDialog();
+  void buildConfigDialog(GuiElement*parent=0);
   void createDataReference();
   bool isDataItemUpdated( TransactionNumber trans );
 
@@ -345,6 +352,8 @@ private:
   bool setAnnotationLabels();
   bool isSurfaceType();
   bool isBarType();
+  void writeConfigDataToDataPool(bool init);
+  void readConfigDataFromDataPool();
 
 /*=============================================================================*/
 /* private Data                                                                */
@@ -354,6 +363,7 @@ private:
   typedef DataItemType::value_type DataItemPair;
 
   const std::string m_name;
+  QWidget          *m_widget;
   QStackedWidget   *m_widgetStack;
   FlagStatus        m_with_frame;
 
@@ -365,10 +375,21 @@ private:
 
   std::string          m_fileName;
   DataReference       *m_drefStruct;
+  DataReference       *m_drefRangeMinX;
+  DataReference       *m_drefRangeMaxX;
+  DataReference       *m_drefRangeX;
+  DataReference       *m_drefRangeMinY;
+  DataReference       *m_drefRangeMaxY;
+  DataReference       *m_drefRangeY;
   DataReference       *m_drefCameraRotationX;
   DataReference       *m_drefCameraRotationY;
-  DataReference       *m_drefDistnMethod;
-  DataReference       *m_drefDistnTable;
+  DataReference       *m_drefCameraZoom;
+  DataReference       *m_drefOrthograghic;
+  DataReference       *m_drefSelectionMode;
+  DataReference       *m_drefPlotType;
+  DataReference       *m_drefShowGrid;
+  DataReference       *m_drefShowMesh;
+  DataReference       *m_drefShowSmooth;
 
   bool                 m_keyShiftPressed;
   int                  m_xIndex;
@@ -398,19 +419,18 @@ private:
   GuiMenuToggle *m_buttonDrawHiddenLines;
   GuiMenuToggle *m_buttonPerspective;
   GuiMenuToggle *m_buttonShowText;
+#if 0
   GuiMenuToggle *m_buttonDrawMesh;
   GuiMenuToggle *m_buttonDrawShaded;
+#endif
   GuiMenuToggle *m_buttonDrawContours;
   GuiMenuToggle *m_buttonDrawZones;
   bool                m_PopupMenuCreated;
 
   GuiForm       *m_configDialog;
+  GuiElement    *m_configGuiElement;
   CDresetButtonListener       *m_cDresetButtonListener;
   CDcloseButtonListener       *m_cDcloseButtonListener;
-  GuiMenuToggle *m_cDDistnMethodToggleButton;
-  GuiDataField  *m_fieldNumDistnLevels;
-  GuiDataField  *m_fieldDistnTable;
-  GuiFieldgroupLine  *m_lineDistnTable;
 
   GuiQtPopupMenu     *m_popupMenu;
 
@@ -423,6 +443,7 @@ private:
   GuiQwtContourPlot     *m_contourWidget;
   std::vector<QwtPlotCurve*> m_markerCurves;
 #endif
+  GuiQt3dBasePlot::ConfigData m_configData;
 
   std::vector<GuiQt3dPlot*> m_clonedList;  // cloned plot3d list
 

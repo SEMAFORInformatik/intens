@@ -8097,12 +8097,7 @@ job_serialize_statement /* DOCUMENTATION:UNFOLD */
   : serialize_element_option serialize_type_option serialize_result_option
   ;
 serialize_element_option /* DOCUMENTATION:UNFOLD */
-  : tID_FORM
-      {
-        configurator -> setSerializeElement( *($1) );
-        delete $1;
-      }
-  | ui_form_element_identifier
+  : job_ui_element_identifier
       {
         configurator -> setSerializeElement( *($1) );
         delete $1;
@@ -8776,7 +8771,7 @@ job_assign_consistency /* DOCUMENTATION:UNFOLD */
 /* --------------------------------------------------------------------------- */
 
 job_class /* DOCUMENTATION:UNFOLD */
-  : ui_form_element_identifier ',' string_constant
+  : job_ui_element_identifier ',' string_constant
       {
         $$ = configurator -> opClass( *($1),  *($3));
       }

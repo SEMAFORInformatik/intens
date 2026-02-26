@@ -998,7 +998,7 @@ JobElement::OpStatus JobCodeGetSelection::execute( JobEngine *eng ){
     std::vector<std::string> axisTitle;
     plot->getSelectionPoints(pts, axisType, axisTitle);
     for (long i=0; i < pts.size() && i < axisType.size(); ++i) {
-      dat_x->setRealValue( pts[i].y, i );
+      dat_x->setRealValue( pts[i].x, i );
       dat_y->setRealValue( pts[i].y, i );
       dat_int->setValue( axisType[i], i );
       dat_str->setStringValue( axisTitle[i], i );

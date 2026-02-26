@@ -21,9 +21,9 @@ ARG MXE_TARGET_THREAD=
 ARG MXE_TARGET_LINK=shared
 ARG MXE_TARGET_LINK2=static
 #
-# mxe master 2025-09-29
-# qt6: update to version 6.9.2
-ARG MXE_GIT_TAG=be3ac46b3f6e501bef517e527bf4d5c3d5ccfc99
+# mxe master 2026-02-23
+# qt6: update to version 6.10.2
+ARG MXE_GIT_TAG=9e26afc79b8e8c59ca863a35dd09755ceb09a3ca
 
 ENV CMAKE_TOOLCHAIN_FILE=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
 ENV CMAKE_TOOLCHAIN_FILE2=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
@@ -112,6 +112,8 @@ RUN set -eux; \
   echo "local-pkg-list: \$(LOCAL_PKG_LIST)"                        >> settings.mk
 
 COPY flex.mk libxslt.mk qwt.mk log4cplus.mk treesitter.mk /usr/src/mxe/src
+COPY qt6-qtnetworkauth.mk /usr/src/mxe/src/qt/qt6/
+#COPY qt6-qtnetworkauth.mk qt6-qtquick3d.mk qt6-qtgraphs.mk /usr/src/mxe/src/qt/qt6/
 #COPY gcc-14.3.0.tar.xz /usr/src/mxe/pkg/
 #
 # Build MXE
@@ -160,26 +162,7 @@ RUN set -eux; \
     ln -s . jsoncpp
 
 ENV PATH=${PATH}:/usr/src/mxe/usr/bin
-# static qtnetworkauth
-ENV CROSS_TRIPLE=${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}
-ENV AS=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-as \
-    AR=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-ar \
-    CC=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-gcc \
-    CPP=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-cpp \
-    CXX=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-g++ \
-    LD=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-ld \
-    FC=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-gfortran
 
-# 2025-09 qt6-networkauth package is not provided
-RUN cd /tmp && wget --no-check-certificate https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtnetworkauth-everywhere-src-6.9.2.tar.xz  && \
-    tar xf qtnetworkauth-everywhere-src-6.9.2.tar.xz && \
-    cd qtnetworkauth-everywhere-src-6.9.2 && mkdir build-static && \
-    cd build-static && \
-    cmake-static -DCMAKE_INSTALL_PREFIX:PATH=/usr/src/mxe/usr/${CROSS_TRIPLE}/qt6 .. && \
-    make -j${nproc} && \
-    make install
-
-# shared qtnetworkauth
 ENV CROSS_TRIPLE=${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}
 ENV AS=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-as \
     AR=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-ar \
@@ -188,15 +171,6 @@ ENV AS=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-as \
     CXX=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-g++ \
     LD=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-ld \
     FC=/usr/src/mxe/usr/bin/${CROSS_TRIPLE}-gfortran
-
-# 2025-09 qt6-networkauth package is not provided
-RUN cd /tmp && \
-    cd qtnetworkauth-everywhere-src-6.9.2 && mkdir build && \
-    cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/src/mxe/usr/${CROSS_TRIPLE}/qt6 .. && \
-    make -j${nproc} && \
-    make install && \
-    rm -rf /tmp/qtnetworkauth*
 
 ENV WINEDLLOVERRIDES='winemenubuilder.exe,mscoree,mshtml=d'
 

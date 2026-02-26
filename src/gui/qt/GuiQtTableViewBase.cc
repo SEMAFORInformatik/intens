@@ -1,4 +1,4 @@
-
+#include <iomanip>
 #include <QtGui/QKeyEvent>
 #include <QScrollBar>
 #include <QHeaderView>

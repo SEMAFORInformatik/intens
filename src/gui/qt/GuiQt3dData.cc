@@ -93,6 +93,51 @@ bool GuiQt3dData::update() {
 }
 
 /* --------------------------------------------------------------------------- */
+/* getScatterDataArray --                                                      */
+/* --------------------------------------------------------------------------- */
+const QScatterDataArray& GuiQt3dData::getScatterDataArray(){
+  m_scatterDataArray.clear();
+
+  if (!update())
+    return m_scatterDataArray;
+
+  // get new z values
+  if (m_rows > 1) {
+    m_scatterDataArray.reserve(m_rows*m_columns);
+    for (int y = 0; y < m_rows; ++y) {
+      ///      QScatterDataRow dataRow;
+      ///      dataRow.reserve(m_columns);
+      for (long x = 0; x < m_columns; ++x) {
+        int _y = m_rows > 1 ? y : x;
+        QVector3D pt = getValue( m_reverseX ? m_columns-1-x : x,
+                                 m_reverseY ? m_rows-1-_y : _y);
+        m_scatterDataArray << QScatterDataItem(pt.x(), pt.z(), pt.y());
+      }
+      ///      m_scatterDataArray << dataRow;
+    }
+  } else {
+    m_scatterDataArray.reserve(m_rows*m_columns);
+    MatrixVector3dData matrix_data;
+    int cntColMax;
+    getMatrixData(matrix_data, cntColMax);
+    // add data
+    // swap axis, need increasíng x value
+    int cNum = cntColMax;
+    int rNum = matrix_data.size();
+    for (int r=0; r<cNum; ++r){
+      ///      QScatterDataRow dataRow(rNum);
+      for (int c=0; c<rNum; ++c){
+        int rmin = std::min(r, (int)matrix_data[c].size()-1);
+        QVector3D &pt = matrix_data[c][rmin];
+        m_scatterDataArray << QScatterDataItem(pt.x(), pt.z(), pt.y());
+      }
+      ///      m_scatterDataArray << dataRow;
+    }
+  }
+  return m_scatterDataArray;
+}
+
+/* --------------------------------------------------------------------------- */
 /* getSurfaceDataArray --                                                      */
 /* --------------------------------------------------------------------------- */
 const QSurfaceDataArray& GuiQt3dData::getSurfaceDataArray(){
@@ -171,7 +216,6 @@ const QBarDataArray& GuiQt3dData::getBarDataArray(QStringList& row_labels, QStri
       row_labels.append(QString::number(val, 'g'));
     }
   } else {
-#if 1
     MatrixVector3dData matrix_data;
     int cntColMax;
     getMatrixData(matrix_data, cntColMax);
@@ -214,7 +258,6 @@ const QBarDataArray& GuiQt3dData::getBarDataArray(QStringList& row_labels, QStri
       }
       m_barDataArray << dataRow;
     }
-#endif
     return m_barDataArray;
   }
 

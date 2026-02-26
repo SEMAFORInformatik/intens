@@ -1,4 +1,4 @@
-
+#if !HAVE_QGRAPHS
 #include <QLayout>
 #include <QGraphicsLayout>
 #include <QtCharts/QSplineSeries>
@@ -131,3 +131,4 @@ QLineSeries* GuiQtPolarChart::addSeries(const std::vector<Gui2dPlot::Point>& pts
   chartView->setChart(this);
   return series;
 }
+#endif

@@ -1,16 +1,12 @@
+#if !defined(GUI_QT_POLARPLOT_INCLUDED_H)
+#if !HAVE_QGRAPHS
+#define GUI_QT_POLARPLOT_INCLUDED_H
 
 #include <QtCharts/QChartView>
 #include <QtCharts/QPolarChart>
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QCategoryAxis>
-#if QT_VERSION >= 0x060000
 QT_USE_NAMESPACE
-#else
-QT_CHARTS_USE_NAMESPACE
-#endif
-
-#if !defined(GUI_QT_POLARPLOT_INCLUDED_H)
-#define GUI_QT_POLARPLOT_INCLUDED_H
 
 class GuiQtChartView : public QChartView {
  public:
@@ -42,4 +38,5 @@ private:
   GuiQtChartView* m_chartView;
 };
 
+#endif
 #endif

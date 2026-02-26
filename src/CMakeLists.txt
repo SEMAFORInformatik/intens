@@ -33,7 +33,7 @@ if (USE_QT6)
   set(QT_NO_PRIVATE_MODULE_WARNING ON)
   find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network SvgWidgets PrintSupport)
   if (USE_QT6GRAPHS)
-    find_package(Qt6 REQUIRED COMPONENTS GraphsWidgets)
+    find_package(Qt6 REQUIRED COMPONENTS GraphsWidgets QuickWidgets)
   else()
     find_package(Qt6 REQUIRED COMPONENTS Charts)
   endif()
@@ -158,7 +158,7 @@ target_link_libraries(intens
  target_link_libraries(intens
         PRIVATE
         Qt::GraphsWidgets
-        Qt6Charts
+        Qt::QuickWidgets
         )
  else()
  target_link_libraries(intens

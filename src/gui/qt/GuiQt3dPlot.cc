@@ -157,7 +157,6 @@ GuiQt3dPlot::GuiQt3dPlot( GuiElement *parent, const std::string& name )
   // Hardcopy Listener intallieren
   UImanager::Instance().addHardCopy( m_name, this );
   init();
-  createDataReference();
 }
 
 GuiQt3dPlot::GuiQt3dPlot( const GuiQt3dPlot &plot)
@@ -243,7 +242,7 @@ bool GuiQt3dPlot::isShownAnnotationLabels( bool bXAxis ) {
 
 
 void GuiQt3dPlot::init () {
-  //  createDataReference();
+  createDataReference();
 
   m_supportedFileFormats[HardCopyListener::Postscript] = HardCopyListener::OWN_CONTROL;
   m_supportedFileFormats[HardCopyListener::PDF]        = HardCopyListener::OWN_CONTROL;
@@ -800,6 +799,8 @@ void GuiQt3dPlot::createDataReference() {
                                         , varname
 					, DataDictionary::type_StructVariable
 					, INTERNAL_XRT3DPLOT_STRUCT );
+  if (dict_struct == 0) dict_struct = DataPoolIntens::getDataReference(varname)->GetDict();
+
   assert( dict_struct != 0 );
 
   // Wir schützen die Variable vor dem Cycle-Clear. Sonst gehen immer

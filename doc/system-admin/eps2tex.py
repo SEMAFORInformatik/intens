@@ -41,7 +41,7 @@ def makebox(line, cx, cy):
     text = re.sub(r'\|', r'$|$', text)
     text = re.sub(r'--', r'-\/-', text)
     return f'  \\put({cx}, {cy})' + \
-        '{\\makebox(0,0){\\sffamily\\bfseries\\footnotesize ' + \
+        '{\\makebox(0,0){\\sffamily\\bfseries\\scriptsize ' + \
         text + \
         '}}\n'
 
@@ -69,7 +69,7 @@ def framebox(line, llx, lly, width, height):
         str(width) + \
         ',' + \
         str(height) + \
-        '){\\sffamily\\footnotesize \\hyperref[dia:' + \
+        '){\\sffamily\\scriptsize \\hyperref[dia:' + \
         ref + \
         ']{' + \
         text + \

@@ -117,11 +117,12 @@ Root list                   & description \\
 \begin{tabularx}{\textwidth}{l|X}
 Root list options & description \\
 \hline
-\AUTOLEVEL        & Does not display any structure-identifiers at all. \\
+\AUTOLEVEL        & Hides structure-identifiers of structs with a single child. \\
 \HIDEEMPTYFOLDERS & Does not display any structure-identifiers without entries. \\
-\OPENLEVELS       & Displays open folders beginnig in tree-level 'integer'. \\
+\OPENLEVELS       & Opens (expands) all folders up to and including tree-level 'integer'.
+                    Closes (collapses) all folders from tree-level 'integer' onwards. \\
 \FIRSTLEVEL       & Does not display structure-identifiers before tree-level 'integer'. \\
-\LASTLEVEL        & Stops display after tree-level 'integer'. \\
+\LASTLEVEL        & Hides everything from tree-level 'integer' onwards. \\
 \end{tabularx}
 
 \newpage

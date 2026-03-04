@@ -86,6 +86,7 @@ private:
   GuiTable*           m_table;
   bool                m_visible;
   bool                m_visibility_updated;
+  friend class GuiQtTable;
 };
 
 #endif

@@ -151,10 +151,6 @@ GuiTable::GuiTable( const GuiTable& tbl) :
   , m_col_duplicate( this, false )
   , m_col_clear( this, false )
   , m_col_pack( this, false )
-
-  , m_hline_list( tbl.m_hline_list )
-  , m_vline_list( tbl.m_vline_list )
-  , m_table_list( tbl.m_table_list )
   , m_tooltip_line( tbl.m_tooltip_line )
   , m_color_line( tbl.m_color_line )
   , m_stream( tbl.m_stream )

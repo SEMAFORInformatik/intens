@@ -27,7 +27,7 @@ GuiQtFieldgroupLine::GuiQtFieldgroupLine(GuiElement *parent)
 
 GuiQtFieldgroupLine::GuiQtFieldgroupLine(const GuiQtFieldgroupLine &line )
   : GuiFieldgroupLine(line)
-  , GuiQtElement( 0 )
+  , GuiQtElement( line )
   , m_widget( 0 )
 {
   GuiElementList::const_iterator it;

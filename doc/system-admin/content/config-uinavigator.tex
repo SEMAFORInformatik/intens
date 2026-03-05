@@ -4,7 +4,7 @@
 \subsubsection{Navigator}
 \label{sec:uinavigator}
 \index{NAVIGATOR@\NAVIGATOR}
-The navigator is used to display datapool-structures like a
+The navigator is used to display datapool-structures as a
 tree using folders and subfolders. \\
 
 The routine used to find the pictures to use is described
@@ -96,9 +96,10 @@ Columns declaration     & description \\
 \begin{tabularx}{\textwidth}{l|X}
 Root list                   & description \\
 \hline
-\verb+structure identifier+ & references a structure previously
-                  declared in datapool section.
-                           (\nameref{sec:dpstruct} page \pageref{sec:dpstruct}) \\
+\verb+data reference+ & references a structure variable
+                   (\nameref{sec:dpstruct} page \pageref{sec:dpstruct}) \\
+string                & use this string instead of the structure variable's \LABEL{}
+                        in the header node
 \end{tabularx}
 
 \input{diagrams/ui_navigator_root_option_list}
@@ -114,20 +115,35 @@ Root list                   & description \\
 \index{NAVIGATOR@\NAVIGATOR!OPENLEVELS}
 \index{NAVIGATOR@\NAVIGATOR!FIRSTLEVEL}
 \index{NAVIGATOR@\NAVIGATOR!LASTLEVEL}
+
+\vspace{2ex}
+By default, the \NAVIGATOR{} shows a header node (using the structure's \LABEL{}) to group its entries,
+and shows all nodes open. Alternative behaviour can be configured using the following options. \\
+
+Level refers to the depth of a nested variable:
+\begin{itemize}
+\item parent is level 1
+\item parent.elements is level 2
+\item parent.elements[n].name is level 3
+\end{itemize}
+
 \begin{tabularx}{\textwidth}{l|X}
 Root list options & description \\
 \hline
-\AUTOLEVEL        & Hides structure-identifiers of structs with a single child. \\
-\HIDEEMPTYFOLDERS & Does not display any structure-identifiers without entries. \\
-\OPENLEVELS       & Opens (expands) all folders up to and including tree-level 'integer'.
-                    Closes (collapses) all folders from tree-level 'integer' onwards. \\
-\FIRSTLEVEL       & Does not display structure-identifiers before tree-level 'integer'. \\
-\LASTLEVEL        & Hides everything from tree-level 'integer' onwards. \\
+\AUTOLEVEL        & Hides the header node of structs with a single entry. \\
+\HIDEEMPTYFOLDERS & Does not display header nodes without entries. \\
+\OPENLEVELS       & Opens (expands) nodes up to and including tree-level 'integer'.
+                    Closes (collapses) nodes after level 'integer'. \\
+\FIRSTLEVEL       & Does not display header nodes before level 'integer'. \newline
+                    This option is required for \DIAGRAM{} to specify the level
+                    to render. \\
+\LASTLEVEL        & Hides nodes after level 'integer'. \\
 \end{tabularx}
 
 \newpage
 \index{NAVIGATOR@\NAVIGATOR!structure definition}
 \label{sec:uinavigatorexamples}
+\textcolor{red}{\textbf{The following example is currently not working.}} \\
 Example of structure definition with name items: \\
 
 
@@ -146,8 +162,8 @@ DATAPOOL
     STRU_2 {
       STRING {EDITABLE}
         @\hl{name}@,
-        data_item_1,
-        data_item_2
+        data_item_3,
+        data_item_4
       ;
     };
   STRUCT
@@ -196,8 +212,8 @@ DATAPOOL
     STRU_2 {
       STRING {EDITABLE}
         @\hl{noname}@   {TAG = (tag_col_1)},
-        data_item_1    {TAG = (tag_col_2)},
-        data_item_2    {TAG = (tag_col_3)}
+        data_item_3    {TAG = (tag_col_2)},
+        data_item_4    {TAG = (tag_col_3)}
       ;
     };
   STRUCT
@@ -405,9 +421,9 @@ As soon as a pixmap is found, that pixmap is used.
 
 \item determine pixmapName
   \begin{itemize}
-  \item search resource file section ([Naviator], [Diagram] or [IconView])
-        for an entry name.iconPixmap
-  \item if not found, pixmapName is name
+  \item search resource file section ([Navigator], [Diagram] or [IconView])
+        for an entry name.iconPixmap; \newline
+        if not found, pixmapName is name
   \end{itemize}
 
 \item search a pixmap with the following name

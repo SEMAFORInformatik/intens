@@ -36,6 +36,7 @@
 #include "gui/qt/GuiQtManager.h"
 #if HAVE_QGRAPHS
 #include "gui/qt/GuiQtSurfaceGraph.h"
+#include "gui/qt/GuiQtScatterGraph.h"
 #include "gui/qt/GuiQtBarGraph.h"
 #include "gui/qt/GuiQt3dData.h"
 #else
@@ -103,6 +104,7 @@ GuiQt3dPlot::GuiQt3dPlot( GuiElement *parent, const std::string& name )
   : GuiQtElement( parent, name )
   , m_contourWidget( 0 )
 #if HAVE_QGRAPHS
+  , m_scatterWidget( 0 )
   , m_barWidget( 0 )
 #endif
   , m_widget( 0 )
@@ -155,7 +157,6 @@ GuiQt3dPlot::GuiQt3dPlot( GuiElement *parent, const std::string& name )
   // Hardcopy Listener intallieren
   UImanager::Instance().addHardCopy( m_name, this );
   init();
-  createDataReference();
 }
 
 GuiQt3dPlot::GuiQt3dPlot( const GuiQt3dPlot &plot)
@@ -163,6 +164,7 @@ GuiQt3dPlot::GuiQt3dPlot( const GuiQt3dPlot &plot)
   , Gui3dPlot(plot)
   , m_contourWidget( 0 )
 #if HAVE_QGRAPHS
+  , m_scatterWidget( 0 )
   , m_barWidget( 0 )
 #endif
   , m_widget( 0 )
@@ -240,7 +242,7 @@ bool GuiQt3dPlot::isShownAnnotationLabels( bool bXAxis ) {
 
 
 void GuiQt3dPlot::init () {
-  //  createDataReference();
+  createDataReference();
 
   m_supportedFileFormats[HardCopyListener::Postscript] = HardCopyListener::OWN_CONTROL;
   m_supportedFileFormats[HardCopyListener::PDF]        = HardCopyListener::OWN_CONTROL;
@@ -318,7 +320,6 @@ void GuiQt3dPlot::setAxesData() {
 /* create --                                                                   */
 /* --------------------------------------------------------------------------- */
 
-///#include "GuiQwtPlotScalePicker.h"
 void GuiQt3dPlot::create(){
 
   BUG(BugGui,"GuiQt3dPlot::create");
@@ -329,24 +330,33 @@ void GuiQt3dPlot::create(){
 
   // create frame widget & colorbar
   m_widget = new QWidget();
-  QHBoxLayout *layout = new QHBoxLayout(m_widget);
   m_widgetStack = new QStackedWidget();
+  QHBoxLayout *layout = new QHBoxLayout(m_widget);
   layout->addWidget(m_widgetStack);
 
 #if HAVE_QGRAPHS
+  auto vWidget = new QWidget();
+  auto hWidget = new QWidget();
+  QVBoxLayout *vlayout = new QVBoxLayout(vWidget);
+  QHBoxLayout* hlayout = new QHBoxLayout(hWidget);
+
+  // scale widget
+  auto *rightAxis = new QwtScaleWidget();
+  rightAxis->setTitle("");
+  rightAxis->setAlignment(QwtScaleDraw::LeftScale);
+  vlayout->addWidget(new QLabel("      [%]"));
+  vlayout->addWidget(hWidget);
+  layout->addWidget(vWidget);
+
+  // with colorbar
   ColorMapWidget *colorMap = new ColorMapWidget();
-  colorMap->setMinimumSize(QSize(20, 30));
-  layout->addWidget(colorMap);
+  colorMap->setMinimumSize(QSize(10, 30));
+  hlayout->addWidget(rightAxis);
+  hlayout->addWidget(colorMap);
 
-  // test qwt color scale widget
-  QwtScaleWidget *rightAxis = new QwtScaleWidget();
-  rightAxis->setColorBarEnabled(true);
-  layout->addWidget(rightAxis);
-
-  // test property button
-  auto btn = new QPushButton("Props");
-  layout->addWidget(btn);
-  connect(btn, SIGNAL(clicked()), this, SLOT(show_config_properties()));
+  // auto btn = new QPushButton("Props");
+  // layout->addWidget(btn);
+  // connect(btn, SIGNAL(clicked()), this, SLOT(show_config_properties()));
 
   // create data object
   m_data = new GuiQt3dData(m_dataitems);
@@ -355,9 +365,10 @@ void GuiQt3dPlot::create(){
     assert(!m_contourWidget);
     m_contourWidget = new GuiQtSurfaceGraph(this);
     m_widgetStack->addWidget(m_contourWidget);
-    QwtInterval interval(0,90);
-    rightAxis->setColorMap(interval,
-                           m_contourWidget->getQwtColorMap());
+  }else if (isScatterType()){
+    assert(!m_scatterWidget);
+    m_scatterWidget = new GuiQtScatterGraph(this);
+    m_widgetStack->addWidget(m_scatterWidget);
   }else if (isBarType()){
     assert(!m_barWidget);
     m_barWidget = new GuiQtBarGraph(this);
@@ -574,6 +585,7 @@ void GuiQt3dPlot::buildConfigDialog(GuiElement* parent) {
         // values corresponding with enum class Gui3dPlot
         ds->setItemValues( _("Style bar"), "BAR" );
         ds->setItemValues( _("Style surface"), "SURFACE" );
+        ds->setItemValues( _("Style scatter"), "SCATTER" );
         ds->setItemValues( _("Style contour"), "CONTOUR" );
         ///        ds->setItemValues( _("Style scatter"), "SCATTER" );
         ds->create(si);
@@ -787,6 +799,8 @@ void GuiQt3dPlot::createDataReference() {
                                         , varname
 					, DataDictionary::type_StructVariable
 					, INTERNAL_XRT3DPLOT_STRUCT );
+  if (dict_struct == 0) dict_struct = DataPoolIntens::getDataReference(varname)->GetDict();
+
   assert( dict_struct != 0 );
 
   // Wir schützen die Variable vor dem Cycle-Clear. Sonst gehen immer
@@ -891,6 +905,8 @@ void GuiQt3dPlot::update( UpdateReason reason ){
 
     if (isSurfaceType() && m_plotStyle.getStyle() != CONTOUR) {
       m_contourWidget->updateConfigData(m_configData);
+    }else if (isScatterType()){
+      m_scatterWidget->updateConfigData(m_configData);
     }else if (isBarType()){
       m_barWidget->updateConfigData(m_configData);
     }
@@ -1273,8 +1289,12 @@ void GuiQt3dPlot::print(QPrinter* printer) {
   }
   if (m_plotStyle.getStyle() == CONTOUR) {
     m_contourWidget->print(*printer);
-  } if (m_plotStyle.getStyle() == SURFACE) {
+  } else if (m_plotStyle.getStyle() == SURFACE) {
     m_contourWidget->print(*printer);
+#if HAVE_QGRAPHS
+  } else if (m_plotStyle.getStyle() == SCATTER) {
+    m_scatterWidget->print(*printer);
+#endif
   } else {
   }
 
@@ -1382,6 +1402,25 @@ void GuiQt3dPlot::setPlotStyleSurface() {
     m_contourWidget->setPlotStyle(SURFACE);
 #endif
     m_widgetStack->setCurrentWidget(m_contourWidget);
+    update( reason_Always );
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* setPlotStyleScatter --                                                      */
+/* --------------------------------------------------------------------------- */
+
+void GuiQt3dPlot::setPlotStyleScatter() {
+  m_plotStyle.setStyle( SCATTER );
+  setDetailStyle( true, true, true, true );
+  if (m_widgetStack) {
+#if HAVE_QGRAPHS
+    if (!m_scatterWidget){
+      m_scatterWidget = new GuiQtScatterGraph(this);
+      m_widgetStack->addWidget(m_scatterWidget);
+    }
+    m_widgetStack->setCurrentWidget(m_scatterWidget);
+#endif
     update( reason_Always );
   }
 }
@@ -1764,6 +1803,8 @@ void GuiQt3dPlot::openConfigDialog() {
   // reread configData from GraphicWidget
   if (isSurfaceType()) {
     m_contourWidget->getConfigData(m_configData);
+  }else if (isScatterType()){
+    m_scatterWidget->getConfigData(m_configData);
   }else if (isBarType()){
     m_barWidget->getConfigData(m_configData);
   }
@@ -1794,6 +1835,8 @@ void GuiQt3dPlot::createConfigWidget() {
   // reread configData from GraphicWidget
   if (isSurfaceType()) {
     m_contourWidget->getConfigData(m_configData);
+  }else if (isScatterType()){
+    m_scatterWidget->getConfigData(m_configData);
   }else if (isBarType()){
     m_barWidget->getConfigData(m_configData);
   }
@@ -1977,6 +2020,17 @@ bool GuiQt3dPlot::isSurfaceType(){
 }
 
 /* --------------------------------------------------------------------------- */
+/* isScatterType --                                                            */
+/* --------------------------------------------------------------------------- */
+bool GuiQt3dPlot::isScatterType(){
+#if !HAVE_QGRAPHS
+  return false;
+#endif
+  std::set<int> barStyles = {SCATTER};
+  return barStyles.find(m_plotStyle.getStyle()) != barStyles.end();
+}
+
+/* --------------------------------------------------------------------------- */
 /* isBarType --                                                                */
 /* --------------------------------------------------------------------------- */
 bool GuiQt3dPlot::isBarType(){
@@ -2080,6 +2134,10 @@ void GuiQt3dPlot::readConfigDataFromDataPool(){
       setPlotStyleBar();
     }else if(m_configData.plotType == "CONTOUR"){
       setPlotStyleContour();
+    }else if(m_configData.plotType == "SURFACE"){
+      setPlotStyleContour();
+    }else if(m_configData.plotType == "SCATTER"){
+      setPlotStyleScatter();
     }else{
       setPlotStyleSurface();
     }

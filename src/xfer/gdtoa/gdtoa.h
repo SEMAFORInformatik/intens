@@ -110,7 +110,8 @@ extern char* gdtoa ANSI((FPI *fpi, int be, ULong *bits, int *kindp,
 			int mode, int ndigits, int *decpt, char **rve));
 extern void freedtoa ANSI((char*));
 #ifndef _WIN32
-extern float  strtof ANSI((CONST char *, char **));
+// linked with qt6: multiple defined
+//extern float  strtof ANSI((CONST char *, char **));
 extern double strtod ANSI((CONST char *, char **));
 #endif
 extern int strtodg ANSI((CONST char*, char**, FPI*, Long*, ULong*));

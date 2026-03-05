@@ -3,6 +3,7 @@
 
 #if HAVE_QGRAPHS
 #include <QtGraphsWidgets/q3dsurfacewidgetitem.h>
+#include <QtGraphsWidgets/q3dscatterwidgetitem.h>
 #include <QtGraphsWidgets/q3dbarswidgetitem.h>
 #endif
 
@@ -34,6 +35,7 @@ public:
   bool update();
 #if HAVE_QGRAPHS
   const QSurfaceDataArray& getSurfaceDataArray();
+  const QScatterDataArray& getScatterDataArray();
   const QBarDataArray& getBarDataArray(QStringList& row_labels, QStringList& column_labels);
 #endif
 
@@ -117,6 +119,7 @@ private:
 private:
 #if HAVE_QGRAPHS
   QSurfaceDataArray m_surfaceDataArray;
+  QScatterDataArray m_scatterDataArray;
   QBarDataArray     m_barDataArray;
 #endif
 

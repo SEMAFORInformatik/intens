@@ -446,9 +446,6 @@ private:
   int                 m_col;
   bool                m_emptyRow;
   bool                m_emptyColumn;
-  GuiTableLineList    m_hline_list;
-  GuiTableLineList    m_vline_list;
-  GuiTableLineList    m_table_list;
   GuiTableLine*       m_tooltip_line;
   GuiTableLine*       m_color_line;
   int                 m_horzHeaderLines;
@@ -501,6 +498,10 @@ private:
 
   int                 m_maxRowLen;  // used of WebApi
   friend class GuiQtTableViewBase;  // WebApi
+protected:
+  GuiTableLineList    m_hline_list;
+  GuiTableLineList    m_vline_list;
+  GuiTableLineList    m_table_list;
 };
 
 class GuiTableSize

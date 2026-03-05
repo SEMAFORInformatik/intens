@@ -53,12 +53,6 @@ GuiQtTable::GuiQtTable( GuiElement *parent, const std::string name )
   , m_model( 0 )
   , m_tablewidget( 0 )
   , m_frame( 0 )
-//   , m_field_string( 0 )
-//   , m_field_float( 0 )
-//   , m_field_int( 0 )
-//   , m_field_combotext( 0 )
-//   , m_old_data_type( 0 )
-//   , m_new_data_type( 0 )
   , m_cloneTable( 0 )
 {
 }
@@ -71,7 +65,50 @@ GuiQtTable::GuiQtTable( const GuiQtTable& tbl)
 , m_tablewidget( 0 )
 , m_frame( 0 )
 , m_cloneTable( &tbl )
-{}
+{
+  // table list
+  for(auto tline: tbl.m_table_list){
+    auto newLine = new GuiTableLine( this );
+    newLine->setLabelAlignment( tline->LabelAlignment() );
+    newLine->setLabel( tline->Label() );
+    for (auto ti : tline->m_tableitems){
+      if (ti->getDataField()){
+        newLine->addTableDataItem(ti->getDataField()->DataItem());
+      }else{
+        newLine->addTableLabelItem(tline->Label(), tline->LabelAlignment());
+      }
+    }
+    m_table_list.push_back( newLine );
+  }
+  // vert table list
+  for(auto tline: tbl.m_vline_list){
+    auto newLine = new GuiTableLine( this );
+    newLine->setLabelAlignment( tline->LabelAlignment() );
+    newLine->setLabel( tline->Label() );
+    for (auto ti : tline->m_tableitems){
+      if (ti->getDataField()){
+        newLine->addTableDataItem(ti->getDataField()->DataItem());
+      }else{
+        newLine->addTableLabelItem(tline->Label(), tline->LabelAlignment());
+      }
+    }
+    m_vline_list.push_back( newLine );
+  }
+  // horz table list
+  for(auto tline: tbl.m_hline_list){
+    auto newLine = new GuiTableLine( this );
+    newLine->setLabelAlignment( tline->LabelAlignment() );
+    newLine->setLabel( tline->Label() );
+    for (auto ti : tline->m_tableitems){
+      if (ti->getDataField()){
+        newLine->addTableDataItem(ti->getDataField()->DataItem());
+      }else{
+        newLine->addTableLabelItem(tline->Label(), tline->LabelAlignment());
+      }
+    }
+    m_hline_list.push_back( newLine );
+  }
+}
 
 GuiQtTable::~GuiQtTable(){
 }

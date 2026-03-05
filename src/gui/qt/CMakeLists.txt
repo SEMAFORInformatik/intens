@@ -73,6 +73,7 @@ add_library(gui_qt OBJECT
         GuiQwtContourPlotData.cc
         GuiQtBarGraph.cc
         GuiQtSurfaceGraph.cc
+        GuiQtScatterGraph.cc
         GuiQt3dData.cc
         GuiQwtPlotBarChart.cc
         GuiQwtPlotCurveData.cc

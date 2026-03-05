@@ -20,6 +20,7 @@ class InputChannelEvent;
 class DataReference;
 #if HAVE_QGRAPHS
 class GuiQtSurfaceGraph;
+class GuiQtScatterGraph;
 class GuiQtBarGraph;
 class GuiQt3dData;
 #else
@@ -284,6 +285,8 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
   /// Setzt die Stilparameter Bar, Surface, Mesh, Shaded, Contour und Zones
   void setPlotStyleSurface();
   /// Setzt die Stilparameter Bar, Surface, Mesh, Shaded, Contour und Zones
+  void setPlotStyleScatter();
+  /// Setzt die Stilparameter Bar, Surface, Mesh, Shaded, Contour und Zones
   void setPlotStyleContour();
   /// Setzt den Menuetext
   bool setMenuText( const std::string &menuText );
@@ -351,6 +354,7 @@ private:
 #endif
   bool setAnnotationLabels();
   bool isSurfaceType();
+  bool isScatterType();
   bool isBarType();
   void writeConfigDataToDataPool(bool init);
   void readConfigDataFromDataPool();
@@ -437,6 +441,7 @@ private:
 #if HAVE_QGRAPHS
   GuiQt3dData       *m_data;
   GuiQtSurfaceGraph *m_contourWidget;
+  GuiQtScatterGraph *m_scatterWidget;
   GuiQtBarGraph     *m_barWidget;
 #else
   GuiQwtContourPlotData *m_data;

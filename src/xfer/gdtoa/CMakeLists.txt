@@ -19,7 +19,6 @@ add_library(gdtoa OBJECT
         strtod.c
         strtodg.c
         strtodI.c
-        strtof.c
         strtoId.c
         strtoIdd.c
         strtoIf.c
@@ -44,3 +43,8 @@ add_library(gdtoa OBJECT
         arith.h
         gd_qnan.h
         )
+if(NOT USE_QT6)
+add_library(gdtoa OBJECT
+        strtof.c
+        )
+endif()

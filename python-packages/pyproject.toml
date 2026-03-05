@@ -1,5 +1,5 @@
 [project]
-name = "intens packages"
+name = "intens"
 version = "0.1.0"
 description = "REST and ZMQ utilities for intens"
 readme = "README.md"

@@ -1,0 +1,10 @@
+[project]
+name = "intens packages"
+version = "0.1.0"
+description = "REST and ZMQ utilities for intens"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pyzmq>=27.1.0",
+    "requests>=2.32.5",
+]

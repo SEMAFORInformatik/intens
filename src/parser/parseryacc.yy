@@ -213,7 +213,7 @@ static XferDataItem::ParameterType parametertype;
 %token  tBEGINTRANSACTION
 %token  tCOMMITTRANSACTION
 %token  tABORTTRANSACTION
-%token  tNAVIGATOR tLASTLEVEL tFIRSTLEVEL tAUTOLEVEL tOPENLEVELS tHIDE_EMPTY_FOLDER
+%token  tNAVIGATOR tLASTLEVEL tFIRSTLEVEL tAUTOLEVEL tOPENLEVELS tHIDE_EMPTY_FOLDER tHIDE_EMPTY_FOLDERS
 %token  tTSEP
 %token  tSERIALIZE_FORM tSERIALIZE
 %token  tWRITE_SETTINGS
@@ -4731,7 +4731,12 @@ ui_navigator_root_option /* DOCUMENTATION:UNFOLD */
       {
         configurator -> setAutoLevel();
       }
-  | tHIDE_EMPTY_FOLDER
+  | tHIDE_EMPTY_FOLDER /* DOCUMENTATION:HIDE BEGIN (deprecated, use HIDE_EMPTY_FOLDER instead) */
+      {
+        configurator -> setHideEmptyFolder();
+        std::cerr << "HIDE_EMPTY_FOLDER is deprecated. Please use HIDE_EMPTY_FOLDERS instead." << std::endl;
+      } /* DOCUMENTATION:HIDE END */
+  | tHIDE_EMPTY_FOLDERS
       {
         configurator -> setHideEmptyFolder();
       }

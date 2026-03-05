@@ -338,7 +338,8 @@ void Flexer::initRwTabMap(){
   m_rwTabMap.insert(   "HELPTEXT"        ,tHELPTEXT    );
   m_rwTabMap.insert(   "HIDDEN"          ,tHIDDEN      );
   m_rwTabMap.insert(   "HIDE_CYCLE"      ,tHIDE_CYCLE  );
-  m_rwTabMap.insert(   "HIDE_EMPTY_FOLDER",tHIDE_EMPTY_FOLDER );
+  m_rwTabMap.insert(   "HIDE_EMPTY_FOLDER",tHIDE_EMPTY_FOLDER );  // deprecated
+  m_rwTabMap.insert(   "HIDE_EMPTY_FOLDERS",tHIDE_EMPTY_FOLDERS );
   m_rwTabMap.insert(   "HIGH"            ,tHIGH        );
   m_rwTabMap.insert(   "HORIZONTAL"      ,tHORIZONTAL  );
   m_rwTabMap.insert(   "HOST"            ,tHOST        );

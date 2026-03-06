@@ -315,14 +315,15 @@ The list of INTENS commandline options can be printed using the command: \\
   (see \nameref{dia:jobmessagequeueoption} on page \pageref{dia:jobmessagequeueoption} or
   \nameref{dia:jobpluginoption} on page \pageref{dia:jobpluginoption}). \\
   Without such an option, the default \MESSAGEQUEUE{} dependencies are used. \\
-  This commandline option defines that default:
+  This commandline option can change that default:
   \begin{itemize}
-  \item 1 or ``true'' (=default): The \STREAM{} is used with dependencies
-  \item 0 or ``false'': The \STREAM{} is not used with dependencies
+  \item 1 or ``true'' (=default): the \STREAM{}s are used with dependencies by default
+  \item 0 or ``false'': the \STREAM{}s are not used with dependencies by default
   \end{itemize}
   Note: the reason for this commandline option was the introduction of
   \MESSAGEQUEUE{} \REQUEST{} dependencies. This option allows existing applications
-  to behave as before, without changing the application code.
+  to behave as before, without changing the application code: \newline
+  \texttt{--defaultMessageQueueDependencies=0}.
 %
 \item[\texttt{--}oauth <argument>]
   TODO

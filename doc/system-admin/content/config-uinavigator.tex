@@ -34,7 +34,7 @@ Navigator type & description \\
 \input{diagrams/ui_navigator_list}
 
 \index{NAVIGATOR@\NAVIGATOR!options}
-The options are mandatory when using structures that do not have a
+The \COL{} option is mandatory when using structures that do not have a
    field named {\bfseries name} (examples page \pageref{sec:uinavigatorexamples}).
    The \TAG{} identifier must be declared (see \COL{}
    declaration page \pageref{sec:uinavigatoroptions}) to define the columns
@@ -405,64 +405,70 @@ dragged from an \ICONVIEW{} or a \NAVIGATOR{}.
 \newpage
 \subsubsection{Navigator Pixmaps}
 \label{sec:uinavigatorPixmaps}
-The navigator uses pixmaps. This section explains what pixmaps are used.
+The navigator uses pixmaps to represent elements. This section explains the
+process used to resolve which pixmaps are displayed.
 
-The routine has five steps. Each step has a list of possibilities. For all steps, the first possibiliy is tried
-with all later steps. Then the second possibility is tried with all later steps, and so on.
-As soon as a pixmap is found, that pixmap is used.
+The routine consists of five sequential steps.
+For each step, the program tries the first possibility against all subsequent steps.
+If no match is found, it tries the second possibility, and so on.
+The process stops as soon as a valid pixmap is located.
 
 \begin{itemize}
-\item determine name
+\item Determine Identifier
   \begin{itemize}
-  \item value of \STRING{} attribute 'type' ( \DIAGRAM{} and \ICONVIEW{} only )
-  \item variable name of the node ('elements' in the \ICONVIEW{} example)
-  \item 'default' ( \DIAGRAM{} only )
+  \item Value of \STRING{} attribute 'node\_name' ( \DIAGRAM{} only ) \newline
+  This is only evaluated if the \STRING{} attribute 'type' also has a value.
+  If 'node\_name' is used, the next two steps are skipped,
+  and the program proceeds directly to searching for file extensions.
+  \item Value of \STRING{} attribute 'type' ( \DIAGRAM{} and \ICONVIEW{} only )
+  \item Variable name of the element list: \newline
+  (e.g., 'elements' in the \ICONVIEW{} example)
   \end{itemize}
 
-\item determine pixmapName
+\item Determine pixmapName
   \begin{itemize}
-  \item search resource file section ([Navigator], [Diagram] or [IconView])
-        for an entry name.iconPixmap; \newline
-        if not found, pixmapName is name
+  \item Search the resource file section ([Navigator], [Diagram] or [IconView])
+        for an entry: identifier.iconPixmap; \newline
+        If no entry is found, pixmapName defaults to the identifier.
   \end{itemize}
 
-\item search a pixmap with the following name
+\item Search for a pixmap with the following name patterns:
   \begin{itemize}
   \item pixmapName
-  \item lower(pixmapName) ( all lower case )
-  \item lower(pixmapName)-small
+  \item lower(identifier) (all lower case)
+  \item lower(identifier)-small
+  \item 'default' (\DIAGRAM{} only)
   \end{itemize}
 
-\item search the following pixmap types (by extension)
+\item Search for the following pixmap types (by extension):
   \begin{itemize}
-  \item Xpm (*.xpm)
-  \item Bitmap (*.bmp)
-%gentoo  \item GIF (*.gif)
-%gentoo  \item Mng (*.mng)
-  \item Jpg (*.jpg)
-%  \item Jpeg (*.jpeg)
-  \item Pbm (*.pbm)
-  \item Pgm (*.pgm)
-  \item Png (*.png)
-  \item Pnm (*.pnm)
-  \item Ppm (*.ppm)
-  \item Tif (*.tif)
-  \item Svg (*.svg)
-  \item Eps (*.eps)
-%gentoo  \item Xbm (*.xbm)
+  \item *.xpm
+  \item *.bmp
+%gentoo  \item *.gif
+%gentoo  \item *.mng
+  \item *.jpg
+%  \item *.jpeg
+  \item *.pbm
+  \item *.pgm
+  \item *.png
+  \item *.pnm
+  \item *.ppm
+  \item *.tif
+  \item *.svg
+  \item *.eps
+%gentoo  \item *.xbm
   \end{itemize}
 
-\item search the pixmap in the following directories:
+\item Search the following directories (in order):
   \begin{itemize}
-  \item directories set in {\bfseries BITMAP\_PATH} environment variable \newline
-        if {\bfseries BITMAP\_PATH} is used, it must be
-        a ':' (linux) or ';' separated list of directores
-  \item {\bfseries APP\_HOME}/bitmaps \newline
-        {\bfseries APP\_HOME} is an environment variable
-  \item {\bfseries IntensHome}/bitmaps \newline
-        {\bfseries IntensHome} is the parent directory of the \INTENS{} executable used
-  \item ./bitmaps
-  \item .
+  \item Directories defined in {\bfseries BITMAP\_PATH} environment variable
+  (separated by ':' on Linux or ';' on Windows).
+  \item {\bfseries APPHOME}/bitmaps
+  (where {\bfseries APPHOME} is an environment variable).
+  \item {\bfseries IntensHome}/bitmaps
+  ({\bfseries IntensHome} is the parent directory of the current \INTENS{} executable used).
+  \item ./bitmaps (local subdirectory).
+  \item . (current working directory).
   \end{itemize}
 
 \end{itemize}

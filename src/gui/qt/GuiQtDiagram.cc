@@ -721,13 +721,13 @@ void GuiQtDiagram::getPixmap(QPixmap& icon, const std::string& name, bool bVarna
     // get node name
     if( refNode != 0 )
       sourceNodeName = new XferDataItem( refNode );
-    // try to get type (".type") icon
+    // try to get node_name (".node_name") icon
     if (sourceNodeName) {
       sourceNodeName->getValue(node_name);
       delete sourceNodeName;
     }
 
-    // get pixmap of component type
+    // get pixmap of component type or node_name
     if( refType != 0 )
       sourceType = new XferDataItem( refType );
     // try to get type (".type") icon

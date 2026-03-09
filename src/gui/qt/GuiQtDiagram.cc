@@ -116,7 +116,6 @@ void CompositePixmap::paintEvent(QPaintEvent *event)
     QRect r(m_scale*(pieceRects[i].x()-boundingbox.x()),
 	    m_scale*(pieceRects[i].y()-boundingbox.y()),
 	    m_scale*pieceRects[i].width(),m_scale*pieceRects[i].height() );
-    //      std::cout << i<< " Rect["<<pieceRects[i].x()<<", "<<pieceRects[i].y()<<"]  ["<<pieceRects[i].width()<<", "<<pieceRects[i].height()<<"]\n"<<std::flush;
     painter.drawPixmap(r, piecePixmaps[i]);
   }
   painter.end();
@@ -205,9 +204,9 @@ void GuiQtDiagram::saveItemSelection() {
       m_selectedItems.push_back( ItemFragment(item->getId()) );
     } else
       if (list.at(i)->type() == GuiQtDiagramConnection::Type) {
-	GuiQtDiagramConnection *item = dynamic_cast<GuiQtDiagramConnection*>(list.at(i));
-	m_selectedItems.push_back( ItemFragment(item->startItem()->getId() + "<-->" +
-						item->endItem()->getId()) );
+        GuiQtDiagramConnection *item = dynamic_cast<GuiQtDiagramConnection*>(list.at(i));
+        m_selectedItems.push_back( ItemFragment(item->startItem()->getId() + "<-->" +
+                                                item->endItem()->getId()) );
       }
 }
 
@@ -813,11 +812,9 @@ void GuiQtDiagram::getDiagramPixmap(QPixmap& icon, const std::string& name, cons
     if(!QtIconManager::Instance().getPixmap( ::lower(name), icon ) ){
       QtIconManager::Instance().getPixmap( ::lower(name+"-small"), icon );
       if (icon.isNull()) {
-        //    std::cout << "DIAGRAM  NICHT GEFUNDEN ["<<str<<"] pm["<<pm.toStdString()<<"]\n";
         BUG_INFO("DIAGRAM Pixmap not found["<<str<<"] name["<<name<<"] pm["<<pm.toStdString()<<"]");
         if (name != "default") {
           getDiagramPixmap(icon, "default");
-          //      std::cout << "DIAGRAM  NICHT GEFUNDEN ["<<str<<"]\n";
         }
       }
     }

@@ -256,6 +256,7 @@ GuiQtDiagramConnection::GuiQtDiagramConnection(GuiQtDiagramPixmapItem *startItem
     m_startAnchor = QPoint(attr->anchor_xpos[0], attr->anchor_ypos[0]);
     m_endAnchor = QPoint(attr->anchor_xpos[1], attr->anchor_ypos[1]);
   }
+  setFlag(QGraphicsItem::ItemIsSelectable, true);
 }
 
 GuiQtDiagramConnection::~GuiQtDiagramConnection(){
@@ -267,12 +268,13 @@ GuiQtDiagramConnection::~GuiQtDiagramConnection(){
 
 QRectF GuiQtDiagramConnection::boundingRect() const
 {
+  QPoint p0(line().p1().x() < line().p2().x() ? line().p1().x() : line().p2().x(),
+            line().p1().y() < line().p2().y() ? line().p1().y() : line().p2().y());
     qreal extra = (pen().width() + 20) / 2.0;
-
-    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
-                                      line().p2().y() - line().p1().y()))
-        .normalized()
-        .adjusted(-extra, -extra, extra, extra);
+    return QRectF(p0, QSizeF(abs(line().p2().x() - line().p1().x()),
+                             abs(line().p2().y() - line().p1().y())))
+      .normalized()
+      .adjusted(-extra, -extra, extra, extra);
 }
 
 //----------------------------------------------------

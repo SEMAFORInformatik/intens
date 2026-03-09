@@ -130,7 +130,7 @@ bool GuiNavigator::isNodeValid( const DataReference *ref ){
     newRef = structIter.NewDataReference();
     userAttr = static_cast<UserAttr*>( newRef->getUserAttr() );
     if( ( m_cols.empty() ? false : userAttr->hasTag( m_cols[0]->getTag() ) ) ||
-	( m_cols.empty() && newRef->nodeName() == "name" ) )
+        ( m_cols.empty() && newRef->nodeName() == "name" ) )
       break;
     else{
       delete newRef;

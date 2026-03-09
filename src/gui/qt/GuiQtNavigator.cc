@@ -238,16 +238,15 @@ void GuiQtNavigator::create(){
 // 	  this, SLOT(menuRequested( QTreeWidgetItem *, const QPoint &, int ) ) );
   ColsIterator iter;
   int w_cols = 0;
-  if( m_cols.empty() ){
-    std::cout << "GuiQtNavigator should never happen ==> empty Navigator\n";
-    //    assert( false );
-  }
-  m_navView->setColumnCount(m_cols.size());
+  m_navView->setColumnCount(std::max(1, int(m_cols.size())));
   QTreeWidgetItem* headerItem = m_navView->headerItem();
   if (headerItem) {
     int i = 0;
     for(iter = m_cols.begin(); iter != m_cols.end(); ++i, ++iter ){
       headerItem->setText(i, QString::fromStdString((*iter)->getLabel()));
+    }
+    if( m_cols.empty() ){
+      headerItem->setText(0, "name");
     }
   }
   if( getPopupMenu() )
@@ -256,7 +255,7 @@ void GuiQtNavigator::create(){
   // set Column Width (default size and stretch)
   int i = 0;
   int charlen = m_navView->fontMetrics().horizontalAdvance( 'w' ) + 0; // Korrektur + 2
-  double maxwidth = 0;
+  double maxwidth =  0;
   std::vector<int> cws;
   for(; i < m_cols.size(); ++i ){
     int cw = charlen * (1+std::abs(m_cols[i]->getWidth()));

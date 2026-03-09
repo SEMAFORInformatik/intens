@@ -1,0 +1,143 @@
+DESCRIPTION "Dependencies";
+
+DATAPOOL
+  REAL {EDITABLE, SCALAR}
+    input1mq {LABEL="Input1 MQ"}
+  , input2mq {LABEL="Input2 MQ"}
+  , input1pg {LABEL="Input1 PrGr"}
+  , input2pg {LABEL="Input2 PrGr"}
+  ;
+  REAL {EDITABLE,SCALAR}
+    output
+  ;
+  STRING {EDITABLE,SCALAR} status {LABEL="Status MQ"};
+  INTEGER {SCALAR, EDITABLE}
+    mq_input1_btn {LABEL="Input1 MQ Func", BUTTON, FUNC=mq_input1_func}
+  , mq_input2_btn {LABEL="Input2 MQ Func", BUTTON, FUNC=mq_input2_func}
+  , pg_input1_btn {LABEL="Input1 PrGr Func", BUTTON, FUNC=pg_input1_func}
+  , pg_input2_btn {LABEL="Input2 PrGr Func", BUTTON, FUNC=pg_input2_func}
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP fg (
+    "MessageQueue" {COLSPAN=3} VOID(50, 0) "ProcessGroup" {COLSPAN=3}
+  , LABEL(input1mq) input1mq mq_input1_btn VOID LABEL(input1pg) input1pg pg_input1_btn
+  , LABEL(input2mq) input2mq mq_input2_btn VOID LABEL(input2pg) input2pg pg_input2_btn
+  , VOID(0,20)
+  , LABEL(status) status:20 {COLSPAN=2}
+  , LABEL(output) output
+  );
+
+  FORM form {MAIN} (fg);
+END UI_MANAGER;
+
+STREAMER
+  input1mq_stream (input1mq);
+  input2mq_stream (input2mq);
+  input3mq_stream ("TEST");
+  input1pg_stream (input1pg);
+  input2pg_stream (input2pg);
+  output_stream (output);
+  status_stream {JSON} (status);
+  datapoolXmlStream {XML} (DATAPOOL);
+  datapoolJsonStream {JSON} (DATAPOOL);
+END STREAMER;
+
+OPERATOR
+  PROCESS copy: BATCH{"cat"};
+  PROCESSGROUP copy1_pg {
+    "COPY 1"
+  , AUTOCLEAR_DEPENDENCIES
+  , HIDDEN
+  , FORM=NONE
+  } (
+    output_stream = copy(input1pg_stream);
+  );
+  PROCESSGROUP copy2_pg {
+    "COPY 2"
+  , AUTOCLEAR_DEPENDENCIES
+  , HIDDEN
+  , FORM=NONE
+  } (
+    output_stream = copy(input2pg_stream);
+  );
+
+  MESSAGE_QUEUE
+    request_mq {
+      REQUEST                   //* MessageQueue Pattern
+    , PORT_REQUEST=RESOURCE("INTENS_REPLY_B_PORT")     //* Request Port of Request MesssageQueue
+    }
+  ;
+
+  FILESTREAM
+    datapoolXmlFs = datapoolXmlStream {
+      "Datapool (XML)"
+    , FILTER="XML (*.xml)"
+    }
+  , datapoolJsonFs = datapoolJsonStream {
+      "Datapool (JSON)"
+    , FILTER="JSON (*.json)"
+    }
+  ;
+
+  TASK setValues {"Set Values"} {
+    input1mq = 0;
+    input2mq = 5;
+    input1pg = 10;
+    input2pg = 15;
+    status = "Status Init";
+    output = 33;
+  };
+END OPERATOR;
+
+FUNCTIONS
+  FUNC mq_input1_func {
+    PRINT("MQ Request Start", EOLN);
+    REQUEST (
+      MESSAGE_QUEUE = request_mq
+    , REQUEST=input1mq_stream
+    , HEADER="output"
+    , TIMEOUT=1
+    , RESPONSE(
+        status_stream (NO_DEPENDENCIES)
+      , output_stream)
+    , AUTOCLEAR_DEPENDENCIES
+    );
+    PRINT("MQ Request Done", EOLN);
+  };
+
+  FUNC mq_input2_func {
+    PRINT("MQ Request 2 Start", EOLN);
+    REQUEST (
+      MESSAGE_QUEUE = request_mq
+    , REQUEST=input2mq_stream
+    , HEADER="output"
+    , TIMEOUT=1
+    , RESPONSE(
+        status_stream (NO_DEPENDENCIES)
+      , output_stream
+      )
+    , AUTOCLEAR_DEPENDENCIES
+    );
+    PRINT("MQ Request 2 Done", EOLN);
+  };
+  FUNC INIIT {
+    PRINT("INIT", EOLN);
+    RUN(setValues);
+  };
+  FUNC QUIT {
+    REQUEST (
+      MESSAGE_QUEUE = request_mq
+    , HEADER="quit"
+    , TIMEOUT=1
+    , RESPONSE(
+        status_stream (NO_DEPENDENCIES)
+      )
+    , AUTOCLEAR_DEPENDENCIES
+    );
+  };
+  FUNC pg_input1_func {RUN(copy1_pg);};
+  FUNC pg_input2_func {RUN(copy2_pg);};
+END FUNCTIONS;
+END.

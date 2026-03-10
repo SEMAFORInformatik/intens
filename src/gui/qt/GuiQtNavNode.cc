@@ -348,12 +348,29 @@ void GuiQtNavNode::createTextfields( GuiNavigator *nav, XferDataItem *item ){
   if( !( item->getDataType() == DataDictionary::type_StructVariable) )
     return;
   GuiNavigator::ColsVector &cols = nav->getCols();
-  // Diese Zeilen unterstützen den alten Syntax, nachdem der Navigator in der Struktur nach einer
-  // Variablen "name" sucht. Es sind keine zusätzlichen Spalten möglich
-  // Kann später gelöscht werden.
-  if( cols.empty() )
-    ;//    assert( false );
+  // special case: we do not have tags, we look for a "name" variable
+  if( cols.empty() ){
+    auto dref = DataPoolIntens::getDataReference(item->Data(), "name" );
+    if (dref){
+      GuiQtNavTextfield *textfield = 0;
+      XferDataItem *newItem = new XferDataItem(dref);
+      XferDataItemIndex      *index;
+      newItem->newDataItemIndex();
+      index = newItem->getLastIndex();
+      index->setLowerbound( 0 );
+      newItem->setDimensionIndizes();
+      std::string datasetName = newItem->getUserAttr()->DataSetName();
+      if( datasetName.empty() )
+        textfield = new GuiQtNavTextfield( getNavigator()->getElement(), newItem );
+      else{
+        textfield = new GuiQtNavSetfield( getNavigator()->getElement(), newItem );
+      }
+      m_textfields.push_back( textfield );
+    }
+    return;
+  }
 
+  // general case with tags
   GuiNavigator::ColsVector::iterator colsIter;
   for( colsIter = cols.begin(); colsIter != cols.end(); ++colsIter ){
     DataReference *newRef = 0;
@@ -362,7 +379,7 @@ void GuiQtNavNode::createTextfields( GuiNavigator *nav, XferDataItem *item ){
       newRef = structIter.NewDataReference();
       UserAttr *userAttr  = static_cast<UserAttr*>( newRef->getUserAttr() );
       if( userAttr->hasTag( (*colsIter)->getTag() ) )
-	break;
+        break;
       delete newRef;
       newRef = 0;
       ++structIter;
@@ -379,14 +396,14 @@ void GuiQtNavNode::createTextfields( GuiNavigator *nav, XferDataItem *item ){
       if( datasetName.empty() )
         textfield = new GuiQtNavTextfield( getNavigator()->getElement(), newItem );
       else{
-	textfield = new GuiQtNavSetfield( getNavigator()->getElement(), newItem );
+        textfield = new GuiQtNavSetfield( getNavigator()->getElement(), newItem );
       }
       textfield->setWidth( (*colsIter)->getWidth() );
       textfield->setPrecision( (*colsIter)->getPrecision() );
       if( (*colsIter)->scale() != 0 )
-	textfield->setScalefactor( (*colsIter)->scale()->copy() );
+        textfield->setScalefactor( (*colsIter)->scale()->copy() );
       if( (*colsIter)->thousandSep() )
-	textfield->setThousandSep();
+        textfield->setThousandSep();
     }
     m_textfields.push_back( textfield );
   }
@@ -405,18 +422,18 @@ bool GuiQtNavNode::refreshLabels(){
 
   // refresh labels
   int col=0;
-  for( iter = m_textfields.begin(); iter != m_textfields.end() &&
-	 col < getNavigator()->getCols().size(); ++col, ++iter ){
+  for( iter = m_textfields.begin(); iter != m_textfields.end(); ++col, ++iter ){
     std::string label, color;
 
     // if style is pixmap get unformatted value (or Output-Value of DataSet)
-    if (getNavigator()->getCols()[col]->style() == GuiNavigator::columnStyle_Pixmap) {
+    if (col < getNavigator()->getCols().size() &&
+        getNavigator()->getCols()[col]->style() == GuiNavigator::columnStyle_Pixmap) {
       if( *iter != 0 )
-	(*iter)->getValue( label );
+        (*iter)->getValue( label );
     }
     if (label.empty()) {
       if( *iter != 0 ){
-	(*iter)->getFormattedValue( label );
+        (*iter)->getFormattedValue( label );
       }
     }
     if( *iter != 0 )

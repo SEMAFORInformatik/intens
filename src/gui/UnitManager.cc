@@ -427,42 +427,50 @@ UserAttr* UnitManager::extractValue(const std::string& json_string_or_text, std:
   value = json_string_or_text;
   if (!AppData::Instance().hasUnitManagerFeature())
     return 0;
-  std::string text;
-  std::string bStr("{\"input\":");
-  std::string eStr("\"}");
-  std::size_t posB  = json_string_or_text.find(bStr);
-  std::size_t posE  = json_string_or_text.find_last_of(eStr);
-  if (posB == std::string::npos || posE == std::string::npos)
-    return 0;
-  // parse json
-  std::string s(json_string_or_text.substr(posB, posE+1));
-  Json::Value valueObject = ch_semafor_intens::JsonUtils::parseJsonObjectComboBox(s);
-  if (!valueObject.isNull()) {
-    if (valueObject["value"].isString())
-      text = valueObject["value"].asString();
-    else {
-      std::ostringstream os;
-      if (valueObject["value"].isInt() )
-        os << valueObject["value"].asInt();
-      else if (valueObject["value"].isDouble() )
-        os << valueObject["value"].asDouble();
-      else if (valueObject["value"].isNull())
-        text = "";
+
+  // loop over unit json like
+  // e.g. "text {"input":["H","mH" ... } over text {"input":["H","mH" ... }
+  do {
+    std::string text;
+    std::string bStr("{\"input\":");
+    std::string eStr("}");
+    std::size_t posB  = value.find(bStr);
+    std::size_t posE  = value.find_first_of(eStr, posB);
+    if (posB == std::string::npos || posE == std::string::npos)
+      return 0;
+
+    // parse json
+    std::string s(value.substr(posB, posE+1   -posB));
+    Json::Value valueObject = ch_semafor_intens::JsonUtils::parseJsonObjectComboBox(s);
+    if (!valueObject.isNull()) {
+      if (valueObject["value"].isString())
+        text = valueObject["value"].asString();
       else {
-        std::cerr <<"' ERROR: could not handle this jsonObject '" << json_string_or_text << "'\n";
-        return 0;
+        std::ostringstream os;
+        if (valueObject["value"].isInt() )
+          os << valueObject["value"].asInt();
+        else if (valueObject["value"].isDouble() )
+          os << valueObject["value"].asDouble();
+        else if (valueObject["value"].isNull())
+          text = "";
+        else {
+          std::cerr <<"' ERROR: could not handle this jsonObject '" << value << "'\n";
+          return 0;
+        }
+        text = os.str();
       }
-      text = os.str();
+      // get userattr and actual unit value
+      void *pvoid;
+      std::istringstream (valueObject["ptr_userattr"].asString()) >> pvoid;
+      auto userAttr = static_cast<UserAttr*>(pvoid);
+      std::string unitAttr(userAttr->Unit(false));
+      value = value.substr(0, posB) + unitAttr + value.substr(posE+1);
+      std::size_t posB2  = value.find(bStr);
+      //    value = value.substr(0, posB) + text + value.substr(posE+1);
+      if (posB2  == std::string::npos)
+      return userAttr;
     }
-    // get userattr and actual unit value
-    void *pvoid;
-    std::istringstream (valueObject["ptr_userattr"].asString()) >> pvoid;
-    auto userAttr = static_cast<UserAttr*>(pvoid);
-    std::string unitAttr(userAttr->Unit(false));
-    value = json_string_or_text.substr(0, posB) + unitAttr + json_string_or_text.substr(posE+1);
-    //    value = json_string_or_text.substr(0, posB) + text + json_string_or_text.substr(posE+1);
-    return userAttr;
-  }
+  } while(1);
   return 0;
 }
 

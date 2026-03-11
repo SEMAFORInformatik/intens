@@ -55,7 +55,7 @@ class GuiList
   int  getMaxRows();
   /** setzt den Titel des Widgets */
   void setTitle( const std::string &title, GuiElement::Alignment align );
-  std::string getTitle() { return m_title; }
+  std::string getTitle();
   GuiElement::Alignment getTitleAlignment() { return m_titleAlign; }
   
   virtual int sortOrder() = 0;

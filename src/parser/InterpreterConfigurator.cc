@@ -2894,7 +2894,7 @@ bool InterpreterConfigurator::setTitleHelpfile( const std::string &title ){
 //======================================================================//
 bool InterpreterConfigurator::setTitleFieldgroup( const std::string &title,
                                                   GuiElement::Alignment alignment ){
-  m_rep->fieldgroup->setTitle( UnitManager::extractValue(title) );
+  m_rep->fieldgroup->setTitle(title);
   m_rep->fieldgroup->setTitleAlignment( alignment );
   return true;
 }
@@ -2903,7 +2903,7 @@ bool InterpreterConfigurator::setTitleFieldgroup( const std::string &title,
 //======================================================================//
 bool InterpreterConfigurator::setTitlelist( const std::string &title,
                                             GuiElement::Alignment alignment ){
-  m_rep->list->setTitle( UnitManager::extractValue(title), alignment );
+  m_rep->list->setTitle(title, alignment);
   return true;
 }
 //======================================================================//
@@ -2954,28 +2954,28 @@ bool InterpreterConfigurator::setTitlePsplot( const std::string &title ){
 // - setTitleTable
 //======================================================================//
 bool InterpreterConfigurator::setTitleTable( const std::string &title, GuiElement::Alignment alignment ){
-  m_rep->table->setTitle( UnitManager::extractValue(title), alignment );
+  m_rep->table->setTitle(title, alignment );
   return true;
 }
 //======================================================================//
 // - setTitleTableHorizontal
 //======================================================================//
 bool InterpreterConfigurator::setTitleTableHorizontal( const std::string &title ){
-  m_rep->table->setTitleHorizontal( UnitManager::extractValue(title) );
+  m_rep->table->setTitleHorizontal(title);
   return true;
 }
 //======================================================================//
 // - setTitleTableVertical
 //======================================================================//
 bool InterpreterConfigurator::setTitleTableVertical( const std::string &title ){
-  m_rep->table->setTitleVertical( UnitManager::extractValue(title) );
+  m_rep->table->setTitleVertical(title);
   return true;
 }
 //======================================================================//
 // - setTitleReportstream
 //======================================================================//
 bool InterpreterConfigurator::setTitleReportstream( const std::string &title ){
-  m_rep->reportstream->setTitle( UnitManager::extractValue(title) );
+  m_rep->reportstream->setTitle(title);
   return true;
 }
 //======================================================================//
@@ -3078,7 +3078,7 @@ bool InterpreterConfigurator::fieldgroupWithScrollBar(){
 //======================================================================//
 bool InterpreterConfigurator::fieldgroupSetAccordion(bool open){
   if( m_rep->fieldgroup->getTitle().empty() ){
-    ParserError( _("Fieldgroup with accordion option must have a Title.") );
+    m_rep->fieldgroup->setTitle(_("Accordion"));
   }
   m_rep->fieldgroup->setAccordion(true, open);
   return true;
@@ -3963,14 +3963,14 @@ bool InterpreterConfigurator::addGraphItem(){
 // - setUnit
 //======================================================================//
 bool InterpreterConfigurator::setUnit( const std::string &unitsstring ){
-  m_rep->plotaxis->setUnit( UnitManager::extractValue(unitsstring) );
+  m_rep->plotaxis->setUnit(unitsstring);
   return true;
 }
 //======================================================================//
 // - plotaxisSetLabel
 //======================================================================//
 bool InterpreterConfigurator::plotaxisSetLabel( const std::string &label ){
-  m_rep->plotaxis->setLabel( UnitManager::extractValue(label) );
+  m_rep->plotaxis->setLabel(label);
   return true;
 }
 //======================================================================//
@@ -4406,7 +4406,7 @@ bool InterpreterConfigurator::timeTableSetString(){
 // - plot3dSetMenuText
 //======================================================================//
 bool InterpreterConfigurator::plot3dSetMenuText( const std::string &menulabel ){
-  m_rep->plot3d->setMenuText( UnitManager::extractValue(menulabel) );
+  m_rep->plot3d->setMenuText(menulabel);
   return true;
 }
 //======================================================================//
@@ -4429,7 +4429,7 @@ bool InterpreterConfigurator::plot3dSetFooterStream( const std::string &streamId
 // - plot3dSetFooterText
 //======================================================================//
 bool InterpreterConfigurator::plot3dSetFooterText( const std::string &stringConstant ){
-  if( !m_rep->plot3d->setFooterText( UnitManager::extractValue(stringConstant) ) )
+  if( !m_rep->plot3d->setFooterText(stringConstant) )
     ParserError( compose(_("Undeclared format '%1'."), stringConstant) );
   return true;
 }
@@ -4465,7 +4465,7 @@ bool InterpreterConfigurator::setPlotStyleContour(){
 // - plot3dSetHeaderText
 //======================================================================//
 bool InterpreterConfigurator::plot3dSetHeaderText( const std::string &headertext ){
-  if (!m_rep->plot3d->setHeaderText( UnitManager::extractValue(headertext) ))
+  if (!m_rep->plot3d->setHeaderText(headertext))
     ParserError( compose(_("Undeclared identifier '%1'."), headertext) );
   return true;
 }
@@ -4631,7 +4631,7 @@ bool InterpreterConfigurator::xrtgraphSetFooterStream( const std::string &stream
 // - xrtgraphSetFooterText
 //======================================================================//
 bool InterpreterConfigurator::xrtgraphSetFooterText( const std::string &stringconstant ){
-  if( !m_rep->plot2d->setFooterText( UnitManager::extractValue(stringconstant) ) ){
+  if( !m_rep->plot2d->setFooterText(stringconstant)){
     ParserError( compose(_("Undeclared format '%1'."), stringconstant) );
   }
   return true;
@@ -4640,7 +4640,7 @@ bool InterpreterConfigurator::xrtgraphSetFooterText( const std::string &stringco
 // - xrtgraphSetHeaderText
 //======================================================================//
 bool InterpreterConfigurator::xrtgraphSetHeaderText( const std::string &headertext ){
-  if (!m_rep->plot2d->setHeaderText( UnitManager::extractValue(headertext) ))
+  if (!m_rep->plot2d->setHeaderText(headertext))
     ParserError( compose(_("Undeclared identifier '%1'."), headertext) );
   return true;
 }
@@ -5622,7 +5622,7 @@ bool InterpreterConfigurator::setTable(){
 // - addHorizontalLine
 //======================================================================//
 bool InterpreterConfigurator::addHorizontalLine( const std::string &label, GuiElement::Alignment alignment ){
-  if( (m_rep->tableline=m_rep->table->addHorizontalLine( UnitManager::extractValue(label), alignment )) == 0 ){
+  if( (m_rep->tableline=m_rep->table->addHorizontalLine(label, alignment )) == 0 ){
     ParserError( _("Unknown error.") ); /* MEMORY ? */
   }
   return true;
@@ -5663,7 +5663,7 @@ m_rep->tableline->addTableLabelItem( label, alignment );
 // - addVerticalLine
 //======================================================================//
 bool InterpreterConfigurator::addVerticalLine( const std::string &label, GuiElement::Alignment alignment ){
-  m_rep->tableline = m_rep->table->addVerticalLine( UnitManager::extractValue(label), alignment );
+  m_rep->tableline = m_rep->table->addVerticalLine(label, alignment );
   if( m_rep->tableline == 0 )
     ParserError( _("Unknown error.") );  /* MEMORY ? */
   return true;
@@ -5672,7 +5672,7 @@ bool InterpreterConfigurator::addVerticalLine( const std::string &label, GuiElem
 // - addTableLine
 //======================================================================//
 bool InterpreterConfigurator::addTableLine( const std::string &label, GuiElement::Alignment alignment ){
-  m_rep->tableline = m_rep->table->addTableLine( UnitManager::extractValue(label), alignment );
+  m_rep->tableline = m_rep->table->addTableLine(label, alignment );
   if( m_rep->tableline == 0 ){
     ParserError( _("Unknown error.") );  /* MEMORY ? */
   }

@@ -1790,3 +1790,19 @@ bool GuiElement::updateScale(XferDataParameter* param) {
   param->setScalefactor(new Scale(factor, (use_divide ? '/' : '*'), shift));
   return true;
 }
+
+/* --------------------------------------------------------------------------- */
+/* getUnitScaleFactor --                                                       */
+/* --------------------------------------------------------------------------- */
+double GuiElement::getUnitScaleFactor(XferDataItem* dataitem) {
+  if (!AppData::Instance().hasUnitManagerFeature() || !dataitem)
+    return 1.;
+  DataDictionary::DataType dataType(dataitem->getDataType());
+  if (dataType != DataDictionary::type_Real &&
+      dataType != DataDictionary::type_Integer){
+    return 1.;
+  }
+
+  UnitManager::Unit* unit = UnitManager::Instance().getUnitData(dataitem->getUserAttr()->Unit(false));
+  return unit ? unit->factor : 1.;
+}

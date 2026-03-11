@@ -312,7 +312,7 @@ protected:
   virtual void drawHeaderText()=0;
   virtual void drawFooterText()=0;
   void setLabel( const std::string &title, eAxisType axis );
-  const std::string &MenuLabel();
+  const std::string MenuLabel();
   const std::string PlotItemLabel(GuiPlotDataItem* yItem);
   static char** separateLines( const std::string &str );
   static char** separateStreamLines( const std::string &str );

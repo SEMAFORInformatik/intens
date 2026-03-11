@@ -209,7 +209,7 @@ HardCopyListener::FileFormat QtSimpel::getFileFormat() {
 /* --------------------------------------------------------------------------- */
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
-const std::string &QtSimpel::MenuLabel() {
+const std::string QtSimpel::MenuLabel() {
   return m_name;
 }
 

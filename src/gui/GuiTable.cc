@@ -11,6 +11,7 @@
 #include "gui/GuiMenuButton.h"
 #include "gui/GuiSeparator.h"
 #include "gui/GuiIndex.h"
+#include "gui/UnitManager.h"
 #include "streamer/StreamManager.h"
 #include "utils/Debugger.h"
 #include "job/JobFunction.h"
@@ -297,6 +298,14 @@ void GuiTable::setTitle( const std::string &title, GuiElement::Alignment align )
 }
 
 /* --------------------------------------------------------------------------- */
+/* getTitle --                                                                 */
+/* --------------------------------------------------------------------------- */
+
+std::string GuiTable::getTitle(){
+  return UnitManager::extractValue(m_title);
+}
+
+/* --------------------------------------------------------------------------- */
 /* setTitleHorizontal --                                                       */
 /* --------------------------------------------------------------------------- */
 
@@ -305,11 +314,27 @@ void GuiTable::setTitleHorizontal( const std::string &title ){
 }
 
 /* --------------------------------------------------------------------------- */
+/* getTitle --                                                                 */
+/* --------------------------------------------------------------------------- */
+
+std::string GuiTable::getTitleHorizontal(){
+  return UnitManager::extractValue(m_title_horizontal);
+}
+
+/* --------------------------------------------------------------------------- */
 /* setTitleVertical --                                                         */
 /* --------------------------------------------------------------------------- */
 
 void GuiTable::setTitleVertical( const std::string &title ){
   m_title_vertical = title;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getTitle --                                                                 */
+/* --------------------------------------------------------------------------- */
+
+std::string GuiTable::getTitleVertical(){
+  return UnitManager::extractValue(m_title_vertical);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1852,10 +1877,10 @@ bool GuiTable::serializeJson(Json::Value& jsonObj, bool onlyUpdated) {
   }
 
   getElement()->writeJsonProperties(jsonObj);
-  jsonObj["title"] = m_title;
+  jsonObj["title"] = getTitle();
   jsonObj["title_alignment"] = GuiElement::StringAlignmentType(m_title_alignment);
-  jsonObj["title_horizontal"] = m_title_horizontal;
-  jsonObj["title_vertical"] = m_title_vertical;
+  jsonObj["title_horizontal"] = getTitleHorizontal();
+  jsonObj["title_vertical"] = getTitleVertical();
   if (getHLineList().size() > 0)
     jsonObj["placement_horizontal"] = GuiElement::StringAlignmentType(m_hline_placement);
   if (getVLineList().size() > 0)
@@ -1992,9 +2017,9 @@ bool GuiTable::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated) 
 
   element->set_allocated_base(getElement()->writeProtobufProperties());
 
-  element->set_title(m_title);
-  element->set_title_horizontal(m_title_horizontal);
-  element->set_title_vertical(m_title_vertical);
+  element->set_title(getTitle());
+  element->set_title_horizontal(getTitleHorizontal());
+  element->set_title_vertical(getTitleVertical());
   element->set_title_alignment(GuiElement::ProtoAlignmentType(m_title_alignment));
   if (getHLineList().size() > 0)
     element->set_placement_horizontal(GuiElement::ProtoAlignmentType(m_hline_placement));

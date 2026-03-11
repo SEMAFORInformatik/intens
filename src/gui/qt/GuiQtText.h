@@ -50,7 +50,7 @@ public:
   virtual bool isExportPrintFormat( const HardCopyListener::FileFormat &fileFormat );
   virtual PrintType getPrintType( const HardCopyListener::FileFormat &fileFormat );
   virtual const std::string &getName(){ return GuiElement::getName(); }
-  virtual const std::string &MenuLabel();
+  virtual const std::string MenuLabel();
   virtual bool saveFile( GuiElement * );
 
   //------------------------------------------------------------------------------

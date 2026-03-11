@@ -84,7 +84,7 @@ public:
 #endif
   virtual void serializeContainerElements( std::ostream &os )=0;
   virtual bool serializeContainerElements(Json::Value& jsonObj, bool onlyUpdated = false)=0;
-  const std::string getTitle() { return m_title; }
+  const std::string getTitle();
   virtual void setOverlayGeometry(int xpos, int ypos, int width=-1, int height=-1);
   struct OverlayGeometry{
     OverlayGeometry()

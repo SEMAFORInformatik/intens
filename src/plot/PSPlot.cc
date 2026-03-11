@@ -65,7 +65,7 @@ bool PSPlot::isFileFormatSupported( const HardCopyListener::FileFormat &fileForm
 /* --------------------------------------------------------------------------- */
 /* MenuLabel                                                                   */
 /* --------------------------------------------------------------------------- */
-const std::string &PSPlot::MenuLabel(){
+const std::string PSPlot::MenuLabel(){
   return m_title.empty() ? m_stream->Name() : m_title;
 }
 

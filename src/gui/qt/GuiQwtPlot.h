@@ -227,7 +227,7 @@ public:
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat );
   virtual bool isExportPrintFormat( const HardCopyListener::FileFormat &fileFormat );
   virtual PrintType getPrintType( const HardCopyListener::FileFormat &fileFormat );
-  virtual const std::string &MenuLabel() { return Gui2dPlot::MenuLabel(); }
+  virtual const std::string MenuLabel() { return Gui2dPlot::MenuLabel(); }
   virtual void print(QPrinter* print=0);
   virtual bool saveFile( GuiElement * );
 

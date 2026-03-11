@@ -34,7 +34,6 @@
 #include "gui/GuiIndex.h"
 #include "gui/GuiSeparator.h"
 #include "gui/GuiMenuButton.h"
-#include "gui/UnitManager.h"
 
 #include "xfer/XferDataParameter.h"
 #include "job/JobFunction.h"

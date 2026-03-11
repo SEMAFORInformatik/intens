@@ -264,7 +264,7 @@ class GuiQt3dPlot : public GuiQtElement, public Gui3dPlot
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat );
   virtual bool isExportPrintFormat( const HardCopyListener::FileFormat &fileFormat );
   virtual PrintType getPrintType( const HardCopyListener::FileFormat &fileFormat );
-  virtual const std::string &MenuLabel();
+  virtual const std::string MenuLabel();
   virtual bool write( InputChannelEvent &event );
   virtual bool write( const std::string &fileName );
   virtual bool getDefaultSettings( HardCopyListener::PaperSize &size,

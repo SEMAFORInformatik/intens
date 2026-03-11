@@ -48,6 +48,7 @@ QT_USE_NAMESPACE
 #include "datapool/DataRealValue.h"
 #include <xfer/XferDataItem.h>
 
+#include "gui/UnitManager.h"
 #include "gui/GuiIndex.h"
 #include "gui/GuiFieldgroup.h"
 #include "gui/qt/GuiQtManager.h"
@@ -595,8 +596,8 @@ void GuiQWTPlot::printInfo(char* msg ) {
     (*plotIter)->getXPlotDataItems( items );
     for( itemIter = items.begin(); itemIter != items.end(); ++itemIter ){
       if( (*itemIter) != 0 ){
-	if ((*itemIter)->XferData())
-	  std::cout << " + XX xPlotDataItems: This: " << (*itemIter) << " vn: " << (*itemIter)->XferData()->getFullName(true) << std::endl;
+        if ((*itemIter)->XferData())
+          std::cout << " + xPlotDataItems: This: " << (*itemIter) << " vn: " << (*itemIter)->XferData()->getFullName(true) << std::endl;
       }
     }
 
@@ -606,8 +607,8 @@ void GuiQWTPlot::printInfo(char* msg ) {
       tPlotItemIterator it = (*plotIter)->plotItems( axisType[axis] ).begin();
       std::cout << " +  YY PlotItems: " << (*plotIter)->plotItems( axisType[axis] ).size()<< std::endl;
        while( it != (*plotIter)->plotItems( axisType[axis] ).end() ) {
-	 std::cout << " ++  getAxisType: " << (*it)->getAxisType() << "  xPlotDataItem: " << (*it)->xPlotDataItem() << " xvn: " << (*it)->xPlotDataItem()->XferData()->getFullName(true) << " yvn: " << (*it)->plotDataItem()->XferData()->getFullName(true)<< "  xPlotItem: " << (*it)->xPlotItem() <<  "  THIS: " << (*it) << std::endl;
-	++it;
+         std::cout << " ++  getAxisType: " << (*it)->getAxisType() << "  xPlotDataItem: " << (*it)->xPlotDataItem() << " xvn: " << (*it)->xPlotDataItem()->XferData()->getFullName(true) << " yvn: " << (*it)->plotDataItem()->XferData()->getFullName(true)<< "  xPlotItem: " << (*it)->xPlotItem() <<  "  THIS: " << (*it) << std::endl;
+         ++it;
        }
     }
   }
@@ -2397,9 +2398,9 @@ void GuiQWTPlot::drawHeaderText() {
       size++;
     }
     if (m_plot)
-      m_plot->titleLabel()->setText( QString::fromStdString(os.str()).trimmed() );
+      m_plot->titleLabel()->setText(QString::fromStdString(UnitManager::extractValue(os.str())).trimmed());
 #if HAVE_QPOLAR
-    if (m_polarChart) m_polarChart->setTitle( QString::fromStdString(os.str()).trimmed());
+    if (m_polarChart) m_polarChart->setTitle(QString::fromStdString(UnitManager::extractValue(os.str())).trimmed());
 #endif
   }
 }
@@ -2414,7 +2415,7 @@ void GuiQWTPlot::drawFooterText() {
     std::stringstream os;
     int size = 0;
     while(text[size] != 0) {
-      os << pfooterText()[size] << std::endl;
+      os << UnitManager::extractValue(pfooterText()[size]) << std::endl;
       size++;
     }
     m_plot->footerLabel()->setText( QString::fromStdString(os.str()).trimmed() );
@@ -2596,7 +2597,6 @@ bool GuiQWTPlot::write( InputChannelEvent &event ) {
   } else {
     generateFileWithSvgGenerator( tmp_eps_name, true );
   }
-  // std::cout << "   GuiQWTPlot::write file["<<tmp_eps_name<<"]\n";
   QFile tmp_eps(QString::fromStdString(tmp_eps_name));
 
   std::ostringstream os;
@@ -2621,8 +2621,6 @@ bool  GuiQWTPlot::generateFileWithSvgGenerator(std::string& outFilename, bool bP
   if (!tmp_svg.open())
     return false;
   ReportGen::Instance().newTmpFile( tmp_svg.fileName().toStdString() );
-
-  //  std::cout << " ======================== 1 GuiQWTPlot::generateFileEps fn["<<outFilename<<"] temp["<<tmp_svg.fileName().toStdString()<<"]\n";
 
   // set svg properties
   svg.setFileName( tmp_svg.fileName() );

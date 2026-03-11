@@ -14,6 +14,7 @@
 #include "xfer/XferParameterString.h"
 
 #include "gui/GuiPlotDataItem.h"
+#include "gui/UnitManager.h"
 
 #include "streamer/StreamManager.h"
 #include "streamer/Stream.h"
@@ -139,6 +140,9 @@ bool GuiPlotDataItem::setDataReference( DataReference *dataref ){
 /* getScaleFactor --                                                           */
 /* --------------------------------------------------------------------------- */
 double GuiPlotDataItem::getScaleFactor(){
+  if (AppData::Instance().hasUnitManagerFeature() && m_dataitem){
+    return GuiElement::getUnitScaleFactor(m_dataitem);
+  }
   return m_scale != 0 ? m_scale->getValue() : 1. ;
 }
 
@@ -533,7 +537,7 @@ std::string GuiPlotDataItem::getLabel() const{
     return convertToString(m_labelStream);
   if( m_label.empty() )
     return getName();
-  return m_label;
+  return UnitManager::extractValue(m_label);
 }
 //-----------------------------------------------------------------------------
 // getUnit

@@ -642,7 +642,7 @@ void GuiQtScrolledText::PrintListener:: ButtonPressed() {
 /* MenuLabel --                                                                    */
 /* --------------------------------------------------------------------------- */
 
-const std::string& GuiQtScrolledText::MenuLabel() {
+const std::string GuiQtScrolledText::MenuLabel() {
   if (m_label == "STD_WINDOW")
     m_label = _("Standard Window");
   if (m_label == "LOG_WINDOW")

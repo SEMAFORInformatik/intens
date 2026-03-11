@@ -62,9 +62,7 @@ public:
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat );
   virtual bool isExportPrintFormat( const HardCopyListener::FileFormat &fileFormat );
   virtual HardCopyListener::PrintType getPrintType( const HardCopyListener::FileFormat &fileFormat );
-  virtual const std::string &MenuLabel() {
-    return m_title;
-  }
+  virtual const std::string MenuLabel();
   virtual bool write( InputChannelEvent &event );
   virtual bool write( const std::string &fileName ){ return false; }
   virtual bool write( std::ostream &os ); //{ assert( false );}

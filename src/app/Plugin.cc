@@ -183,7 +183,7 @@ bool Plugin::isFileFormatSupported( const HardCopyListener::FileFormat &fileForm
 /* --------------------------------------------------------------------------- */
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
-const std::string &Plugin::MenuLabel() {
+const std::string Plugin::MenuLabel() {
   return getName();
 }
 

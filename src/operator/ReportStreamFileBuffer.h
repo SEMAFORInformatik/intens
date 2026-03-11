@@ -21,7 +21,7 @@ public:
   virtual FileFormat getFileFormat(){return HardCopyListener::XML;}
   virtual const std::string &getName(){return m_name;}
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat ){return true;}
-  virtual const std::string &MenuLabel(){return m_label;}
+  virtual const std::string MenuLabel(){return m_label;}
   virtual bool saveFile( GuiElement * ) { return false; }
 
  private:

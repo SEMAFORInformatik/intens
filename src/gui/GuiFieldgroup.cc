@@ -9,6 +9,7 @@
 #include "gui/GuiStretch.h"
 #include "gui/GuiIndexMenu.h"
 #include "gui/GuiFactory.h"
+#include "gui/UnitManager.h"
 #include "job/JobManager.h"
 #include "utils/StringUtils.h"
 #include "gui/qt/QtIconManager.h"
@@ -201,6 +202,14 @@ void GuiFieldgroup::setTitle( const std::string &title ){
     return;
   }
   m_title = title;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getTitle --                                                                 */
+/* --------------------------------------------------------------------------- */
+
+const std::string GuiFieldgroup::getTitle(){
+  return UnitManager::extractValue(m_title);
 }
 
 /* --------------------------------------------------------------------------- */

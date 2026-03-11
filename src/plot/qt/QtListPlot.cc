@@ -107,7 +107,7 @@ HardCopyListener::FileFormat QtListPlot::getFileFormat() {
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
 
-const std::string &QtListPlot::MenuLabel() {
+const std::string QtListPlot::MenuLabel() {
   return m_title.empty() ? m_name : m_title;
 }
 

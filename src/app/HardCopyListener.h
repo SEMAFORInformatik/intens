@@ -94,7 +94,7 @@ public:
   virtual void print(QPrinter* print=0) { assert(false); }
   virtual const std::string &PrintFilter();
   void setPrintFilter( const std::string &filter );
-  virtual const std::string &MenuLabel() = 0;
+  virtual const std::string MenuLabel() = 0;
   virtual bool useMargins() { return true; }
   virtual bool usePaperSize() { return true; }
   virtual bool useOrientation() { return true; }

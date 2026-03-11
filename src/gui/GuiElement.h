@@ -722,6 +722,9 @@ public:
   /** get visible flag, runtime use */
   bool getVisibleFlag() { return m_visible; };
 
+  /** get scale factor from unit */
+  static  double getUnitScaleFactor(XferDataItem* dataitem);
+
 /*=============================================================================*/
 /* protected member functions                                                  */
 /*=============================================================================*/

@@ -55,6 +55,7 @@
 #include "gui/qt/GuiQwtScaleEngine.h"
 #include "gui/qt/GuiQwtBasePlot.h"
 #include "gui/GuiFactory.h"
+#include "gui/UnitManager.h"
 #include "app/DataSet.h"
 typedef std::map<std::string, GuiPlotDataItem*> DataItemType;
 
@@ -344,7 +345,7 @@ void GuiQt3dPlot::create(){
   auto *rightAxis = new QwtScaleWidget();
   rightAxis->setTitle("");
   rightAxis->setAlignment(QwtScaleDraw::LeftScale);
-  vlayout->addWidget(new QLabel("      [%]"));
+  vlayout->addWidget(new QLabel("Min..Max [%]"));
   vlayout->addWidget(hWidget);
   layout->addWidget(vWidget);
 
@@ -901,7 +902,6 @@ void GuiQt3dPlot::update( UpdateReason reason ){
       // TODO
       m_configGuiElement->update(reason_Always);
     }
-    ///    else writeConfigDataToDataPool(false); // only set range configData to ConfigWidget
 
     if (isSurfaceType() && m_plotStyle.getStyle() != CONTOUR) {
       m_contourWidget->updateConfigData(m_configData);
@@ -1038,8 +1038,8 @@ HardCopyListener::FileFormat GuiQt3dPlot::getFileFormat() {
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
 
-const std::string &GuiQt3dPlot::MenuLabel() {
-  return m_menuText.empty() ? m_name : m_menuText;
+const std::string GuiQt3dPlot::MenuLabel() {
+  return m_menuText.empty() ? m_name : UnitManager::extractValue(m_menuText);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1455,9 +1455,12 @@ void GuiQt3dPlot::setTitle(const std::vector<std::string>& title) {
   if (title.size() == 0)
     return;
 
-#if !HAVE_QGRAPHS
+#if HAVE_QGRAPHS
   if (m_contourWidget)
-    m_contourWidget->setTitle( QString::fromStdString( title[0] ) );
+    m_contourWidget->setTitle(UnitManager::extractValue(title[0]));
+#else
+  if (m_contourWidget)
+    m_contourWidget->setTitle(QString::fromStdString(UnitManager::extractValue(title[0])));
 #endif
 }
 

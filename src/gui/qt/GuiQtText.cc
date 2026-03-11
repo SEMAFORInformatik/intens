@@ -792,9 +792,8 @@ HardCopyListener::PrintType GuiQtText::getPrintType( const HardCopyListener::Fil
 /* --------------------------------------------------------------------------- */
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
-const std::string& GuiQtText::MenuLabel() {
-  static std::string s("TextField");
-  return s;
+const std::string GuiQtText::MenuLabel() {
+  return std::string("TextField");
 }
 
 /* --------------------------------------------------------------------------- */

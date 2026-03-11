@@ -120,7 +120,7 @@ public:
   virtual HardCopyListener::FileFormat getFileFormat();
   virtual const std::string &getName(){ return m_name; }
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat );
-  virtual const std::string &MenuLabel();
+  virtual const std::string MenuLabel();
 
   /** Basisfunktion für den ChannelListener
    */

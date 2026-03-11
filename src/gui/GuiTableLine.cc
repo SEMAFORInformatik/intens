@@ -4,6 +4,7 @@
 #include "gui/GuiTable.h"
 #include "gui/GuiTableLine.h"
 #include "gui/GuiFactory.h"
+#include "gui/UnitManager.h"
 #include "datapool/DataReference.h"
 #include "xfer/XferDataItem.h"
 #include "app/UserAttr.h"
@@ -43,8 +44,8 @@ bool GuiTableLine::setLabel( const std::string &label ){
 /* Label --                                                                    */
 /* --------------------------------------------------------------------------- */
 
-std::string &GuiTableLine::Label(){
-  return m_label;
+std::string GuiTableLine::Label(){
+  return UnitManager::extractValue(m_label);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -378,7 +379,7 @@ void GuiTableLine::serializeXML(std::ostream &os, bool recursive){
   os << " size=\"" << m_tableitems.size() <<"\"";
   os << " rows=\"" << rows <<"\"";
   os << " cols=\"" << cols <<"\"";
-  os << " label=\""<< m_label <<"\"";
+  os << " label=\""<< Label() <<"\"";
   os << ">" << std::endl;
 
   for( int i1=0;i1<rows;++i1 ){

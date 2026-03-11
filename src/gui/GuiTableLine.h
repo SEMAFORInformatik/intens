@@ -46,7 +46,7 @@ public:
   virtual bool setTooltip( const std::string & );
 
   GuiElement::Alignment LabelAlignment() { return m_label_alignment; }
-  std::string &Label();
+  std::string Label();
   std::string &Tooltip();
   void LineSize( int &, int & );
 

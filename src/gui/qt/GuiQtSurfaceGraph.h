@@ -39,7 +39,7 @@ class GuiQtSurfaceGraph : public QQuickWidget, public GuiQt3dBasePlot
     void updateConfigData(ConfigData& configData);
 
     void printLog();
-    ///    QWidget* myWidget() {return this;}
+    virtual void setTitle(const std::string title);
 
   private:
     /** set new data */

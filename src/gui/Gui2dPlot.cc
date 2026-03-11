@@ -404,8 +404,8 @@ char** Gui2dPlot::copyCharArray( char** text ) {
 /* --------------------------------------------------------------------------- */
 /* MenuLabel --                                                                */
 /* --------------------------------------------------------------------------- */
-const std::string &Gui2dPlot::MenuLabel() {
-  return m_menuText.empty() ? m_name : m_menuText;
+const std::string Gui2dPlot::MenuLabel() {
+  return m_menuText.empty() ? m_name : UnitManager::extractValue(m_menuText);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1203,7 +1203,7 @@ bool Gui2dPlot::serializeJson(Json::Value& jsonObj, bool onlyUpdated) {
   if (pheaderText() && pheaderText()[0])
     jsonObj["header_text"] = pheaderText()[0];
   if (pfooterText() && pfooterText()[0])
-    jsonObj["footer_text"] = pfooterText()[0];
+    jsonObj["footer_text"] = UnitManager::extractValue(pfooterText()[0]);
   if (MenuLabel().size())
     jsonObj["menu_label"] = MenuLabel();
   jsonObj["updated"] = updated;
@@ -1395,7 +1395,7 @@ bool Gui2dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated)
   if (pheaderText() && pheaderText()[0])
     element->set_header_text(pheaderText()[0]);
   if (pfooterText() && pfooterText()[0])
-    element->set_footer_text(pfooterText()[0]);
+    element->set_footer_text(UnitManager::extractValue(pfooterText()[0]));
   if (MenuLabel().size())
     element->set_menu_label(MenuLabel());
 
@@ -1751,7 +1751,7 @@ void Gui2dPlot::serializeXML(std::ostream &os, bool recursive) {
   if (pheaderText() && pheaderText()[0])
     os << " header_text=\""<<pheaderText()[0] << "\"";
   if (pfooterText() && pfooterText()[0])
-    os << " footer_text=\""<<pfooterText()[0] << "\"";
+    os << " footer_text=\""<<UnitManager::extractValue(pfooterText()[0]) << "\"";
   if (MenuLabel().size())
     os << " menu_label=\""<<MenuLabel() << "\"";
   os << " id=\""<<getElement()->getElementId()<<"\">" << std::endl;
@@ -2631,7 +2631,8 @@ void Gui2dPlot::refreshAllDataItemIndexedList() {
 bool Gui2dPlot::isScaleUnitUpdated(){
   UnitManager::Unit* xUnit, *yUnit;
   bool ret(false);
-  double yFactorOld, xFactorOld, yFactor, yShift, xFactor, xShift;
+  static double y1FactorOld(1.), y2FactorOld(1.), xFactorOld(1.);
+  double yFactor, yShift, xFactor, xShift;
   GuiPlotDataItem *yItem, *xItem;
   bool use_divide;
   tPlotIterator plotIter;
@@ -2642,15 +2643,14 @@ bool Gui2dPlot::isScaleUnitUpdated(){
       while( it != (*plotIter)->plotItems( axisType[axis] ).end() ) {
         yItem = (*it)->plotDataItem();
         xItem = (*it)->xPlotDataItem();
-        yFactorOld = yItem ? yItem->getScaleFactor() : 1;
-        xFactorOld = xItem ? xItem->getScaleFactor() : 1;
         yUnit = UnitManager::Instance().getUnitData(yItem->Attr()->Unit(false));
         xUnit = UnitManager::Instance().getUnitData(xItem->Attr()->Unit(false));
         yFactor = yUnit ? yUnit->factor : 1.;
         yShift = yUnit ? yUnit->shift : 0;
         xFactor = xUnit ? xUnit->factor : 1.;
         xShift = xUnit ? xUnit->shift : 0;
-        if (yFactor != yFactorOld || yShift != yShift) {
+        if (yFactor != (axis == 0 ? y1FactorOld : y2FactorOld) ||
+            yShift != yShift) {
           use_divide = yUnit ? yUnit->use_divide : false;
           yItem->setScale(new Scale(yFactor, (use_divide ? '/' : '*'), yShift));
           ret = true;
@@ -2660,6 +2660,11 @@ bool Gui2dPlot::isScaleUnitUpdated(){
           xItem->setScale(new Scale(xFactor, (use_divide ? '/' : '*'), xShift));
           ret = true;
         }
+        if (axis == 0)
+          y1FactorOld = yFactor;
+        else
+          y2FactorOld = yFactor;
+        xFactorOld = xFactor;
         ++it;
       }
     }

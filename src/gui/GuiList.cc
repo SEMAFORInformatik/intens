@@ -3,6 +3,7 @@
 #include "gui/GuiTable.h"
 #include "gui/GuiFactory.h"
 #include "gui/GuiPopupMenu.h"
+#include "gui/UnitManager.h"
 #include "gui/qt/QtMultiFontString.h"
 #include "utils/HTMLConverter.h"
 #include "utils/StringUtils.h"
@@ -79,6 +80,13 @@ int GuiList::getMaxRows(){
 void GuiList::setTitle( const std::string &title, GuiElement::Alignment align ) {
   m_title = title;
   m_titleAlign = align;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getTitle --                                                                 */
+/* --------------------------------------------------------------------------- */
+std::string GuiList::getTitle() {
+  return UnitManager::extractValue(m_title);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -617,6 +625,7 @@ const std::string& GuiList::Column::getLabel(){
     }
   }
   else if( !m_label.empty() ){
+    m_label = UnitManager::extractValue(m_label);
   }
   else{
     m_label=m_xfer_label->getLabel();

@@ -244,4 +244,10 @@ return;
   std::cout << " selectionMode: " << m_surface->selectionMode()  << std::endl;
 }
 
+/* --------------------------------------------------------------------------- */
+/* printLog --                                                                 */
+/* --------------------------------------------------------------------------- */
+void GuiQtSurfaceGraph::setTitle(const std::string title){
+  setWindowTitle(QString::fromStdString(title));
+}
 #endif

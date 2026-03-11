@@ -41,6 +41,8 @@ public :
   void printPlot(QPrinter* print=0);
   /** drawCanvas */
   virtual void drawCanvas(QPainter* painter);
+  /** set Title */
+  virtual void setTitle(const std::string title){}
 
 private:
   class ColorMap: public QwtLinearColorMap

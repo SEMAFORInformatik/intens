@@ -377,10 +377,10 @@ public:
   GuiElement::Orientation getNavigation() { return m_navigation; }
 
  protected:
-  const std::string&  getTitle()             { return m_title; }
-  std::string&        getTitleHorizontal()   { return m_title_horizontal; }
-  const std::string&  getTitleVertical()     { return m_title_vertical; }
-  GuiElement::Alignment  getTitleAlignment() { return m_title_alignment; }
+  std::string  getTitle();
+  std::string  getTitleHorizontal();
+  std::string  getTitleVertical();
+  GuiElement::Alignment getTitleAlignment() { return m_title_alignment; }
 
   int getTableRows()         { return m_table_rows; }
   void setTableRows(int r)   { m_table_rows = r; }

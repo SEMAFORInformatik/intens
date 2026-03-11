@@ -7,6 +7,7 @@
 #include "gui/GuiPlotDataItem.h"
 #include "gui/GuiScrolledText.h"
 #include "gui/GuiFactory.h"
+#include "gui/UnitManager.h"
 #include "utils/gettext.h"
 #include "utils/Date.h"
 
@@ -100,7 +101,7 @@ void Gui3dPlot::drawHeaderText() {
   if( m_pheaderText.size() != 0 ) {
     setTitle(m_pheaderText);
 #if 0
-    m_widget->setTitle( QString::fromStdString( m_pheaderText[0] ) );
+    m_widget->setTitle( QString::fromStdString( UnitManager::extractValue(m_pheaderText[0]) ) );
 #if HAVE_QWTPLOT3D
     if ( m_widget3d )
       get3dPlot()->setTitle( QString::fromStdString( m_pheaderText[0] ) );
@@ -341,7 +342,7 @@ bool Gui3dPlot::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
   jsonObj["width"] = m_width;
   jsonObj["height"] = m_height;
   if (!m_pheaderText.empty())
-    jsonObj["header_text"] = m_pheaderText[0];
+    jsonObj["header_text"] = UnitManager::extractValue(m_pheaderText[0]);
   if (m_plotStyle.getStyle() == CONTOUR) {
     jsonObj["draw_contour"] = m_plotStyle.getFlagDrawContours();
     jsonObj["draw_interpolated"] = m_plotStyle.getFlagDrawZones();
@@ -437,7 +438,7 @@ bool Gui3dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated)
   element->mutable_base()->set_width(m_width);
   element->mutable_base()->set_height(m_height);
   if (!m_pheaderText.empty())
-    element->set_header_text(m_pheaderText[0]);
+    element->set_header_text(UnitManager::extractValue(m_pheaderText[0]));
   if (m_plotStyle.getStyle() == CONTOUR) {
     element->set_draw_contour(m_plotStyle.getFlagDrawContours());
     element->set_draw_interpolated(m_plotStyle.getFlagDrawZones());

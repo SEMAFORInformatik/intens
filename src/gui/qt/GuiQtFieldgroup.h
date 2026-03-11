@@ -9,6 +9,8 @@ class QGroupBox;
 class QString;
 class QGridLayout;
 class QWidget;
+class QLabel;
+class QPushButton;
 class MessageQueuePublisher;
 
 class GuiQtFieldgroup : public GuiQtElement, public GuiFieldgroup
@@ -125,6 +127,8 @@ private:
   QWidget              *m_scrollview;
   QWidget              *m_qgroupbox;
   QGridLayout          *m_qgroupboxLayout;
+  QLabel               *m_titleLabel;
+  QPushButton          *m_accordionButton;
   std::vector<GuiQtFieldgroup*> m_clonedFieldgroup;
   MessageQueuePublisher* m_publisher;
   static int            s_timerId;

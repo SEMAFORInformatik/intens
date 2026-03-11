@@ -5,6 +5,7 @@
 #include "parser/errorhandler.h"
 #include "utils/gettext.h"
 #include "gui/GuiFactory.h"
+#include "gui/UnitManager.h"
 #include "app/UiManager.h"
 #include "app/ReportGen.h"
 #include "operator/ReportStream.h"
@@ -18,7 +19,7 @@ ReportStream::ReportStream( const std::string &name, Stream *repstr )
     , m_hidden( false )
     , m_fileFormat( HardCopyListener::Text ){
   m_xslFileName = "Gui2LaTeX.xsl";
-  UImanager::Instance().addHardCopy(m_title, this);
+  UImanager::Instance().addHardCopy(MenuLabel(), this);
 }
 
 ReportStream::~ReportStream(){
@@ -91,6 +92,13 @@ HardCopyListener::PrintType ReportStream::getPrintType( const HardCopyListener::
 }
 
 /* --------------------------------------------------------------------------- */
+/* MenuLabel --                                                                */
+/* --------------------------------------------------------------------------- */
+const std::string ReportStream::MenuLabel(){
+  return UnitManager::extractValue(m_title);
+}
+
+/* --------------------------------------------------------------------------- */
 /* getDefaultSettings --                                                       */
 /* --------------------------------------------------------------------------- */
 bool ReportStream::getDefaultSettings( HardCopyListener::PaperSize &size,
@@ -124,8 +132,8 @@ bool ReportStream::install(){
   GuiMenuButtonListener *lsnr = 0;
 
   lsnr = new SaveButtonListener( this );
-  if( ui.addSaveButton( m_title, lsnr ) ){
-    lsnr->setDialogLabel( m_title );
+  if( ui.addSaveButton(MenuLabel(), lsnr) ){
+    lsnr->setDialogLabel(MenuLabel());
   }
   else{
     delete lsnr;
@@ -145,7 +153,7 @@ bool ReportStream::saveFile( GuiElement *e ){
   ReportGen::getFormats( this, formats );
   GuiFactory::Instance()->showDialogFileSelection
     ( 0
-      , compose(_("Save %1"),m_title)
+      , compose(_("Save %1"),MenuLabel())
       , "PDF (*.pdf)", m_dir
       , &m_saveListener
       , DialogFileSelection::Save

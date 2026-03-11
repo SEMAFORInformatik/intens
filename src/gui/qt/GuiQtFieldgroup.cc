@@ -40,6 +40,8 @@ GuiQtFieldgroup::GuiQtFieldgroup( GuiElement *parent, const std::string &name )
   , m_scrollview(0)
   , m_qgroupbox( 0 )
   , m_qgroupboxLayout( 0 )
+  , m_titleLabel(0)
+  , m_accordionButton(0)
   , m_publisher(0)
 {}
 
@@ -48,6 +50,8 @@ GuiQtFieldgroup::GuiQtFieldgroup( const GuiQtFieldgroup &fg )
   , m_scrollview(0)
   , m_qgroupbox( 0 )
   , m_qgroupboxLayout( 0 )
+  , m_titleLabel(0)
+  , m_accordionButton(0)
   , m_publisher(0)
 {
   std::ostringstream myname;
@@ -453,7 +457,7 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
     }
 
     int h = spacing;// = 6;
-    if( getTitle().size() ){
+    if( !getTitle().empty() ){
       BUG_DEBUG(" - set title '" << getTitle() << "'");
       groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
       // set title alignment
@@ -509,38 +513,38 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
         QPixmap icon;
         if( QtIconManager::Instance().getPixmap(getTitleIcon(), icon ) ){
           label->setPixmap( icon );
+          label->setMaximumSize(icon.size());
         }
-        label->setMaximumSize(icon.size());
         layout->addWidget(label, Qt::AlignLeft);
       }
       // add accordion
       if (hasAccordion()) {
         QPixmap icon;
-        QPushButton *button;
         if(isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionOpenIcon(), icon)){
-          button = new QPushButton(icon, QString::fromStdString(getTitle()));
+          m_accordionButton = new QPushButton(icon, QString::fromStdString(getTitle()));
         }else
           if(!isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon)){
-            button = new QPushButton(icon, QString::fromStdString(getTitle()));
+            m_accordionButton = new QPushButton(icon, QString::fromStdString(getTitle()));
           }else{
             std::string s(isAccordionOpen() ?  "🞃" : "🞂");
-            button = new QPushButton(QString::fromStdString(s + " " + getTitle()));
+            m_accordionButton = new QPushButton(QString::fromStdString(s + " " + getTitle()));
           }
-        button->setFlat(true);
-        button->setCheckable(true);
-        auto s = button->sizeHint();
+        m_accordionButton->setFlat(true);
+        m_accordionButton->setCheckable(true);
+        auto s = m_accordionButton->sizeHint();
         s.setHeight(0.8* s.height());
-        button->setMaximumSize(s);
-        QObject::connect( button, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
-        layout->addWidget(button, Qt::AlignLeft);
+        m_accordionButton->setMaximumSize(s);
+        QObject::connect(m_accordionButton, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)));
+        layout->addWidget(m_accordionButton, Qt::AlignLeft);
       } else
         // add title
         if (!getTitle().empty()) {
-          QLabel *label = new QLabel( QtMultiFontString::getQString(getTitle()) );
+          m_titleLabel = new QLabel( QtMultiFontString::getQString(getTitle()) );
           QFont font = m_qgroupbox->font();
-          label->setFont( QtMultiFontString::getQFont( "@groupboxTitle@", font ) );
-          label->setObjectName( QString::fromStdString("GuiGroupBoxTitle") );
-          layout->addWidget(label, Qt::AlignLeft);
+          m_titleLabel->setFont( QtMultiFontString::getQFont( "@groupboxTitle@", font ) );
+          m_titleLabel->setObjectName( QString::fromStdString("GuiGroupBoxTitle") );
+          layout->setContentsMargins( 0,0,0,0 );
+          layout->addWidget(m_titleLabel, Qt::AlignLeft);
         }
       m_qgroupboxLayout->addWidget(w, 0, 0, 1, -1, Qt::AlignLeft);
       m_qgroupbox->setContentsMargins( 0,0,0,0 );
@@ -680,6 +684,18 @@ void GuiQtFieldgroup::map(){
 void GuiQtFieldgroup::update( UpdateReason reason ){
   if (!myWidget()) return;
   BUG_PARA(BugGui,"GuiQtFieldgroup::update",reason );
+  if (reason == reason_Unit){
+    std::string title(getTitle());
+    if (!title.empty()){
+      if (dynamic_cast<QGroupBox*>(m_qgroupbox)) {
+        dynamic_cast<QGroupBox*>(m_qgroupbox)->setTitle(QtMultiFontString::getQString(title));
+      }else if (m_titleLabel){
+        m_titleLabel->setText(QtMultiFontString::getQString(title));
+      }else if (m_accordionButton){
+        m_accordionButton->setText(QtMultiFontString::getQString(title));
+      }
+    }
+  }
   updateWidgetProperty();
   GuiElementList::iterator it;
   for( it = m_container.begin(); it != m_container.end(); ++it ){

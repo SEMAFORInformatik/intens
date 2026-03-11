@@ -40,7 +40,7 @@ public:
   virtual const std::string &getName(){ return m_pObj->getName(); }
   virtual void setXSLFileName( const std::string &xslFileName ){ m_xslFileName = xslFileName; }
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat );
-  virtual const std::string &MenuLabel();
+  virtual const std::string MenuLabel();
   virtual bool write( InputChannelEvent &event );
   virtual bool write( const std::string &fileName ){ return false; }
   virtual bool write( std::ostream &os );

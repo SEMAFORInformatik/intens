@@ -69,7 +69,7 @@ public:
   virtual FileFormat getFileFormat();
   virtual const std::string &getName();
   virtual bool isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat );
-  virtual const std::string &MenuLabel();
+  virtual const std::string MenuLabel();
   virtual bool write( InputChannelEvent &event );
   virtual bool write( const std::string &fileName );
   virtual bool getDefaultSettings( HardCopyListener::PaperSize &size,

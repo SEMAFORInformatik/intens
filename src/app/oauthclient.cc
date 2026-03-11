@@ -65,8 +65,10 @@ OAuthClient::OAuthClient(const QString &clientEndpoint,
                  &oauth2, &QOAuth2AuthorizationCodeFlow::requestFailed,this,
     [this](const QAbstractOAuth2::Error e) { BUG_INFO("OAuth login failed " << int(e)); });
 
-#if QT_VERSION < 0x060900
   QObject::connect(
+#if QT_VERSION < 0x060900
+                   &oauth2, &QOAuth2AuthorizationCodeFlow::error,this,
+#else
                    &oauth2, &QOAuth2AuthorizationCodeFlow::serverReportedErrorOccurred,this,
       [this](const QString& error, const QString& errorDescription, const QUrl& uri) {
         BUG_WARN("OAuth login failed. Error type: (" << error.toStdString() << "). Error description: " << errorDescription.toStdString());

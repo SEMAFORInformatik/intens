@@ -1,0 +1,58 @@
+DESCRIPTION "NAVIGATOR example: name items";
+
+DATAPOOL
+  STRUCT
+    STRU_1 {
+      STRING {EDITABLE}
+        name,
+        data_item_1,
+        data_item_2
+      ;
+    };
+  STRUCT
+    STRU_2 {
+      STRING {EDITABLE}
+        name,
+        data_item_3,
+        data_item_4
+      ;
+    };
+  STRUCT
+    STRU_MAIN {
+      STRING {EDITABLE}
+        name;
+      STRU_1 stru_1;
+      STRU_2 stru_2;
+    };
+  STRU_MAIN
+    stru_main
+  ;
+END DATAPOOL;
+
+UI_MANAGER
+  NAVIGATOR
+    navigator_identifier
+    ( stru_main[*] )
+  ;
+  FORM
+    form {MAIN, HIDE_CYCLE} (
+      navigator_identifier
+    )
+  , fo_windows {"Text Windows",HIDE_CYCLE}
+    ( LOG_WINDOW, STD_WINDOW )
+  ;
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC
+    INIT {
+      stru_main.name = "Struct Main";
+      stru_main.stru_1.name = "Struct 1";
+      stru_main.stru_2[0].name = "Struct 2[0]";
+      stru_main.stru_2[1].name = "Struct 2[1]";
+      stru_main.stru_2[2].name = "Struct 2[2]";
+      // SAVE(form, "navigator_name.png");
+    }
+  ;
+END FUNCTIONS;
+END.

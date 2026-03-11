@@ -34,7 +34,7 @@ END DATAPOOL;
 UI_MANAGER
   NAVIGATOR
     navigator_identifier
-    { COL ("Label column1" tag_col_1:20,
+    { COL ("Label column1" tag_col_1:20 SORT,
            "Label column2" tag_col_2:10,
            "Label column3" tag_col_3:10)
     }

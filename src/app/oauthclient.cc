@@ -3,8 +3,6 @@
 
 #include "app/oauthclient.h"
 #include "app/AppData.h"
-#include "job/JobAction.h"
-#include "job/JobManager.h"
 #include "job/InitialWorker.h"
 #include "utils/Debugger.h"
 #include "operator/RestService.h"
@@ -64,8 +62,17 @@ OAuthClient::OAuthClient(const QString &clientEndpoint,
                    });
 
   QObject::connect(
-                   &oauth2, &QOAuth2AuthorizationCodeFlow::requestFailed,this,
-      [this](const QAbstractOAuth2::Error _) { BUG_INFO("OAuth login failed"); });
+                 &oauth2, &QOAuth2AuthorizationCodeFlow::requestFailed,this,
+    [this](const QAbstractOAuth2::Error e) { BUG_INFO("OAuth login failed " << int(e)); });
+
+  QObject::connect(
+                   &oauth2, &QOAuth2AuthorizationCodeFlow::serverReportedErrorOccurred,this,
+      [this](const QString& error, const QString& errorDescription, const QUrl& uri) {
+        BUG_WARN("OAuth login failed. Error type: (" << error.toStdString() << "). Error description: " << errorDescription.toStdString());
+        if (!uri.isEmpty()) {
+          BUG_WARN("Error URI: " << uri.toString().toStdString());
+        }
+      });
 
 #if 0
     QObject::connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,

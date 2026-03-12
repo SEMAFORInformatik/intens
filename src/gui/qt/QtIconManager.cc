@@ -76,6 +76,7 @@ bool QtIconManager::getPixmap( const std::string& iconname,
                                QPixmap& pixmap, int width, int height ){
   BUG_PARA(BugGuiIcon,"QtIconManager::getPixmap",iconname);
   ICON_TYPE icon_type;
+  if (iconname.empty()) return false;
 
   std::string file = locateFile( icon_type, iconname );
   if (file.empty()) {

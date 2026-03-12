@@ -447,13 +447,15 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
   m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
   m_qgroupboxLayout->setOriginCorner(Qt::TopLeftCorner );
 
-  if( withFrame() && !hasAccordion()) { // es gibt nur einen Typ
+  if( withFrame() &&
+      (!hasAccordion() || hasAccordion() && getAccordionOpenIcon().empty() && getAccordionClosedIcon().empty()) ) { // accordion
     BUG_DEBUG(" - with frame: " << withFrame());
     QGroupBox* groupbox = new QGroupBox(QtMultiFontString::getQString(getTitle()), parent);
     m_qgroupbox = groupbox;
     if (hasAccordion()) {
-      QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
       groupbox->setCheckable(true);
+      groupbox->setChecked(isAccordionOpen());
+      QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
     }
 
     int h = spacing;// = 6;
@@ -531,6 +533,7 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
           }
         m_accordionButton->setFlat(true);
         m_accordionButton->setCheckable(true);
+        m_accordionButton->setChecked(isAccordionOpen());
         auto s = m_accordionButton->sizeHint();
         s.setHeight(0.8* s.height());
         m_accordionButton->setMaximumSize(s);
@@ -879,10 +882,10 @@ void GuiQtFieldgroup::slot_accordion(bool checked){
         button->setIcon(icon);
       }
   }
-
   for(auto c : m_container){
     for(auto it : static_cast<GuiQtFieldgroupLine*>(c)->m_elements)
-      it->getQtElement()->myWidget()->setVisible(checked);
+      if (it->getQtElement() && it->getQtElement()->myWidget())
+        it->getQtElement()->myWidget()->setVisible(checked);
   }
 }
 

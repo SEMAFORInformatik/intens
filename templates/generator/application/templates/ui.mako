@@ -1,5 +1,5 @@
 // ***************************
-// ${id} select
+// ${type} select
 // ***************************
 LIST g_${id}_select_list {
   TABLESIZE=10

@@ -909,8 +909,27 @@ void GuiQtElement::setDebugTooltip() {
 }
 
 /* -------------------------------------------------------------------------- */
+/* GuiQtElement::polishChildren --                                            */
+/* -------------------------------------------------------------------------- */
+
+void GuiQtElement::polishChildren(QWidget* widget) {
+    if (!widget) return;
+
+    // Polish the widget itself
+    widget->style()->polish(widget);
+
+    // Recursively polish all children
+    for (QObject* obj : widget->children()) {
+        if (QWidget* child = qobject_cast<QWidget*>(obj)) {
+            polishChildren(child);
+        }
+    }
+}
+
+/* -------------------------------------------------------------------------- */
 /* GuiQtElement::updateWidgetProperty --                                      */
 /* -------------------------------------------------------------------------- */
+
 void GuiQtElement::updateWidgetProperty(){
   if (!myWidget())
     return;
@@ -932,8 +951,7 @@ void GuiQtElement::updateWidgetProperty(){
             << "(Type: " << Type() << ", Name: " << getName() << ")");
 
   myWidget()->style()->unpolish(myWidget());
-  myWidget()->style()->polish(myWidget());
-
+  polishChildren(myWidget());
   myWidget()->update();
 }
 

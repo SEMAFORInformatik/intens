@@ -114,6 +114,7 @@ public:
 /*============================================================================*/
 /* private Definitions for Save-Classes & Functions                           */
 /*============================================================================*/
+  void polishChildren(QWidget* widget);
 
 private:
   class FileJobAction : public JobAction

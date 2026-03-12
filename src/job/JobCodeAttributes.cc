@@ -7,7 +7,9 @@
 #include "job/JobStackDataVariable.h"
 #include "gui/GuiElement.h"
 #include "gui/GuiManager.h"
+#include "gui/GuiFieldgroup.h"
 
+INIT_LOGGER();
 
 /* --------------------------------------------------------------------------- */
 /* execute --                                                                  */
@@ -119,4 +121,55 @@ JobElement::OpStatus JobCodeAttrSetValueTimestamp::execute( JobEngine *eng ){
   OpStatus status = v->setValueTimestamp( eng, b );
   BUG_EXIT("Status = " << status );
   return status;
+}
+
+/* --------------------------------------------------------------------------- */
+/* execute --                                                                  */
+/* --------------------------------------------------------------------------- */
+
+JobElement::OpStatus JobCodeSetAccordionExpanded::execute( JobEngine *eng ){
+  BUG_DEBUG("JobCodeSetAccordionExpanded::execute");
+  int expanded(0);
+
+  // get data
+  JobStackDataPtr dat_str( eng->pop() );
+  if (dat_str.isnt_valid()) return op_FatalError;
+  if (!dat_str->getIntegerValue(expanded)) {
+    // discard
+    // return op_FatalError;
+  }
+  auto fieldgroup = m_element->getFieldgroup();
+
+  // set accordion visibility
+  if (expanded >= 0){
+    fieldgroup->setAccordionExpanded(expanded);
+  }
+
+  BUG_DEBUG("normal exit");
+  return op_Ok;
+}
+
+/* --------------------------------------------------------------------------- */
+/* execute --                                                                  */
+/* --------------------------------------------------------------------------- */
+
+JobElement::OpStatus JobCodeSetFieldgroupTitle::execute( JobEngine *eng ){
+  BUG_DEBUG("JobCodeSetFieldgroupTitle::execute");
+  std::string title;
+
+  // get data
+  JobStackDataPtr dat_str( eng->pop() );
+  if (dat_str.isnt_valid()) return op_FatalError;
+  if (!dat_str->getStringValue(title)){
+    return op_FatalError;
+  }
+  auto fieldgroup = m_element->getFieldgroup();
+
+  // set accordion title
+  if (!title.empty()){
+    fieldgroup->setFieldgroupTitle(title);
+  }
+
+  BUG_DEBUG("normal exit");
+  return op_Ok;
 }

@@ -890,6 +890,8 @@ public:
   virtual int  opSetValueTimestamp();
   virtual int  opSetStylesheet();
   virtual int  opSetStylesheet(const std::string &elementId);
+  virtual int  opSetFieldgroupTitle(const std::string &elemId);
+  virtual int  opSetAccordionExpanded(const std::string &elemId);
   virtual GuiElement   *getNamedElement( const std::string &elementId );
   virtual int  opUpdateGuiElement( const std::string &elementId );
   virtual bool opClearValues();

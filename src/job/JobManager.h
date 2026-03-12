@@ -748,6 +748,12 @@ public:
   int opUnsetColorBit( JobFunction *func ) { return func->attach( &m_op_color_unsetbit ); }
   int opSetDataTimestamp( JobFunction *func ) { return func->attach( &m_op_data_timestamp ); }
   int opSetValueTimestamp( JobFunction *func ) { return func->attach( &m_op_value_timestamp ); }
+  int opSetAccordionExpanded( JobFunction *func, GuiElement *el ) {
+    return func->attach( new JobCodeSetAccordionExpanded(el) );
+  }
+  int opSetFieldgroupTitle( JobFunction *func, GuiElement *el ) {
+    return func->attach( new JobCodeSetFieldgroupTitle(el) );
+  }
   int opGuiElementMethod( JobFunction *func, GuiElement *gui_el);
   int opReplaceGuiElement( JobFunction *func, GuiElement *old_el, GuiElement *new_el );
   int opSetGuiFieldgroupRange( JobFunction *func, GuiFieldgroup *fg );

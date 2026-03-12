@@ -115,4 +115,40 @@ public:
   virtual OpStatus execute( JobEngine * );
 };
 
+/** Set Accordion Expanded flag to GuiFieldgroup
+ */
+class JobCodeSetAccordionExpanded : public JobCodeExec
+{
+public:
+
+  JobCodeSetAccordionExpanded( GuiElement *el ): m_element( el ){}
+  virtual ~JobCodeSetAccordionExpanded(){}
+  /** Diese Funktion ruft die Funktion setAccordionTitle() eines GuiElements auf.
+      Der Typ des GuiElements muss Fieldgroup sein.
+      @param eng Pointer auf das aufrufende JobEngine Objekt.
+      @return Status des laufenden Jobs (siehe JobElement.h)
+  */
+  virtual OpStatus execute( JobEngine * );
+private:
+  GuiElement   *m_element;
+};
+
+/** Set Accordion Expanded flag to GuiFieldgroup
+ */
+class JobCodeSetFieldgroupTitle : public JobCodeExec
+{
+public:
+
+  JobCodeSetFieldgroupTitle( GuiElement *el ): m_element( el ){}
+  virtual ~JobCodeSetFieldgroupTitle(){}
+  /** Diese Funktion ruft die Funktion setFieldgroupTitle() eines GuiElements auf.
+      Der Typ des GuiElements muss Fieldgroup sein.
+      @param eng Pointer auf das aufrufende JobEngine Objekt.
+      @return Status des laufenden Jobs (siehe JobElement.h)
+  */
+  virtual OpStatus execute( JobEngine * );
+private:
+  GuiElement   *m_element;
+};
+
 #endif

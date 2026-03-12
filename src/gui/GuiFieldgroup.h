@@ -110,6 +110,10 @@ public:
   void setAccordionClosedIcon(const std::string &icon) { m_accordion_closed_icon = icon; }
   /** get Accordion closed icon */
   std::string& getAccordionClosedIcon() { return m_accordion_closed_icon; }
+  /** set Fielgroup title */
+  virtual void setFieldgroupTitle(const std::string &title) = 0;
+  /** set Accordion Expanded Flag */
+  virtual void setAccordionExpanded(bool expand) = 0;
 
   /** set WebApi Publish data option */
   void setWebApiPublish() { m_webapi_publish = true; }

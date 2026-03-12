@@ -608,6 +608,7 @@ void Flexer::initRwTabMap(){
   m_rwTabMap.insert(   "TIMER"           ,tTIMER       );
   m_rwTabMap.insert(   "TIMESTAMP"       ,tTIMESTAMP   );
   m_rwTabMap.insert(   "TIMETABLE"       ,tTIMETABLE   );
+  m_rwTabMap.insert(   "TITLE"           ,tTITLE       );
   m_rwTabMap.insert(   "TO_STRING_DATETIME"   ,tTO_STRING_DATETIME);
   m_rwTabMap.insert(   "TO_STRING_TIME"  ,tTO_STRING_TIME);
   m_rwTabMap.insert(   "TOGGLE"          ,tTOGGLE      );

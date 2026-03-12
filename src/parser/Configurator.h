@@ -906,6 +906,8 @@ class Configurator {
   virtual int  opSetDataTimestamp() = 0;
   virtual int  opSetStylesheet() = 0;
   virtual int  opSetStylesheet(const std::string &elementId) = 0;
+  virtual int  opSetFieldgroupTitle(const std::string &elemId) = 0;
+  virtual int  opSetAccordionExpanded(const std::string &elemId) = 0;
   virtual int  opSetValueTimestamp() = 0;
   virtual GuiElement   *getNamedElement( const std::string &elementId ) = 0;
   virtual int  opUpdateGuiElement( const std::string &elementId ) = 0;

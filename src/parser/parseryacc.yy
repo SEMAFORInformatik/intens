@@ -119,7 +119,7 @@ static XferDataItem::ParameterType parametertype;
 %token  tTABLESIZE tSTEP tRANGE tOFFSET
 %token  tALARM_LEVEL tALARM_COLOR tINVERTED
 %token  tJUSTIFY tJUSTRIGHT tJUSTLEFT tJUSTCENTER tSTRETCH tEXPAND tSCROLL tALIGN
-%token  tOVERLAY tACCORDION
+%token  tOVERLAY tACCORDION tTITLE
 %token  tTABLE tLIST tSORT_CRITERIA tORIENTATION tHORIZONTAL tVERTICAL tNAVIGATION tMARGIN tROTATE_180
 %token  tPOSITION
 %token  tARROWS
@@ -8633,6 +8633,16 @@ job_set_attributes /* DOCUMENTATION:UNFOLD */
       {
         $$ = $3;
         configurator -> opSetColorBit();
+      }
+  | tTITLE ','  tID_FIELDGROUP ',' job_data_reference
+      {
+        $$ = $5;
+        configurator -> opSetFieldgroupTitle(*$3);
+      }
+  | tEXPAND ','  tID_FIELDGROUP ',' job_data_reference
+      {
+        $$ = $5;
+        configurator -> opSetAccordionExpanded(*$3);
       }
   ;
 job_data_reference_boolean /* DOCUMENTATION:DIAGRAM */

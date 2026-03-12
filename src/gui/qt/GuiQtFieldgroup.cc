@@ -441,6 +441,7 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
   // set margins, spacing, ...
   int margin  = getMargin();
   int spacing = getSpacing();
+  std::string title_prefix;
 
   m_qgroupboxLayout = new QGridLayout();
   m_qgroupboxLayout->setSpacing( spacing );
@@ -455,13 +456,15 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
     if (hasAccordion()) {
       groupbox->setCheckable(true);
       groupbox->setChecked(isAccordionOpen());
+      groupbox->setStyleSheet("QGroupBox::indicator {width: 0; height: 0; margin: 0; padding: 0;}");
+      title_prefix = isAccordionOpen() ?  "🞃 " : "🞂 ";
       QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
     }
 
     int h = spacing;// = 6;
     if( !getTitle().empty() ){
       BUG_DEBUG(" - set title '" << getTitle() << "'");
-      groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
+      groupbox->setTitle( QtMultiFontString::getQString(title_prefix + getTitle()) );
       // set title alignment
       std::string alignStr;
       switch (getTitleAlignment()) {
@@ -492,7 +495,6 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
       // stylesheet font-weight will not be inheritance to childs (unlike font do)
       if ( (int)font.weight() > QFont::Normal ) {
         BUG_DEBUG(" - weight not normal");
-        groupbox->setTitle( QtMultiFontString::getQString(getTitle()) );
         font.setWeight(QFont::Normal);
         qss  += " QGroupBox { font-weight: bold; } ";
       }
@@ -528,17 +530,17 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
           if(!isAccordionOpen() && QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon)){
             m_accordionButton = new QPushButton(icon, QString::fromStdString(getTitle()));
           }else{
-            std::string s(isAccordionOpen() ?  "🞃" : "🞂");
-            m_accordionButton = new QPushButton(QString::fromStdString(s + " " + getTitle()));
+            std::string s(isAccordionOpen() ?  "🞃 " : "🞂 ");
+            m_accordionButton = new QPushButton(QString::fromStdString(s + getTitle()));
           }
         m_accordionButton->setFlat(true);
         m_accordionButton->setCheckable(true);
         m_accordionButton->setChecked(isAccordionOpen());
-        auto s = m_accordionButton->sizeHint();
-        s.setHeight(0.8* s.height());
-        m_accordionButton->setMaximumSize(s);
+        m_accordionButton->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding) );
+
         QObject::connect(m_accordionButton, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)));
-        layout->addWidget(m_accordionButton, Qt::AlignLeft);
+        layout->addWidget(m_accordionButton);
+        layout->setStretchFactor(m_accordionButton, 100);
       } else
         // add title
         if (!getTitle().empty()) {
@@ -549,7 +551,7 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
           layout->setContentsMargins( 0,0,0,0 );
           layout->addWidget(m_titleLabel, Qt::AlignLeft);
         }
-      m_qgroupboxLayout->addWidget(w, 0, 0, 1, -1, Qt::AlignLeft);
+      m_qgroupboxLayout->addWidget(w, 0, 0, 1, -1/*, Qt::AlignLeft*/);
       m_qgroupbox->setContentsMargins( 0,0,0,0 );
       m_qgroupboxLayout->setContentsMargins(margin,margin,margin,margin);
     }
@@ -688,16 +690,7 @@ void GuiQtFieldgroup::update( UpdateReason reason ){
   if (!myWidget()) return;
   BUG_PARA(BugGui,"GuiQtFieldgroup::update",reason );
   if (reason == reason_Unit){
-    std::string title(getTitle());
-    if (!title.empty()){
-      if (dynamic_cast<QGroupBox*>(m_qgroupbox)) {
-        dynamic_cast<QGroupBox*>(m_qgroupbox)->setTitle(QtMultiFontString::getQString(title));
-      }else if (m_titleLabel){
-        m_titleLabel->setText(QtMultiFontString::getQString(title));
-      }else if (m_accordionButton){
-        m_accordionButton->setText(QtMultiFontString::getQString(title));
-      }
-    }
+    setFieldgroupTitle(getTitle());
   }
   updateWidgetProperty();
   GuiElementList::iterator it;
@@ -866,26 +859,69 @@ void GuiQtFieldgroup::getSize(int &w, int &h){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtFieldgroup::slot_accordion(bool checked){
-  QPushButton *button = qobject_cast<QPushButton *>(sender());
-  QPixmap icon;
-  if (button){
+  auto pushbutton = qobject_cast<QPushButton *>(sender());
+  auto groupbox = qobject_cast<QGroupBox *>(sender());
+
+  if (pushbutton || groupbox){
+    QPixmap icon;
     if(checked && QtIconManager::Instance().getPixmap(getAccordionOpenIcon(), icon)){
-      button->setIcon(icon);
-      button->setText(QString::fromStdString(getTitle()));
-    }else
-      if(!checked && QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon)){
-        button->setIcon(icon);
-        button->setText(QString::fromStdString(getTitle()));
-      }else{
-        std::string s(checked ?  "🞃" : "🞂");
-        button->setText(QString::fromStdString(s + " " + getTitle()));
-        button->setIcon(icon);
+      if (pushbutton){
+        pushbutton->setIcon(icon);
+        pushbutton->setText(QString::fromStdString(getTitle()));
       }
+    }else{
+      if(!checked && QtIconManager::Instance().getPixmap(getAccordionClosedIcon(), icon)){
+        if (pushbutton){
+          pushbutton->setIcon(icon);
+          pushbutton->setText(QString::fromStdString(getTitle()));
+        }
+      }else{
+        std::string s(checked ?  "🞃 " : "🞂 ");
+        if (pushbutton){
+          pushbutton->setText(QString::fromStdString(s + getTitle()));
+          pushbutton->setIcon(icon);
+        }else{
+          groupbox->setTitle(QString::fromStdString(s + getTitle()));
+        }
+      }
+    }
   }
   for(auto c : m_container){
     for(auto it : static_cast<GuiQtFieldgroupLine*>(c)->m_elements)
       if (it->getQtElement() && it->getQtElement()->myWidget())
         it->getQtElement()->myWidget()->setVisible(checked);
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* setFieldgroupTitle --                                                       */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtFieldgroup::setFieldgroupTitle(const std::string &title){
+  if (!title.empty()){
+    GuiFieldgroup::setTitle(title);
+    if (dynamic_cast<QGroupBox*>(m_qgroupbox)) {
+      std::string s(hasAccordion() ? (dynamic_cast<QGroupBox*>(m_qgroupbox)->isChecked() ?  "🞃 " : "🞂 ") : "");
+      dynamic_cast<QGroupBox*>(m_qgroupbox)->setTitle(QtMultiFontString::getQString(s +  title));
+    }else if (m_titleLabel){
+      m_titleLabel->setText(QtMultiFontString::getQString(title));
+    }else if (m_accordionButton){
+      std::string s(hasAccordion() ? (m_accordionButton->isChecked() ?  "🞃 " : "🞂 ") : "");
+      m_accordionButton->setText(QtMultiFontString::getQString(s + title));
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* setAccordionExpanded --                                                     */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtFieldgroup::setAccordionExpanded(bool open){
+  slot_accordion(open);
+  if (dynamic_cast<QGroupBox*>(m_qgroupbox)) {
+    dynamic_cast<QGroupBox*>(m_qgroupbox)->setChecked(open);
+  }else if (m_accordionButton){
+    m_accordionButton->setChecked(open);
   }
 }
 

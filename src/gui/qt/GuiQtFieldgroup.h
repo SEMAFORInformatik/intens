@@ -99,6 +99,8 @@ public:
   virtual bool serializeContainerElements(in_proto::ElementList* eles, in_proto::FieldGroup* element, bool onlyUpdated = false);
 #endif
   virtual bool serializeContainerElements(Json::Value& jsonObj, bool onlyUpdated = false);
+  virtual void setFieldgroupTitle(const std::string &title);
+  virtual void setAccordionExpanded(bool open);
 /*=============================================================================*/
 /* public member functions                                                     */
 /*=============================================================================*/

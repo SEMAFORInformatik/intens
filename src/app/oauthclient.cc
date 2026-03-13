@@ -52,6 +52,11 @@ OAuthClient::OAuthClient(const QString &clientEndpoint,
 #endif
   oauth2.setAuthorizationUrl(url.toDisplayString(QUrl::RemoveUserInfo));
   oauth2.setClientIdentifier(url.userName());
+  BUG_DEBUG("clientIdentifier: " << url.userName().toStdString());
+#if QT_VERSION >= 0x060800
+  oauth2.setPkceMethod(QOAuth2AuthorizationCodeFlow::PkceMethod::S256);
+#endif
+
 
   QObject::connect(&oauth2, &QOAuth2AuthorizationCodeFlow::statusChanged,this,
                    [this](QAbstractOAuth::Status status) {
@@ -63,7 +68,34 @@ OAuthClient::OAuthClient(const QString &clientEndpoint,
 
   QObject::connect(
                  &oauth2, &QOAuth2AuthorizationCodeFlow::requestFailed,this,
-    [this](const QAbstractOAuth2::Error e) { BUG_INFO("OAuth login failed " << int(e)); });
+    [this](const QAbstractOAuth2::Error e) {
+      BUG_WARN("OAuth login failed " << int(e));
+      switch (e) {
+        case QAbstractOAuth2::Error::NetworkError:
+            BUG_WARN("Network error");
+            break;
+        case QAbstractOAuth2::Error::ServerError:
+            BUG_WARN("Server error");
+            break;
+        case QAbstractOAuth2::Error::OAuthTokenNotFoundError:
+            BUG_WARN("Token not found");
+            break;
+        case QAbstractOAuth::Error::OAuthTokenSecretNotFoundError:
+            BUG_WARN("Token secret not found error");
+            break;
+        case QAbstractOAuth::Error::OAuthCallbackNotVerified:
+            BUG_WARN("Callback not verified");
+            break;
+#if QT_VERSION >= 0x060900
+        case QAbstractOAuth::Error::ClientError:
+            BUG_WARN("Client error");
+            break;
+        case QAbstractOAuth::Error::ExpiredError:
+            BUG_WARN("Expired error");
+          break;
+#endif
+        }
+    });
 
   QObject::connect(
 #if QT_VERSION < 0x060900

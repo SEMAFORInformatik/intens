@@ -148,7 +148,7 @@ void GuiQwtContourPlotData::getIndex(double x, double y, int& ix, int& iy)  cons
     double diffMax=maxDiffDelta;
     std::vector<double>::const_iterator itX, itY;
     for(itX = m_xvalues.begin(), itY = m_yvalues.begin();
-        itX != m_xvalues.end(), itY != m_yvalues.end();
+        itX != m_xvalues.end() && itY != m_yvalues.end();
         ++itX, ++itY) {
       double d = sqrt(pow((*itX - x), 2) + pow((*itY - y), 2));
       if (d < diffMax){

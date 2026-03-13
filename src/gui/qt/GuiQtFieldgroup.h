@@ -30,51 +30,51 @@ protected:
 /* public member functions of GuiElement                                       */
 /*=============================================================================*/
 public:
-  virtual GuiElement::ElementType Type() { return GuiElement::type_Fieldgroup; }
+  GuiElement::ElementType Type() override { return GuiElement::type_Fieldgroup; }
 
-  virtual void create();
-  virtual void manage();
-  virtual void unmanage();
-  virtual void map();
-  virtual void unmap();
+  void create() override;
+  void manage() override;
+  void unmanage() override;
+  void map() override;
+  void unmap() override;
   virtual void onClicked();
-  virtual void enable();
-  virtual void disable();
-  virtual bool destroy();
-  virtual void update( UpdateReason );
+  void enable() override;
+  void disable() override;
+  bool destroy() override;
+  void update( UpdateReason ) override;
   /** change indicator */
-  virtual bool hasChanged(TransactionNumber trans, XferDataItem* xfer=0, bool show=false);
-  virtual void setFrame( FlagStatus s )  { GuiFieldgroup::setFrame(s); }
-  virtual bool withFrame() { return GuiFieldgroup::withFrame(); }
-  virtual void setScrollbar( ScrollbarType sb );
+  bool hasChanged(TransactionNumber trans, XferDataItem* xfer=0, bool show=false) override;
+  void setFrame( FlagStatus s ) override  { GuiFieldgroup::setFrame(s); }
+  bool withFrame() override { return GuiFieldgroup::withFrame(); }
+  void setScrollbar( ScrollbarType sb ) override;
   virtual bool withScrollbars()          { return m_container.withScrollbars(); }
-  virtual void setUseRuler() { m_container.setUseRuler(); }
-  virtual bool cloneable() { return true; }
-  virtual GuiElement *clone();
-  virtual void getCloneList(std::vector<GuiElement*>& cList) const;
-  virtual BasicStream *streamableObject();
+  void setUseRuler() override { m_container.setUseRuler(); }
+  bool cloneable() override { return true; }
+  GuiElement *clone() override;
+  void getCloneList(std::vector<GuiElement*>& cList) const override;
+  BasicStream *streamableObject() override;
 
-  virtual QWidget* myWidget();
+  QWidget* myWidget() override;
 
   /** Fragt nach der ExpandPolicy des QtElements.
    */
-  virtual Qt::Orientations getExpandPolicy();
+  Qt::Orientations getExpandPolicy() override;
   /** Fragt nach der ExpandPolicy des QtElements fuer den Container.
    */
-  virtual GuiElement::Orientation getContainerExpandPolicy();
+  GuiElement::Orientation getContainerExpandPolicy() override;
   /** Fragt nach der ExpandPolicy des QtElements fuer den Dialog.
    */
-  virtual GuiElement::Orientation getDialogExpandPolicy();
+  GuiElement::Orientation getDialogExpandPolicy() override;
 
-  virtual void serializeXML(std::ostream &os, bool recursive = false);
-  virtual bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false);
+  void serializeXML(std::ostream &os, bool recursive = false) override;
+  bool serializeJson(Json::Value& jsonObj, bool onlyUpdated = false) override;
 #if HAVE_PROTOBUF
-  virtual bool serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated = false);
+  bool serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated = false) override;
 #endif
-  virtual void getVisibleElement(GuiElementList& res);
-  virtual std::string variantMethod(const std::string& method,
+  void getVisibleElement(GuiElementList& res) override;
+  std::string variantMethod(const std::string& method,
                                     const Json::Value& jsonArgs,
-                                    JobEngine *eng) {
+                                    JobEngine *eng) override {
     return GuiFieldgroup::variantMethod(method, jsonArgs, eng);
   }
 
@@ -82,31 +82,31 @@ public:
 /* public member functions of GuiFieldgroup                                    */
 /*=============================================================================*/
 public:
-  virtual void setOrientation(GuiElement::Orientation o) { GuiFieldgroup::setOrientation(o); }
-  virtual void setNavigation( GuiElement::Orientation o) { GuiFieldgroup::setNavigation(o); }
-  virtual bool handleTableAction(GuiTableActionFunctor &func) { return GuiFieldgroup::handleTableAction(func); }
-  virtual void nextTableAction(bool error) { GuiFieldgroup::nextTableAction(error); }
+  void setOrientation(GuiElement::Orientation o) override { GuiFieldgroup::setOrientation(o); }
+  void setNavigation( GuiElement::Orientation o) override { GuiFieldgroup::setNavigation(o); }
+  bool handleTableAction(GuiTableActionFunctor &func) override { return GuiFieldgroup::handleTableAction(func); }
+  void nextTableAction(bool error) override { GuiFieldgroup::nextTableAction(error); }
   /** get stretch factor */
-  virtual int getStretchFactor( GuiElement::Orientation orient );
-  virtual void attach( GuiElement * ) { assert( false ); }
+  int getStretchFactor( GuiElement::Orientation orient ) override;
+  void attach( GuiElement * ) override { assert( false ); }
 
-  virtual void showColumn(int columnIdx, bool visible, int rowOffset=0);
+  void showColumn(int columnIdx, bool visible, int rowOffset=0) override;
 
-  virtual GuiElement * getElement();
-  virtual GuiFieldgroup * getFieldgroup() { return this; }
-  virtual void serializeContainerElements( std::ostream &os );
+  GuiElement * getElement() override;
+  GuiFieldgroup * getFieldgroup() override { return this; }
+  void serializeContainerElements( std::ostream &os ) override;
 #if HAVE_PROTOBUF
-  virtual bool serializeContainerElements(in_proto::ElementList* eles, in_proto::FieldGroup* element, bool onlyUpdated = false);
+  bool serializeContainerElements(in_proto::ElementList* eles, in_proto::FieldGroup* element, bool onlyUpdated = false) override;
 #endif
-  virtual bool serializeContainerElements(Json::Value& jsonObj, bool onlyUpdated = false);
-  virtual void setFieldgroupTitle(const std::string &title);
-  virtual void setAccordionExpanded(bool open);
+  bool serializeContainerElements(Json::Value& jsonObj, bool onlyUpdated = false) override;
+  void setFieldgroupTitle(const std::string &title) override;
+  void setAccordionExpanded(bool open) override;
 /*=============================================================================*/
 /* public member functions                                                     */
 /*=============================================================================*/
 public:
   virtual void getSize(int &x, int &y);
-  void timerEvent (QTimerEvent * event);
+  void timerEvent (QTimerEvent * event) override;
   void publishData();
 
 /*=============================================================================*/

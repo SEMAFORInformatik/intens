@@ -26,8 +26,15 @@ void GuiQt3dBasePlot::ConfigData::init(Gui3dPlot::Style plotStyle) {
     rotationX = 45.0;
     rotationY = 45.0;
     break;
+  case Gui3dPlot::NONE:
   case Gui3dPlot::SURFACE:
     plotType = "SURFACE";
+    zoom = 80.0;
+    rotationX = 45.0;
+    rotationY = 45.0;
+    break;
+  case Gui3dPlot::SCATTER:
+    plotType = "SCATTER";
     zoom = 80.0;
     rotationX = 45.0;
     rotationY = 45.0;

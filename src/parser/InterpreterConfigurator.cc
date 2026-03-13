@@ -8909,9 +8909,15 @@ int InterpreterConfigurator::opSetStylesheet() {
 // - opSetFieldgroupTitle
 //======================================================================//
 int InterpreterConfigurator::opSetFieldgroupTitle(const std::string &elemId) {
-  GuiElement *e = GuiElement::findElement( elemId );
-  if( e == 0 ){
-    ParserError( compose(_("Undeclared GuiElement '%1'."), elemId) );
+  GuiElement *e = 0;
+  if(!elemId.empty()){
+    e = GuiElement::findElement( elemId );
+    if( e == 0 ){
+      ParserError( compose(_("Undeclared Fieldgroup '%1'."), elemId) );
+    }
+    if( e->Type() != GuiElement::type_Fieldgroup ){
+      ParserError( compose(_("'%1' is not of type FIELDGROUP."), elemId) );
+    }
   }
   return JobManager::Instance().opSetFieldgroupTitle( m_rep->function, e );
 }
@@ -8919,9 +8925,15 @@ int InterpreterConfigurator::opSetFieldgroupTitle(const std::string &elemId) {
 // - opSetAccordionExpanded
 //======================================================================//
 int InterpreterConfigurator::opSetAccordionExpanded(const std::string &elemId) {
-  GuiElement *e = GuiElement::findElement( elemId );
-  if( e == 0 ){
-    ParserError( compose(_("Undeclared GuiElement '%1'."), elemId) );
+  GuiElement *e = 0;
+  if(!elemId.empty()){
+    e = GuiElement::findElement( elemId );
+    if( e == 0 ){
+      ParserError( compose(_("Undeclared Fieldgroup '%1'."), elemId) );
+    }
+    if( e->Type() != GuiElement::type_Fieldgroup ){
+      ParserError( compose(_("'%1' is not of type FIELDGROUP."), elemId) );
+    }
   }
   return JobManager::Instance().opSetAccordionExpanded( m_rep->function, e );
 }

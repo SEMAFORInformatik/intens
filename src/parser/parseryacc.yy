@@ -383,6 +383,7 @@ static XferDataItem::ParameterType parametertype;
 %type <val_integer>    job_disable_drag job_disable_drag_object_list job_disable_drag_object
 %type <val_integer>    job_enable_disable_cycle
 %type <val_integer>    job_set_attributes job_unset_attributes
+%type <val_integer>    job_set_attributes_title job_set_attributes_expand
 %type <val_integer>    job_update job_update_element_list job_update_element
 %type <val_integer>    job_ref_with_wildcards
 %type <val_integer>    job_size job_data_size job_index
@@ -8634,16 +8635,11 @@ job_set_attributes /* DOCUMENTATION:UNFOLD */
         $$ = $3;
         configurator -> opSetColorBit();
       }
-  | tTITLE ','  tID_FIELDGROUP ',' job_data_reference
+  | tTITLE ',' job_set_attributes_title
       {
-        $$ = $5;
-        configurator -> opSetFieldgroupTitle(*$3);
+        $$ = $3;
       }
-  | tEXPAND ','  tID_FIELDGROUP ',' job_data_reference
-      {
-        $$ = $5;
-        configurator -> opSetAccordionExpanded(*$3);
-      }
+  | tEXPAND ',' job_set_attributes_expand
   ;
 job_data_reference_boolean /* DOCUMENTATION:DIAGRAM */
   : job_data_reference job_set_attr_boolean
@@ -8656,6 +8652,40 @@ job_set_attr_boolean /* DOCUMENTATION:UNFOLD */
       { configurator -> opPushInteger( 1 ); /* true */
       }
   | ',' job_boolean_expression
+  ;
+job_set_attributes_title /* DOCUMENTATION:UNFOLD */
+  : tID_FIELDGROUP ',' job_data_reference
+      {
+        $$ = $3;
+        configurator -> opSetFieldgroupTitle(*$1);
+      }
+  | job_data_reference ',' job_data_reference
+      {
+        $$ = $3;
+        configurator -> opSetFieldgroupTitle("");
+      }
+  | string_constant ',' job_data_reference
+      {
+        $$ = $3;
+        configurator -> opSetFieldgroupTitle(*$1);
+      }
+  ;
+job_set_attributes_expand /* DOCUMENTATION:UNFOLD */
+  : tID_FIELDGROUP ',' job_data_reference
+      {
+        $$ = $3;
+        configurator -> opSetAccordionExpanded(*$1);
+      }
+  | job_data_reference ',' job_data_reference
+      {
+        $$ = $3;
+        configurator -> opSetAccordionExpanded("");
+      }
+  | string_constant ',' job_data_reference
+      {
+        $$ = $3;
+        configurator -> opSetAccordionExpanded(*$1);
+      }
   ;
 
 job_unset_attributes /* DOCUMENTATION:UNFOLD */

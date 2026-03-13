@@ -311,25 +311,28 @@ data statement          & description \\
 \input{diagrams/set_statement}
 \input{diagrams/job_data_reference_boolean}
 
-These statements are used to dynamically change the attributes of DATAPOOL elements at runtime. \\
-\label{fu:set:statement}
+These statements are used to dynamically change the attributes of \DATAPOOL{} elements or \FIELDGROUP s at runtime. \\
 
 \index{SET@\SET!function statement}
 \index{SET!LOCK}
 \index{SET!EDITABLE}
+\index{SET!TIMESTAMP}
 \index{SET!COLOR}
 \index{SET!COLORBIT}
-\index{SET!TIMESTAMP}
+\index{SET!TITLE}
+\index{SET!EXPAND}
 \index{UNSET@\UNSET!function statement}
 \index{UNSET!LOCK}
 \index{UNSET!EDITABLE}
-\index{UNSET!COLORBIT}
 \index{UNSET!TIMESTAMP}
+\index{UNSET!COLORBIT}
 \index{LOCK@\LOCK!function statement (set/unset)}
 \index{EDITABLE@\EDITABLE!function statement (set/unset)}
 \index{TIMESTAMP@\TIMESTAMP!function statement (set/unset)}
 \index{COLOR@\COLOR!function statement (set)}
 \index{COLORBIT@\COLORBIT!function statement (set/unset)}
+\index{TITLE@\TITLE!function statement (set)}
+\index{EXPAND@\EXPAND!function statement (set)}
 \index{FALSE@\FALSE!function statement (set/unset)}
 \index{TRUE@\TRUE!function statement (set/unset)}
 \index{TOUCH@\TOUCH!function statement}
@@ -345,6 +348,8 @@ set statement    & description \\
                     & Previously set colors will be lost. \\
 \COLORBIT           & \SET{} the color to corresponding value 1-8. \\
                     & \UNSET ting higher level color (smaller value), the item is displayed whith next lower lever color. \\
+\TITLE              & \SET{} the title of the \FIELDGROUP{} to the given string value (third argument). \\
+\EXPAND             & Expand or collapse the \ACCORDION{} \FIELDGROUP{}. \\
 \TOUCH              & Sets the attribute timestamp of \verb+job_data_reference+. This causes the next gui update
                       to update the gui elements. \newline
                       The data timestamp is not touched, so \verb+MODIFIED ( job_data_reference )+ stays at it was. \\

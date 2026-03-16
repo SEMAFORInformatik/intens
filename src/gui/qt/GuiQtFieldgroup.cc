@@ -898,6 +898,12 @@ void GuiQtFieldgroup::slot_accordion(bool checked){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtFieldgroup::setFieldgroupTitle(const std::string &title){
+  // handle clones
+  for (auto clone: m_clonedFieldgroup){
+    clone->setAccordionExpanded(open);
+  }
+
+  // set title
   if (!title.empty()){
     GuiFieldgroup::setTitle(title);
     if (dynamic_cast<QGroupBox*>(m_qgroupbox)) {
@@ -917,6 +923,12 @@ void GuiQtFieldgroup::setFieldgroupTitle(const std::string &title){
 /* --------------------------------------------------------------------------- */
 
 void GuiQtFieldgroup::setAccordionExpanded(bool open){
+  // handle clones
+  for (auto clone: m_clonedFieldgroup){
+    clone->setAccordionExpanded(open);
+  }
+
+  // set checked flag
   slot_accordion(open);
   if (dynamic_cast<QGroupBox*>(m_qgroupbox)) {
     dynamic_cast<QGroupBox*>(m_qgroupbox)->setChecked(open);

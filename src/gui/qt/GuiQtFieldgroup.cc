@@ -900,7 +900,7 @@ void GuiQtFieldgroup::slot_accordion(bool checked){
 void GuiQtFieldgroup::setFieldgroupTitle(const std::string &title){
   // handle clones
   for (auto clone: m_clonedFieldgroup){
-    clone->setAccordionExpanded(open);
+    clone->setFieldgroupTitle(title);
   }
 
   // set title

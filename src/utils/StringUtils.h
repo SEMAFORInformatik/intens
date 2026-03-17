@@ -30,6 +30,7 @@ void removeString(std::string& s, std::string rs);
 std::string removeString2(std::string s, std::string rs);
 void removeFontString(std::string& s);
 bool toBool(const std::string& s);
+std::string longestWord(const std::string& s);
 
 // split functions
 std::vector<std::string> &split(const std::string &s,  const std::string& delim, std::vector<std::string> &elems);

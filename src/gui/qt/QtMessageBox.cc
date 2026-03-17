@@ -7,12 +7,15 @@
 #include <QDesktopWidget>
 #endif
 #include <QScrollBar>
+#include <QFontInfo>
 
 #include "gui/qt/QtMessageBox.h"
 #include "gui/qt/GuiQtManager.h"
 #include "gui/qt/QtMultiFontString.h"
 #include "utils/gettext.h"
+#include "utils/StringUtils.h"
 
+const int MAX_CHARLEN_QT_MESSAGEBOX(1000);
 
 /* --------------------------------------------------------------------------- */
 /* Constructor --                                                              */
@@ -54,14 +57,16 @@ void QtMessageBox::init(){
   setFont( QtMultiFontString::getQFont( "@messagebox@", font ) );
 
   QGridLayout* grLayout = dynamic_cast<QGridLayout* >(layout());
-  if (m_msg.size() > 1000 ||
+  if (m_msg.size() > MAX_CHARLEN_QT_MESSAGEBOX ||
       (isMultiFont() && grLayout) ) {
 
-    m_textEdit = new QTextEdit( );//QString::fromStdString(message) );
+    m_textEdit = new QTextEdit( );
     m_textEdit->setFocusPolicy(Qt::NoFocus);
-    grLayout->addWidget( m_textEdit, 0, 1 );
 
-    setMultiFontMsg();
+    if (!setMultiFontMsg()) {
+      return;
+    }
+    grLayout->addWidget( m_textEdit, 0, 1 );
     m_textEdit->document()->adjustSize();
     m_textEdit->adjustSize();
 #if QT_VERSION > 0x050600
@@ -70,7 +75,9 @@ void QtMessageBox::init(){
     QRect drect = QApplication::desktop()->availableGeometry();
 #endif
     int wdiff = m_textEdit->verticalScrollBar()->isVisible() ? m_textEdit->verticalScrollBar()->width() : 16;
-    int wsize = m_textEdit->document()->size().width();
+    int wsize = m_textEdit->document()->idealWidth();
+    int wsize2 = QFontMetrics(font).horizontalAdvance(QString::fromStdString(longestWord(m_msg)));
+    wsize = std::max(wsize, wsize2);
     wsize += wdiff ;
     int delta=100;
     if ((wsize+delta) > drect.width())
@@ -79,8 +86,7 @@ void QtMessageBox::init(){
     hsize +=  wdiff ;
     if ((hsize+delta) > drect.height())
       hsize = drect.height()- delta;
-
-    m_textEdit->setMinimumWidth(wsize > 200 ? wsize-200 : wsize);  // irgendwie sind zirka 200 zu viel
+    m_textEdit->setMinimumWidth(wsize);
     m_textEdit->setMinimumHeight(hsize);
 
     m_textEdit->setSizePolicy( QSizePolicy(  QSizePolicy::Expanding,  QSizePolicy::Expanding )  );
@@ -98,9 +104,21 @@ void QtMessageBox::init(){
 /* isMultiFont --                                                              */
 /* --------------------------------------------------------------------------- */
 bool QtMessageBox::isMultiFont(){
-  if (m_msg.size())
-    if( m_msg.find_first_of('@') != std::string::npos)
-      return true;
+  std::string::size_type pos(0), posE;
+  if (m_msg.size()){
+    do{
+      if((pos=m_msg.find_first_of('@', pos)) != std::string::npos)
+        if((posE=m_msg.find_first_of('@', pos+1)) != std::string::npos){
+          bool available;
+          std::string s(m_msg.substr(pos, posE-pos+1));
+          auto font = QMessageBox::font();
+          QtMultiFontString::getQFont(s, font, &available);
+          if (available)
+            return true;
+          pos = posE + 1;
+        }
+    } while(pos != std::string::npos && posE != std::string::npos);
+  }
   return false;
 }
 
@@ -132,6 +150,8 @@ bool QtMessageBox::setMultiFontMsg(){
   bool openBoldTag( false );
   bool hasBr( this->hasBrTag() );
   BUG_MSG("hasBrTag["<<hasBr<<"]");
+  bool available;
+  QFont newFont;
 
   while( (posA = m_msg.find_first_of('@', posE)) != std::string::npos) {
 
@@ -146,27 +166,44 @@ bool QtMessageBox::setMultiFontMsg(){
       ostr << str.substr(lpos);
 
     if ((posE = m_msg.find_first_of('@', posA+1)) == std::string::npos) {
-      m_textEdit->setHtml(QString::fromStdString(ostr.str()));
-      return false; // Ende oder Falsch
+      ostr <<  m_msg.substr(posA);
+      if (m_msg.size() < MAX_CHARLEN_QT_MESSAGEBOX){
+        setText(QString::fromStdString(ostr.str()));
+        return false;
+      } else {
+        m_textEdit->setHtml(QString::fromStdString(ostr.str()));
+        return true;
+      }
     }
 
     std::string fs=m_msg.substr(posA, posE-posA+1);
-    QFont newFont = QtMultiFontString::getQFont( fs, font );
-    m_textEdit->setCurrentFont( QtMultiFontString::getQFont( fs, font ) );
-    if (openBoldTag)
-      ostr << "</b>";
-    if (openBoldTag)
-      ostr << "</font>";
-    else openFontTag= true;
-    int fsize = floor(0.5*(newFont.pointSize()-last_font_size));
-    char pc = fsize>=0 ? '+' : '-';
-    ostr << "<font face=\""<<newFont.family().toStdString()<<"\" size=\""<<pc<<abs(fsize)<<"\">";
-    //    last_font_size = newFont.pointSize();
-    if (newFont.bold()) {
-      ostr << "<b>";
-      openBoldTag = true;
+    if (fs.size() > 2){
+      newFont = QtMultiFontString::getQFont(fs, font, &available);
     }
-    else openBoldTag = false;
+    if (available || (openBoldTag && fs.size() == 2)){
+      if (openBoldTag)
+        ostr << "</b>";
+      if (openBoldTag)
+        ostr << "</font>";
+      else openFontTag= true;
+      if (fs.size() > 2){
+        m_textEdit->setCurrentFont( QtMultiFontString::getQFont( fs, font ) );
+        int fsize = floor(0.5*(newFont.pointSize()-last_font_size));
+        char pc = fsize>=0 ? '+' : '-';
+        ostr << "<font face=\""<<newFont.family().toStdString()<<"\" size=\""<<pc<<abs(fsize)<<"\">";
+        //    last_font_size = newFont.pointSize();
+        if (newFont.bold()) {
+          ostr << "<b>";
+          openBoldTag = true;
+        }
+        else openBoldTag = false;
+      }
+    }else{
+      if (!available || fs.size() > 2) {
+        ostr << fs;  // no font string
+        available = false;
+      }
+    }
     ++posE;
   }
 

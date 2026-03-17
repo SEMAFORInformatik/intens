@@ -121,3 +121,17 @@ bool XSSValidation(std::string& input) {
   }
   return true;
 }
+
+std::string longestWord(const std::string& str){
+  std::istringstream iss(str);
+  std::string word;
+  std::string longestWord;
+
+  while (iss >> word) {
+    if (word.length() > longestWord.length()) {
+      longestWord = word;
+    }
+  }
+
+  return longestWord;
+}

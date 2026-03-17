@@ -177,6 +177,7 @@ void GuiFieldgroupLine::setTableIndexRange( int minIndex, int maxIndex ){
 /* --------------------------------------------------------------------------- */
 
 void GuiFieldgroupLine::setTableSizeVisibleLines( int tablesize ){
+  if (tablesize < 0) return;
   getElement()->getParent()->setAttributeChangedFlag(m_tablesize_visible_lines == tablesize);
   m_tablesize_visible_lines = tablesize;
 }

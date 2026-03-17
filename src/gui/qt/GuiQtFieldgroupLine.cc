@@ -141,10 +141,11 @@ void GuiQtFieldgroupLine::update( UpdateReason reason ){
     if (dynamic_cast<GuiQtFieldgroupLine*>(*it) && dynamic_cast<GuiQtFieldgroupLine*>(*it)->isArrowbar()) continue;
 
     // Anzahl der sichtbaren Linien könnte ändern
-    if ( it - m_elements.begin() >= fg->getTablePosition() &&
-	 (*it)->Type() != type_Index &&
-	 getTableSizeVisibleLines() > 0 && (*it)->getQtElement() &&
-	 (*it)->getQtElement()->myWidget()) {
+    int startPos = m_elements[0]->Type() ==  type_Index ? 1 : fg->getTablePosition();
+    if ( it - m_elements.begin() >= startPos &&
+         (*it)->Type() != type_Index &&
+         getTableSizeVisibleLines() > 0 && (*it)->getQtElement() &&
+         (*it)->getQtElement()->myWidget()) {
       if (getTableSizeVisibleLines() >= ++cnt) {
         (*it)->getQtElement()->myWidget()->show();
       } else {

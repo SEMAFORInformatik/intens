@@ -11,7 +11,7 @@
 #include "gui/qt/GuiQtSeparator.h"
 #include "gui/qt/QtMultiFontString.h"
 
-#include "gui/GuiVoid.h"
+#include "gui/qt/GuiQtVoid.h"
 #include "gui/GuiStretch.h"
 #include "gui/GuiFieldgroup.h"
 #include "app/Plugin.h"
@@ -294,7 +294,7 @@ void GuiQtOrientationContainer::create(){
         boxlayout->addWidget( qw, 100);
       }
       else if ( (*it)->Type() == GuiElement::type_Void ) {
-        GuiVoid *v = static_cast<GuiVoid*>( (*it) );
+        GuiVoid *v = dynamic_cast<GuiVoid*>( (*it)->getQtElement() );
         int x,y;
         v->getSize(x,y);
         boxlayout->addSpacing(m_orientation==GuiElement::orient_Horizontal ? x : y);

@@ -520,7 +520,7 @@ void GuiQtForm::create(){
         if ((*it)->getQtElement()) {
           m_layoutInner->addWidget( (*it)->getQtElement()->myWidget() );
         } else if ((*it)->Type() == type_Void) {
-          GuiVoid *v = static_cast<GuiVoid*>( (*it) );
+          GuiVoid *v = dynamic_cast<GuiVoid*>( (*it)->getQtElement() );
           int x,y;
           v->getSize(x,y);
           m_layoutInner->addSpacing(y);

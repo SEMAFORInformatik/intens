@@ -3192,8 +3192,8 @@ bool InterpreterConfigurator::attachPixmap( const std::string &pixmapstring,
 // - attachVoidField
 //======================================================================//
 bool InterpreterConfigurator::attachVoidField(){
-  m_rep->voidfield = new GuiVoid(m_rep->fieldgroupline->getElement());
-  m_rep->fieldgroupline->attach( m_rep->voidfield );
+  m_rep->voidfield = m_rep->guifactory->createVoid(m_rep->fieldgroupline->getElement());
+  m_rep->fieldgroupline->attach( m_rep->voidfield->getElement() );
   return true;
 }
 //======================================================================//
@@ -3835,7 +3835,7 @@ bool InterpreterConfigurator::newSeparator( bool bcontainer,
 // - newVoid
 //======================================================================//
 bool InterpreterConfigurator::newVoid( int sz ){
-  GuiVoid *v = new GuiVoid(m_rep->fieldgroupline->getElement());
+  GuiVoid *v = m_rep->guifactory->createVoid(m_rep->fieldgroupline->getElement());
   GuiElement::Orientation orientation = GuiElement::orient_Vertical;
 
   if (dynamic_cast<GuiOrientationContainer*>(m_rep->container)) {
@@ -3846,7 +3846,7 @@ bool InterpreterConfigurator::newVoid( int sz ){
     v->setHeight( sz );
   else
     v->setWidth( sz );
-  m_rep->container->attach( v );
+  m_rep->container->attach( v->getElement() );
   return true;
 }
 //======================================================================//

@@ -77,6 +77,7 @@ class Stream;
 class GuiThermo;
 class GuiTimeTable;
 class DialogProgressBar;
+class GuiVoid;
 
 /** Class GuiFactory
   provides an interface for creating gui objects without
@@ -120,6 +121,7 @@ public:
   virtual GuiLabel           *createLabel( GuiElement *parent, GuiElement::Alignment a ) = 0;
   virtual GuiButton          *createButton( GuiElement *parent, GuiButtonListener *listener, GuiEventData *event=0 ) = 0;
   virtual GuiDataField       *createToggle( GuiElement *parent ) = 0;
+  virtual GuiVoid            *createVoid( GuiElement *parent ) = 0;
   /** Diese Funktion erstellt ein neues Fieldgroup-Objekt und liefert den Pointer.
       Ist bereits ein GuiElement mit diesem Namen bekannt, so wird als Resultat
       ein NULL-Pointer geliefert.

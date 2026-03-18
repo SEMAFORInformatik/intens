@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "gui/qt/GuiQtFieldgroupLine.h"
-#include "gui/GuiVoid.h"
+#include "gui/qt/GuiQtVoid.h"
 #include "gui/GuiStretch.h"
 #include "gui/qt/GuiQtIndex.h"
 #include "gui/qt/GuiQtFieldgroup.h"
@@ -40,7 +40,7 @@ GuiQtFieldgroupLine::GuiQtFieldgroupLine(const GuiQtFieldgroupLine &line )
       m_elements.push_back(el);
     }
     else{
-      m_elements.push_back(new GuiVoid(this));
+      m_elements.push_back(new GuiQtVoid(this));
     }
   }
 }

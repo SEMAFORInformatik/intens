@@ -2,6 +2,7 @@
 #include <string>
 
 #include "gui/GuiElement.h"
+#include "gui/GuiFactory.h"
 #include "gui/GuiVoid.h"
 #include "gui/GuiIndex.h"
 #include "gui/GuiDataField.h"
@@ -106,7 +107,7 @@ bool GuiFieldgroupLine::attachTableElement( GuiFieldgroup *fg, GuiElement *el ){
   if( !el->cloneableForFieldgroupTable() ){
     for( int i=0; i< fg->getTableSize(); i++ ){
       BUG_MSG("insert GuiVoid");
-      m_elements.push_back( new GuiVoid(getElement()) );
+      m_elements.push_back( GuiFactory::Instance()->createVoid(getElement())->getElement() );
     }
     BUG_EXIT("not cloneable");
     return false;

@@ -278,7 +278,7 @@ void GuiQtFieldgroup::create(){
         }
         else if ( (*it2)->Type() == GuiElement::type_Void ) {
           (*it2)->create();
-          QWidget *widget = reinterpret_cast<QWidget*>(dynamic_cast<GuiVoid*>(*it2)->myWidget());
+          QWidget *widget = (*it2)->getQtElement()->myWidget();
           if ( m_orientation == orient_Vertical ) {
             m_qgroupboxLayout->addWidget( widget, col, row, _colspan, _rowspan, _colalign );
           }
@@ -462,7 +462,7 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
     if (hasAccordion()) {
       groupbox->setCheckable(true);
       groupbox->setChecked(isAccordionOpen());
-      groupbox->setStyleSheet("QGroupBox::indicator {width: 0; height: 0; margin: 0; padding: 0;}");
+      groupbox->setStyleSheet("QGroupBox::indicator {width: 0; height: 0; margin: 0; padding: 0; image: url(:/images/unexists.png);}");
       title_prefix = isAccordionOpen() ?  "🞃 " : "🞂 ";
       QObject::connect( groupbox, SIGNAL(clicked(bool)), this, SLOT(slot_accordion(bool)) );
     }
@@ -517,6 +517,8 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
       BUG_DEBUG(" - without frame");
       auto w = new QWidget();
       QHBoxLayout *layout = new QHBoxLayout(w);
+      layout->setSpacing(0);
+      layout->setContentsMargins(0,0,0,0);
       // add title icon
       if (!getTitleIcon().empty()) {
         auto label = new QLabel();
@@ -608,7 +610,10 @@ void GuiQtFieldgroup::manage(){
     }
   }
   QApplication::style()->unpolish(myWidget());
-  m_container.manage();
+  if (!hasAccordion() ||
+      hasAccordion() && isAccordionOpen()){
+    m_container.manage();
+  }
   GuiQtIndex *qIndex = dynamic_cast<GuiQtIndex*>(GuiFieldgroup::getGuiIndex());
 
   if(getTableSize() > 0 && getTableMax() == getTableMin()){
@@ -621,7 +626,7 @@ void GuiQtFieldgroup::manage(){
     // Ein einmaliges Setzen des Index reicht.
     for( GuiElementList::iterator it = m_container.begin(); it != m_container.end(); ++it ){
       if( (*it)->Type() != type_Index ){
-	(*it)->setIndex( "@fg_index@", 0 );
+        (*it)->setIndex( "@fg_index@", 0 );
       }
     }
   }

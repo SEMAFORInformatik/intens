@@ -34,6 +34,7 @@ public:
   GuiLabel           *createLabel( GuiElement *parent, GuiElement::Alignment a );
   GuiButton          *createButton( GuiElement *parent, GuiButtonListener *listener, GuiEventData *event=0 );
   GuiDataField       *createToggle( GuiElement *parent );
+  GuiVoid            *createVoid( GuiElement *parent );
   GuiFieldgroup      *createFieldgroup( GuiElement *parent, const std::string &name);
   GuiFieldgroup      *createFieldgroup( GuiElement *parent, GuiElement *at, const std::string &name);
   GuiFieldgroupLine  *createFieldgroupLine(GuiElement *parent);

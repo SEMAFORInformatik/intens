@@ -55,6 +55,7 @@ public:
   virtual GuiLabel        *createLabel      ( GuiElement *parent, GuiElement::Alignment a );
   virtual GuiButton       *createButton     ( GuiElement *parent, GuiButtonListener *listener, GuiEventData *event);
   virtual GuiDataField    *createToggle( GuiElement *parent );
+  virtual GuiVoid         *createVoid( GuiElement *parent );
   virtual GuiFieldgroup   *createFieldgroup ( GuiElement *parent, const std::string &name );
   virtual GuiFieldgroup   *createFieldgroup ( GuiElement *parent, GuiElement *at, const std::string &name );
   virtual GuiFieldgroupLine *createFieldgroupLine(GuiElement *parent);

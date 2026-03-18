@@ -5,7 +5,7 @@
 #include "gui/GuiFieldgroupLine.h"
 #include "gui/GuiElement.h"
 #include "gui/GuiIndex.h"
-#include "gui/GuiVoid.h"
+#include "gui/qt/GuiQtVoid.h"
 #include "gui/GuiStretch.h"
 #include "gui/GuiIndexMenu.h"
 #include "gui/GuiFactory.h"
@@ -762,7 +762,7 @@ void GuiFieldgroup::doNormalisation() {
         // single pixmap, label or separator: use all columns as in desktop mode
         elem->setColSpan(elem->getColSpan() + (cnt_colums - (c + omit_c)));
       } else {
-        GuiVoid*  voidfield = new GuiVoid(line->getElement());
+        GuiQtVoid*  voidfield = new GuiQtVoid(line->getElement());
         line->attach( voidfield );
         voidfield->setColSpan(0 + (cnt_colums - (c + omit_c)));
       }

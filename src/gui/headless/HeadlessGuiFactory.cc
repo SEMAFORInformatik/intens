@@ -115,6 +115,7 @@ GuiLabel           *HeadlessGuiFactory::createLabel( GuiElement *parent, GuiElem
 
 GuiButton          *HeadlessGuiFactory::createButton( GuiElement *parent, GuiButtonListener *listener, GuiEventData *event ){assert(false);return 0;}
 GuiDataField       *HeadlessGuiFactory::createToggle( GuiElement *parent ){assert(false);return 0;}
+GuiVoid            *HeadlessGuiFactory::createVoid( GuiElement *parent ){assert(false);return 0;}
 
 GuiFieldgroup *HeadlessGuiFactory::createFieldgroup( GuiElement *parent,
                                                 const std::string &name ){

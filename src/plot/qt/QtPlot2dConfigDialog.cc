@@ -9,7 +9,7 @@
 #include <QScrollBar>
 #include "gui/GuiFactory.h"
 #include "gui/GuiLabel.h"
-#include "gui/GuiVoid.h"
+#include "gui/qt/GuiQtVoid.h"
 #include "gui/qt/GuiQtFieldgroupLine.h"
 #include "gui/GuiFieldgroup.h"
 #include "gui/qt/GuiQtRadioButton.h"
@@ -168,16 +168,14 @@ GuiFieldgroup* QtPlot2dConfigDialog::createFieldgroup(){
     m_currentLine = dynamic_cast<GuiQtFieldgroupLine*>(m_fieldgroup->addFieldgroupLine());
     m_fgLines.push_back(m_currentLine);
     assert( m_currentLine != 0 );
-    m_currentLine->attach( new GuiVoid(m_currentLine) );
-    m_currentLine->attach( new GuiVoid(m_currentLine) );
-    m_currentLine->attach( new GuiVoid(m_currentLine) );
-    m_currentLine->attach( new GuiVoid(m_currentLine) );
+    m_currentLine->attach( new GuiQtVoid(m_currentLine) );
+    m_currentLine->attach( new GuiQtVoid(m_currentLine) );
+    m_currentLine->attach( new GuiQtVoid(m_currentLine) );
+    m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     std::vector<int>::const_iterator showIt = m_showCycleVector.begin();
     for (int i = 0; i < DataPoolIntens::Instance().numCycles(); ++i, ++showIt) {
 
       if (m_cycleMode && *showIt != 1) continue;  // this cycle is not shown
-
-      ///	  m_currentLine->attach( new GuiVoid() );
       GuiSeparator *sep = GuiFactory::Instance() -> createSeparator( m_currentLine );
       sep->setOrientation(GuiElement::orient_Vertical);
       m_currentLine->attach( sep->getElement() );
@@ -317,13 +315,13 @@ bool QtPlot2dConfigDialog::addItem( const std::string &label, std::vector<XferDa
 
     // first time, empty columns
     if ((!i || (m_cycleMode && !cycleInx)) && xfers.empty()) {  // insert a void
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     }
 
     // color column
-    if (m_cycleMode) m_currentLine->attach( new GuiVoid(m_currentLine) );
+    if (m_cycleMode) m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     if (itemStyle & SHOW_LINE_COLOR) {
       colorXfer = new XferDataItem(*colorXfer);
       button = guifactory->createDataField( m_currentLine, colorXfer );
@@ -340,7 +338,7 @@ bool QtPlot2dConfigDialog::addItem( const std::string &label, std::vector<XferDa
         button->DataItem()->setDimensionIndizes();
       }
     } else {
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     }
 
     // symbolColor column
@@ -359,7 +357,7 @@ bool QtPlot2dConfigDialog::addItem( const std::string &label, std::vector<XferDa
         button->DataItem()->setDimensionIndizes();
       }
     } else {
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     }
 
     // lineStyle column
@@ -378,7 +376,7 @@ bool QtPlot2dConfigDialog::addItem( const std::string &label, std::vector<XferDa
         button->DataItem()->setDimensionIndizes();
       }
     } else {
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     }
 
     // symbolStyle column
@@ -396,7 +394,7 @@ bool QtPlot2dConfigDialog::addItem( const std::string &label, std::vector<XferDa
         button->DataItem()->setDimensionIndizes();
       }
     } else {
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     }
 
     // symbolStyle column
@@ -414,7 +412,7 @@ bool QtPlot2dConfigDialog::addItem( const std::string &label, std::vector<XferDa
         button->DataItem()->setDimensionIndizes();
       }
     } else {
-      m_currentLine->attach( new GuiVoid(m_currentLine) );
+      m_currentLine->attach( new GuiQtVoid(m_currentLine) );
     }
 
     // unit column

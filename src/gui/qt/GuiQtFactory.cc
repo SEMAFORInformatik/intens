@@ -53,6 +53,7 @@
 #include "gui/qt/GuiQtTextfield.h"
 #include "gui/qt/GuiQtComboBox.h"
 #include "gui/qt/GuiQtToggle.h"
+#include "gui/qt/GuiQtVoid.h"
 #include "gui/qt/GuiQtRadioButton.h"
 #include "gui/qt/GuiQtFieldButton.h"
 #include "gui/qt/GuiQtText.h"
@@ -173,6 +174,13 @@ GuiDataField *GuiQtFactory::createToggle( GuiElement *parent ){
   return new GuiQtToggle( parent );
 }
 
+/* --------------------------------------------------------------------------- */
+/* createVoid --                                                             */
+/* --------------------------------------------------------------------------- */
+
+GuiVoid *GuiQtFactory::createVoid( GuiElement *parent ){
+  return new GuiQtVoid( parent );
+}
 
 /* --------------------------------------------------------------------------- */
 /* createFieldgroup --                                                         */

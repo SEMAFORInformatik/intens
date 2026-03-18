@@ -1015,6 +1015,7 @@ bool GuiQtFactory::replace( GuiElement *old_el, GuiElement *new_el ) {
     if (new_el->getQtElement()->myWidget()) {
       new_el = new_el->clone();
     }
+    new_el->setParent(old_el->getParent());
 
     std::vector<GuiElement*> cloneListOld;
     std::vector<GuiElement*> cloneListNew;
@@ -1028,6 +1029,7 @@ bool GuiQtFactory::replace( GuiElement *old_el, GuiElement *new_el ) {
         old_el->myParent( GuiElement::type_Form )->create();
     }
     GuiQtManager::Instance().replace( old_el, new_el );
+    old_el->setParent(0);  // now marked as unused, a new clone can reuse them
 
     // replace clones
     std::vector<GuiElement*>::iterator it =  cloneListOld.begin();
@@ -1038,7 +1040,10 @@ bool GuiQtFactory::replace( GuiElement *old_el, GuiElement *new_el ) {
         (*it)->myParent( GuiElement::type_Form )->create();
       }
       if ((*it)->getQtElement()) {
-        GuiQtManager::Instance().replace((*it), itNew == cloneListNew.end() ? new_el->clone() : (*itNew));
+        new_el = itNew == cloneListNew.end() ? new_el->clone() : (*itNew);
+        new_el->setParent((*it)->getParent());
+        GuiQtManager::Instance().replace((*it), new_el);
+        (*it)->setParent(0);  // now marked as unused, a new clone can reuse them
       }
       if (itNew != cloneListNew.end())
         ++itNew;

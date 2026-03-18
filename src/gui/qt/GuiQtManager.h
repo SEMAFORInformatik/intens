@@ -260,6 +260,8 @@ private slots:
   void slot_desktop_workAreaResized(int);
   void slot_writeToDatapool(const std::string varnameData, const std::string& data, int maxlen);
 
+private:
+  QWidget* getNewWidget(GuiElement *old_el, GuiElement *new_el);
 /*=============================================================================*/
 /* private Data                                                                */
 /*=============================================================================*/

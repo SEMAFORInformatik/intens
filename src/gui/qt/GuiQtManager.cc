@@ -1037,14 +1037,6 @@ bool GuiQtManager::replace( GuiElement *old_el, GuiElement *new_el ) {
     return false;
   }
 
-  // create new widget if not already created
-  if (!new_widget) {
-    BUG_DEBUG("create new widget");
-    new_el->setParent( old_el->getParent() );
-    new_el->getQtElement()->create();
-    new_widget = new_el->getQtElement()->myWidget();
-  }
-
   // now, we replace qwidget
   QGridLayout* gridLayout = dynamic_cast<QGridLayout*>(old_widget->parentWidget()->layout());
   QBoxLayout*  boxLayout = dynamic_cast<QBoxLayout*>(old_widget->parentWidget()->layout());
@@ -1059,18 +1051,29 @@ bool GuiQtManager::replace( GuiElement *old_el, GuiElement *new_el ) {
     }
     gridLayout->getItemPosition (idx, &row, &column, &rowSpan, &columnSpan );
     gridLayout->removeWidget(old_widget);
+    new_widget = getNewWidget(old_el, new_el);
     gridLayout->addWidget(new_widget, row, column, rowSpan, columnSpan);
   } else if (boxLayout) {
     // replace within boxLayout
     int idx = boxLayout->indexOf( old_widget );
+    if (idx == -1) {
+      BUG_DEBUG("Invalid BoxLayout Index");
+      return false;
+    }
     boxLayout->removeWidget(old_widget);
+    new_widget = getNewWidget(old_el, new_el);
     boxLayout->insertWidget(idx, new_widget);
   } else {
     // replace within simple layout
     QLayout* layout = old_widget->parentWidget()->layout();
     int idx = layout->indexOf( old_widget );
-    layout->addWidget(new_widget);
+    if (idx == -1) {
+      BUG_DEBUG("Invalid Layout Index");
+      return false;
+    }
     layout->removeWidget(old_widget);
+    new_widget = getNewWidget(old_el, new_el);
+    layout->addWidget(new_widget);
   }
   old_widget->hide();
   new_widget->show();
@@ -2023,4 +2026,20 @@ bool GuiQtManager::isWindowsInDarkMode() {
     return (lightTheme == 0); // True if dark mode
 #endif
     return false;
+}
+
+/* --------------------------------------------------------------------------- */
+/* getNewWidget --                                                             */
+/* --------------------------------------------------------------------------- */
+
+QWidget* GuiQtManager::getNewWidget(GuiElement *old_el, GuiElement *new_el ) {
+  QWidget* old_widget = old_el->getQtElement()->myWidget();
+  QWidget* new_widget = new_el->getQtElement()->myWidget();
+  if (!new_widget) {
+    // create new widget if not already created
+    new_el->setParent( old_el->getParent() );
+    new_el->getQtElement()->create();
+    new_widget = new_el->getQtElement()->myWidget();
+  }
+  return new_widget;
 }

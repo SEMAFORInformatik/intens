@@ -93,6 +93,12 @@ GuiQtFieldgroup::~GuiQtFieldgroup(){
 
 GuiElement* GuiQtFieldgroup::clone() {
   GuiElement* baseElem = findElement( getName() );
+  if (!baseElem->getParent()) // unused, no need to make a new clone
+    return baseElem;
+  for (auto c: m_clonedFieldgroup) {
+    if (!c->getParent()) // unused, no need to make a new clone
+      return c;
+  }
   if (baseElem == this->getElement())
     m_clonedFieldgroup.push_back( new GuiQtFieldgroup( *this ) );
   else

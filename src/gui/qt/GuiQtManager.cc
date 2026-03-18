@@ -1087,15 +1087,32 @@ bool GuiQtManager::replace( GuiElement *old_el, GuiElement *new_el ) {
     old_el->getParent()->replace( old_el, new_el );
   }
 
-  // set size policy parent
-  QWidget* dialogWidget =  new_el->myParent( type_Form )->getQtElement()->myWidget();
-  GuiElement::Orientation ed =  new_el->myParent( type_Form )->getQtElement()->getDialogExpandPolicy();
-  dialogWidget->setSizePolicy(QSizePolicy(ed & orient_Horizontal ? QSizePolicy::MinimumExpanding :
-					  QSizePolicy::Fixed ,
-					  ed & orient_Vertical ? QSizePolicy::MinimumExpanding :
-					  QSizePolicy::Fixed ) );
 #if QT_VERSION < 0x060000
-  QRect drect = QApplication::desktop()->availableGeometry(dialogWidget);
+  // set size policy parent
+  QWidget* dialogWidget = 0;
+  GuiQtElement* guiQtElem = new_el->myParent( type_Form )->getQtElement();
+  if (guiQtElem)
+    dialogWidget = guiQtElem->myWidget();
+  if (dialogWidget){
+    GuiElement::Orientation ed =  new_el->myParent( type_Form )->getQtElement()->getDialogExpandPolicy();
+    dialogWidget->setSizePolicy(QSizePolicy(ed & orient_Horizontal ? QSizePolicy::MinimumExpanding :
+                                            QSizePolicy::Fixed ,
+                                            ed & orient_Vertical ? QSizePolicy::MinimumExpanding :
+                                            QSizePolicy::Fixed ) );
+
+    QRect drect = QApplication::desktop()->availableGeometry(dialogWidget);
+
+    // update geometry
+    dialogWidget->update();
+    dialogWidget->updateGeometry();
+
+    // get sizeHint from FormScrollView
+    QScrollArea *scrollView = dialogWidget->findChild<QScrollArea *>("FormScrollView");
+    QList<QScrollArea *> allSB = dialogWidget->findChildren<QScrollArea *>();
+    if (!scrollView) {
+      return true; // should not happen
+    }
+  }
 #else
   QRect drect = QGuiApplication::primaryScreen()->availableGeometry();
 #endif
@@ -1103,22 +1120,12 @@ bool GuiQtManager::replace( GuiElement *old_el, GuiElement *new_el ) {
   drect.setHeight( drect.height() - 38 );
 #endif
 
-  // update geometry
-  dialogWidget->update();
-  dialogWidget->updateGeometry();
-
   // hide/show - trick (in of qt 4.8 bug)
   // becourse of later GuiElement justify
   new_widget->hide();
   new_widget->show();
   new_el->manage();
 
-  // get sizeHint from FormScrollView
-  QScrollArea *scrollView = dialogWidget->findChild<QScrollArea *>("FormScrollView");
-  QList<QScrollArea *> allSB = dialogWidget->findChildren<QScrollArea *>();
-  if (!scrollView) {
-    return true; // should not happen
-  }
   dynamic_cast<GuiQtForm*>(new_el->myParent( type_Form ))->setMaximumSize();
   return true;
 }

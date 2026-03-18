@@ -625,7 +625,8 @@ const std::string& GuiList::Column::getLabel(){
     }
   }
   else if( !m_label.empty() ){
-    m_label = UnitManager::extractValue(m_label);
+    m_getlabel = UnitManager::extractValue(m_label);
+    return m_getlabel;
   }
   else{
     m_label=m_xfer_label->getLabel();

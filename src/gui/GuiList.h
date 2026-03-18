@@ -185,6 +185,7 @@ class GuiList
 
     XferDataParameter                 *m_param;
     std::string                        m_label;
+    std::string                        m_getlabel;  // only used with unitManager
     XferDataItem                      *m_xfer_label;
     GuiElement::Alignment              m_alignment;
     int                                m_column;

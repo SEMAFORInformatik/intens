@@ -686,6 +686,7 @@ void GuiQtList::updateItemUnits() {
   DataDictionary::DataType dataType;
   for(auto col: m_cols) {
     updateScale(col->getParam());
+    setLabels();
   }
 }
 

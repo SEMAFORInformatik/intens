@@ -1564,6 +1564,28 @@ void GuiQtTable::updateUnitFields(){
         item->update(reason_Unit);
     }
   }
+  // hline & vline label updates
+  setFieldPicklists();
+  if(!getTableMatrix()){
+    // data label updates
+    if( getOrientation() == orient_Vertical ){
+      int v = (int)getVLineList().size();
+      for(auto  li: getTableList()){
+        std::string str(li->Label());
+        HTMLConverter::convertFromHTML(str);
+        m_model->setHeaderData(v, Qt::Horizontal, QtMultiFontString::getQString(str));
+        ++v;
+      }
+    } else {
+      int h = (int)getHLineList().size();
+      for(auto  li: getTableList()){
+        std::string str(li->Label());
+        HTMLConverter::convertFromHTML(str);
+        m_model->setHeaderData(h, Qt::Vertical, QtMultiFontString::getQString(str));
+        ++h;
+      }
+    }
+  }
 }
 
 /* --------------------------------------------------------------------------- */

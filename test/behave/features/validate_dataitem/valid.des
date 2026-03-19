@@ -4,13 +4,19 @@ DATAPOOL
   INTEGER {EDITABLE}
     array
   , valid
+  , validRow
+  , validWC
   ;
 END DATAPOOL;
 
 UI_MANAGER
-  FIELDGROUP fg (
-    LABEL(array) array[0] array[1]
+  FIELDGROUP fg {TABLESIZE=3} (
+    LABEL(array) & " row: 0" array[0, *]
+  , LABEL(array) & " row: 1"  array[1,*]
+  , LABEL(array) & " row: 2"  array[2,*]
   , LABEL(valid) valid
+  , LABEL(validRow) validRow[*]
+  , LABEL(validWC) validWC[*]
   );
 
   FORM form {MAIN} (fg);
@@ -19,6 +25,12 @@ END UI_MANAGER;
 OPERATOR
   TASK valid_task {"VALID"} {
     valid = VALID(array);
+    validRow[0] = VALID(array[0,*]);
+    validRow[1] = VALID(array[1, *]);
+    validRow[2] = VALID(array[2, *]);
+    validWC[0] = VALID(array[*]);
+    validWC[1] = VALID(array[*, *]);
+    validWC[2] = VALID(array[*, *, *]);
   };
 END OPERATOR;
 

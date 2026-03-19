@@ -14,6 +14,7 @@ add_library(datapool OBJECT
         DataAlterGetDimensionSize.cc
         DataAlterGetElement.cc
         DataAlterGetElementUpdated.cc
+        DataAlterGetElementValid.cc
         DataAlterGetItem.cc
         DataAlterGetItemAttr.cc
         DataAlterGetItemUpdated.cc

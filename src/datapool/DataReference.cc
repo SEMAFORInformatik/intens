@@ -19,6 +19,7 @@
 #include "datapool/DataAlterGetItemUpdated.h"
 #include "datapool/DataAlterGetElement.h"
 #include "datapool/DataAlterGetElementUpdated.h"
+#include "datapool/DataAlterGetElementValid.h"
 #include "datapool/DataAlterGetDimensionInfo.h"
 #include "datapool/DataAlterSetIntegerElement.h"
 #include "datapool/DataAlterSetRealElement.h"
@@ -1965,15 +1966,13 @@ bool DataReference::GetItemValid( int i ){
 }
 
 bool DataReference::GetItemValid_PreInx(){
-  const DataElement *el = getElement();
-  if( el != 0 ){
-    return el->isValid();
-  }
-  return false;
+  DataAlterGetElementValid get_valid;
+  alterData( get_valid );
+  return get_valid.isValid();
 }
 
 /* --------------------------------------------------------------------------- */
-/* SetItemInvalid --							       */
+/* SetItemInvalid --							                                             */
 /* --------------------------------------------------------------------------- */
 
 bool DataReference::SetItemInvalid( int num_inx, int *inx ){

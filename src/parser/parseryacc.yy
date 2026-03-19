@@ -9181,7 +9181,7 @@ cycle_expression /* DOCUMENTATION:DIAGRAM */
   ;
 
 function_expression /* DOCUMENTATION:DIAGRAM */
-  : tVALID '(' job_expression ')'
+  : tVALID  '(' job_ref_with_wildcards job_data_reference ')'
       {
        configurator -> opEvalValid();
         $$=$3;

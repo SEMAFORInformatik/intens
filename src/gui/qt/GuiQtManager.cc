@@ -1126,7 +1126,6 @@ bool GuiQtManager::replace( GuiElement *old_el, GuiElement *new_el ) {
   new_widget->show();
   new_el->manage();
 
-  dynamic_cast<GuiQtForm*>(new_el->myParent( type_Form ))->setMaximumSize();
   return true;
 }
 

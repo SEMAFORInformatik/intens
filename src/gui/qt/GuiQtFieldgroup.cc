@@ -541,6 +541,7 @@ QWidget* GuiQtFieldgroup::createContainer( QWidget* parent ){
             std::string s(isAccordionOpen() ?  "🞃 " : "🞂 ");
             m_accordionButton = new QPushButton(QString::fromStdString(s + getTitle()));
           }
+        m_accordionButton->setObjectName( QString::fromStdString("HeaderButton") );
         m_accordionButton->setFlat(true);
         m_accordionButton->setCheckable(true);
         m_accordionButton->setChecked(isAccordionOpen());

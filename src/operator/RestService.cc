@@ -203,7 +203,6 @@ bool RestService::checkCredentials() {
       if ( username ) { // REST_SERVICE_USERNAME is not empty
         if ( ! m_envPasswordUsed ) { // only use the environment password once (see ticket #530)
           BUG_DEBUG(" -- user is '" << username << "'");
-          setUsername(username);
           m_envPasswordUsed = true;
           char *password = getenv("REST_SERVICE_PASSWORD");
           if ( password ) { // REST_SERVICE_PASSWORD is not empty
@@ -211,7 +210,9 @@ bool RestService::checkCredentials() {
             if(m_authorization == "jwt") {
               BUG_DEBUG(" -- jwt => try to login --");
               JobElement::OpStatus status = login(m_base, m_username, password);
-              if( status != JobElement::op_Ok ){
+              if( status == JobElement::op_Ok ){
+                setUsername(username);
+              }else{
                 BUG_DEBUG(" == login failed ==");
               }
             }

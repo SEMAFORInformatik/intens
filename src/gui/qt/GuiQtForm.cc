@@ -583,6 +583,15 @@ void GuiQtForm::setSizeProperty() {
 }
 
 /* --------------------------------------------------------------------------- */
+/* updateTitle --                                                              */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtForm::updateTitle(){
+  if (!getTitle().empty() && m_dialog)
+    m_dialog->setWindowTitle(QString::fromStdString(getTitle()));
+}
+
+/* --------------------------------------------------------------------------- */
 /* update --                                                                   */
 /* --------------------------------------------------------------------------- */
 
@@ -592,6 +601,8 @@ void GuiQtForm::update( UpdateReason reason ){
     BUG_MSG("update");
 
     m_elements.update( reason );
+    if (reason == reason_Unit)
+      updateTitle();
     BUG_EXIT("done");
   }
 

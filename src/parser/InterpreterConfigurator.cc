@@ -2910,7 +2910,7 @@ bool InterpreterConfigurator::setTitlelist( const std::string &title,
 // - setTitleForm
 //======================================================================//
 bool InterpreterConfigurator::setTitleForm( const std::string &title ){
-  m_rep->form->setTitle( UnitManager::extractValue(title) );
+  m_rep->form->setTitle(title);
   return true;
 }
 //======================================================================//
@@ -3708,7 +3708,7 @@ bool InterpreterConfigurator::containerSetUseRuler(){
 // - containerSetTitle
 //======================================================================//
 bool InterpreterConfigurator::containerSetTitle( const std::string &title ){
-  m_rep->container->setTitle( UnitManager::extractValue(title) );
+  m_rep->container->setTitle(title);
   return true;
 }
 //======================================================================//

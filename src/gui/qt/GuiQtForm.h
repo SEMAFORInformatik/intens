@@ -166,6 +166,7 @@ public:
 
   void setTitle( const std::string &title ) { GuiForm::setTitle(title); }
   std::string getTitle() { return GuiForm::getTitle(); }
+  void updateTitle() override;
   void setHelpkey( HelpManager::HelpKey *helpkey );
   void attachMenu( GuiElement *menu );
   virtual GuiButtonbar *getButtonbar();

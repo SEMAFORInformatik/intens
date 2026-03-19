@@ -14,6 +14,7 @@
 #include "gui/qt/GuiQtVoid.h"
 #include "gui/GuiStretch.h"
 #include "gui/GuiFieldgroup.h"
+#include "gui/UnitManager.h"
 #include "app/Plugin.h"
 #include "utils/JsonUtils.h"
 #include "utils/Debugger.h"
@@ -190,7 +191,7 @@ void GuiQtOrientationContainer::create(){
     m_frame = groupbox;
     int h = 2, spacing = 2;
     if( m_title.size() ){
-      groupbox->setTitle( QtMultiFontString::getQString( m_title ) );
+      groupbox->setTitle( QtMultiFontString::getQString(UnitManager::extractValue(m_title)) );
 
       // set font
       QFont font =  groupbox->font();
@@ -503,7 +504,7 @@ bool GuiQtOrientationContainer::serializeJson(Json::Value& jsonObj, bool recursi
   jsonObj["scrollbars"] = withScrollbars();
   jsonObj["panedWindow"] = withPanedWindow();
   jsonObj["frame"] = withFrame();
-  jsonObj["title"] = m_title;
+  jsonObj["title"] = UnitManager::extractValue(m_title);
   return false;
 }
 
@@ -521,7 +522,7 @@ bool GuiQtOrientationContainer::serializeProtobuf(in_proto::ElementList* eles, b
   element->set_scrollbars(withScrollbars());
   element->set_paned_window(withPanedWindow());
   element->set_frame(withFrame());
-  element->set_title(m_title);
+  element->set_title(UnitManager::extractValue(m_title));
   m_container.serializeAttrs(eles, element->mutable_elements());
   return false;
 }
@@ -539,7 +540,7 @@ bool GuiQtOrientationContainer::serializeProtobuf(in_proto::ElementList* eles, i
   element->set_scrollbars(withScrollbars());
   element->set_paned_window(withPanedWindow());
   element->set_frame(withFrame());
-  element->set_title(m_title);
+  element->set_title(UnitManager::extractValue(m_title));
   m_container.serializeAttrs(eles, element->mutable_elements());
   return false;
 }
@@ -603,6 +604,18 @@ void GuiQtOrientationContainer::printSizeInfo(std::ostream& os, int intent, bool
     (*it)->printSizeInfo(os, newIntent, onlyMaxChilds);
   }
 }
+
+/* --------------------------------------------------------------------------- */
+/* update --                                                                   */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtOrientationContainer::update(UpdateReason reason) {
+  m_container.update( reason );
+  if( withFrame() && !m_title.empty()) {
+    dynamic_cast<QGroupBox*>(m_frame)->setTitle( QtMultiFontString::getQString(UnitManager::extractValue(m_title)) );
+  }
+}
+
 
 /* --------------------------------------------------------------------------- */
 /* myWidget --                                                                 */

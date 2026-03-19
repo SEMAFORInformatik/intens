@@ -49,6 +49,7 @@ public:
   void waitCursor( bool wait, GuiDialog *installer );
   void setTitle( const std::string & );
   std::string getTitle();
+  virtual void updateTitle() = 0;
   virtual void setShown(bool value);
   virtual bool setMain();
   virtual bool isMain() { return m_main; }
@@ -141,6 +142,7 @@ private:
   bool             m_with_cyclebutton;
   bool             m_is_popped_up;
   bool             m_useSettings;
+  std::string      m_title;
 };
 
 #endif

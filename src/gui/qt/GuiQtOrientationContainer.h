@@ -55,7 +55,7 @@ public:
   virtual void getSize( int &x, int &y ); // { m_container.getSize( x, y ); }
   virtual void printSizeInfo(std::ostream& os, int intent, bool onlyMaxChilds=true);
   virtual void unmanage()                { m_container.unmanage( ); }
-  virtual void update( UpdateReason r)   { m_container.update( r ); }
+  virtual void update( UpdateReason r);
   virtual void enable()                  { m_container.enable(); }
   virtual void disable()                 { m_container.disable(); }
   virtual QWidget* myWidget(); //              { return m_container.myWidget(); }

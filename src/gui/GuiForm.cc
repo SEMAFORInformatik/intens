@@ -4,6 +4,7 @@
 #include "gui/GuiForm.h"
 #include "gui/GuiDialog.h"
 #include "gui/GuiIndex.h"
+#include "gui/UnitManager.h"
 
 std::vector<GuiForm*> GuiForm::s_managedForms;
 
@@ -20,8 +21,9 @@ GuiElement::ElementType GuiForm::Type(){
 /* --------------------------------------------------------------------------- */
 
 void GuiForm::setTitle(const std::string &title){
+  m_title = title;
   if (getDialog())
-    getDialog()->setDialogTitle(title);
+    getDialog()->setDialogTitle(UnitManager::extractValue(title));
 }
 
 /* --------------------------------------------------------------------------- */
@@ -39,7 +41,7 @@ std::string GuiForm::getTitle(){
     }
     return title.str();
   }
-  return getDialog() ? getDialog()->getDialogTitle() : "";
+  return m_title.empty() ? "" : UnitManager::extractValue(m_title);
 }
 
 /* --------------------------------------------------------------------------- */

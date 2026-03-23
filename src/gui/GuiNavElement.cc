@@ -42,14 +42,14 @@ GuiNavElement::GuiNavElement ( GuiNavigator *nav
 }
 
 GuiNavElement::~GuiNavElement(){
-  BUG_PARA( BugGui, "GuiNavElement::~GuiNavElement", this );
+  BUG_DEBUG("GuiNavElement::~GuiNavElement, this:" << this );
 }
 
 /*=============================================================================*/
 /* update                                                                      */
 /*=============================================================================*/
 void GuiNavElement::update( GuiElement::UpdateReason ur ){
-  BUG_PARA( BugGui, "GuiNavElement::update", m_labels[0].first );
+  BUG_DEBUG("GuiNavElement::update " << m_labels[0].first );
   NavElemVector::iterator it;
   for( it = m_nodes.begin(); it != m_nodes.end(); ++it ){
     (*it)->updateNode( ur );
@@ -176,7 +176,7 @@ void GuiNavElement::addChildren( int actualCount ){
 /* removeChildren                                                              */
 /*=============================================================================*/
 void GuiNavElement::removeChildren( int count ){
-  BUG_PARA( BugGui, "GuiNavElement::removeChildren", count );
+  BUG_DEBUG("GuiNavElement::removeChildren, count: " << count );
 
   NavElemVector::iterator iter;
   for( iter = m_nodes.begin();iter != m_nodes.end();++iter){
@@ -928,6 +928,7 @@ std::string GuiNavElement::getIconPixmapFileName(IconManager::ICON_TYPE& icon_ty
       BUG_DEBUG("FOUND, key: " << key <<", icon: "<< icon);
       return icon;
     }
+    BUG_DEBUG("not found in settings, str: " << str);
   }
   // not found
   key = section + "/" + getNodeName();
@@ -1003,11 +1004,11 @@ bool GuiNavElement::getDiagramPosition(int& xpos, int& ypos) {
 // updateNode
 //---------------------------------------------------------------------
 void GuiNavElement::updateNode( GuiElement::UpdateReason ur ){
-  BUG_PARA( BugGui, "GuiQtNavNode::update", getLabel()[0].first );
+  BUG_DEBUG("GuiQtNavNode::update " << getLabel()[0].first );
   if( getDataItem()->isDataItemUpdated(GuiManager::Instance().LastGuiUpdate(), true )
       || ur == GuiElement::reason_Cycle
       || ur == GuiElement::reason_Always ){
-    BUG_MSG( "DataItem is updated" );
+    BUG_DEBUG( "DataItem is updated" );
     NavElemVector::const_iterator it;
     const NavElemVector& nodes = getNodes();
     for( it = nodes.begin(); it != nodes.end(); ++it ){

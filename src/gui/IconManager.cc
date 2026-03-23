@@ -116,7 +116,7 @@ bool IconManager::getDataUrlContent(QPixmap& pixmap, std::string &datauri) {
 /* locateFile --                                                               */
 /* --------------------------------------------------------------------------- */
 std::string IconManager::locateFile(ICON_TYPE& icon_type, const std::string &name ) {
-  BUG_PARA(BugGuiIcon,"IconManager::locateFile",name);
+  BUG_DEBUG("IconManager::locateFile name: " << name);
   icon_type = NONE;
   if( name.empty() )
     return name;

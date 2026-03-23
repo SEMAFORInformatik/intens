@@ -74,7 +74,7 @@ QtIconManager &QtIconManager::Instance() {
 
 bool QtIconManager::getPixmap( const std::string& iconname,
                                QPixmap& pixmap, int width, int height ){
-  BUG_PARA(BugGuiIcon,"QtIconManager::getPixmap",iconname);
+  BUG_DEBUG("QtIconManager::getPixmap iconname: " << iconname);
   ICON_TYPE icon_type;
   if (iconname.empty()) return false;
 
@@ -96,7 +96,7 @@ bool QtIconManager::getPixmap( const std::string& iconname,
 bool QtIconManager::getPixmap(const std::string& filename, ICON_TYPE icon_type,
                               QPixmap& pixmap, int width, int height ){
 
-  BUG_PARA(BugGuiIcon,"QtIconManager::getPixmap",filename);
+  BUG_DEBUG("QtIconManager::getPixmap filename: " << filename);
 
   switch (icon_type) {
   case SVG:
@@ -150,7 +150,7 @@ bool QtIconManager::getPixmap(const std::string& filename, ICON_TYPE icon_type,
 bool QtIconManager::getWebViewWidget( const std::string& iconname,
 				      QWebView& webview,
 				      int width, int height) {
-  BUG_PARA(BugGuiIcon,"QtIconManager::getWebViewWidget",iconname);
+  BUG_DEBUG("QtIconManager::getWebViewWidget iconname: " << iconname);
   ICON_TYPE icon_type;
 
   std::string file = locateFile( icon_type, iconname );

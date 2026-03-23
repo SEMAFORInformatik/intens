@@ -107,7 +107,7 @@ public:
 public:
   virtual void getSize(int &x, int &y);
   void timerEvent (QTimerEvent * event) override;
-  void publishData();
+  bool publishData();
 
 /*=============================================================================*/
 /* private slots                                                               */
@@ -133,7 +133,8 @@ private:
   QPushButton          *m_accordionButton;
   std::vector<GuiQtFieldgroup*> m_clonedFieldgroup;
   MessageQueuePublisher* m_publisher;
-  static int            s_timerId;
+  int                   m_timerId;
+  int                   m_lastWebUpdate;
 };
 
 #endif

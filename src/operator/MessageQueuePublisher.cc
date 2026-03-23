@@ -113,6 +113,7 @@ void MessageQueuePublisher::startPublish(bool duplicateCheck){
     }else{
       if (duplicateCheck && m_lastPublishString.size()){
         if (m_lastPublishString[0] == m_publishData){
+          BUG_DEBUG("ignore Publish, data not changed");
           return;  // already published
         }
         m_lastPublishString[0] = m_publishData;

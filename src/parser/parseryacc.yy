@@ -7568,6 +7568,10 @@ job_timer_timer /* DOCUMENTATION:UNFOLD */
       {
         configurator -> timer_setTimer( *($1) );
       }
+  | tID_FIELDGROUP
+      {
+        configurator -> timer_setGuiElement( *($1) );
+      }
   ;
 job_timer_options /* DOCUMENTATION:DIAGRAM */
   : /* none */

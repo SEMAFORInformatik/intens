@@ -62,7 +62,6 @@ private:
 private:
   QProgressBar *m_progressBar;
   std::vector<GuiQtProgressBar*> m_cloned;
-  MessageQueuePublisher* m_publisher;
   static int             s_timerId;
 };
 

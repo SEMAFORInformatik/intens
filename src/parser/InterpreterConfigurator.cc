@@ -3118,7 +3118,7 @@ bool InterpreterConfigurator::fieldgroupSetAccordionClosedIcon(const std::string
 // - fieldgroupSetWebApiPublish
 //======================================================================//
 bool InterpreterConfigurator::fieldgroupSetWebApiPublish(){
-  m_rep->fieldgroup->setWebApiPublish();
+  m_rep->fieldgroup->getElement()->setWebApiPublish();
   return true;
 }
 //======================================================================//
@@ -6785,6 +6785,13 @@ bool InterpreterConfigurator::timer_setTimer( const::std::string &timer ){
   return true;
 }
 
+bool InterpreterConfigurator::timer_setGuiElement( const std::string& guielement){
+  if( (m_rep->timer=TimerFunction::getTimer( guielement )) == 0 ){
+    ParserError( compose(_("Cannot set GuiElement '%1'."), guielement) );
+  }
+  return true;
+}
+
 bool InterpreterConfigurator::timer_setPeriod( double p ){
   m_rep->timerFunc.period=p;
   return true;
@@ -6806,6 +6813,8 @@ bool InterpreterConfigurator::timer_setDelayXfer(){
 }
 
 bool InterpreterConfigurator::opTimerStart(){
+  if (!m_rep->function)
+    return false;
   int ret =  JobManager::Instance().opTimerStart(
                                                  m_rep->function
                                                  , m_rep->timer

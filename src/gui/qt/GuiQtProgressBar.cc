@@ -2,7 +2,6 @@
 #include "gui/qt/GuiQtDataField.h"
 #include "utils/Debugger.h"
 #include "gui/qt/GuiQtProgressBar.h"
-#include "gui/qt/QtDialogProgressBar.h"
 #include "operator/MessageQueue.h"
 #include "operator/MessageQueuePublisher.h"
 #include "streamer/StreamManager.h"
@@ -17,7 +16,6 @@ int GuiQtProgressBar::s_timerId(0);
 GuiQtProgressBar::GuiQtProgressBar(GuiElement *parent, std::string name)
   : GuiQtDataField( parent, name )
   , m_progressBar(0)
-  , m_publisher(0)
 {}
 
 GuiQtProgressBar::GuiQtProgressBar(const GuiQtProgressBar &progressbar)
@@ -169,7 +167,7 @@ bool GuiQtProgressBar::serializeProtobuf(in_proto::ElementList* eles, bool onlyU
 /* --------------------------------------------------------------------------- */
 void GuiQtProgressBar::publishData() {
   if (!AppData::Instance().HeadlessWebMode()) return;
-  BUG_DEBUG("QtDialogProgressBar::publishData");
+  BUG_DEBUG("GuiQtProgressBar::publishData");
   if( !m_param->DataItem()->isUpdated( GuiManager::Instance().LastGuiUpdate() ) ){
     return;
   }
@@ -177,35 +175,29 @@ void GuiQtProgressBar::publishData() {
   // get data
   Json::Value jsonElem = Json::Value(Json::objectValue);
   std::string s;
-  serializeJson(jsonElem, true);
-  s = ch_semafor_intens::JsonUtils::value2string(jsonElem);
-  DataReference *ref = DataPoolIntens::Instance().getDataReference("mqReply_uimanager_response.data");
-  if ( ref != 0 ) {
-    ref->SetValue( s );
-    delete ref;
-  }
+  std::ostringstream os;
+#if HAVE_PROTOBUF
+  auto reply = in_proto::WebAPIResponse();
+  serializeProtobuf(reply.mutable_elements(), false);
+  reply.SerializePartialToOstream(&os);
+#else
+  serializeJson(jsonElem, false);
+  os << ch_semafor_intens::JsonUtils::value2string(jsonElem);
+  BUG_WARN("publishData (progressbar_data): "<<os.str().substr(0, 250) << ", len: " << os.str().size());
+#endif
 
-  if (!m_publisher) {
-    // publish data
-    std::string pubname("mqReply_publisher_mq");
-    std::string streamname("mqReply_uimanager_response_stream");
-    m_publisher = MessageQueue::getPublisher(pubname);
-    Stream* stream = StreamManager::Instance().getStream(streamname);
-    if (m_publisher && stream) {
-      std::vector<Stream*> streamVec;
-      streamVec.push_back(stream);
-      m_publisher->setPublishOutStreams(streamVec);
-      m_publisher->setPublishHeader("progressbar_data");
-    } else {
-      if (!m_publisher) {
-        BUG_WARN(compose("Undefined '%1' MESSAGE_QUEUE Publisher in MessageQueueReply.inc", pubname));
-      }
-      if (!stream) {
-        BUG_WARN(compose("Undefined '%1' Stream in MessageQueueReply.inc", streamname));
-      }
-      return;
+  // publish data
+  std::string pubname("mqReply_publisher_mq");
+  MessageQueuePublisher* publisher = MessageQueue::getPublisher(pubname);
+  if (publisher) {
+    publisher->setPublishHeader("progressbar_data");
+    publisher->setPublishData(os.str());
+  } else {
+    if (!publisher) {
+      BUG_WARN(compose("Undefined '%1' MESSAGE_QUEUE Publisher in MessageQueueReply.inc", pubname));
     }
+    return;
   }
-  m_publisher->startPublish(true);
+  publisher->startPublish(true);
 }
 

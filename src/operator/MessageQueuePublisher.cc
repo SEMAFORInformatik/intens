@@ -163,6 +163,7 @@ void MessageQueuePublisher::startPublish(bool duplicateCheck){
 // publishHeader
 //-------------------------------------------------
 bool MessageQueuePublisher::publishHeader(){
+  BUG_DEBUG("publishHeader " << m_publishHeader << ", publishData.empty: " << m_publishData.empty());
   if (!m_publish_out_streams.empty() || !m_publishData.empty())
     s_sendmore (*m_publisher, m_publishHeader); // send header
   else
@@ -178,6 +179,7 @@ bool MessageQueuePublisher::publishData(){
     if (!i) { // first time
       publishHeader();
     }
+    BUG_DEBUG("publishData " << i << ". DataLen:" << m_lastPublishString[i].size());
     if (i < m_publish_out_streams.size()-1)
       s_sendmore (*m_publisher, m_lastPublishString[i]);
     else

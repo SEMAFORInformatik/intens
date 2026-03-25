@@ -11,6 +11,7 @@ target "default" {
   dockerfile = "docker/Dockerfile"
   args = {
     CMAKE_BUILD_TYPE = "Release"
+    EXTRA_PACKAGES = "gdb"
   }
   tags = ["ghcr.io/semaforinformatik/intens:${GITHUB_REF_NAME}", "ghcr.io/semaforinformatik/intens:latest"]
   cache-from = ["type=gha,scope=intens"]

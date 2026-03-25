@@ -115,11 +115,6 @@ public:
   /** set Accordion Expanded Flag */
   virtual void setAccordionExpanded(bool expand) = 0;
 
-  /** set WebApi Publish data option */
-  void setWebApiPublish() { m_webapi_publish = true; }
-  /** has WebApi Publish data option */
-  bool hasWebApiPublish() { return m_webapi_publish; }
-
 /*=============================================================================*/
 /* protected                                                                   */
 /*=============================================================================*/
@@ -223,7 +218,6 @@ protected:
   bool                 m_accordion_open;
   std::string          m_accordion_open_icon;
   std::string          m_accordion_closed_icon;
-  bool                 m_webapi_publish;
 };
 
 #endif

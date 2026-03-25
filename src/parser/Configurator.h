@@ -738,6 +738,7 @@ class Configurator {
   virtual bool restService_setJwtXfer()=0;
 
   virtual bool timer_setTimer( const std::string& timer) = 0;
+  virtual bool timer_setGuiElement( const std::string& guielement) = 0;
   virtual bool timer_setMaxPendingFunctions( int nMax ) = 0;
   virtual bool timer_setPeriod( double p ) = 0;
   virtual bool timer_setPeriodXfer() = 0;

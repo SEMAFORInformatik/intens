@@ -333,7 +333,7 @@ add_custom_target(
   docker-image
   COMMENT "build docker image"
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND "GITHUB_REF_NAME=${PACKAGE_VERSION}" "docker" "buildx" "bake"
+  COMMAND "GITHUB_REF_NAME=${PACKAGE_VERSION}" "docker" "buildx" "bake" "--load"
   )
 
 add_custom_target(

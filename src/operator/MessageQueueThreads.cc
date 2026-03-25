@@ -316,7 +316,7 @@ void MessageQueueSubscriberThread::run() {
         } else {
           result = readMultiPartMessage(resultDataList, subscriber, m_header);
         }
-        BUG_INFO("Read header: " << m_header <<", datasize: " << resultDataList.size());
+        BUG_DEBUG("Read header: " << m_header <<", datasize: " << resultDataList.size());
         if (result){
           #ifdef HAVE_QT
           emit receivedData(m_header, resultDataList);

@@ -18,6 +18,7 @@ class TimerFunction {
 // -----------------------------------------------------
 public:
   TimerFunction( const std::string &, JobFunction *, int);
+  TimerFunction( const std::string &, GuiElement *);
   virtual ~TimerFunction();
 
 private:
@@ -67,6 +68,7 @@ public:
 
   std::string                             m_name;
   JobFunction*                            m_function;
+  GuiElement*                             m_guiElement;
   int                                     m_maxPendingFunctions;
   MyTimerTask                            *m_task;
   Timer                                  *m_timer;

@@ -22,7 +22,6 @@
 #include "gui/GuiStretch.h"
 #include "gui/GuiVoid.h"
 #include "app/Plugin.h"
-#include "operator/MessageQueuePublisher.h"
 
 #include "utils/Debugger.h"
 
@@ -40,9 +39,6 @@ GuiQtFieldgroup::GuiQtFieldgroup( GuiElement *parent, const std::string &name )
   , m_qgroupboxLayout( 0 )
   , m_titleLabel(0)
   , m_accordionButton(0)
-  , m_publisher(0)
-  , m_timerId(0)
-  , m_lastWebUpdate(0)
 {}
 
 GuiQtFieldgroup::GuiQtFieldgroup( const GuiQtFieldgroup &fg )
@@ -52,9 +48,6 @@ GuiQtFieldgroup::GuiQtFieldgroup( const GuiQtFieldgroup &fg )
   , m_qgroupboxLayout( 0 )
   , m_titleLabel(0)
   , m_accordionButton(0)
-  , m_publisher(0)
-  , m_timerId(0)
-  , m_lastWebUpdate(0)
 {
   std::ostringstream myname;
   myname << fg.Name() << "#" << getElement()->getCloneNumber();
@@ -1014,52 +1007,5 @@ void GuiQtFieldgroup::setScrollbar( ScrollbarType sb ){
 /* --------------------------------------------------------------------------- */
 void GuiQtFieldgroup::timerEvent ( QTimerEvent * event ) {
   BUG_DEBUG("GuiQtFieldgroup::timerEvent");
-  publishData();
-}
-
-/* --------------------------------------------------------------------------- */
-/* publishData --                                                              */
-/* --------------------------------------------------------------------------- */
-bool GuiQtFieldgroup::publishData() {
-  ///  if (!AppData::Instance().HeadlessWebMode()) return;
-
-  ///GuiQtManager::Instance().setWebUpdateTimestamp();
-  BUG_DEBUG("GuiQtFieldgroup::publishData");
-  if (!hasChanged(m_lastWebUpdate)){
-    BUG_DEBUG("no change");
-    return false;
-  }
-
-  if (!m_publisher) {
-    std::string pubname("mqReply_publisher_mq");
-    m_publisher = MessageQueue::getPublisher(pubname);
-    if (m_publisher) {
-      m_publisher->setPublishHeader("updated_element_data");
-    } else {
-      if (!m_publisher) {
-        BUG_WARN(compose("Undefined '%1' MESSAGE_QUEUE Publisher in MessageQueueReply.inc", pubname));
-      }
-      return false;
-    }
-  }
-#if HAVE_PROTOBUF
-  auto reply = in_proto::WebAPIResponse();
-  int cnt = serializeVisibleElements(reply.mutable_elements(), false);
-  std::ostringstream os;
-  reply.SerializePartialToOstream(&os);
-  m_publisher->setPublishData(os.str());
-  BUG_DEBUG("Fieldgroup: " << getName()
-            <<", Header: updated_element_data, GuiUpdate: "<< GuiManager::Instance().LastGuiUpdate()
-            << ", WebUpdate: " << m_lastWebUpdate
-            << ", hasChanged: " << hasChanged(m_lastWebUpdate)
-            << ",  Data: " << os.str());
-#else
-  Json::Value jsonAry = Json::Value(Json::arrayValue);
-  int cnt = serializeVisibleElements(jsonAry, false);
-  m_publisher->setPublishData(ch_semafor_intens::JsonUtils::value2string(jsonAry));
-  BUG_DEBUG("Header: updated_element_data, Data: " << ch_semafor_intens::JsonUtils::value2string(jsonAry));
-#endif
-  m_publisher->startPublish(true);
-  m_lastWebUpdate = GuiManager::Instance().LastGuiUpdate();
-  return true;
+  publishWebApiProgressData();
 }

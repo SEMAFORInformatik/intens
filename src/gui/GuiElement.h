@@ -95,10 +95,12 @@ protected:
     , m_openedByForm( el.m_openedByForm )
     , m_lastGuiUpdated( 0 )
     , m_lastWebUpdated( 0 )
+    , m_lastWebProgressUpdated( 0 )
     , m_attributeChanged( el.m_attributeChanged )
     , m_visible( el.m_visible )
     , m_hidden( el.m_hidden )
-    , m_isShownWebApi(el.m_isShownWebApi) {
+    , m_isShownWebApi(el.m_isShownWebApi)
+    , m_webapiPublish(el.m_webapiPublish) {
   }
   void setFormZOrder(int order) { m_formZOrder = order; }
 
@@ -725,6 +727,14 @@ public:
   /** get scale factor from unit */
   static  double getUnitScaleFactor(XferDataItem* dataitem);
 
+  /** set WebApi Publish data option */
+  void setWebApiPublish() { m_webapiPublish = true; }
+  /** has WebApi Publish data option */
+  bool hasWebApiPublish() { return m_webapiPublish; }
+
+  /** tick function, called by timer to manage data */
+  virtual void tick();
+
 /*=============================================================================*/
 /* protected member functions                                                  */
 /*=============================================================================*/
@@ -745,6 +755,9 @@ protected:
 
   /** update Scale instance of XferDataParameter */
   bool updateScale(XferDataParameter* param);
+
+  /** WebApi publish progress data */
+  bool publishWebApiProgressData();
 
 /*=============================================================================*/
 /* private data                                                                */
@@ -779,6 +792,7 @@ private:
   int               m_colspan;
   TransactionNumber m_lastGuiUpdated;
   TransactionNumber m_lastWebUpdated;
+  TransactionNumber m_lastWebProgressUpdated;
   GuiPopupMenu     *m_popupMenu;
 
   // visible/attribute flag
@@ -786,6 +800,7 @@ private:
   bool              m_hidden;   // parser/init flag
   bool              m_attributeChanged;
   bool              m_isShownWebApi;
+  bool              m_webapiPublish;
  };
 
 #endif

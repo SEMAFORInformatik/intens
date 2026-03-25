@@ -15,6 +15,7 @@
 #include "app/App.h"
 #include "parser/Flexer.h"
 #include "streamer/StreamManager.h"
+#include "operator/MessageQueuePublisher.h"
 #include <regex>
 
 INIT_LOGGER();
@@ -72,7 +73,8 @@ GuiElement::GuiElement( GuiElement *parent, const std::string &name )
   , m_visible( true )
   , m_hidden( false )
   , m_attributeChanged(false)
-  , m_isShownWebApi(true) {
+  , m_isShownWebApi(true)
+  , m_webapiPublish(false) {
   if ( !name.empty() ){
     GuiSortedElementList::const_iterator el =  s_namedElementList.find(name);
     if( el != s_namedElementList.end()){
@@ -1449,8 +1451,7 @@ int  GuiElement::serializeVisibleElements(in_proto::ElementList* eles, bool upda
     GuiElement* e = eit->myParent(GuiElement::type_Folder);
 
     while (e) {
-      BUG_DEBUG("-- Parent is " << e->StringType() );
-      BUG_DEBUG("-- last web update is " << e->LastWebUpdated() );
+      BUG_DEBUG("-- Parent is " << e->StringType() << ", last web update is " << e->LastWebUpdated() );
 
       if( e->LastWebUpdated() >= GuiManager::Instance().LastWebUpdate() ){
         BUG_DEBUG("   -- update always --");
@@ -1805,4 +1806,67 @@ double GuiElement::getUnitScaleFactor(XferDataItem* dataitem) {
 
   UnitManager::Unit* unit = UnitManager::Instance().getUnitData(dataitem->getUserAttr()->Unit(false));
   return unit ? unit->factor : 1.;
+}
+
+/* --------------------------------------------------------------------------- */
+/* tick --                                                                     */
+/* --------------------------------------------------------------------------- */
+void GuiElement::tick(){
+  if (AppData::Instance().HeadlessWebMode() && hasWebApiPublish()){
+    // call clones
+    std::vector<GuiElement*> cList;
+    getCloneList(cList);
+    ///cList.clear();
+    std::vector<GuiElement*>::iterator it = cList.begin();
+    for (; it != cList.end(); ++it)
+      (*it)->publishWebApiProgressData();
+    // myself
+    publishWebApiProgressData();
+    return;
+  }
+  BUG_INFO("GuiElement::timerEvent");
+}
+
+/* --------------------------------------------------------------------------- */
+/* publishWebApiProgressData --                                                */
+/* --------------------------------------------------------------------------- */
+bool GuiElement::publishWebApiProgressData() {
+
+  BUG_DEBUG("GuiElement::publishWebApiProgressData");
+  if (!hasChanged(m_lastWebProgressUpdated)){
+    BUG_DEBUG("no change");
+    return false;
+  }
+  std::string pubname("mqReply_publisher_mq");
+  MessageQueuePublisher* publisher(0);
+
+  publisher = MessageQueue::getPublisher(pubname);
+  if (publisher) {
+    publisher->setPublishHeader("updated_element_data");
+  } else {
+    if (!publisher && AppData::Instance().ReplyPort()) {
+      BUG_WARN(compose("Undefined '%1' MESSAGE_QUEUE Publisher in MessageQueueReply.inc", pubname));
+    }
+    return false;
+  }
+#if HAVE_PROTOBUF
+  auto reply = in_proto::WebAPIResponse();
+  int cnt = serializeVisibleElements(reply.mutable_elements(), false);
+  std::ostringstream os;
+  reply.SerializePartialToOstream(&os);
+  publisher->setPublishData(os.str());
+  BUG_DEBUG("GuiElement: " << getName()
+            <<", Header: updated_element_data, GuiUpdate: "<< GuiManager::Instance().LastGuiUpdate()
+            << ", WebUpdate: " << m_lastWebProgressUpdated
+            << ", hasChanged: " << hasChanged(m_lastWebProgressUpdated)
+            << ",  DataLen: " << os.str().size());
+#else
+  Json::Value jsonAry = Json::Value(Json::arrayValue);
+  int cnt = serializeVisibleElements(jsonAry, false);
+  publisher->setPublishData(ch_semafor_intens::JsonUtils::value2string(jsonAry));
+  BUG_DEBUG("Header: updated_element_data, Data: " << ch_semafor_intens::JsonUtils::value2string(jsonAry));
+#endif
+  publisher->startPublish(true);
+  m_lastWebProgressUpdated = GuiManager::Instance().LastGuiUpdate();
+  return true;
 }

@@ -721,6 +721,7 @@ public:
   virtual bool restService_setJwtXfer();
 
   virtual bool timer_setTimer( const::std::string &timer );
+  virtual bool timer_setGuiElement( const std::string& guielement);
   virtual bool timer_setMaxPendingFunctions( int nMax );
   virtual bool timer_setPeriod( double p );
   virtual bool timer_setPeriodXfer();

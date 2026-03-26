@@ -895,7 +895,8 @@ void GuiQtFieldgroup::slot_accordion(bool checked){
   }
   for(auto c : m_container){
     for(auto it : static_cast<GuiQtFieldgroupLine*>(c)->m_elements)
-      if (it->getQtElement() && it->getQtElement()->myWidget())
+      if (it->getQtElement() && it->getQtElement()->myWidget() &&
+          it->getVisibleFlag())
         it->getQtElement()->myWidget()->setVisible(checked);
   }
 }

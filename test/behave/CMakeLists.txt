@@ -12,6 +12,7 @@ set(features
     write_json_sparse_arrays.feature
     write_json.feature
     unitmgr.feature
+    validate_dataitem.feature
     # message_queue_reply.feature # disabled until we fix the CI timeout on this one
  )
 

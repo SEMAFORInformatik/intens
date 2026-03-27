@@ -180,7 +180,7 @@ bool MessageQueuePublisher::publishData(){
       publishHeader();
     }
     BUG_DEBUG("publishData " << i << ". DataLen:" << m_lastPublishString[i].size());
-    if (i < m_publish_out_streams.size()-1)
+    if (i < m_lastPublishString.size()-1)
       s_sendmore (*m_publisher, m_lastPublishString[i]);
     else
       s_send (*m_publisher, m_lastPublishString[i]);

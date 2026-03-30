@@ -8644,6 +8644,9 @@ job_set_attributes /* DOCUMENTATION:UNFOLD */
         $$ = $3;
       }
   | tEXPAND ',' job_set_attributes_expand
+      {
+        $$ = $3;
+      }
   ;
 job_data_reference_boolean /* DOCUMENTATION:DIAGRAM */
   : job_data_reference job_set_attr_boolean

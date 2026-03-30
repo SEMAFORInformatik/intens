@@ -1067,19 +1067,19 @@ bool GuiElement::withFrame(){
 /* --------------------------------------------------------------------------- */
 
 GuiElement *GuiElement::myParent( ElementType type ){
-  if( type == type_Form ){
-    // Bei der Frage nach der Form liefern wir auch die MainForm.
-    if( Type() == type_Main ){
-      return this;
-    }
-  }
-  if( type == Type() ){
-    return this;
-  }
   if( m_parent == 0 ){
     return 0;
   }
-  return m_parent->myParent( type );
+  if( type == type_Form ){
+    // Bei der Frage nach der Form liefern wir auch die MainForm.
+    if( m_parent->Type() == type_Main ){
+      return m_parent;
+    }
+  }
+  if( type == m_parent->Type() ){
+    return m_parent;
+  }
+  return m_parent ? m_parent->myParent( type ) : 0;
 }
 
 /* --------------------------------------------------------------------------- */

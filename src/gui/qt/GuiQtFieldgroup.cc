@@ -653,6 +653,7 @@ void GuiQtFieldgroup::unmap(){
 void GuiQtFieldgroup::map(){
   if (myWidget() && !myWidget()->isVisible())
     setAttributeChangedFlag(true);
+  // case overlay geometry
   if (getOverlayGeometry().isValid()) {
     QSize hsize = myWidget()->sizeHint();
     QSize psize = getParent()->getQtElement()->myWidget()->size();
@@ -685,6 +686,18 @@ void GuiQtFieldgroup::map(){
     myWidget()->show();
     myWidget()->raise();
     return;
+  }
+  // case i am a subaccordion
+  GuiElement* fieldgroup;
+  fieldgroup = this;
+  while((fieldgroup = fieldgroup->myParent(type_Fieldgroup)) != 0){
+    if (fieldgroup->getFieldgroup() &&
+        !fieldgroup->getFieldgroup()->isAccordionOpen()){
+      BUG_DEBUG("Do not map this fieldgroup: " << getName()
+                << ", Parent Accordion Fieldgroup is closed: " << fieldgroup->getName());
+      this->setVisibleFlag(true);
+      return;
+    }
   }
   GuiQtElement::map();
 }
@@ -868,6 +881,7 @@ void GuiQtFieldgroup::getSize(int &w, int &h){
 void GuiQtFieldgroup::slot_accordion(bool checked){
   auto pushbutton = qobject_cast<QPushButton *>(sender());
   auto groupbox = qobject_cast<QGroupBox *>(sender());
+  setAccordion(true, checked);
 
   if (pushbutton || groupbox){
     QPixmap icon;

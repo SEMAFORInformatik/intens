@@ -1812,7 +1812,7 @@ double GuiElement::getUnitScaleFactor(XferDataItem* dataitem) {
 /* tick --                                                                     */
 /* --------------------------------------------------------------------------- */
 void GuiElement::tick(){
-  if (AppData::Instance().HeadlessWebMode() && hasWebApiPublish()){
+  if (AppData::Instance().HeadlessWebMode()){
     // call clones
     std::vector<GuiElement*> cList;
     getCloneList(cList);

@@ -263,7 +263,7 @@ JobElement::OpStatus JobDataReference::assign( JobStackDataPtr &dat ){
     return op_Warning;
   }
 
-  if( dat->isInvalid() ){
+  if( dat->isInvalid() && m_data->getDataType() != DataDictionary::type_StructVariable){
     std::string leftValue, rightValue("<INVALID>");
     m_data->GetValue_PreInx(leftValue);
     bool replaced = ch_semafor_intens::JsonUtils::assignJsonObjectComboBox(leftValue, rightValue, false);

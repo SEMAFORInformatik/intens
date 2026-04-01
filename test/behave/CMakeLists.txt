@@ -15,7 +15,7 @@ set(features
     unitmgr.feature
     validate_dataitem.feature
     json_dump_struct.feature
-    # message_queue_reply.feature # disabled until we fix the CI timeout on this one
+    message_queue_reply.feature
  )
 
 foreach(feature IN LISTS features)

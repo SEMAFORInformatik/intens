@@ -13,19 +13,22 @@ class Client:
         self.socket = zmq_context.socket(zmq.REQ)
         self.socket.connect(f"tcp://localhost:{port}")
 
-    def hello(self, timeout=2):
+        self.poller = zmq.Poller()
+        self.poller.register(self.socket, zmq.POLLIN)
+
+    def hello(self, timeout=10):
         self.socket.send_string("control", zmq.SNDMORE)
         request = {"command": "HELLO"}
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg(timeout)
         rslt = json.loads(message[0])
         assert rslt.get("status", None) == "OK"
 
-    def clearcycle(self):
+    def clearcycle(self, timeout=10):
         self.socket.send_string("control", zmq.SNDMORE)
         request = {"command": "CLEARCYCLE"}
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg(timeout)
         rslt = json.loads(message[0])
         assert rslt.get("status", None) == "OK"
 
@@ -33,14 +36,14 @@ class Client:
         self.socket.send_string("control", zmq.SNDMORE)
         request = {"command": "EXIT", "argument": "force"}
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg()
         return message
 
     def login_database(self, user, passwd):
         self.socket.send_string("dblogin", zmq.SNDMORE)
         request = {"command": "LOGIN", "argument": [user, passwd]}
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg()
         rslt = json.loads(message[0])
         assert rslt.get("status", None) == "OK"
 
@@ -52,7 +55,7 @@ class Client:
         elif inx is not None or reason is not None:
             request["this"] = "mqReply_functionArgs"
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg()
         rslt = json.loads(message[0])
 
         if rslt.get("status", None) == "Query":
@@ -94,7 +97,7 @@ class Client:
 
         # process request
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message =  self.socket.recv_multipart()
+        message = self.receive_msg()
         rslt = json.loads(message[0])
         assert rslt.get("status", None) == "OK"
 
@@ -102,7 +105,7 @@ class Client:
         self.socket.send_string("getvalue", zmq.SNDMORE)
         request = {"varname": name}
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message =  self.socket.recv_multipart()
+        message = self.receive_msg()
         rslt = json.loads(message[0])
         assert rslt.get("status", None) == "OK"
         return json.loads(message[1])
@@ -112,7 +115,7 @@ class Client:
         request = {"varname": name, "data": str(value)}
         logging.debug("request: %s", request)
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg()
         # print(f'message: {message}')
         rslt = json.loads(message[0])
         if rslt.get("status", None) != "OK":
@@ -147,7 +150,7 @@ class Client:
         self.socket.send_string("uimanager", zmq.SNDMORE)
         request = {"name": name, "type": type_}
         self.socket.send(json.dumps(request).encode("utf-8"))
-        message = self.socket.recv_multipart()
+        message = self.receive_msg()
         rslt = json.loads(message[0])
         logging.info("rslt: %s", rslt)
 
@@ -157,3 +160,19 @@ class Client:
         #     print(element)
         #     print()
         return response
+
+    def receive_msg(self, timeout=10):
+        """receive and return message(s) with the given timeout in seconds"""
+
+        # check if the poller has something to read within timeout (in seconds)
+        socks = dict(self.poller.poll(timeout * 1000))
+        assert socks
+
+        # can we receive something from self.socket now
+        if socks.get(self.socket) != zmq.POLLIN:
+            assert False
+
+        # receive the message(s)
+        message = self.socket.recv_multipart()
+        assert message
+        return message

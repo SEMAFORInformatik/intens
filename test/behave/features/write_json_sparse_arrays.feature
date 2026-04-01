@@ -1,9 +1,9 @@
 Feature: JSON stream writing sparse arrays
   This Feature tests the stream writing in Intens.
   Several JSON-files are created and then compared to the expected outcome.
+  test_func is called when the application starts.
 
   Scenario Outline: Compare folders with expected list
-    When I run test_func
     Then the files <file> in folder reality and expected are the same
 
   Examples:

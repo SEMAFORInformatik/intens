@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route("/login", methods=["POST"])
 def hello_world():
     data = request.get_json()
-    if data["username"] == "scr" and data["password"] == "scr":
+    if data["username"] == "test" and data["password"] == "test":
 
         return jsonify([{"status": "OK"}]), 200
 

@@ -18,6 +18,7 @@ def start_intens(context, apphome):
     context.thread = thread
     context.apphome = apphome
     context.client = intens.client.Client(port=replyport)
+    context.client.hello(10)
     yield thread
     thread.join()
 

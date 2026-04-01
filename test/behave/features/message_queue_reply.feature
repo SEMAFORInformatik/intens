@@ -2,5 +2,5 @@ Feature: MessageQueueReply.inc tests
   This feature tests the communication endpoint for webtens
 
   Scenario: GuiIndex
-    Given I log in with scr and scr
+    Given I log in with test and test
 

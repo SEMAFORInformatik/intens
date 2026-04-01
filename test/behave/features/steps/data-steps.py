@@ -46,6 +46,18 @@ def step_impl(context, function):  # noqa: F811
 
 
 ########################################
+# Clear cycle
+########################################
+
+# clear the cycle
+@given('I clear the cycle')
+@when('I clear the cycle')
+def step_impl(context):  # noqa: F811
+    # run function
+    context.client.clearcycle()
+
+
+########################################
 # Get values
 ########################################
 

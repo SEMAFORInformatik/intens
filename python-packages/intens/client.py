@@ -21,6 +21,14 @@ class Client:
         rslt = json.loads(message[0])
         assert rslt.get("status", None) == "OK"
 
+    def clearcycle(self):
+        self.socket.send_string("control", zmq.SNDMORE)
+        request = {"command": "CLEARCYCLE"}
+        self.socket.send(json.dumps(request).encode("utf-8"))
+        message = self.socket.recv_multipart()
+        rslt = json.loads(message[0])
+        assert rslt.get("status", None) == "OK"
+
     def quit(self):
         self.socket.send_string("control", zmq.SNDMORE)
         request = {"command": "EXIT", "argument": "force"}

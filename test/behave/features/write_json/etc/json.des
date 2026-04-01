@@ -439,7 +439,7 @@ END OPERATOR;
 FUNCTIONS
   FUNC
     test_func {
-      CLEAR(data, data1, dataScalar, dataVector);
+      // CLEARCYCLE is called before every test scenario
       data.type.i = 111;
       data.type.iScalar = 112;
       data.type.iVector[0] = 113;

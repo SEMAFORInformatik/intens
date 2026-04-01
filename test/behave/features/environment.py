@@ -32,3 +32,7 @@ def before_feature(context, feature):
 
 def after_feature(context, feature):
     context.client.quit()
+
+
+def before_scenario(context, scenario):
+    context.client.clearcycle()

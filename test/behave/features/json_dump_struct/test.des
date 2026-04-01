@@ -1,0 +1,42 @@
+DESCRIPTION "json structure test";
+
+DATAPOOL
+  STRUCT Data {
+    INTEGER {EDITABLE, SCALAR} i {LABEL="Integer",FUNC=data_func};
+    REAL    {EDITABLE, SCALAR} r {LABEL="Real", FUNC=data_func};
+    STRING  {EDITABLE, SCALAR} s {LABEL="String", FUNC=data_func};
+  };
+  Data data {SCALAR};
+
+  STRING {EDITABLE, SCALAR} s;
+END DATAPOOL;
+
+UI_MANAGER
+  FIELDGROUP
+    fg (
+      LABEL(data.i) data.i<
+    , LABEL(data.r) data.r<
+    , LABEL(data.s) data.s<
+    , SEPARATOR
+    , s:80:5 {COLSPAN=2, EXPAND}
+    );
+  FORM form {MAIN} (
+    fg
+  );
+  FORM log_form (LOG_WINDOW, STD_WINDOW);
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC INIT {
+    data.i = 123;
+    data.r = 12.3;
+    data.s = "onetwothree";
+
+    RUN(data_func);
+  };
+
+  FUNC data_func {
+    s = data;
+  };
+END FUNCTIONS;
+END.

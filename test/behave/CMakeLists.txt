@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 set(features
+    consisteny_check.feature
     set-input-output.feature
     write_text_stream.feature
     plot.feature
@@ -13,6 +14,7 @@ set(features
     write_json.feature
     unitmgr.feature
     validate_dataitem.feature
+    json_dump_struct.feature
     # message_queue_reply.feature # disabled until we fix the CI timeout on this one
  )
 

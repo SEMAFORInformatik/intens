@@ -32,9 +32,6 @@ OPERATOR
     validWC[1] = VALID(array[*, *]);
     validWC[2] = VALID(array[*, *, *]);
   };
-  TASK clear_task {"Clear"} {
-    CLEAR(array[*,*]);
-  };
 END OPERATOR;
 
 END.

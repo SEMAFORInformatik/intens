@@ -692,7 +692,7 @@ void GuiQtFieldgroup::map(){
   fieldgroup = this;
   while((fieldgroup = fieldgroup->myParent(type_Fieldgroup)) != 0){
     if (fieldgroup->getFieldgroup() &&
-        !fieldgroup->getFieldgroup()->isAccordionOpen()){
+        (fieldgroup->getFieldgroup()->hasAccordion() && !fieldgroup->getFieldgroup()->isAccordionOpen())){
       BUG_DEBUG("Do not map this fieldgroup: " << getName()
                 << ", Parent Accordion Fieldgroup is closed: " << fieldgroup->getName());
       this->setVisibleFlag(true);

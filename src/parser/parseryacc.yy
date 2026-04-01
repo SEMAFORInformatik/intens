@@ -9188,9 +9188,9 @@ cycle_expression /* DOCUMENTATION:DIAGRAM */
   ;
 
 function_expression /* DOCUMENTATION:DIAGRAM */
-  : tVALID  '(' job_ref_with_wildcards job_data_reference ')'
+  : tVALID  '(' job_ref_with_wildcards job_expression ')'
       {
-       configurator -> opEvalValid();
+        configurator -> opEvalValid();
         $$=$3;
       }
   | tINDEX '(' job_expression ')'

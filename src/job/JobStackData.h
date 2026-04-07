@@ -271,6 +271,7 @@ public:
   virtual OpStatus equal( JobEngine *eng, JobStackDataPtr &dat ) = 0;
   virtual OpStatus notEqual( JobEngine *eng, JobStackDataPtr &dat ) = 0;
   virtual OpStatus assign( JobEngine *eng, JobStackDataPtr &dat ) { return op_FatalError; }
+  virtual OpStatus bulkAssign( JobEngine *eng, JobStackDataPtr &dat ) { return op_FatalError; }
   virtual OpStatus assignCorresponding( JobEngine *eng, JobStackDataPtr &dat ) { return op_FatalError; }
   virtual OpStatus accumulate( JobEngine *eng, JobStackDataPtr &dat ) { return op_FatalError; }
   virtual OpStatus increment( JobEngine *eng ) { return op_FatalError; }

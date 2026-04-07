@@ -200,6 +200,7 @@ void Flexer::initRwTabMap(){
   m_rwTabMap.insert(   "ASIN"            ,tASIN        );
   m_rwTabMap.insert(   "ASPECT_RATIO"    ,tASPECT_RATIO );
   m_rwTabMap.insert(   "ASPECT_RATIO_REF_AXIS",tASPECT_RATIO_REF_AXIS );
+  m_rwTabMap.insert(   "ASSIGN"          ,tASSIGN      );
   m_rwTabMap.insert(   "ASSIGN_CONSISTENCY", tASSIGN_CONSISTENCY);
   m_rwTabMap.insert(   "ASSIGN_CORR"     ,tASSIGN_CORR );
   m_rwTabMap.insert(   "ATAN"            ,tATAN        );

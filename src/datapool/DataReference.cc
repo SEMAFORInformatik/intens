@@ -2104,22 +2104,10 @@ void DataReference::AssignCorrespondingDataItem( DataReference &ref ){
 }
 
 /* --------------------------------------------------------------------------- */
-/* assignDataElement --							       */
+/* assignDataElement --                                         				       */
 /* --------------------------------------------------------------------------- */
 
 void DataReference::AssignDataElement( DataReference &ref ){
-  // -------------------------------------------------------------------------
-  // Source-Element has no dimension indizes on last level
-  // We assign complete data, like
-  // dest[*] = src[*]
-  // -------------------------------------------------------------------------
-  if (ref.GetNumberOfDimensionIndizes() == 0){
-    BUG_DEBUG("call DataAlterAssignDataItem");
-    DataAlterAssignDataItem assign( ref.getItem() );
-    alterData( assign );
-    return;
-  }
-
   // -------------------------------------------------------------------------
   // Das Source-Element muss nicht vorhanden sein. Der Wert ist in diesem
   // Fall einfach ungültig.
@@ -2141,6 +2129,24 @@ void DataReference::AssignDataElement( DataReference &ref ){
   }
   else{
     DataAlterAssignElement assign;
+    alterData( assign );
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* BulkAssignDataElement --                                         				       */
+/* --------------------------------------------------------------------------- */
+
+void DataReference::BulkAssignDataElement( DataReference &ref ){
+  // -------------------------------------------------------------------------
+  // Source-Element has no dimension indizes on last level
+  // We assign complete data, like
+  // dest[*] = src[*]
+  // -------------------------------------------------------------------------
+  if (GetNumberOfDimensionIndizes() == 0 &&
+      ref.GetNumberOfDimensionIndizes() == 0){
+    BUG_DEBUG("bulk copy, call DataAlterAssignDataItem");
+    DataAlterAssignDataItem assign( ref.getItem() );
     alterData( assign );
   }
 }

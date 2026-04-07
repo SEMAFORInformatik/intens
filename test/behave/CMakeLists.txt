@@ -15,6 +15,7 @@ set(features
     unitmgr.feature
     validate_dataitem.feature
     json_dump_struct.feature
+    assign_dataitem.feature
     # message_queue_reply.feature # disabled until we fix the CI timeout on this one
  )
 

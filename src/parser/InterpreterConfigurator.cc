@@ -9124,6 +9124,13 @@ bool InterpreterConfigurator::opClearSelection( const std::string &guiElementId 
   return JobManager::Instance().opClearSelection( m_rep->function, guiElementId );
 }
 //======================================================================//
+// - opBulkAssign
+//======================================================================//
+bool InterpreterConfigurator::opBulkAssign(){
+  JobManager::Instance().opBulkAssign( m_rep->function );
+  return true;
+}
+//======================================================================//
 // - opAssignCorresponding
 //======================================================================//
 bool InterpreterConfigurator::opAssignCorresponding(){

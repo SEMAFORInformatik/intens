@@ -32,6 +32,9 @@ STRUCT
     STRING  {SCALAR} svalue;
     INTEGER {SCALAR} ivalue;
     REAL    {SCALAR} rvalue;
+    STRING  svalueMatrix;
+    INTEGER ivalueMatrix;
+    REAL    rvalueMatrix;
     CDATA   {SCALAR} cdata;
   }
 ;
@@ -639,6 +642,22 @@ FUNCTIONS
     LOG(INFO, "mqReply_getvalue_func DONE, response: ", mqReply_datapool_response);
   };
 
+  FUNC { SILENT} mqReply_getvaluematrix_func {
+    CLEAR(mqReply_response);
+    CLEAR(mqReply_datapool_response);
+
+    mqReply_response.status = "OK";
+    IF (VALID(mqReply_datapool.varname)) {
+      LOG(DEBUG, "var ", mqReply_datapool.varname, " is valid");
+      ASSIGN(mqReply_datapool_response.svalueMatrix, VAR(mqReply_datapool.varname));
+      ASSIGN(mqReply_datapool_response.ivalueMatrix, VAR(mqReply_datapool.varname));
+      ASSIGN(mqReply_datapool_response.rvalueMatrix, VAR(mqReply_datapool.varname));
+    } ELSE {
+      LOG(DEBUG, "var ", mqReply_datapool.varname, " is NOT valid");
+    }
+    LOG(INFO, "mqReply_getvaluematrix_func DONE, response: ", mqReply_datapool_response);
+  };
+
   FUNC { SILENT} mqReply_setvalue_func {
     CLEAR(mqReply_response);
 
@@ -719,6 +738,11 @@ OPERATOR
       )
     , ( HEADER="getvalue"
       , FUNC = mqReply_getvalue_func
+      , RESPONSE(mqReply_response_stream, mqReply_datavalue_response_stream)
+      , REQUEST(mqReply_datapool_request_stream)
+      )
+    , ( HEADER="getvaluematrix"
+      , FUNC = mqReply_getvaluematrix_func
       , RESPONSE(mqReply_response_stream, mqReply_datavalue_response_stream)
       , REQUEST(mqReply_datapool_request_stream)
       )

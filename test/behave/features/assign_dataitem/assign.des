@@ -1,0 +1,154 @@
+DESCRIPTION "Assign Struct Data";
+
+DATAPOOL
+  SET unit_set {INVALID=NONE} (
+    "degrees" = 0
+  , "radians" = 1
+  , "n" = 2
+  );
+  STRUCT SubStruct {
+    INTEGER {EDITABLE} int {LABEL="Sub Integer"};
+    REAL {EDITABLE} real {LABEL="Sub Real"};
+    STRING {EDITABLE} string {LABEL="Sub String"};
+  };
+  STRUCT Data {
+    INTEGER {EDITABLE} int {LABEL="Integer"};
+    INTEGER {EDITABLE} i {LABEL="Sub Integer", SET=unit_set, FUNC=i_func};
+    REAL {EDITABLE} real {LABEL="Real"};
+    STRING {EDITABLE} string {LABEL="String"};
+    SubStruct sub;
+  };
+
+Data src, dest;
+END DATAPOOL;
+
+UI_MANAGER
+  INDEX data_index;
+
+  FIELDGROUP top_fg (
+    data_index
+  , src.i
+  );
+  FIELDGROUP src_fg {
+    TABLESIZE=6,
+    RANGE(1,6),
+    TABLE ORIENTATION=VERTICAL,
+    STRETCH
+  } (
+    LABEL(src.int) src[data_index].int[*],
+    LABEL(src.real) src[data_index].real[*],
+    LABEL(src.string) src[data_index].string[*],
+    LABEL(src.sub.int) src[data_index].sub.int[*],
+    LABEL(src.sub.real) src[data_index].sub.real[*],
+    LABEL(src.sub.string) src[data_index].sub.string[*]
+  );
+
+  TABLE src_table {
+    VERTICAL (TABLESIZE=6, RANGE(1)),
+    ORIENTATION=VERTICAL
+  } ( TABLE (src[data_index].int[*,*]);
+  );
+
+  TABLE src_sub_table {
+    VERTICAL (TABLESIZE=6, RANGE(1)),
+    ORIENTATION=VERTICAL
+  } ( TABLE (src[data_index].sub.int[*,*]);
+  );
+
+  FIELDGROUP dest_fg {
+    TABLESIZE=6,
+    RANGE(1,6),
+    TABLE ORIENTATION=VERTICAL,
+    STRETCH
+  } (
+    LABEL(dest.int) dest[data_index].int[*],
+    LABEL(dest.real) dest[data_index].real[*],
+    LABEL(dest.string) dest[data_index].string[*],
+    LABEL(dest.sub.int) dest[data_index].sub.int[*],
+    LABEL(dest.sub.real) dest[data_index].sub.real[*],
+    LABEL(dest.sub.string) dest[data_index].sub.string[*]
+  );
+
+  TABLE dest_table {
+    VERTICAL (TABLESIZE=6, RANGE(1)),
+    ORIENTATION=VERTICAL
+  } ( TABLE (dest[data_index].int[*,*]);
+  );
+
+  TABLE dest_sub_table {
+    VERTICAL (TABLESIZE=6, RANGE(1)),
+    ORIENTATION=VERTICAL
+  } ( TABLE (dest[data_index].sub.int[*,*]);
+  );
+
+  FORM form{MAIN}(
+    top_fg
+   , (src_fg, src_table, src_sub_table) [FRAME, "Source"]
+   , (dest_fg, dest_table, dest_sub_table) [FRAME, "Destination"]
+  );
+END UI_MANAGER;
+
+FUNCTIONS
+  FUNC INIT{
+    INTEGER x,y,z, i,j,n;
+    i = 6; j = 6; n = 6; x = 0; y = 0; z = 0;
+    WHILE (z < n){
+      x = 0;
+      WHILE (x < i){
+        src[z].real[x] = (z+1) * (x+2) + 2.3;
+        src[z].string[x] = COMPOSE("S: %1", (z+2) * (x+4)*20);
+        src[z].sub.real[x] = z * x * 10.2;
+        src[z].sub.string[x] = COMPOSE("S: %1", (z+1) * (x+1)*40);
+        y = 0;
+        WHILE (y<j){
+          src[z].int[x,y] = 5 + z * x + y;
+          src[z].sub.int[x,y] = 10 + z + 2 * x * y;
+          y++;
+        }
+        x++;
+      }
+      z++;
+    }
+  };
+
+  FUNC i_func{
+    STRING text;
+    text = DATASET_TEXT(src.i);
+    PRINT("DatasetText: ", src.i, " => ", text, EOLN);
+  };
+END FUNCTIONS;
+
+OPERATOR
+  TASK assign_task{"Assign"}{
+    ASSIGN(dest, src);
+  };
+  TASK assign_0_task{" = [0]"}{
+    dest = src;
+  };
+  TASK assign_1_task{"Assign[0]"}{
+    ASSIGN(dest[0], src[0]);
+  };
+  TASK assign_sub_task{"Assign sub"}{
+    ASSIGN(dest.sub, src.sub);
+  };
+  TASK assign_int_task{"Assign int"}{
+    ASSIGN(dest.int, src.int);
+  };
+  TASK assign_real_task{"Assign Real"}{
+    ASSIGN(dest.real, src.real);
+  };
+  TASK assign_string_task{"Assign String"}{
+    ASSIGN(dest.string, src.string);
+  };
+  TASK clear_src_task{"Clear Source"}{
+    CLEAR(src[*]);
+  };
+  TASK clear_dest_task{"Clear Dest"}{
+    CLEAR(dest[*]);
+  };
+  TASK init_task{"Init"}{
+    RUN(INIT);
+  };
+END OPERATOR;
+
+END.

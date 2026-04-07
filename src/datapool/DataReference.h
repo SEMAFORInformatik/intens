@@ -1191,6 +1191,12 @@ public:
    */
   void AssignDataElement( DataReference &source );
 
+  /** Die Funktion weist (Bulk Copy) das erhaltene DataElement dem aktuell adressierten
+      DataElement zu.
+      @param source Referenz auf die zuzuweisenden Daten
+   */
+  void BulkAssignDataElement( DataReference &source );
+
 
   bool writeXML( std::ostream &os
                , std::vector<std::string> & attrs

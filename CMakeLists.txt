@@ -363,7 +363,7 @@ add_custom_target(
 add_custom_target(
   intens-ubuntu-build
   COMMENT "compile intens for Ubuntu"
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/dockcross/build-ubuntu.sh"
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/dockcross/build-linux-release.sh"
   )
 add_custom_target(
   intens-alma-linux-build

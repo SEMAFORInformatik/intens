@@ -494,6 +494,19 @@ JobElement::OpStatus JobCodeAssign::execute( JobEngine *eng ){
 /* execute --                                                                  */
 /* --------------------------------------------------------------------------- */
 
+JobElement::OpStatus JobCodeBulkAssign::execute( JobEngine *eng ){
+  BUG(BugJobCode,"JobCodeAssign::execute");
+  JobStackDataPtr d( eng->pop() );
+  JobStackDataPtr v( eng->pop() );
+  if( d.isnt_valid() || v.isnt_valid() ) return op_FatalError;
+
+  return v->bulkAssign( eng, d );
+}
+
+/* --------------------------------------------------------------------------- */
+/* execute --                                                                  */
+/* --------------------------------------------------------------------------- */
+
 JobElement::OpStatus JobCodeAssignCorr::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeAssign::execute");
   JobStackDataPtr d( eng->pop() );

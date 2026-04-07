@@ -530,6 +530,15 @@ JobElement::OpStatus JobStackDataVariable::assign( JobEngine *eng, JobStackDataP
 }
 
 /* --------------------------------------------------------------------------- */
+/* bulkAssign --                                                               */
+/* --------------------------------------------------------------------------- */
+
+JobElement::OpStatus JobStackDataVariable::bulkAssign( JobEngine *eng, JobStackDataPtr &data ){
+  BUG(BugJobStack,"JobStackDataVariable::assign");
+  return m_data->bulkAssign( data );
+}
+
+/* --------------------------------------------------------------------------- */
 /* assignCorresponding --                                                      */
 /* --------------------------------------------------------------------------- */
 

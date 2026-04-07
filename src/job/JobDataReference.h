@@ -69,6 +69,7 @@ public:
       @return Status des laufenden Jobs (siehe JobElement.h)
   */
   OpStatus assign( JobStackDataPtr &dat );
+  OpStatus bulkAssign( JobStackDataPtr &dat );
   OpStatus assignCorresponding( JobStackDataPtr &dat );
   OpStatus getTimestamp(  JobEngine *eng );
   OpStatus getDbModified( JobEngine *eng );

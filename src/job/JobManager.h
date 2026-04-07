@@ -778,6 +778,7 @@ public:
   int opSetResource( JobFunction *func, const std::string &key, const std::string &value, bool useValue) {
 	return func->attach( new JobCodeSetResource(key, value, useValue) );
   }
+  int opBulkAssign( JobFunction *func ) { return func->attach( &m_op_bulk_assign ); }
   int opAssignCorresponding( JobFunction *func ) { return func->attach( &m_op_assign_corr ); }
   int opConfirm( JobFunction *func, bool cancelBtn,
 				 const std::map<GuiElement::ButtonType, std::string>& buttonText );
@@ -1036,6 +1037,7 @@ private:
   JobCodePushReason         m_op_reason_guiUpdate;
 
   JobCodeAssign        m_op_assign;
+  JobCodeBulkAssign    m_op_bulk_assign;
   JobCodeAssignCorr    m_op_assign_corr;
   JobCodeAccumulate    m_op_accumulate;
   JobCodeIncrement     m_op_increment;

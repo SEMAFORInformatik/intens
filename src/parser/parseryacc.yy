@@ -299,6 +299,7 @@ static XferDataItem::ParameterType parametertype;
 %token  tDISABLE_DRAG
 %token  tROUND tROUND5 tROUND10
 %token  tCONFIRM tCONFIRM_CANCEL tGETTEXT tMESSAGEBOX
+%token  tASSIGN
 %token  tASSIGN_CORR
 %token  tRETURN tABORT tEXIT
 %token  tREASON_INPUT
@@ -421,6 +422,7 @@ static XferDataItem::ParameterType parametertype;
 %type <val_integer>    job_log_elements job_log_element_list job_log_element
 %type <val_integer>    job_error_elements job_error_element_list job_error_element
 %type <val_integer>    job_message_elements job_message_element_list job_message_element
+%type <val_integer>    job_bulk_assign
 %type <val_integer>    job_assign_corresponding
 %type <val_integer>    job_string_expression job_string_list job_string
 %type <val_integer>    job_cyclenumber
@@ -7029,6 +7031,10 @@ data_statement /* DOCUMENTATION:DIAGRAM */
       {
         $$ = $3;
       }
+  | tASSIGN job_bulk_assign ';'
+      {
+        $$ = $2;
+      }
   | tASSIGN_CORR job_assign_corresponding ';'
       {
         $$ = $2;
@@ -8954,6 +8960,18 @@ job_pack_row_or_col /* DOCUMENTATION:UNFOLD */
   : /* none */  { $$ = 1; }
   | ',' tROW    { $$ = 1; }
   | ',' tCOL    { $$ = 0; }
+  ;
+
+/* --------------------------------------------------------------------------- */
+/* BULK ASSIGN                                                                 */
+/* --------------------------------------------------------------------------- */
+
+job_bulk_assign /* DOCUMENTATION:UNFOLD */
+  : '(' job_ref_with_wildcards job_data_reference ',' job_ref_with_wildcards job_data_reference ')'
+     {
+       configurator -> opBulkAssign();
+       $$ = $2;
+     }
   ;
 
 /* --------------------------------------------------------------------------- */

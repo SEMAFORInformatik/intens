@@ -110,6 +110,15 @@ class Client:
         assert rslt.get("status", None) == "OK"
         return json.loads(message[1])
 
+    def get_valuematrix(self, name):
+        self.socket.send_string("getvaluematrix", zmq.SNDMORE)
+        request = {"varname": name}
+        self.socket.send(json.dumps(request).encode("utf-8"))
+        message = self.receive_msg()
+        rslt = json.loads(message[0])
+        assert rslt.get("status", None) == "OK"
+        return json.loads(message[1])
+
     def set_value(self, name, value):
         self.socket.send_string("setvalue", zmq.SNDMORE)
         request = {"varname": name, "data": str(value)}
@@ -128,6 +137,10 @@ class Client:
         data = self.get_value(name)
         return data.get("svalue", None)
 
+    def get_stringmatrix_value(self, name):
+        data = self.get_valuematrix(name)
+        return data.get("svalueMatrix", None)
+
     def get_real_value(self, name):
         data = self.get_value(name)
         if not data:
@@ -139,11 +152,25 @@ class Client:
                 real = float(real)
         return real
 
+    def get_realmatrix_value(self, name):
+        data = self.get_valuematrix(name)
+        if not data:
+            return None
+        real = data.get("rvalueMatrix", None)
+        if real is None:
+            real = data.get("ivalueMatrix", None)
+        return real
+
     def get_integer_value(self, name):
         data = self.get_value(name)
         integer = data.get("ivalue", None)
         if integer is not None:
             integer = int(integer)
+        return integer
+
+    def get_integermatrix_value(self, name):
+        data = self.get_valuematrix(name)
+        integer = data.get("ivalueMatrix", None)
         return integer
 
     def get_uimanager(self, name, type_="JSON"):

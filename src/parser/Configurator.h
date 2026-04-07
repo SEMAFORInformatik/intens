@@ -916,6 +916,7 @@ class Configurator {
   virtual bool opEraseValues() = 0;
   virtual bool opClearTextWindow( const std::string &textwindow ) = 0;
   virtual bool opPackValues( int ) = 0;
+  virtual bool opBulkAssign() = 0;
   virtual bool opAssignCorresponding() = 0;
   virtual bool opGetTimestamp() = 0;
   virtual bool opGetDbModified() = 0;

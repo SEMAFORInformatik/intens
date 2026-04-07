@@ -899,6 +899,7 @@ public:
   virtual bool opEraseValues();
   virtual bool opClearTextWindow( const std::string &textwindow );
   virtual bool opPackValues( int );
+  virtual bool opBulkAssign();
   virtual bool opAssignCorresponding();
   virtual bool opGetTimestamp();
   virtual bool opGetDbModified();

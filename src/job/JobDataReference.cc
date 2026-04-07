@@ -263,7 +263,8 @@ JobElement::OpStatus JobDataReference::assign( JobStackDataPtr &dat ){
     return op_Warning;
   }
 
-  if( dat->isInvalid() && m_data->getDataType() != DataDictionary::type_StructVariable){
+  // if invalid & no bulk copy
+  if( dat->isInvalid()){
     std::string leftValue, rightValue("<INVALID>");
     m_data->GetValue_PreInx(leftValue);
     bool replaced = ch_semafor_intens::JsonUtils::assignJsonObjectComboBox(leftValue, rightValue, false);
@@ -327,9 +328,160 @@ JobElement::OpStatus JobDataReference::assign( JobStackDataPtr &dat ){
   case DataDictionary::type_StructVariable:{
       DataReference *ref = 0;
       if( dat->getStructureValue( ref, m_data ) ){
-	m_data->AssignDataElement( *ref );
-	BUG_EXIT("Structure Value " << ref->fullName( true ) << " set");
-	return op_Ok;
+        m_data->AssignDataElement( *ref );
+        BUG_EXIT("Structure Value " << ref->fullName( true ) << " set");
+        return op_Ok;
+      }
+      else {
+        if (dat->getDataType() == DataDictionary::type_String) {
+          std::string s;
+          if( dat->getStringValue( s ) ){
+            XferDataItem* xfer = new XferDataItem(DataReference::newDataReference(*m_data));
+            JSONStreamParameter jsonStreamParameter(xfer);
+            bool parsingSuccessful =  jsonStreamParameter.readString(s);
+            delete xfer;
+            return parsingSuccessful ? op_Ok : op_Warning;
+          }
+        }
+        return op_Ok;
+      }
+      m_data->clearAllElements();
+      BUG_EXIT("item cleared");
+      return op_Ok;
+    }
+    break;
+
+  default:
+    BUG_MSG("unknown Data Type");
+    break;
+  }
+  BUG_EXIT("set item invalid");
+  m_data->SetItemInvalid_PreInx();
+  return op_Ok;
+}
+
+
+/* --------------------------------------------------------------------------- */
+/* bulkAssign --                                                               */
+/* --------------------------------------------------------------------------- */
+
+JobElement::OpStatus JobDataReference::bulkAssign( JobStackDataPtr &dat ){
+  BUG(BugJobStack,"JobDataReference::bulkAssign");
+
+  JOB_CYCLE_SWITCH;
+
+  if( !m_valid ){
+    BUG_EXIT("i am not valid");
+    return op_Warning;
+  }
+
+  // if invalid & no bulk copy
+  if( dat->isInvalid() &&
+      (!dat->getDataReference() ||
+       dat->getDataReference() && dat->getDataReference()->GetNumberOfDimensionIndizes() > 0 &&
+       Data().GetNumberOfDimensionIndizes() > 0)
+      ){
+    std::string leftValue, rightValue("<INVALID>");
+    m_data->GetValue_PreInx(leftValue);
+    bool replaced = ch_semafor_intens::JsonUtils::assignJsonObjectComboBox(leftValue, rightValue, false);
+    if ( replaced ) {
+      m_data->SetValue_PreInx( leftValue );
+    } else {
+      if (!leftValue.empty())
+        m_data->SetValue_PreInx(leftValue);  // nachfolgender Aufruf funktioniert dann wirklich
+      m_data->SetItemInvalid_PreInx();
+    }
+    BUG_EXIT("Source DataReference is invalid");
+    return op_Ok;
+  }
+
+  switch( m_data->getDataType() ){
+  case DataDictionary::type_Integer:{
+      if (dat->getDataReference() &&
+          dat->getDataReference()->GetNumberOfDimensionIndizes() == 0 &&
+          Data().GetNumberOfDimensionIndizes() == 0){
+        // bulk copy
+        m_data->BulkAssignDataElement(*(dat->getDataReference()));
+        return op_Ok;
+      }
+      int i;
+      if( dat->getIntegerValue( i ) ){
+        m_data->SetValue_PreInx( i );
+        BUG_EXIT("Integer Value " << i << " set");
+        return op_Ok;
+      }
+    }
+    break;
+
+  case DataDictionary::type_Real:{
+      if (dat->getDataReference() &&
+          dat->getDataReference()->GetNumberOfDimensionIndizes() == 0 &&
+          Data().GetNumberOfDimensionIndizes() == 0){
+        // bulk copy
+        m_data->BulkAssignDataElement(*(dat->getDataReference()));
+        return op_Ok;
+      }
+      double d;
+      if( dat->getRealValue( d ) ){
+        m_data->SetValue_PreInx( d );
+        BUG_EXIT("Real Value " << d << " set");
+        return op_Ok;
+      }
+    }
+    break;
+
+  case DataDictionary::type_Complex:{
+      if (dat->getDataReference() &&
+          dat->getDataReference()->GetNumberOfDimensionIndizes() == 0 &&
+          Data().GetNumberOfDimensionIndizes() == 0){
+        // bulk copy
+        Data().BulkAssignDataElement(*(dat->getDataReference()));
+        return op_Ok;
+      }
+      dComplex c;
+      if( dat->getComplexValue( c ) ){
+        m_data->SetValue_PreInx( c );
+        BUG_EXIT("Complex Value " << c << " set");
+        return op_Ok;
+      }
+    }
+    break;
+
+  case DataDictionary::type_CharData:
+  case DataDictionary::type_String:{
+      if (dat->getDataReference() &&
+          dat->getDataReference()->GetNumberOfDimensionIndizes() == 0 &&
+          Data().GetNumberOfDimensionIndizes() == 0){
+        // bulk copy
+        Data().BulkAssignDataElement(*(dat->getDataReference()));
+        return op_Ok;
+      }
+      std::string s;
+      if( dat->getStringValue( s ) ){
+        std::string leftValue;
+        m_data->GetValue_PreInx(leftValue);
+        bool replaced = ch_semafor_intens::JsonUtils::assignJsonObjectComboBox(leftValue,s);
+        assert ( replaced );
+        m_data->SetValue_PreInx( leftValue );
+        BUG_EXIT("String Value " << leftValue << " set");
+        return op_Ok;
+      }
+    }
+    break;
+
+  case DataDictionary::type_StructVariable:{
+      if (dat->getDataReference() &&
+          dat->getDataReference()->GetNumberOfDimensionIndizes() == 0 &&
+          Data().GetNumberOfDimensionIndizes() == 0){
+        // bulk copy
+        Data().BulkAssignDataElement(*(dat->getDataReference()));
+        return op_Ok;
+      }
+      DataReference *ref = 0;
+      if( dat->getStructureValue( ref, m_data ) ){
+        m_data->AssignDataElement( *ref );
+        BUG_EXIT("Structure Value " << ref->fullName( true ) << " set");
+        return op_Ok;
       }
       else {
         if (dat->getDataType() == DataDictionary::type_String) {

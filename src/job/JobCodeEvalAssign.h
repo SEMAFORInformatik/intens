@@ -22,6 +22,20 @@ public:
   virtual OpStatus execute( JobEngine * );
 };
 
+/** Die Code-Funktion dieser Klasse weist einer Variablen einen Wert zu.
+ */
+class JobCodeBulkAssign : public JobCodeExec
+{
+public:
+  JobCodeBulkAssign(){}
+  virtual ~JobCodeBulkAssign(){}
+  /** Die Funktion execute() macht ein bulk copy des Variablen Wertes.
+      @param engine Pointer auf das ausführende JobEngine-Objekt
+      @return Status nach der Operation.
+  */
+  virtual OpStatus execute( JobEngine * );
+};
+
 /** Die Code-Funktion dieser Klasse weist einer Struct-Variablen alle Werte
     der korrespondierenden Items zu.
  */

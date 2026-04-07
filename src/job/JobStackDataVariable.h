@@ -249,6 +249,7 @@ public:
   virtual OpStatus equal( JobEngine *eng, JobStackDataPtr &dat );
   virtual OpStatus notEqual( JobEngine *eng, JobStackDataPtr &dat );
   virtual OpStatus assign( JobEngine *eng, JobStackDataPtr &dat );
+  virtual OpStatus bulkAssign( JobEngine *eng, JobStackDataPtr &dat );
   virtual OpStatus assignCorresponding( JobEngine *eng, JobStackDataPtr &dat );
   virtual OpStatus accumulate( JobEngine *eng, JobStackDataPtr &dat );
   virtual OpStatus increment( JobEngine *eng );

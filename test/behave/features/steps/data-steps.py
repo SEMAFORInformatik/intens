@@ -82,7 +82,12 @@ def step_impl(context, name, result, data_type="real"):  # noqa: F811
 
     # compare values
     try:
-        assert result == pytest.approx(answ)
+        if type(answ) == list and type(result) == list:
+            import json
+            for r, a in zip(result, answ):
+                assert a == pytest.approx(r)
+        else:
+            assert result == pytest.approx(answ)
     except AssertionError:
         import json
         print(f"Expected {json.dumps(result)}")

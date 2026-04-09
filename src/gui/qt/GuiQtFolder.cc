@@ -427,7 +427,8 @@ void GuiQtFolder::activatePage( int page, GuiFolderGroup::OmitMap omit_map, bool
   int activePage = AppData::Instance().HeadlessWebMode() ? m_activeWebPage : m_activePage;
   BUG_DEBUG("activePage=" << activePage);
 
-  if( !force && page == activePage && m_folder){
+  if( !AppData::Instance().HeadlessWebMode() &&
+      !force && page == activePage && m_folder){
     BUG_DEBUG("EXIT Page " << page << " already activ");
     return;
   }
@@ -545,7 +546,8 @@ void GuiQtFolder::hidePage( int page ){
   if( typeid( *m_folder ) == typeid( MyQTabWidget ) ){
     QTabWidget *folder = static_cast<QTabWidget*>( m_folder );
     int tab_index = getTabIndex( page );
-    folder->removeTab( tab_index );
+    // folder->removeTab( tab_index );
+    folder->setTabVisible(tab_index, false);
     BUG_DEBUG("EXIT: page " << page << " with index " << tab_index << " removed");
     //    folder->setTabEnabled( page, false ); // alternative!!!
     if (m_activePage == page){
@@ -576,11 +578,7 @@ bool GuiQtFolder::isHiddenPage(int page) {
   } else {
     QTabWidget *folder = static_cast<QTabWidget*>( m_folder );
     int tab_index = getTabIndex( page );
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     return !folder->isTabVisible( tab_index );
-#else
-    return false; // old qt version
-#endif
   }
 }
 
@@ -1251,29 +1249,31 @@ void GuiQtFolder::validateTab( int page ){
    // add tab if previously removed
   std::string label;
   QTabWidget *folder = static_cast<QTabWidget*>(m_folder);
-  QWidget *w = getTabWidget(page, label);
-  if (!w) return;
-  int index = folder->indexOf( w );
-  if( index == -1 ){
-    // get visible page index
-    int pageVisible(0), i(0);
-    for(GuiNamedElementList::iterator iter = m_elements.begin();
-        iter != std::next(m_elements.begin(), page); ++iter, ++i ){
-      if (getTabIndex(i) != -1)
-        ++pageVisible;
-    }
+  folder->setTabVisible(page, true);
+  return;
+  // QWidget *w = getTabWidget(page, label);
+  // if (!w) return;
+  // int index = folder->indexOf( w );
+  // if( index == -1 ){
+  //   // get visible page index
+  //   int pageVisible(0), i(0);
+  //   for(GuiNamedElementList::iterator iter = m_elements.begin();
+  //       iter != std::next(m_elements.begin(), page); ++iter, ++i ){
+  //     if (getTabIndex(i) != -1)
+  //       ++pageVisible;
+  //   }
 
-    BUG_DEBUG("insert tab with label '" << label << "'");
-    m_disabled_CB = true;
-    w->show();
-    folder->insertTab( pageVisible, w, QString::fromStdString(label) );
-    m_disabled_CB = false;
-    BUG_DEBUG("inserted");
-  }
-  else{
-    BUG_DEBUG("tab index is now " << index);
-    w->show();
-  }
+  //   BUG_DEBUG("insert tab with label '" << label << "'");
+  //   m_disabled_CB = true;
+  //   w->show();
+  //   folder->insertTab( pageVisible, w, QString::fromStdString(label) );
+  //   m_disabled_CB = false;
+  //   BUG_DEBUG("inserted");
+  // }
+  // else{
+  //   BUG_DEBUG("tab index is now " << index);
+  //   w->show();
+  // }
 }
 
 /* --------------------------------------------------------------------------- */

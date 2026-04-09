@@ -213,11 +213,12 @@ void JobWebApiResponse::serializeFolderTab(Json::Value& jsonElem) {
     int actFirst = -1;
     for (int x=0; x < fld->NumberOfPages(); ++x) {
       bool isHidden = fld->isHiddenPage(x);
+      bool isActive = fld->PageIsActive(x);
       if (fld->PageIsActive(x) && (!isHidden || fld->IsHideButton()))
         act = x;
       if (!fld->IsHideButton()) {
         jsonVisAry.append(!isHidden);
-        if (actFirst < 0 && !isHidden)
+        if (actFirst < 0 && isActive)
           actFirst = x;
       }
     }
@@ -263,11 +264,12 @@ void JobWebApiResponse::serializeFolderTab(in_proto::WebAPIResponse* reply) {
     auto folder = reply->add_folders();
     for (int x=0; x < fld->NumberOfPages(); ++x) {
       bool isHidden = fld->isHiddenPage(x);
+      bool isActive = fld->PageIsActive(x);
       if (fld->PageIsActive(x) && (!isHidden || fld->IsHideButton()))
         act = x;
       if (!fld->IsHideButton()) {
         folder->add_visible_pages(!isHidden);
-        if (actFirst < 0 && !isHidden)
+        if (actFirst < 0 && isActive)
           actFirst = x;
       }
     }
@@ -281,7 +283,6 @@ void JobWebApiResponse::serializeFolderTab(in_proto::WebAPIResponse* reply) {
       folder->add_ids((*fit)->getElementIntId());
     }
     folder->set_name((*it)->getName());
-
   }
 
   BUG_DEBUG("serializeFolderTab Count: " << result.size() << "]");

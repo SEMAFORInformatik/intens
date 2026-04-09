@@ -3347,7 +3347,7 @@ bool InterpreterConfigurator::attachList( const std::string &elementId,
       m_rep->element = m_rep->element->clone();
     }
     else{
-      ParserError( compose(_("List '%1' is already installed."), elementId) );
+      //      ParserError( compose(_("List '%1' is already installed."), elementId) );
     }
   }
   m_rep->element->setParent( m_rep->fieldgroupline->getElement() );
@@ -5472,7 +5472,7 @@ bool InterpreterConfigurator::attachTable( const std::string &elementId, GuiElem
       m_rep->element = m_rep->element->clone();
     }
     else{
-      ParserError( compose(_("List '%1' is already installed."), elementId) );
+      //      ParserError( compose(_("List '%1' is already installed."), elementId) );
     }
   }
   m_rep->element->setParent( m_rep->fieldgroupline->getElement() );
@@ -5496,7 +5496,7 @@ bool InterpreterConfigurator::attachPlot2d( const std::string &elementId, GuiEle
       m_rep->element = m_rep->element->clone();
     }
     else{
-      ParserError( compose(_("List '%1' is already installed."), elementId) );
+      //      ParserError( compose(_("List '%1' is already installed."), elementId) );
     }
   }
   m_rep->element->setParent( m_rep->fieldgroupline->getElement() );

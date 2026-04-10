@@ -52,9 +52,9 @@ add_custom_command(
 
 add_custom_command(
   OUTPUT "${VENV_BIN}/pyinstaller"
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml
   DEPENDS "${VENV_PYTHON}"
-  COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${VENV_PYTHON} -m pip install -r ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
+  COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${VENV_PYTHON} -m pip install ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(

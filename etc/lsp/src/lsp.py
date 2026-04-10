@@ -17,7 +17,7 @@ from lsprotocol import types
 
 BUILD_CONFIG_FILE = '.intensproj'
 LOCALS_PREFIX = '@LocalVariablesOf'
-XML_ITEM_QUERY = "./ITEM"
+XML_ITEM_QUERY = './ITEM'
 URL_ROOT = 'file:///' if os.name == 'nt' else 'file://'
 NO_SYMBOLS_ERROR = "Can't load symbols for file. (Parser error, build failure, or outside of workspace)"
 
@@ -37,35 +37,29 @@ def get_folder_for_file(folder_uris: list[str], file_uri: str):
     return found[0]
 
 
-@server.feature(
-    types.INITIALIZE
-)
+@server.feature(types.INITIALIZE)
 def initialize(params: types.InitializeParams):
     return types.InitializeResult(
         capabilities={
             'text_document_sync': types.TextDocumentSyncKind.Incremental,
-            'completion_provider': {
-                'resolve_provider': True
-            }
+            'completion_provider': {'resolve_provider': True},
         }
     )
 
 
 def parse_unimplemented_functions(stderr: str):
     """
-        intens outputs the information about inimplemented functions in the style of:
-        Warning: {name} not implemented!
+    intens outputs the information about inimplemented functions in the style of:
+    Warning: {name} not implemented!
 
-        This will scan all of stderr and extract the function names from it
+    This will scan all of stderr and extract the function names from it
     """
-    return [line.split(' ')[1]
-            for line in stderr.split('\n')
-            if 'not implemented!' in line]
+    return [
+        line.split(' ')[1] for line in stderr.split('\n') if 'not implemented!' in line
+    ]
 
 
-@server.feature(
-    types.INITIALIZED
-)
+@server.feature(types.INITIALIZED)
 async def initialized(params):
     for k, folder in server.workspace.folders.items():
         build_queue[folder.uri] = asyncio.Lock()
@@ -75,44 +69,53 @@ async def initialized(params):
 
 async def build_and_validate(folder: types.WorkspaceFolder):
     """
-        build a intens description file in a tmp folder and get information from it
+    build a intens description file in a tmp folder and get information from it
     """
     global unimplemented_funcs, build_dirs, workspace_symbols
     unimplemented_funcs = []
     server_configuration = await server.workspace_configuration_async(
         types.ConfigurationParams(
             items=[
-                types.ConfigurationItem(
-                    scope_uri=folder.uri, section='intens'),
+                types.ConfigurationItem(scope_uri=folder.uri, section='intens'),
             ]
         )
     )
     configs = {}
     if len(server_configuration) > 0 and server_configuration[0] is not None:
-        configs = {key: val for key,
-                   val in server_configuration[0].items() if val is not None}
+        configs = {
+            key: val for key, val in server_configuration[0].items() if val is not None
+        }
 
     # get the root directory of the project
     # on windows the path gets returned weirdly, so we strip the first character away on there
     folder_path = urllib.parse.unquote(
         urllib.request.url2pathname(urllib.parse.urlparse(folder.uri).path)
-    )[(1 if os.name == 'nt' else 0):]
+    )[(1 if os.name == 'nt' else 0) :]
 
     venv_dir = configs.get('venv', '${workspaceFolder}/.venv').replace(
-        '${workspaceFolder}', folder_path)
+        '${workspaceFolder}', folder_path
+    )
     intens_dir = configs.get('installation', '/usr/local/intens/current')
     msys_dir = configs.get('msys', 'C:\\msys64')
     # add msys and intens installation folders to the PATH on windows
-    sys_path = os.pathsep.join([
-        os.path.join(intens_dir, 'bin'),
-        os.path.join(venv_dir, 'Scripts'),
-        os.getenv('PATH'),
-        os.path.join(msys_dir, 'usr', 'bin'),
-        os.path.join(msys_dir, 'mingw64', 'bin'),
-    ]) if os.name == 'nt' else os.pathsep.join([
-        os.path.join(venv_dir, 'bin'),
-        os.getenv('PATH'),
-    ])
+    sys_path = (
+        os.pathsep.join(
+            [
+                os.path.join(intens_dir, 'bin'),
+                os.path.join(venv_dir, 'Scripts'),
+                os.getenv('PATH'),
+                os.path.join(msys_dir, 'usr', 'bin'),
+                os.path.join(msys_dir, 'mingw64', 'bin'),
+            ]
+        )
+        if os.name == 'nt'
+        else os.pathsep.join(
+            [
+                os.path.join(venv_dir, 'bin'),
+                os.getenv('PATH'),
+            ]
+        )
+    )
 
     env = {}
     env.update(os.environ)
@@ -127,7 +130,8 @@ async def build_and_validate(folder: types.WorkspaceFolder):
         env.pop(lp_key, None)
 
     config_file = server.workspace.get_text_document(
-        os.path.join(folder_path, BUILD_CONFIG_FILE))
+        os.path.join(folder_path, BUILD_CONFIG_FILE)
+    )
 
     # get the configuration from the project's config file
     # abort if it's not found
@@ -137,10 +141,10 @@ async def build_and_validate(folder: types.WorkspaceFolder):
         # so we prefix the root scope
         f = '[root]\n' + config_file.source
     except:
-
         # currently also check .lspconfig file too until all is migrated
         config_file = server.workspace.get_text_document(
-            os.path.join(folder_path, '.lspconfig'))
+            os.path.join(folder_path, '.lspconfig')
+        )
 
         # get the configuration from the project's config file
         # abort if it's not found
@@ -150,63 +154,82 @@ async def build_and_validate(folder: types.WorkspaceFolder):
             # so we prefix the root scope
             f = '[root]\n' + config_file.source
         except:
-            server.window_show_message(types.ShowMessageParams(message='File ' + BUILD_CONFIG_FILE +
-                                       ' does not exist in project', type=types.MessageType.Error))
+            server.window_show_message(
+                types.ShowMessageParams(
+                    message='File ' + BUILD_CONFIG_FILE + ' does not exist in project',
+                    type=types.MessageType.Error,
+                )
+            )
             return
     config.read_string(f)
 
     # create a temporary directory and configure cmake in it
     # if already built before, reuse directory
-    build_dir = build_dirs[folder_path] if folder_path in build_dirs else tempfile.mkdtemp(
+    build_dir = (
+        build_dirs[folder_path] if folder_path in build_dirs else tempfile.mkdtemp()
     )
     build_dirs[folder_path] = build_dir
 
-    cmake = shutil.which("cmake", path=sys_path)
+    cmake = shutil.which('cmake', path=sys_path)
     if not cmake:
-        server.window_show_message(types.ShowMessageParams(
-            "lsp error: cmake command not found.", types.MessageType.Error))
+        server.window_show_message(
+            types.ShowMessageParams(
+                'lsp error: cmake command not found.', types.MessageType.Error
+            )
+        )
         return
 
     cmake_proc = subprocess.Popen(
-        [cmake, folder_path] + (['-G', 'MSYS Makefiles']
-                                if os.name == 'nt' else []),
+        [cmake, folder_path] + (['-G', 'MSYS Makefiles'] if os.name == 'nt' else []),
         cwd=build_dir,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        env=env
+        env=env,
     )
 
     out, err = cmake_proc.communicate()
 
     if cmake_proc.returncode != 0:
-        server.window_log_message(types.LogMessageParams(message=out.decode('utf-8'), type=types.MessageType.Error))
-        server.window_log_message(types.LogMessageParams(message=err.decode('utf-8'), type=types.MessageType.Error))
-        server.window_show_message(types.ShowMessageParams(
-            message="Cmake error. Please check server logs", type=types.MessageType.Error))
+        server.window_log_message(
+            types.LogMessageParams(
+                message=out.decode('utf-8'), type=types.MessageType.Error
+            )
+        )
+        server.window_log_message(
+            types.LogMessageParams(
+                message=err.decode('utf-8'), type=types.MessageType.Error
+            )
+        )
+        server.window_show_message(
+            types.ShowMessageParams(
+                message='Cmake error. Please check server logs',
+                type=types.MessageType.Error,
+            )
+        )
         return
 
     # build the description file based on the target specified in .lspconfig
     target = config.get('cmake', 'target')
 
-    build_exec = shutil.which("make", path=sys_path)
+    build_exec = shutil.which('make', path=sys_path)
     make_process = subprocess.Popen(
         [build_exec, target],
         cwd=build_dir,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        env=env
+        env=env,
     )
 
     out, err = make_process.communicate()
 
     # analyze the generated description file with intens
-    intens_cmd = shutil.which("intens", path=sys_path)
+    intens_cmd = shutil.which('intens', path=sys_path)
     intens_process = subprocess.Popen(
         [intens_cmd, '--lspWorker', config.get('root', 'output')],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=build_dir,
-        env=env
+        env=env,
     )
 
     # if the make already failed we want to analyze that output instead
@@ -219,28 +242,41 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     if make_process.returncode == 0 and intens_process.returncode == 0:
         # parse the intens xml output and store the variable/function info
         root = ET.fromstring(out)
-        variables = [a for a in root.findall(
-            XML_ITEM_QUERY) if 'internal' not in a.attrib and not a.attrib['name'].startswith('__') and not '@' in a.attrib['name']]
-        func_locals = {a.attrib['name']: a for a in root.findall(
-            XML_ITEM_QUERY) if a.attrib['name'].startswith(LOCALS_PREFIX)}
+        variables = [
+            a
+            for a in root.findall(XML_ITEM_QUERY)
+            if 'internal' not in a.attrib
+            and not a.attrib['name'].startswith('__')
+            and not '@' in a.attrib['name']
+        ]
+        func_locals = {
+            a.attrib['name']: a
+            for a in root.findall(XML_ITEM_QUERY)
+            if a.attrib['name'].startswith(LOCALS_PREFIX)
+        }
 
         # analysis can still be successful with unimplemented functions
-        unimplemented_funcs = parse_unimplemented_functions(
-            err)
+        unimplemented_funcs = parse_unimplemented_functions(err)
         workspace_symbols[folder.uri] = {
             'variables': variables,
-            'functions': (root.findall('./function') or []) +
-            (root.findall('./task') or []),
-            'locals': func_locals}
+            'functions': (root.findall('./function') or [])
+            + (root.findall('./task') or []),
+            'locals': func_locals,
+        }
     else:
         # either make failed or intens failed to analyse the file due to a parser error
-        server.window_log_message(types.LogMessageParams(message=err, type=types.MessageType.Warning))
+        server.window_log_message(
+            types.LogMessageParams(message=err, type=types.MessageType.Warning)
+        )
 
         # if the string "intens aborted" is not in the error output, the build failed elsewhere
         # and analysis of intens symbols or errors cannot be provided
-        if "intens aborted" not in err and ': at' not in err:
-            server.window_show_message(types.ShowMessageParams(
-                message="Build error: " + err, type=types.MessageType.Error))
+        if 'intens aborted' not in err and ': at' not in err:
+            server.window_show_message(
+                types.ShowMessageParams(
+                    message='Build error: ' + err, type=types.MessageType.Error
+                )
+            )
             return
 
         # analyze synatx errors from output
@@ -264,33 +300,33 @@ async def build_and_validate(folder: types.WorkspaceFolder):
 
             # Line is one-indexed in the third-last part of the list
             line = int(parts[-3]) - 1
-            server.window_log_message(types.LogMessageParams(message=str(parts), type=types.MessageType.Log))
+            server.window_log_message(
+                types.LogMessageParams(message=str(parts), type=types.MessageType.Log)
+            )
 
             # second last part contains the erroring symbol in quotes, extract it
             character = re.search('"(.*)"', parts[-2]).group(1)
-            file = server.workspace.get_text_document(
-                f'{URL_ROOT}{error_file_path}')
+            file = server.workspace.get_text_document(f'{URL_ROOT}{error_file_path}')
 
             # check where on the line the error happens, as we don't get that info in the message
             index = file.lines[line].find(character)
-            server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
-                uri=f'{URL_ROOT}{error_file_path}',
-                diagnostics=[types.Diagnostic(
-                    range=types.Range(
-                        start=types.Position(
-                             line=line,
-                             character=index
-                             ),
-                        end=types.Position(
-                            line=line,
-                            character=index +
-                            len(character)
+            server.text_document_publish_diagnostics(
+                types.PublishDiagnosticsParams(
+                    uri=f'{URL_ROOT}{error_file_path}',
+                    diagnostics=[
+                        types.Diagnostic(
+                            range=types.Range(
+                                start=types.Position(line=line, character=index),
+                                end=types.Position(
+                                    line=line, character=index + len(character)
+                                ),
+                            ),
+                            severity=types.DiagnosticSeverity.Error,
+                            # last part is the error message
+                            message=parts[-1].strip(),
                         )
-                    ),
-                    severity=types.DiagnosticSeverity.Error,
-                    # last part is the error message
-                    message=parts[-1].strip()
-                )])
+                    ],
+                )
             )
 
 
@@ -316,8 +352,14 @@ def get_diagnostics(params):
         return
     # we want to see if there are any calls to unimplemented function in this file
     text = server.workspace.get_text_document(params.text_document.uri).source
-    matches = [{'name': search[1], 'match': search[0].group(0)} for search in [(re.search(
-        f'RUN.?\\(.*{func}.*\\)', text), func) for func in unimplemented_funcs] if search[0] is not None]
+    matches = [
+        {'name': search[1], 'match': search[0].group(0)}
+        for search in [
+            (re.search(f'RUN.?\\(.*{func}.*\\)', text), func)
+            for func in unimplemented_funcs
+        ]
+        if search[0] is not None
+    ]
 
     lines = text.splitlines()
     matches_lines = [
@@ -327,45 +369,46 @@ def get_diagnostics(params):
         if match['match'] in line
     ]
 
-    diagnostics = [types.Diagnostic(
-        range=types.Range(
-            start=types.Position(
-                line=m[1],
-                character=lines[m[1]].find(m[0])
+    diagnostics = [
+        types.Diagnostic(
+            range=types.Range(
+                start=types.Position(line=m[1], character=lines[m[1]].find(m[0])),
+                end=types.Position(
+                    line=m[1], character=lines[m[1]].find(m[0]) + len(m[0])
+                ),
             ),
-            end=types.Position(
-                line=m[1],
-                character=lines[m[1]].find(m[0]) + len(m[0])
-            )
-        ),
-        severity=types.DiagnosticSeverity.Warning,
-        message=f'Unimplemented function {m[0]}.'
-    ) for m in matches_lines]
-    server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
-        uri=params.text_document.uri,
-        diagnostics=diagnostics
-    ))
+            severity=types.DiagnosticSeverity.Warning,
+            message=f'Unimplemented function {m[0]}.',
+        )
+        for m in matches_lines
+    ]
+    server.text_document_publish_diagnostics(
+        types.PublishDiagnosticsParams(
+            uri=params.text_document.uri, diagnostics=diagnostics
+        )
+    )
 
 
-@server.feature(
-    types.TEXT_DOCUMENT_COMPLETION
-)
+@server.feature(types.TEXT_DOCUMENT_COMPLETION)
 def completion(params: types.CompletionParams):
     file = server.workspace.get_text_document(params.text_document.uri)
 
     folder = get_folder_for_file(workspace_symbols.keys(), file.uri)
     if folder is None:
-        server.window_show_message(types.ShowMessageParams(
-            message=NO_SYMBOLS_ERROR,
-            type=types.MessageType.Error))
+        server.window_show_message(
+            types.ShowMessageParams(
+                message=NO_SYMBOLS_ERROR, type=types.MessageType.Error
+            )
+        )
         return
 
     return auto_completer.get_completion(
-        params.position, file, workspace_symbols[folder])
+        params.position, file, workspace_symbols[folder]
+    )
 
 
 def index_to_coordinates(s, index):
-    '''Returns (line_number, col) of `index` in `s`.'''
+    """Returns (line_number, col) of `index` in `s`."""
     left = index
     for num, line in enumerate(s.splitlines(True)):
         if len(line) > left:
@@ -374,25 +417,24 @@ def index_to_coordinates(s, index):
     return num, left
 
 
-@server.feature(
-    types.TEXT_DOCUMENT_DEFINITION
-)
+@server.feature(types.TEXT_DOCUMENT_DEFINITION)
 def go_to_definition(params: types.DefinitionParams):
     file = server.workspace.get_text_document(params.text_document.uri)
 
     # find out if there is a function above us and if yes which one
-    in_function = lowest_function(file.lines[0:params.position.line])
+    in_function = lowest_function(file.lines[0 : params.position.line])
 
     word = file.word_at_position(params.position)
 
     # Go to definiton across workspaces is not supported
-    folder = get_folder_for_file(
-        workspace_symbols.keys(), params.text_document.uri)
+    folder = get_folder_for_file(workspace_symbols.keys(), params.text_document.uri)
 
     if folder is None:
-        server.window_show_message(types.ShowMessageParams(
-            message=NO_SYMBOLS_ERROR,
-            type=types.MessageType.Error))
+        server.window_show_message(
+            types.ShowMessageParams(
+                message=NO_SYMBOLS_ERROR, type=types.MessageType.Error
+            )
+        )
         return
 
     workspace = workspace_symbols[folder]
@@ -415,8 +457,9 @@ def go_to_definition(params: types.DefinitionParams):
             try:
                 # get the line where the variable is defined
                 # the -1 is because the output we get from intens is 1 indexed for lines
-                line_text: str = server.workspace.get_text_document(
-                    file).lines[int(line)-1]
+                line_text: str = server.workspace.get_text_document(file).lines[
+                    int(line) - 1
+                ]
             except:
                 return
             # find location in line
@@ -430,9 +473,9 @@ def go_to_definition(params: types.DefinitionParams):
                     ),
                     end=types.Position(
                         line=int(line) - 1,
-                        character=character+len(word),
-                    )
-                )
+                        character=character + len(word),
+                    ),
+                ),
             )
 
 

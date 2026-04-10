@@ -75,3 +75,4 @@ etc/lsp/src/grammar.json
 etc/lsp/src/node-types.json
 etc/lsp/src/parser.c
 .qt
+.venv

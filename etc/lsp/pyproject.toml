@@ -7,7 +7,7 @@ build-backend = "hatchling.build"
 name = "intens-lsp"
 version = "0.1.0"
 description = "A language server for intens"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "lsprotocol==2025.0.0",
     "pygls==2.0.0",

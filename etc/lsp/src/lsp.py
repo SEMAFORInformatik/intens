@@ -1,19 +1,21 @@
 #!/usr/bin/env python
-from pygls.lsp.server import LanguageServer
+import asyncio
+import configparser
 import os
+import re
+import shutil
+import subprocess
+import tempfile
 import urllib
 import urllib.request
-import shutil
-import tempfile
-import configparser
-import subprocess
-import re
+import urllib.parse
 import xml.etree.ElementTree as ET
-import asyncio
 from typing import Dict
-from autoCompleter import AutoCompleter, is_function_call, lowest_function
-from lsprotocol import types
 
+from lsprotocol import types
+from pygls.lsp.server import LanguageServer
+
+from autoCompleter import AutoCompleter, lowest_function
 
 BUILD_CONFIG_FILE = '.intensproj'
 LOCALS_PREFIX = '@LocalVariablesOf'
@@ -40,10 +42,10 @@ def get_folder_for_file(folder_uris: list[str], file_uri: str):
 @server.feature(types.INITIALIZE)
 def initialize(params: types.InitializeParams):
     return types.InitializeResult(
-        capabilities={
-            'text_document_sync': types.TextDocumentSyncKind.Incremental,
-            'completion_provider': {'resolve_provider': True},
-        }
+        capabilities=types.ServerCapabilities(
+            text_document_sync=types.TextDocumentSyncKind.Incremental,
+            completion_provider=types.CompletionOptions(resolve_provider=True),
+        )
     )
 
 
@@ -100,20 +102,24 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     # add msys and intens installation folders to the PATH on windows
     sys_path = (
         os.pathsep.join(
-            [
-                os.path.join(intens_dir, 'bin'),
-                os.path.join(venv_dir, 'Scripts'),
-                os.getenv('PATH'),
-                os.path.join(msys_dir, 'usr', 'bin'),
-                os.path.join(msys_dir, 'mingw64', 'bin'),
-            ]
+            iter(
+                [
+                    os.path.join(intens_dir, 'bin'),
+                    os.path.join(venv_dir, 'Scripts'),
+                    os.getenv('PATH'),
+                    os.path.join(msys_dir, 'usr', 'bin'),
+                    os.path.join(msys_dir, 'mingw64', 'bin'),
+                ]
+            )
         )
         if os.name == 'nt'
         else os.pathsep.join(
-            [
-                os.path.join(venv_dir, 'bin'),
-                os.getenv('PATH'),
-            ]
+            iter(
+                [
+                    os.path.join(venv_dir, 'bin'),
+                    os.getenv('PATH'),
+                ]
+            )
         )
     )
 
@@ -174,7 +180,7 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     if not cmake:
         server.window_show_message(
             types.ShowMessageParams(
-                'lsp error: cmake command not found.', types.MessageType.Error
+                types.MessageType.Error, 'lsp error: cmake command not found.'
             )
         )
         return
@@ -212,6 +218,15 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     target = config.get('cmake', 'target')
 
     build_exec = shutil.which('make', path=sys_path)
+    if not build_exec:
+        server.window_show_message(
+            types.ShowMessageParams(
+                message='Make command not found',
+                type=types.MessageType.Error,
+            )
+        )
+        return
+
     make_process = subprocess.Popen(
         [build_exec, target],
         cwd=build_dir,
@@ -224,6 +239,15 @@ async def build_and_validate(folder: types.WorkspaceFolder):
 
     # analyze the generated description file with intens
     intens_cmd = shutil.which('intens', path=sys_path)
+    if not intens_cmd:
+        server.window_show_message(
+            types.ShowMessageParams(
+                message='intens command not found',
+                type=types.MessageType.Error,
+            )
+        )
+        return
+
     intens_process = subprocess.Popen(
         [intens_cmd, '--lspWorker', config.get('root', 'output')],
         stdout=subprocess.PIPE,
@@ -247,7 +271,7 @@ async def build_and_validate(folder: types.WorkspaceFolder):
             for a in root.findall(XML_ITEM_QUERY)
             if 'internal' not in a.attrib
             and not a.attrib['name'].startswith('__')
-            and not '@' in a.attrib['name']
+            and '@' not in a.attrib['name']
         ]
         func_locals = {
             a.attrib['name']: a
@@ -305,7 +329,16 @@ async def build_and_validate(folder: types.WorkspaceFolder):
             )
 
             # second last part contains the erroring symbol in quotes, extract it
-            character = re.search('"(.*)"', parts[-2]).group(1)
+            match = re.search('"(.*)"', parts[-2])
+            if not match:
+                server.window_show_message(
+                    types.ShowMessageParams(
+                        message='fatal error. intens output error!',  # should not happen but checking just in case
+                        type=types.MessageType.Error,
+                    )
+                )
+                return
+            character = match.group(1)
             file = server.workspace.get_text_document(f'{URL_ROOT}{error_file_path}')
 
             # check where on the line the error happens, as we don't get that info in the message
@@ -339,7 +372,7 @@ async def on_save(params: types.DidSaveTextDocumentParams):
 
 @server.feature(types.TEXT_DOCUMENT_DID_OPEN)
 async def on_open(params: types.DidOpenTextDocumentParams):
-    folder = get_folder_for_file(build_queue.keys(), params.text_document.uri)
+    folder = get_folder_for_file(list(build_queue.keys()), params.text_document.uri)
     # rebuild the project on opening a file in case the syntax error is in it
     lock = build_queue[folder]
     # Wait for a build to have happened
@@ -393,7 +426,7 @@ def get_diagnostics(params):
 def completion(params: types.CompletionParams):
     file = server.workspace.get_text_document(params.text_document.uri)
 
-    folder = get_folder_for_file(workspace_symbols.keys(), file.uri)
+    folder = get_folder_for_file(list(workspace_symbols.keys()), file.uri)
     if folder is None:
         server.window_show_message(
             types.ShowMessageParams(
@@ -427,7 +460,9 @@ def go_to_definition(params: types.DefinitionParams):
     word = file.word_at_position(params.position)
 
     # Go to definiton across workspaces is not supported
-    folder = get_folder_for_file(workspace_symbols.keys(), params.text_document.uri)
+    folder = get_folder_for_file(
+        list(workspace_symbols.keys()), params.text_document.uri
+    )
 
     if folder is None:
         server.window_show_message(
@@ -451,7 +486,7 @@ def go_to_definition(params: types.DefinitionParams):
     for v in variables:
         if v.attrib['name'] == word and (file := v.attrib['file']) != '':
             # turn a relative file path to an absolute one
-            file = URL_ROOT + urllib.parse.quote(file)
+            file = URL_ROOT + urllib.parse.quote(str(file))
             line = v.attrib['line']
 
             try:

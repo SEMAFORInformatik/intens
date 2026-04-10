@@ -1,13 +1,15 @@
-from lsprotocol import types
-import re
-import pygls
-import yaml
 import os
-from typing import List
-from tree_sitter import Language, Parser, Point
+import re
 import xml.etree.ElementTree as ET
-from ctypes import cdll, c_void_p
+from ctypes import c_void_p, cdll
+from typing import List
 
+import pygls
+import pygls.lsp.server
+import pygls.workspace
+import yaml
+from lsprotocol import types
+from tree_sitter import Language, Parser, Point
 
 try:
     from yaml import CLoader as Loader
@@ -119,7 +121,7 @@ def extract_triggers(completions: dict, type: str):
     }
 
 
-def get_word_to_left_of_cursor(line: str, cursor_position: int) -> str or None:
+def get_word_to_left_of_cursor(line: str, cursor_position: int) -> str | None:
     # strip brackets from the line and add a $ to track cursor position
     word_only = re.sub(
         '\\[.*\\]', '', line[:cursor_position] + '$' + line[cursor_position:]

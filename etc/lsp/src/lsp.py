@@ -126,6 +126,9 @@ async def build_and_validate(folder: types.WorkspaceFolder):
     env = {}
     env.update(os.environ)
     env['PATH'] = sys_path
+    if os.name != 'nt':
+        env['QT_QPA_PLATFORM'] = 'offscreen'
+
     lp_key = 'LD_LIBRARY_PATH'  # for GNU/Linux and *BSD.
     lp_orig = env.get(lp_key + '_ORIG')
     if lp_orig is not None:

@@ -551,7 +551,7 @@ void GuiQtFolder::hidePage( int page ){
     BUG_DEBUG("EXIT: page " << page << " with index " << tab_index << " removed");
     //    folder->setTabEnabled( page, false ); // alternative!!!
     if (m_activePage == page){
-      m_activePage = -1;
+      m_activePage = 0;
     }
   } else {
     QStackedWidget* tabWiget = static_cast<MyQStackedWidget*>(m_folder);
@@ -867,7 +867,7 @@ void GuiQtFolder::manage(){
       QTabWidget *folder = static_cast<QTabWidget*>( m_folder );
       validateTab( m_activePage );
       GuiNamedElementList::iterator iter = std::next(m_elements.begin(), m_activePage);
-      if ((*iter).second)
+      if (folder && (*iter).second && (*iter).second->getQtElement()->myWidget())
         folder->setCurrentWidget((*iter).second->getQtElement()->myWidget());
     }
     else{

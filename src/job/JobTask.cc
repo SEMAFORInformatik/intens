@@ -16,6 +16,7 @@
 #include "utils/Debugger.h"
 #include "utils/gettext.h"
 
+INIT_LOGGER();
 INIT_DESLOGGER();
 INIT_PYTHONLOGGER();
 
@@ -84,15 +85,18 @@ void JobTask::epilog( OpStatus op_status ){
     }
 
     if( !m_engine->Message().empty() ){
-      if( m_result == job_Aborted )
-	printMessage( m_engine->Message(), GuiElement::msg_Warning );
-      else
-	printMessage( m_engine->Message(), GuiElement::msg_Information );
+      if( m_result == job_Aborted ){
+        printMessage( m_engine->Message(), GuiElement::msg_Warning );
+        BUG_INFO("Aborted Task '" << getLabel() << "' , message: "<<m_engine->Message());
+     }else{
+        printMessage( m_engine->Message(), GuiElement::msg_Information );
+      }
     }
     else
     if( m_engine->getError() ){
       message << "Error: Task '" << getLabel() << "' failed (see in Log-Window)";
       printMessage( message.str(), GuiElement::msg_Warning );
+      BUG_INFO("Error Task '" << getLabel() << "' , message: "<<m_engine->getError());
     }
     else
     if( AppData::Instance().Helpmessages() != AppData::NoneType ){
@@ -106,6 +110,7 @@ void JobTask::epilog( OpStatus op_status ){
     printMessage( message.str(), GuiElement::msg_Warning );
     m_result = job_Canceled;
     m_engine->cancel();
+    BUG_INFO("Cancel Task '" << getLabel() << "' failed");
     break;
 
   case op_Aborted:
@@ -116,6 +121,7 @@ void JobTask::epilog( OpStatus op_status ){
       message << "Abort: Task '" << getLabel() << "' failed";
       printMessage( message.str(), GuiElement::msg_Warning );
     }
+    BUG_INFO("Abort Task '" << getLabel() << "' failed");
     m_result = job_Aborted;
     break;
 
@@ -123,6 +129,7 @@ void JobTask::epilog( OpStatus op_status ){
     message << "FATAL ERROR: Task '" << getLabel() << "' failed";
     printMessage( message.str(), GuiElement::msg_Error );
     m_result = job_FatalError;
+    BUG_INFO("FATAL ERROR Task '" << getLabel() << "' failed");
     break;
 
   case op_NotImplemented:

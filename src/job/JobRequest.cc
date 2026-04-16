@@ -76,11 +76,13 @@ void JobRequest::backFromJobController( JobResult rslt ){
 /* --------------------------------------------------------------------------- */
 
 void JobRequest::connectionClosed(bool abort){
- BUG_DEBUG("JobRequest::connectionClosed" );
- if (abort)
+  if (abort){
+   BUG_INFO("JobRequest::connectionClosed" );
    endJobAction( JobAction::job_Aborted ); //Aborted ); FatalError is a really abort
- else
-   endJobAction( JobAction::job_Ok );
+  }else{
+    BUG_DEBUG("JobRequest::connectionClosed" );
+    endJobAction( JobAction::job_Ok );
+  }
 }
 
 bool JobRequest::checkMessageQueue() {

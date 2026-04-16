@@ -18,6 +18,8 @@
 #include "app/DataPoolIntens.h"
 #include "utils/Date.h"
 
+INIT_LOGGER();
+
 /* --------------------------------------------------------------------------- */
 /* execute --                                                                  */
 /* --------------------------------------------------------------------------- */
@@ -686,7 +688,7 @@ JobElement::OpStatus JobCodeCommitTransaction::execute( JobEngine *eng ){
 /* --------------------------------------------------------------------------- */
 
 JobElement::OpStatus JobCodeAbortTransaction::execute( JobEngine *eng ){
-  BUG(BugJobCode,"JobCodeAbortTransaction::execute");
+  BUG_INFO("JobCodeAbortTransaction::execute, jobEngineMessage: " << eng->Message());
   DataPoolIntens::Instance().RollbackDataPoolTransaction( eng );
   return op_Ok;
 }

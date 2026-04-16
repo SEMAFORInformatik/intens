@@ -110,12 +110,12 @@ JobElement::OpStatus JobEngine::execute(){
     break;
 
   case op_Aborted:
-    BUG_DEBUG( "Aborted" );
+    BUG_INFO( "Aborted" );
     m_code = 0; // Es gibt kein zurueck.
     break;
 
   case op_FatalError:
-    BUG_DEBUG( "FatalError" );
+    BUG_INFO( "FatalError" );
     m_code = 0; // Es gibt kein zurueck.
     break;
 

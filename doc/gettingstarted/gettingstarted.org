@@ -1642,7 +1642,7 @@ see the report visiting the url given in the terminal (i.E. *http://127.0.0.1:45
 * Data Management
 ** Data Model
 The database access is implemented by a REST service which is connected
-to a SQL or NOSQL database. The data model comprises 3 main types
+to a SQL or NOSQL database. The data model  includes 3 major  types (groups)
 of entities:
 
 - Workbook (Project) :: a collection of variants that serve a common engineering goal.
@@ -1770,21 +1770,21 @@ HTTP PUT with base path: ~/services/rest~
 
 ** Access Permissions
 The access permissions depend on the approval states and are defined in the
-file application.properties:
-| Permission | Description      |
-|------------+------------------|
-| R          | read (get by id) |
-| M          | modify (update)  |
-| L          | list (select)    |
+file =application.yml= and =AccessRules.drl=:
+| Permission | Description      | Configuration   |
+|------------+------------------+-----------------|
+| R          | read (get by id) |                 |
+| M          | modify (update)  | =AccessRules.drl= |
+| L          | list (select)    | =application.yml= |
 
 *** Components
 | Approval State | Group | Others |
 |----------------+-------+--------|
 | experimental   | R - - | R - -  |
 | inPreparation  | R M L | R - -  |
-| shared         | R M L | R M L  |
-| approved       | R - L | R - L  |
-| obsolete       | R - L | R - L  |
+| shared         | R M L | R M -  |
+| approved       | R - L | R - -  |
+| obsolete       | R - L | R - -  |
 
 *** Variants
 | Approval State | Group | Others |
@@ -1803,6 +1803,82 @@ file application.properties:
 | delivered     | R M L | R - -  |
 | obsolete      | R - L | R - -  |
 
+*** Configuration (application.yml)
+- access permissions for list requests (L);
+#+begin_src yaml
+AccessFilter:
+  active: true
+
+component:
+# defaultApprovalStateRev0: experimental
+  defaultApprovalState: experimental
+  approval:
+    group:
+      experimental: false
+      inPreparation: true
+      shared: true
+      approved: true
+      tendered: true
+      tested: true
+      obsolete: true
+    others:
+      experimental: false
+      inPreparation: false
+      shared: false
+      approved: false
+      tendered: false
+      tested: false
+      obsolete: false
+variant:
+  approval:
+    group:
+      experimental: false
+      inPreparation: true
+      shared: true
+      approved: true
+      tendered: true
+      tested: true
+      obsolete: true
+    others:
+      experimental: false
+      inPreparation: false
+      shared: true
+      approved: true
+      tendered: true
+      tested: true
+      obsolete: true
+project:
+  defaultStatus: local
+  status:
+    group:
+      global: true
+      local: true
+      delivered: true
+      obsolete: true
+    others:
+      global: true
+      local: false
+      delivered: false
+      obsolete: false
+#+end_src
+- State Transition rules:
+#+begin_src yaml
+validStateTransitions:
+  Experimental: Experimental,InPreparation,Shared,Approved,Obsolete
+  InPreparation: InPreparation,Shared,Approved,Obsolete
+  Shared: Shared,Approved,Obsolete
+  Approved: Approved,Tested,Tendered,Obsolete
+  Obsolete: Obsolete
+  Tested: Tested,Tendered,Obsolete
+  Tendered: Tendered,Obsolete
+
+projectStatusTransitions:
+  Global: Local,Global,Delivered,Obsolete
+  Local: Local,Division,Global,Delivered,Obsolete
+  Obsolete: Obsolete
+  Division: Division,Local,Global,Delivered,Obsolete
+  Delivered: Delivered
+#+end_src
 * Appendix
 ** Installation on Windows
 The following sections describe the installation and setup of an Intens
@@ -1851,18 +1927,24 @@ java -version
 (Note: version 17 or newer is required). Download a Java/JRE installer
 if no such version is installed. There are multiple providers such as:
 [[https://adoptium.net/temurin/releases]]
+*** Intens
+Download and unpack [[https://github.com/semaforinformatik/intens/releases/semafor-intens-6.0.7-win64.zip]]
+and add the Bin directory to your PATH variable:
+#+begin_example
+PATH=/c/semafor/intens/6.0.9/bin:$PATH
+#+end_example
 
 ** Installation on Linux
 For debian/ubuntu based systems:
 
 - Download the DEB-File from https://github.com/SEMAFORInformatik/intens/releases/ and install Intens:
   #+begin_example
-  sudo apt-get install ./semafor-intens-6.0.2-ubuntu-24.04-x86-64.deb
+  sudo apt-get install ./semafor-intens-6.0.9-ubuntu-24.04-x86-64.deb
   #+end_example
   This will install the files in /usr/local/intens.
 - Add the intens bin directory to your PATH:
   #+begin_example
-  PATH=/usr/local/intens/6.0.2/bin:$PATH
+  PATH=/usr/local/intens/6.0.9/bin:$PATH
   #+end_example
 - Install the development packages
   #+begin_example
@@ -1872,7 +1954,7 @@ For debian/ubuntu based systems:
 - If you're working with Emacs add the following lines to your
     emacs config:
   #+begin_example
-    (add-to-list 'load-path "/usr/local/intens/6.0.2/etc")
+    (add-to-list 'load-path "/usr/local/intens/6.0.9/etc")
     (require 'intens-ts-mode)
   #+end_example
 

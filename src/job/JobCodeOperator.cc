@@ -6,6 +6,8 @@
 #include "job/JobStackData.h"
 #include "job/JobStackDataReal.h"
 
+INIT_LOGGER();
+
 /* --------------------------------------------------------------------------- */
 /* execute --                                                                  */
 /* --------------------------------------------------------------------------- */
@@ -14,7 +16,10 @@ JobElement::OpStatus JobCodeOpAdd::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpAdd::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opAdd FatalError");
+    return op_FatalError;
+  }
 
   // Bei einer Addition mit ungültigen Werten bleibt immer der gültige Wert
   // übrig, unabhängig vom Typ.
@@ -37,7 +42,10 @@ JobElement::OpStatus JobCodeOpSubtract::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpSubtract::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opSubstract FatalError");
+    return op_FatalError;
+  }
 
   // Wird ein ungültiger Wert subtrahiert, so verbleibt der erste Wert auf
   // dem Stack, unabhängig vom Typ.
@@ -61,7 +69,10 @@ JobElement::OpStatus JobCodeOpMultiply::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpMultiply::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opMultiply FatalError");
+    return op_FatalError;
+  }
 
   // Ist bei einer Multiplikation ein ungültiger Wert beteiligt, so ist das
   // Resultat auch ungültig.
@@ -80,7 +91,10 @@ JobElement::OpStatus JobCodeOpDivide::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpDivide::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opDivide FatalError");
+    return op_FatalError;
+  }
 
   // Ist bei einer Division ein ungültiger Wert beteiligt, so ist das
   // Resultat auch ungültig.
@@ -100,7 +114,10 @@ JobElement::OpStatus JobCodeOpModulo::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpModulo::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opModulo FatalError");
+    return op_FatalError;
+  }
 
   // Ist bei einer Division ein ungültiger Wert beteiligt, so ist das
   // Resultat auch ungültig.
@@ -120,7 +137,10 @@ JobElement::OpStatus JobCodeOpPower::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpPower::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opPower FatalError");
+    return op_FatalError;
+  }
 
   // Ist bei einer Power-Funktion ein ungültiger Wert beteiligt, so ist das
   // Resultat auch ungültig.
@@ -140,6 +160,7 @@ JobElement::OpStatus JobCodeOpNegate::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpNegate::execute");
   JobStackDataPtr dat_first( eng->pop() );
   if( dat_first.isnt_valid() ){
+    BUG_INFO("opNegate FatalError");
     return op_FatalError;
   }
   return dat_first->negate( eng ); // Negativ
@@ -153,7 +174,10 @@ JobElement::OpStatus JobCodeOpGtr::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpGtr::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opGtr FatalError");
+    return op_FatalError;
+  }
 
   OpStatus status = op_Warning;
   if( dat_first->isInvalid() || dat_second->isInvalid() ){
@@ -172,7 +196,10 @@ JobElement::OpStatus JobCodeOpGeq::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpGeq::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opGeq FatalError");
+    return op_FatalError;
+  }
 
   OpStatus status = op_Warning;
   if( dat_first->isInvalid() || dat_second->isInvalid() ){
@@ -191,7 +218,10 @@ JobElement::OpStatus JobCodeOpLss::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpLss::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opLss FatalError");
+    return op_FatalError;
+  }
 
   if( dat_first->isInvalid() || dat_second->isInvalid() ){
     eng->pushInvalid();
@@ -209,7 +239,10 @@ JobElement::OpStatus JobCodeOpLeq::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpLeq::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opLeq FatalError");
+    return op_FatalError;
+  }
 
   if( dat_first->isInvalid() || dat_second->isInvalid() ){
     eng->pushInvalid();
@@ -227,7 +260,10 @@ JobElement::OpStatus JobCodeOpEql::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpEql::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opEql FatalError");
+    return op_FatalError;
+  }
 
   if( dat_first->isInvalid() || dat_second->isInvalid() ){
     eng->pushTrue( dat_first->isInvalid() && dat_second->isInvalid() );
@@ -245,7 +281,10 @@ JobElement::OpStatus JobCodeOpNeq::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpNeq::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opNeq FatalError");
+    return op_FatalError;
+  }
 
   if( dat_first->isInvalid() || dat_second->isInvalid() ){
     eng->pushTrue( dat_first->isValid() || dat_second->isValid() );
@@ -263,7 +302,10 @@ JobElement::OpStatus JobCodeOpAnd::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpAnd::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opAnd FatalError");
+    return op_FatalError;
+  }
 
   eng->pushTrue( dat_first->isTrue() && dat_second->isTrue() );
   return op_Ok;
@@ -277,7 +319,10 @@ JobElement::OpStatus JobCodeOpOr::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpOr::execute");
   JobStackDataPtr dat_second( eng->pop() );
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() || dat_second.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() || dat_second.isnt_valid() ){
+    BUG_INFO("opOr FatalError");
+    return op_FatalError;
+  }
 
   eng->pushTrue( dat_first->isTrue() || dat_second->isTrue() );
   return op_Ok;
@@ -290,7 +335,10 @@ JobElement::OpStatus JobCodeOpOr::execute( JobEngine *eng ){
 JobElement::OpStatus JobCodeOpNot::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeOpNot::execute");
   JobStackDataPtr dat_first( eng->pop() );
-  if( dat_first.isnt_valid() ) return op_FatalError;
+  if( dat_first.isnt_valid() ){
+    BUG_INFO("opNot FatalError");
+    return op_FatalError;
+  }
 
   eng->pushTrue( !dat_first->isTrue() );
   return op_Ok;

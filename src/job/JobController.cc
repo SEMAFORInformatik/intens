@@ -169,7 +169,8 @@ void JobController::commitTransaction(){
 /* --------------------------------------------------------------------------- */
 
 void JobController::abortTransaction(){
-  BUG_DEBUG("abortTransaction");
+  BUG_INFO("abortTransaction called by: '" << CallingActionName() <<
+           "' baseAction: '" << getBaseCallingAction() << "'");
 
   if( m_transactionStarted ){
     DataPoolIntens::Instance().RollbackDataPoolTransaction( this );
@@ -223,16 +224,16 @@ void JobController::end( JobAction::JobResult rslt ){
   }
   else{
     if( rslt == JobAction::job_Canceled ){
-      BUG_DEBUG( "job canceled" );
+      BUG_INFO( "job canceled" );
       writeLog( "CANCEL" );
     }
     else
     if( rslt == JobAction::job_Aborted ){
-      BUG_DEBUG( "job aborted" );
+      BUG_INFO( "job aborted" );
       writeLog( "ABORT" );
     }
     else{
-      BUG_DEBUG( "unknown fatal interrupt" );
+      BUG_INFO( "unknown fatal interrupt" );
       writeLog( "FATAL" );
     }
     abortTransaction();

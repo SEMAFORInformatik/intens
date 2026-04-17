@@ -10,6 +10,13 @@ STRUCT
 ;
 
 STRUCT
+  MQReply_Status {
+    STRING  {SCALAR} status;
+    STRING  {SCALAR} forms;
+  }
+;
+
+STRUCT
   MQReply_FunctionResponse {
     STRING {SCALAR} data;
   }
@@ -130,6 +137,8 @@ MQReply_File              {GLOBAL, SCALAR} mqReply_upload {HIDDEN};
 MQReply_File              {GLOBAL, SCALAR} mqReply_download {HIDDEN};
 MQReply_File              {GLOBAL, SCALAR} mqReply_file {HIDDEN};
 
+MQReply_Status          {GLOBAL, SCALAR} mqReply_status {HIDDEN};
+
 STRING {GLOBAL, SCALAR} mqReply_LC_ALL {HIDDEN};
 STRING {GLOBAL, SCALAR} mqReply_funcname {HIDDEN};
 STRING {GLOBAL, SCALAR} mqReply_reason {HIDDEN};
@@ -179,6 +188,10 @@ STREAMER
 
   mqReply_response_stream {JSON} (
     mqReply_response
+  );
+
+  mqReply_status_stream {JSON} (
+    mqReply_status
   );
 
   mqReply_datapool_stream {JSON, HIDDEN} (
@@ -462,6 +475,14 @@ FUNCTIONS
       mqReply_response.status = "OK";
     }
     LOG(INFO, "mqReply_control_func DONE, response: ", mqReply_response);
+  };
+
+  FUNC {SILENT} mqReply_status_func {
+    IF (!VALID(mqReply_response.status)) {
+      mqReply_status.status = "BUSY";
+    } ELSE {
+      mqReply_status.status = mqReply_response.status;
+    }
   };
 
   FUNC {SILENT} mqReply_uimanager_func {
@@ -782,6 +803,18 @@ OPERATOR
       PUBLISH                             // MessageQueue Pattern
     , HOST="localhost"                    // Hostname
     , PORT=__PORT_PUBLISH__               // Publisher Port
+    }
+  ;
+
+  MESSAGE_QUEUE
+    mqReply_status_mq {
+      REPLY  // MessageQueue Pattern
+    , PORT_REQUEST=__PORT_STATUS__   //* Request Port of Reply Ctrl MesssageQueue
+    , NO_DEPENDENCIES
+    , ( HEADER="status"
+      , FUNC = mqReply_status_func
+      , RESPONSE(mqReply_status_stream)
+      )
     }
   ;
 

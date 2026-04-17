@@ -15,6 +15,8 @@
 #include "gui/GuiList.h"
 #include "datapool/DataPool.h"
 
+INIT_LOGGER();
+
 /* --------------------------------------------------------------------------- */
 /* execute --                                                                  */
 /* --------------------------------------------------------------------------- */
@@ -116,7 +118,7 @@ JobElement::OpStatus JobCodePushNewValue::execute( JobEngine *eng ){
 /* --------------------------------------------------------------------------- */
 
 JobElement::OpStatus JobCodePushNewValid::execute( JobEngine *eng ){
-  BUG(BugJobCode,"JobCodePushNewValid::execute");
+  BUG_INFO("JobCodePushNewValid::execute");
   return op_FatalError;
 }
 
@@ -136,7 +138,7 @@ JobElement::OpStatus JobCodePushOldValue::execute( JobEngine *eng ){
 /* --------------------------------------------------------------------------- */
 
 JobElement::OpStatus JobCodePushOldValid::execute( JobEngine *eng ){
-  BUG(BugJobCode,"JobCodePushOldValid::execute");
+  BUG_INFO("JobCodePushOldValid::execute");
   return op_FatalError;
 }
 

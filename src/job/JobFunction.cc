@@ -274,14 +274,17 @@ void JobFunction::backFromJobController( JobAction::JobResult rslt ){
     break;
 
   case job_Canceled:
+    BUG_INFO(  "JobFunction Canceled, name: " << Name());
     printMessage( "Job canceled", GuiElement::msg_Information );
     break;
 
   case job_Aborted:
+    BUG_INFO(  "JobFunction Aborted, name: " << Name());
     printMessage( "Job aborted", GuiElement::msg_Warning );
     break;
 
   case job_FatalError:
+    BUG_INFO(  "JobFunction FatalError, name: " << Name());
     m_engine->setError();
     printMessage( "Fatal error", GuiElement::msg_Error );
     op_status = op_FatalError;
@@ -405,8 +408,8 @@ void JobFunction::epilog( OpStatus op_status ){
 
     if( !m_engine->Message().empty() ){
       if( rslt == job_Aborted ){
-	printMessage( m_engine->Message(), GuiElement::msg_Warning );
-        BUG_DEBUG("End of FUNC " << Name() << " (ABORTED)");
+        printMessage( m_engine->Message(), GuiElement::msg_Warning );
+        BUG_INFO("End of FUNC " << Name() << " (ABORTED)");
       }
       else {
         printMessage( m_engine->Message(), GuiElement::msg_Information );
@@ -417,7 +420,7 @@ void JobFunction::epilog( OpStatus op_status ){
     if( m_engine->getError() ){
       message << "Error: Function '" << Name() << "' failed (see in Log-Window)";
       printMessage( message.str(), GuiElement::msg_Warning );
-      BUG_DEBUG("End of FUNC " << Name() << " (ERROR)");
+      BUG_INFO("End of FUNC " << Name() << " (ERROR)");
       webApiUpdate = true;
     }
     else
@@ -431,7 +434,7 @@ void JobFunction::epilog( OpStatus op_status ){
   case op_Canceled:
     message << "Cancel: Function '" << Name() << "' interrupted";
     printMessage( message.str(), GuiElement::msg_Warning );
-    BUG_DEBUG("End of FUNC " << Name() << " (CANCEL)");
+    BUG_INFO("End of FUNC " << Name() << " (CANCEL)");
     rslt = job_Canceled;
     m_engine->cancel();
     webApiUpdate = true;
@@ -445,7 +448,7 @@ void JobFunction::epilog( OpStatus op_status ){
       message << "Abort: Function '" << Name() << "' failed";
       printMessage( message.str(), GuiElement::msg_Warning );
     }
-    BUG_DEBUG("End of FUNC " << Name() << " (ABORT)");
+    BUG_INFO("End of FUNC " << Name() << " (ABORT)");
     rslt = job_Aborted;
     webApiUpdate = true;
     break;
@@ -453,7 +456,7 @@ void JobFunction::epilog( OpStatus op_status ){
   case op_FatalError:
     message << "FATAL ERROR: Function '" << Name() << "' failed";
     printMessage( message.str(), GuiElement::msg_Error );
-    BUG_DEBUG("End of FUNC " << Name() << " (FATAL ERROR)");
+    BUG_INFO("End of FUNC " << Name() << " (FATAL ERROR)");
     rslt = job_FatalError;
     webApiUpdate = true;
     break;

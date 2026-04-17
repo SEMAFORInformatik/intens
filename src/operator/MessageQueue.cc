@@ -128,6 +128,7 @@ void MessageQueue::parseIncludeFile() {
   std::string token("__PORT_REPLY__");
   std::string tokenPublish("__PORT_PUBLISH__");
   std::string tokenReplyCtrl("__PORT_REPLY_CTRL__");
+  std::string tokenStatus("__PORT_STATUS__");
   std::string tokenIntensNS(App::TOKEN_INTENS_NAMESPACE);
   std::string intensNS(App::INTENS_NAMESPACE);
 
@@ -162,6 +163,12 @@ void MessageQueue::parseIncludeFile() {
         std::ostringstream osp;
         osp << (replyPort + 2);  // !! Reply Ctrl Port = Reply Port + 2 !!
         line.replace(n, tokenReplyCtrl.size(), osp.str());
+      }
+      n = line.find(tokenStatus);
+      if (n != std::string::npos) {
+        std::ostringstream osp;
+        osp << (replyPort + 3);  // !! Status Port = Reply Port + 3 !!
+        line.replace(n, tokenStatus.size(), osp.str());
       }
       // intens namespace
       while ((n = line.find(tokenIntensNS)) != std::string::npos) {

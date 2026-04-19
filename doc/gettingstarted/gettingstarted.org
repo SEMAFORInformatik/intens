@@ -5,7 +5,6 @@
 #+author: SEMAFOR Informatik & Energie AG, Basel, Switzerland
 #+OPTIONS: ^:nil
 
-
 * Overview
 # Software development is expensive, time consuming and prone to error.
 INTENS is an integration and development framework and runtime
@@ -1134,7 +1133,6 @@ where one ore more cases can be selected:
 #+attr_html: :width 500px :align center
 [[./images/screenshots/scim-compare-case.png]]
 
-
 ** Store into Database
 In order to store datasets the database must first be initialized. Enter the following command
 in the console of your build directory:
@@ -1296,7 +1294,6 @@ see the report visiting the url given in the terminal (i.E. *http://127.0.0.1:45
 #+CAPTION: Allure Report
 #+ATTR_HTML: :width 500px :align center
   [[./images/screenshots/selenium-allure.png]]
-
 
 * Web Application
 ** In a docker environment
@@ -1678,7 +1675,6 @@ To prevent interferencies of concurrent modifications an
 it will be detected and the save operation will be aborted with an ``Up-to-date Conflict'' message.
 
 ** REST Interface
-
 *** Queries
 HTTP GET with base path ~/services/rest~:
 
@@ -1767,6 +1763,12 @@ HTTP PUT with base path: ~/services/rest~
 | components/check        | check status of component               |       |
 | components/<id>/rename  | rename the component with id            |       |
 | components/<id>/approve | set aproval state of component          |       |
+** Change Management and Approval States
+Components and variants have an approval state to ensure unwanted modifications. Only components and variants with one of the approval state =Experimental=, =In Preparation=, or =Shared= are mutable. Components and variants that are =Approved=, =Tendered=, =Tested= or =Obsolete= are inmutable. The workbook service will create a copy with an increased revision number on saving an inmutable object in case of any modifcation and its approval state will be reset to =Experimental=. The valid state transitions can be configured in the file =application.yml=. 
+#+CAPTION: Approval States
+#+NAME:   fig:approval-states
+#+attr_html: :width 500px :align center
+[[file:./images/approval-states.png]]
 
 ** Access Permissions
 The access permissions depend on the approval states and are defined in the

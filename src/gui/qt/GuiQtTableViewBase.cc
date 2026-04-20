@@ -1377,6 +1377,14 @@ void GuiQtTableViewBase::blocked_selectRows ( std::vector<int> rows ) {
   setSelectionBehavior( sb );
   m_blockSelection = false;
 }
+
+// add a blocked clearSelection method
+void GuiQtTableViewBase::blocked_clearSelection(){
+  m_blockSelection = true;
+  QTableView::clearSelection();
+  m_blockSelection = false;
+}
+
 // add a blocked selectRow method
 void GuiQtTableViewBase::blocked_selectRow ( int row ) {
   m_blockSelection = true;

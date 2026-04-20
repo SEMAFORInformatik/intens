@@ -469,7 +469,7 @@ void GuiQtList::update( UpdateReason reason ) {
             for (int i = 0; i < selIdxs.size(); ++i)
               new_rowValues << selIdxs.at(i).data().toString();
             if (new_rowValues != old_rowValues && old_rowValues.size()) {
-              m_tablewidget-> clearSelection();
+              m_tablewidget->blocked_clearSelection();
             }
           }
         }

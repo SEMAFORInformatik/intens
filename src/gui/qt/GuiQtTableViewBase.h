@@ -73,8 +73,10 @@ class  GuiQtTableViewBase : public  QTableView, public DialogWorkClockListener {
   virtual bool focusNextChild() { return QTableView::focusNextChild(); }
 
   void contextMenuEvent(QContextMenuEvent *event);
-void paintEvent ( QPaintEvent * event );
+  void paintEvent ( QPaintEvent * event );
 
+ /** facility method: blocked_clearSelection */
+  void blocked_clearSelection();
  /** facility method: blocked_selectRow */
   void blocked_selectRow ( int row );
   void blocked_selectRows ( std::vector<int> rows );

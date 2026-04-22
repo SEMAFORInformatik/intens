@@ -351,6 +351,7 @@ static void JobCodeSerializeElementHelper( GuiElement* elem
 					 , std::ostream& os
 					 , AppData::SerializeType type )
 {
+  if (!elem) return;
   if( type == AppData::serialize_XML ){
     os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
     os << "<intens:Document xmlns:intens=\"http://www.semafor.ch/XML/2003/intens/1.0\">" << std::endl;
@@ -402,21 +403,12 @@ JobElement::OpStatus JobCodeSerializeElement::execute( JobEngine *eng ){
     JobStackDataPtr e( eng->pop() );
     e->getStringValue( s );
     elem = GuiElement::findElement(s);
-    if( !elem ){
-#if 1
+    BUG_INFO("ELEM: " << elem << "S: " << s.empty())
+    if( !elem && s.empty()){
       // default GuiElement is MainForm
       GuiElementList mlist;
       GuiElement::findElementType(mlist, GuiElement::type_Main);
       elem = mlist[0];
-#else
-      GuiFactory::Instance() -> showDialogWarning
-		( 0
-		  , _("Error")
-		  , compose(_("Unknown element named '%1'"), s)
-		  , 0 );
-      eng->setError();
-      return op_FatalError; //op_Aborted;
-#endif
     }
   }
 

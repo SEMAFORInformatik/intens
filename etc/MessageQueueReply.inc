@@ -517,11 +517,7 @@ FUNCTIONS
       IF(mqReply_datapool.data == "") {
         mqReply_datapool.data = INVALID;
       }
-      IF (!VALID(VAR(mqReply_datapool.varname))) {
-        mqReply_response.status = "ERROR";
-        mqReply_response.message = "Invalid varname: " + mqReply_datapool.varname;
-        RETURN;
-      } ELSE IF (ASSIGN_CONSISTENCY(VAR(mqReply_datapool.varname), mqReply_datapool.data)) {
+      IF (ASSIGN_CONSISTENCY(VAR(mqReply_datapool.varname), mqReply_datapool.data)) {
 ///        PRINT(">>>", mqReply_datapool.varname, " = ", VAR(mqReply_datapool.varname), " (", VALID(VAR(mqReply_datapool.varname)), ")", EOLN);
         mqReply_response.status = "OK";
       } ELSE {

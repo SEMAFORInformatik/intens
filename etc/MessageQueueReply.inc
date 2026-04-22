@@ -523,6 +523,10 @@ FUNCTIONS
       } ELSE {
         mqReply_response.status = "ERROR";
         mqReply_response.message = "Invalid varname: " + mqReply_datapool.varname;
+        // Check if it was actually a conversion error before setting the box or just an invalid variable
+        IF (!VALID(VAR(mqReply_datapool.varname))) {
+          RETURN;
+        }
         MESSAGEBOX("Conversion error");
         ABORT;
       }

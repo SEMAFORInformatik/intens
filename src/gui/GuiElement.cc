@@ -282,7 +282,7 @@ const std::string GuiElement::StringType() {
     return "Plugin";
   case type_3dPlot:
     return "3DPlot";
-  case type_QWTPlot:
+  case type_2dPlot:
   case type_2dXrtPlot:
     return "2DPlot";
   case type_List:
@@ -382,7 +382,7 @@ const in_proto::GuiElement::Type GuiElement::ProtobufType() {
     case type_Plugin:
     case type_3dPlot:
       return in_proto::GuiElement::Type::GuiElement_Type_EPlot3D;
-    case type_QWTPlot:
+    case type_2dPlot:
     case type_2dXrtPlot:
       return in_proto::GuiElement::Type::GuiElement_Type_EPlot2D;
     case type_List:
@@ -485,7 +485,7 @@ void GuiElement::writeJsonProperties(Json::Value& jsonObj) {
       Type() == type_Container || Type() == type_Fieldgroup ||
       Type() == type_Pixmap || Type() == type_ScrolledText ||
       Type() == type_Scrolledlist || Type() == type_Plugin ||
-      Type() == type_3dPlot || Type() == type_QWTPlot ||
+      Type() == type_3dPlot || Type() == type_2dPlot ||
       Type() == type_Image || Type() == type_Thermo ||
       Type() == type_Text) {
     std::string s;
@@ -569,7 +569,7 @@ in_proto::GuiElement* GuiElement::writeProtobufProperties() {
       Type() == type_Container || Type() == type_Fieldgroup ||
       Type() == type_Pixmap || Type() == type_ScrolledText ||
       Type() == type_Scrolledlist || Type() == type_Plugin ||
-      Type() == type_3dPlot || Type() == type_QWTPlot ||
+      Type() == type_3dPlot || Type() == type_2dPlot ||
       Type() == type_Image || Type() == type_Thermo ||
       Type() == type_Text) {
     std::string s;
@@ -1512,7 +1512,7 @@ bool GuiElement::isVisibleElementType(ElementType type) {
   case type_NavIconView:
   case type_Simpel:
   case type_ListPlot:
-  case type_QWTPlot:
+  case type_2dPlot:
   case type_3dPlot:
   case type_Slider:
   case type_Image:

@@ -14,6 +14,7 @@
 #include "plot/ScaleDialogListener.h"
 #include "plot/ConfigDialogListener.h"
 #include "plot/CyclesDialogListener.h"
+#include "gui/GuiToggleListener.h"
 
 class QRectF;
 class GuiPlotDataItem;
@@ -27,6 +28,7 @@ class QwtPlotMarker;
 class QwtPlotItem;
 class QwtPolarItem;
 class Plot2dCurvePalette;
+class GuiMenuToggle;
 
 typedef long TransactionNumber;
 
@@ -58,6 +60,7 @@ public:
     BAR,
     AREA,
     POLAR,
+    SPLINE,
     STACKING_BAR,
     STEP,
     DOTS           // used by 2d plot
@@ -211,9 +214,9 @@ public:
     /** webtens, data cache clear */
     void clearDataCache();
   private:
-    typedef std::vector<void*> QwtPlotItemVector;
-    typedef std::vector<QwtPlotItemVector> QwtPlotItemMatrix;
-    typedef std::vector<QwtPlotItemMatrix> PlotItemData;
+    typedef std::vector<void*> PlotItemVector;
+    typedef std::vector<PlotItemVector> PlotItemMatrix;
+    typedef std::vector<PlotItemMatrix> PlotItemData;
     PlotItemData m_plotCurve;
     GuiPlotDataItem     *m_plotDataItem;
     PlotItem            *m_xPlotItem;
@@ -251,6 +254,12 @@ public:
 /* private Definitions                                                         */
 /*=============================================================================*/
 protected:
+  void createPopupMenu();
+  GuiMenuButton* newPopupMenuButton(GuiElement* parent, std::string label, GuiMenuButtonListener* listener );
+  void createLogarithmicMenu( GuiPopupMenu *menu );
+  void createYStyleMenu( GuiPopupMenu *menu, eAxisType axis );
+  void createStyleMenu( GuiPulldownMenu *pullDownMenu, eAxisType axis );
+
   //---------
   // Plot
   //---------
@@ -322,10 +331,12 @@ protected:
   virtual void setWithScrollBar( bool flag ) = 0;
   void setAllCycles( bool flag ){ m_allCycles = flag; }
   virtual void setLabelStream( const std::string &stream, eAxisType axis );
-  virtual void setYPlotStyle( eStyle style, eAxisType axis ) = 0;
+  void setYPlotStyle( eStyle style, eAxisType axis );
   void setBarStyleOption_PlotItemGrouped() {  m_barStyleOption_plotItemGrouped = true; }
 
   PlotItem *addDataItem( GuiPlotDataItem *dataitem, PlotItem *xPlotItem );
+  /// zoom reset
+  virtual void zoomReset() {};
   /// Logarithmische x-Skala
   virtual void setLogX( bool value = true ) = 0;
   /// Logarithmische y-Skala
@@ -386,6 +397,9 @@ protected:
   virtual void cyclesUpdate(){ getElement()->update( GuiElement::reason_Always );}
 
 protected:
+  bool hasCyclePlotMode();
+  bool isAnnotationLabelsUpdated( TransactionNumber trans );
+
   /** get Curve Palette */
   virtual Plot2dCurvePalette* getPalette(const std::string& curveName) = 0;
   /** get Curve Info */
@@ -393,6 +407,7 @@ protected:
   bool getAllCycles() { return m_allCycles; }
   void updateAxisTypes();
   virtual void doPlot(bool clear_always) = 0;
+  virtual void clearPlots(bool always) = 0;
   virtual void buildCyclesDialog() = 0;
   void updateAxisScaleValues();
   DataReference *getDRefStruct(){ return m_drefStruct; }
@@ -433,13 +448,14 @@ protected:
   virtual std::string variantMethod(const std::string& method,
                                     const Json::Value& jsonArgs,
                                     JobEngine *eng);
-  virtual void fullscreen() = 0;
+  virtual void copy() = 0;
+  virtual void fullscreen();
   void refreshAllDataItemIndexedList();
   JobFunction* getFunction() { return m_function; }
 private:
   void createLocalData();
   std::string getAxisStyle(eStyle style);
-  bool schrinkPlotCurveData(tPointVector& pts, tMarkerDataVector& markerLabels, QRectF* bRect, PlotItem* item);
+  bool shrinkPlotCurveData(tPointVector& pts, tMarkerDataVector& markerLabels, QRectF* bRect, PlotItem* item);
 
   const std::string getXAxisPlotItemTitles() {
     std::ostringstream os;
@@ -452,7 +468,97 @@ private:
     return os.str();
   }
 
- protected:
+  class RedrawListener : public GuiMenuButtonListener{
+  public:
+    RedrawListener( Gui2dPlot *plot ): m_plot( plot ) {}
+    virtual void ButtonPressed();
+    virtual JobAction *getAction(){ return 0; }
+  private:
+    Gui2dPlot *m_plot;
+  };
+
+  class ResetListener : public GuiMenuButtonListener
+  {
+  public:
+    ResetListener( Gui2dPlot *plot ): m_plot( plot ) {}
+    virtual void ButtonPressed();
+    virtual JobAction *getAction(){ return 0; }
+  private:
+    Gui2dPlot *m_plot;
+  };
+
+  class LogarithmicMenu : public GuiToggleListener {
+  public:
+    LogarithmicMenu( Gui2dPlot *plot )
+      : m_plot( plot )
+      , m_xaxisLogButton( 0 )
+      , m_yaxisLogButton( 0 ){}
+    virtual void ToggleStatusChanged( GuiEventData *event );
+    Gui2dPlot      *m_plot;
+    GuiMenuToggle *m_xaxisLogButton;
+    GuiMenuToggle *m_yaxisLogButton;
+  private:
+    LogarithmicMenu( const LogarithmicMenu &l );
+    void operator=( const LogarithmicMenu &l );
+  };
+
+  class CopyListener : public GuiMenuButtonListener
+  {
+  public:
+    CopyListener( Gui2dPlot *plot ): m_plot( plot ) {}
+    virtual void ButtonPressed();
+    virtual JobAction *getAction(){ return 0; }
+  private:
+    Gui2dPlot  *m_plot;
+  };
+  class FullscreenListener : public GuiMenuButtonListener
+  {
+  public:
+    FullscreenListener( Gui2dPlot *plot ): m_plot( plot ) {}
+    virtual void ButtonPressed();
+    virtual JobAction *getAction(){ return 0; }
+  private:
+    Gui2dPlot  *m_plot;
+  };
+  //----------
+  // StyleMenu
+  //----------
+  class StyleMenu : public GuiToggleListener {
+  public:
+    class MyEvent : public GuiEventData{
+    public:
+      MyEvent( eAxisType axisType ) : m_axisType( axisType ){}
+      eAxisType m_axisType;
+    };
+    StyleMenu( Gui2dPlot *plot )
+      : m_plot( plot )
+      , m_buttonStylePlot( 0 )
+      , m_buttonStyleBar( 0 )
+      , m_buttonStyleStackingBar( 0 )
+      , m_buttonStyleSpline( 0 )
+      , m_buttonStyleArea( 0 )
+      , m_buttonStylePolar( 0 )
+      , m_buttonStyleStep( 0 )
+      , m_buttonStyleDots( 0 ){}
+    virtual void ToggleStatusChanged( GuiEventData *event );
+    void setStyleButtons( eStyle style );
+    Gui2dPlot      *m_plot;
+    GuiMenuToggle *m_buttonStylePlot;
+    GuiMenuToggle *m_buttonStyleBar;
+    GuiMenuToggle *m_buttonStyleStackingBar;
+    GuiMenuToggle *m_buttonStyleSpline;
+    GuiMenuToggle *m_buttonStyleArea;
+    GuiMenuToggle *m_buttonStylePolar;
+    GuiMenuToggle *m_buttonStyleStep;
+    GuiMenuToggle *m_buttonStyleDots;
+  private:
+    StyleMenu( const StyleMenu &s );
+    void operator=(const StyleMenu &s );
+    eStyle m_currentStyle;
+
+  };
+
+protected:
   static const int     AXIS_TYPE_COUNT = 4;
   std::vector<std::string> xAxisPlotItemTitles;
   tPlotVector          m_plots;
@@ -500,5 +606,13 @@ private:
 
   bool                 m_allCycles;
   int                  m_maxCurveLen;
+
+  GuiForm*             m_fullscreenDialog;
+  RedrawListener       m_redrawListener;
+  ResetListener        m_resetListener;
+  StyleMenu*           m_yStyleMenu[2];
+  LogarithmicMenu      m_logarithmicMenu;
+  CopyListener         m_copyListener;
+  FullscreenListener   m_fullscreenListener;
 };
 #endif

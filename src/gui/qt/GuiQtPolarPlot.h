@@ -1,5 +1,5 @@
 #if !defined(GUI_QT_POLARPLOT_INCLUDED_H)
-#if !HAVE_QGRAPHS
+#if HAVE_QCHARTS
 #define GUI_QT_POLARPLOT_INCLUDED_H
 
 #include <QtCharts/QChartView>

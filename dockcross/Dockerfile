@@ -22,8 +22,10 @@ ARG MXE_TARGET_LINK=shared
 ARG MXE_TARGET_LINK2=static
 #
 # mxe master 2026-02-23
+# qt6: update to version 6.9.2
+ARG MXE_GIT_TAG=be3ac46b3f6e501bef517e527bf4d5c3d5ccfc99
 # qt6: update to version 6.10.2
-ARG MXE_GIT_TAG=9e26afc79b8e8c59ca863a35dd09755ceb09a3ca
+#ARG MXE_GIT_TAG=9e26afc79b8e8c59ca863a35dd09755ceb09a3ca
 
 ENV CMAKE_TOOLCHAIN_FILE=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
 ENV CMAKE_TOOLCHAIN_FILE2=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
@@ -89,7 +91,7 @@ RUN set -eux; \
   apt-get install -y wine32 && \
   wine reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentVersion /d 10.0 /f && \
   wine hostname && \
-  yarnpkg global add tree-sitter-cli && \
+  yarnpkg global add tree-sitter-cli@0.25.10 && \
   rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
@@ -107,7 +109,7 @@ RUN set -eux; \
   echo "MXE_TARGETS := ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD} ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}" > settings.mk && \
   echo "MXE_USE_CCACHE :="                                         >> settings.mk && \
   echo "MXE_PLUGIN_DIRS := plugins/gcc14"                          >> settings.mk && \
-  echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 qwt zlib flex log4cplus treesitter"  >> settings.mk && \
+  echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 zlib flex log4cplus treesitter"  >> settings.mk && \
   echo ".DEFAULT local-pkg-list:"                                  >> settings.mk && \
   echo "local-pkg-list: \$(LOCAL_PKG_LIST)"                        >> settings.mk
 
@@ -121,6 +123,7 @@ COPY qt6-qtnetworkauth.mk /usr/src/mxe/src/qt/qt6/
 RUN set -eux; \
   cd /usr/src/mxe && \
   make JOBS=$(nproc) && \
+  make qwt && \
   #
   # Cleanup: By keeping the MXE build system (Makefile, ...), derived images will be able to install
   #          additional packages.

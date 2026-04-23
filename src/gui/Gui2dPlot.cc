@@ -3,6 +3,7 @@
 #endif
 #ifdef HAVE_QT
 #include <QRectF>
+#include <QWidget>
 #endif
 #include <limits>
 
@@ -18,13 +19,20 @@
 #include "plot/ConfigDialog.h"
 #include "plot/ScaleDialog.h"
 #include "plot/CyclesDialog.h"
+#include "plot/Plot2dMenuDescription.h"
+#include "gui/GuiFactory.h"
 #include "gui/GuiPlotDataItem.h"
 #include "gui/GuiForm.h"
 #include "gui/GuiIndex.h"
 #include "gui/Gui2dPlot.h"
 #include "gui/Plot2dCurveAttributes.h"
 #include "gui/UnitManager.h"
-
+#include "gui/GuiMenuButton.h"
+#include "gui/GuiMenuToggle.h"
+#include "gui/GuiButtonbar.h"
+#include "gui/GuiPulldownMenu.h"
+#include "gui/GuiPopupMenu.h"
+#include "gui/qt/GuiQtElement.h"
 
 INIT_LOGGER();
 
@@ -61,7 +69,18 @@ Gui2dPlot::Gui2dPlot( const std::string &name )
   , m_precRMS(2)
   , m_allCycles( false )
   , m_maxCurveLen( 0 )
+  , m_fullscreenDialog( 0 )
+
+  , m_redrawListener( this )
+  , m_resetListener( this )
+  , m_logarithmicMenu( this )
+  , m_copyListener( this )
+  , m_fullscreenListener( this )
 {
+  for( int axis = 0; axis < 2; ++axis ){
+    m_yStyleMenu[axis] = new StyleMenu( this );
+  }
+
   for( int axis = 0; axis < 2; ++axis ){
     m_style[axis] = PLOT;
   }
@@ -127,7 +146,18 @@ Gui2dPlot::Gui2dPlot( const Gui2dPlot& plot)
   , m_precMINMAX(plot.m_precMINMAX)
   , m_precAVG(plot.m_precAVG)
   , m_precRMS(plot.m_precRMS)
+
+  , m_fullscreenDialog( plot.m_fullscreenDialog )
+  , m_redrawListener( this )
+  , m_resetListener( this )
+  , m_logarithmicMenu( this )
+  , m_copyListener( this )
+  , m_fullscreenListener( this )
 {
+  for( int axis = 0; axis < 2; ++axis ){
+    m_yStyleMenu[axis] = new StyleMenu( this );
+  }
+
   for( int axis = 0; axis < 2; ++axis ){
     m_style[axis] = plot.m_style[axis];
   }
@@ -192,6 +222,8 @@ Gui2dPlot::~Gui2dPlot(){
   delete m_drefStruct;
   delete m_uiMode;
   delete m_overrideSymbolSize;
+  delete m_yStyleMenu[0];
+  delete m_yStyleMenu[1];
 }
 
 /* --------------------------------------------------------------------------- */
@@ -609,12 +641,12 @@ void Gui2dPlot::PlotItem::setPlotCurve(int cycle, int xIndex, int yIndex, void* 
 
   // PlotItem cycle data
   while(m_plotCurve.size() <= cycle) {
-    m_plotCurve.push_back(QwtPlotItemMatrix());
+    m_plotCurve.push_back(PlotItemMatrix());
   }
 
   // PlotItem x vector data
   while (m_plotCurve[cycle].size() <= xIndex) {
-    m_plotCurve[cycle].push_back(QwtPlotItemVector());
+    m_plotCurve[cycle].push_back(PlotItemVector());
   }
 
   // PlotItem y vector data
@@ -1543,10 +1575,10 @@ bool Gui2dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated)
 #endif
 
 /* --------------------------------------------------------------------------- */
-/* schrinkPlotCurveData --                                                     */
+/* shrinkPlotCurveData --                                                      */
 /* --------------------------------------------------------------------------- */
 
-bool Gui2dPlot::schrinkPlotCurveData(tPointVector& pts, tMarkerDataVector& markerLabels, QRectF* bRect, PlotItem* item) {
+bool Gui2dPlot::shrinkPlotCurveData(tPointVector& pts, tMarkerDataVector& markerLabels, QRectF* bRect, PlotItem* item) {
   // webtens zoom mode
   if (bRect) {
     tPointVector pts2;
@@ -1623,10 +1655,10 @@ bool Gui2dPlot::serializePlotCurveData(Json::Value& jsonObj, QRectF* bRect) {
               if ((*it)->DataCache_PointVector().empty()) {
                 readData((*it), (*plotIter)->xIndex(), (*plotIter)->yIndex(), pts, markerLabels, bRect);
               } else {
-                copy((*it)->DataCache_PointVector().begin(), (*it)->DataCache_PointVector().end(), back_inserter(pts));
-                copy((*it)->DataCache_MarkerLabelsVector().begin(), (*it)->DataCache_MarkerLabelsVector().end(), back_inserter(markerLabels));
+                std::copy((*it)->DataCache_PointVector().begin(), (*it)->DataCache_PointVector().end(), back_inserter(pts));
+                std::copy((*it)->DataCache_MarkerLabelsVector().begin(), (*it)->DataCache_MarkerLabelsVector().end(), back_inserter(markerLabels));
               }
-              schrinkPlotCurveData(pts, markerLabels, bRect, (*it));
+              shrinkPlotCurveData(pts, markerLabels, bRect, (*it));
               Json::Value jsonElem = Json::Value(Json::objectValue);
               if ((*it)->serializeJson(jsonElem, label, axisStr, pts, markerLabels))
                 jsonAry.append(jsonElem);
@@ -1670,10 +1702,10 @@ bool Gui2dPlot::serializePlotCurveData(google::protobuf::RepeatedPtrField<in_pro
               if ((*it)->DataCache_PointVector().empty()) {
                 readData((*it), (*plotIter)->xIndex(), (*plotIter)->yIndex(), pts, markerLabels, bRect);
               } else {
-                copy((*it)->DataCache_PointVector().begin(), (*it)->DataCache_PointVector().end(), back_inserter(pts));
-                copy((*it)->DataCache_MarkerLabelsVector().begin(), (*it)->DataCache_MarkerLabelsVector().end(), back_inserter(markerLabels));
+                std::copy((*it)->DataCache_PointVector().begin(), (*it)->DataCache_PointVector().end(), back_inserter(pts));
+                std::copy((*it)->DataCache_MarkerLabelsVector().begin(), (*it)->DataCache_MarkerLabelsVector().end(), back_inserter(markerLabels));
               }
-              schrinkPlotCurveData(pts, markerLabels, bRect, (*it));
+              shrinkPlotCurveData(pts, markerLabels, bRect, (*it));
               Json::Value jsonElem = Json::Value(Json::objectValue);
               (*it)->serializeProtobuf(items->Add(), label, axisStr, pts, markerLabels);
             }
@@ -2671,3 +2703,458 @@ bool Gui2dPlot::isScaleUnitUpdated(){
   }
   return ret;
 }
+
+/* --------------------------------------------------------------------------- */
+/* hasCyclePlotMode --                                                         */
+/* --------------------------------------------------------------------------- */
+
+bool Gui2dPlot::hasCyclePlotMode(){
+  if(getAllCycles()) return true;
+  if (!getCyclesDialog())
+    return false;
+  return std::count(m_showCycleVector.begin(), m_showCycleVector.end(), 1) > 1;
+}
+
+/* --------------------------------------------------------------------------- */
+/* isAnnotationLabelsUpdated --                                                */
+/* --------------------------------------------------------------------------- */
+bool Gui2dPlot::isAnnotationLabelsUpdated( TransactionNumber trans ){
+  int currentCycle = dpi().currentCycle();
+  bool result = false;
+  tPlotIterator it;
+  for( it = m_plots.begin(); it != m_plots.end() && !result; ++it )
+    result = (*it)->isAnnotationLabelsUpdated( trans );
+
+  return result;
+}
+
+/* --------------------------------------------------------------------------- */
+/* setYPlotStyle --                                                            */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::setYPlotStyle( eStyle style, eAxisType axis ) {
+  int menu;
+  switch(axis){
+  case Y1AXIS :
+    menu = 0;
+    break;
+  case Y2AXIS :
+    menu = 1;
+    break;
+  default :
+    assert(false);
+  }
+  m_style[menu] = style;
+  // Zustand der Toggle-Buttons setzen
+  m_yStyleMenu[menu]->setStyleButtons( style );
+}
+
+/* --------------------------------------------------------------------------- */
+/* newPopupMenuButton --                                                       */
+/* --------------------------------------------------------------------------- */
+
+GuiMenuButton* Gui2dPlot::newPopupMenuButton(GuiElement* parent, std::string label, GuiMenuButtonListener* listener ){
+  GuiMenuButton *button = GuiFactory::Instance()->createMenuButton(parent,//getElement()->getPopupMenu()->getElement(),
+                                                                   listener);
+  parent->attach( button->getElement() );
+  button->setLabel( label );
+  return button;
+}
+
+/* --------------------------------------------------------------------------- */
+/* createPopupMenu --                                                          */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::createPopupMenu() {
+  auto m_popupMenu = getElement()->newPopupMenu();
+
+  const std::vector<Plot2dMenuDescription::eEntry> &desc =
+    GuiFactory::Instance()->getPlot2dMenuDescription()->getDescription();
+  std::vector<Plot2dMenuDescription::eEntry>::const_iterator  iter;
+
+  for( iter = desc.begin(); iter != desc.end(); ++iter ){
+    switch( *iter ){
+//      case Plot2dMenuDescription::eZOOM :
+//        createUserInteractionModeMenu( m_popupMenu );
+//        break;
+     // case Plot2dMenuDescription::eRESET :
+     //   newPopupMenuButton(m_popupMenu->getElement(), _("Zoom Out"),
+     //                       &m_resetListener );
+     //   break;
+     case Plot2dMenuDescription::eREDRAW :
+       newPopupMenuButton(m_popupMenu->getElement(),  _("Redraw"),
+                           &m_redrawListener );
+       break;
+//     case Plot2dMenuDescription::eANNOTATION :
+//       if( m_withAnnotationOption )
+// 	newPopupMenuToggle( _("Show X-Annotation-Labels"),
+//                             m_showAnnotationLabels,
+//                             &m_annotationListener );
+//       else
+// 	showAnnotationLabels( false );
+//       break;
+//     case Plot2dMenuDescription::ePRINT :
+//       if (!AppData::Instance().HeadlessWebMode()) {
+// 	newPopupMenuDialogButton( _("Print"),
+// 				  &m_printListener );
+//       }
+//       break;
+    case  Plot2dMenuDescription::eLOGARITHMIC :
+      createLogarithmicMenu(m_popupMenu);
+      break;
+//     case Plot2dMenuDescription::eSCALE :
+//       newPopupMenuDialogButton( _("Scale"),
+//                                 &m_openScaleListener );
+//       break;
+//     case Plot2dMenuDescription::eCONFIG :
+//       m_configButton = newPopupMenuDialogButton( _("Configuration"),
+//                                                  &m_openConfigListener );
+//       break;
+//     case Plot2dMenuDescription::eCYCLES :
+//       m_cyclesButton = newPopupMenuDialogButton( _("Select cases"),
+//                                                  &m_openCycleListener );
+//       break;
+    case Plot2dMenuDescription::eSTYLE :
+      createYStyleMenu( m_popupMenu, Y1AXIS );
+      createYStyleMenu( m_popupMenu, Y2AXIS );
+      break;
+    case Plot2dMenuDescription::eCOPY :
+      {
+      GuiMenuButton *button = newPopupMenuButton(m_popupMenu->getElement(), _("Copy"),
+                                                   &m_copyListener );
+      button->setAccelerator( "Ctrl<Key>C", "Ctrl-C" );
+      break;
+      }
+    case Plot2dMenuDescription::eFULLSCREEN :
+      {
+      newPopupMenuButton(m_popupMenu->getElement(), _("Fullscreen"),
+                         &m_fullscreenListener );
+      break;
+      }
+//     case Plot2dMenuDescription::ePROPERTY :
+//       {
+//       GuiQtMenuButton *button = newPopupMenuButton( _("Property"),
+//                                                     &m_propertyListener );
+//       break;
+//       }
+    default :
+      break;
+    }
+  }
+  m_popupMenu->getElement()->create();
+}
+
+/* --------------------------------------------------------------------------- */
+/* createLogarithmicMenu --                                                    */
+/* --------------------------------------------------------------------------- */
+
+void Gui2dPlot::createLogarithmicMenu( GuiPopupMenu *menu ){
+  GuiPulldownMenu *logmenu = GuiFactory::Instance()->createPulldownMenu(menu->getElement(),
+                                                                        _("Logarithmic"));
+  logmenu->setLabel( _("Logarithmic") );
+  menu->attach( logmenu->getElement() );
+  logmenu->setAlways();
+
+  GuiEventData *event = new GuiEventData();
+  GuiMenuToggle *toggle = GuiFactory::Instance()->createMenuToggle( logmenu->getElement(), &m_logarithmicMenu, event );
+  logmenu->getElement()->attach( toggle->getElement() );
+  toggle->setToggleStatus( getAxis(2).isLogarithmic() );
+  toggle->setLabel( "Xaxis" );
+  m_logarithmicMenu.m_xaxisLogButton = toggle;
+
+  event = new GuiEventData();
+  toggle = GuiFactory::Instance()->createMenuToggle( logmenu->getElement(), &m_logarithmicMenu, event );
+  logmenu->getElement()->attach( toggle->getElement() );
+  toggle->setToggleStatus( getAxis(0).isLogarithmic() );
+  toggle->setLabel( "Yaxis" );
+  m_logarithmicMenu.m_yaxisLogButton = toggle;
+}
+
+/* --------------------------------------------------------------------------- */
+/* createYStyleMenu --                                                         */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::createYStyleMenu( GuiPopupMenu *menu, eAxisType axis ){
+  std::string style;
+  std::string pl_style;
+  switch( axis ){
+  case Y1AXIS :
+    style =  "Style Y1";
+    pl_style = _("Style Y1");
+    break;
+  case Y2AXIS :
+    style =  "Style Y2";
+    pl_style = _("Style Y2");
+    break;
+  default :
+    assert(false);
+  }
+  GuiPulldownMenu *pullDownMenu = GuiFactory::Instance()->createPulldownMenu( menu->getElement(), style );
+  pullDownMenu->setLabel( pl_style );
+  menu->attach( pullDownMenu->getElement() );
+  pullDownMenu->setAlways();
+  createStyleMenu( pullDownMenu, axis );
+}
+
+/* --------------------------------------------------------------------------- */
+/* createStyleMenu --                                                          */
+/* --------------------------------------------------------------------------- */
+
+void Gui2dPlot::createStyleMenu(GuiPulldownMenu *pullDownMenu, eAxisType axis ){
+  StyleMenu *styleMenu;
+  switch( axis ){
+  case Y1AXIS :
+    styleMenu = m_yStyleMenu[0];
+    break;
+  case Y2AXIS :
+    styleMenu = m_yStyleMenu[1];
+    break;
+  default :
+    assert(false);
+  }
+  StyleMenu::MyEvent *event = new StyleMenu::MyEvent( axis );
+  GuiMenuToggle *toggle = GuiFactory::Instance()->createMenuToggle(pullDownMenu->getElement(), styleMenu, event);
+  pullDownMenu->attach( toggle->getElement() );
+  toggle->setLabel( _("Style plot") );
+  styleMenu->m_buttonStylePlot = toggle;
+
+  event = new StyleMenu::MyEvent( axis );
+  toggle = GuiFactory::Instance()->createMenuToggle(pullDownMenu->getElement(), styleMenu, event);
+  //  pullDownMenu->attach( toggle->getElement() );
+  toggle->setLabel( _("Style bar") );
+  styleMenu->m_buttonStyleBar = toggle;
+
+//   event = new StyleMenu::MyEvent( axis );
+//   toggle = new GuiQtMenuToggle( pullDownMenu, styleMenu, event );
+//   pullDownMenu->attach( toggle );
+//   toggle->setLabel( _("Style stacked bar") );
+//   styleMenu->m_buttonStyleStackingBar = toggle;
+
+  event = new StyleMenu::MyEvent( axis );
+  toggle = GuiFactory::Instance()->createMenuToggle( pullDownMenu->getElement(), styleMenu, event );
+  pullDownMenu->attach( toggle->getElement() );
+  toggle->setLabel( _("Style Spline") );
+  styleMenu->m_buttonStyleSpline = toggle;
+
+  event = new StyleMenu::MyEvent( axis );
+  toggle = GuiFactory::Instance()->createMenuToggle( pullDownMenu->getElement(), styleMenu, event );
+  pullDownMenu->attach( toggle->getElement() );
+  toggle->setLabel( _("Style area") );
+  styleMenu->m_buttonStyleArea = toggle;
+
+//   event = new StyleMenu::MyEvent( axis );
+//   toggle = new GuiQtMenuToggle( pullDownMenu, styleMenu, event );
+//   pullDownMenu->attach( toggle );
+//   toggle->setLabel( _("Style polar") );
+//   styleMenu->m_buttonStylePolar = toggle;
+
+//   event = new StyleMenu::MyEvent( axis );
+//   toggle = new GuiQtMenuToggle( pullDownMenu, styleMenu, event );
+//   pullDownMenu->attach( toggle );
+//   toggle->setLabel( _("Style step") );
+//   styleMenu->m_buttonStyleStep = toggle;
+
+  event = new StyleMenu::MyEvent( axis );
+  toggle = GuiFactory::Instance()->createMenuToggle( pullDownMenu->getElement(), styleMenu, event );
+  pullDownMenu->attach( toggle->getElement() );
+  toggle->setLabel( _("Style dots") );
+  styleMenu->m_buttonStyleDots = toggle;
+}
+
+/* --------------------------------------------------------------------------- */
+/* fullscreen --                                                               */
+/* --------------------------------------------------------------------------- */
+
+void Gui2dPlot::fullscreen() {
+  if (getElement()->getName().size() == 0) // funktion in popupMenu nicht nutzbar
+    return;
+  if (!m_fullscreenDialog) {
+    m_fullscreenDialog = GuiFactory::Instance()->createForm(getElement()->getName() + "_Fullscreen");
+    std::string str = ( pheaderText() != 0 ? pheaderText()[0] : MenuLabel()) + " - " + _("Fullscreen");
+    m_fullscreenDialog->setTitle(str);
+    m_fullscreenDialog->resetCycleButton();
+    m_fullscreenDialog->hasCloseButton( true );
+    // m_fullscreenDialog->setApplicationModal();
+
+    // if not created, create first
+    GuiElement* m_fullscreenPlot = getElement()->clone();
+    m_fullscreenPlot->setParent(m_fullscreenDialog->getElement());
+    m_fullscreenDialog->getElement()->attach(m_fullscreenPlot);
+
+    // Buttonbar generieren !!! Es braucht eine GuiQtButtonbar !!!
+    GuiButtonbar *bar = GuiFactory::Instance()->createButtonbar( m_fullscreenDialog->getElement() );
+    m_fullscreenDialog->getElement()->attach( bar->getElement() );
+
+    m_fullscreenDialog->getElement()->create();
+  }
+  m_fullscreenDialog->getElement()->update(GuiElement::reason_Always);
+  m_fullscreenDialog->getElement()->manage();
+  if (m_fullscreenDialog->getElement()->getQtElement())
+    m_fullscreenDialog->getElement()->getQtElement()->myWidget()->showMaximized();
+  BUG_INFO("dialog fullscreen managed");
+}
+
+
+/* --------------------------------------------------------------------------- */
+/*  LogarithmicMenu::ToggleStatusChanged --                                    */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::LogarithmicMenu::ToggleStatusChanged( GuiEventData *event ){
+  if( event == 0 )
+    return;
+  GuiElement *element = event->m_element;
+  if( element != 0 ){
+    if( element == m_xaxisLogButton->getElement() ) {
+      m_plot->setLogX( event->m_toggleStatus );
+    }
+    else if( element == m_yaxisLogButton->getElement() ) {
+      m_plot->setLogY( event->m_toggleStatus );
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/*  StyleMenu::ToggleStatusChanged --                                          */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::StyleMenu::ToggleStatusChanged( GuiEventData *event ){
+  if( event == 0 )
+    return;
+  MyEvent *myEvent = static_cast<MyEvent *>(event);
+  GuiElement *element = myEvent->m_element;
+  if( element != 0 ){
+    eStyle style;
+    bool plot = false;
+    if( m_currentStyle == Gui2dPlot::STEP )
+      plot = true;
+    if( element == m_buttonStylePlot->getElement() )
+      style = Gui2dPlot::PLOT;
+    else if( element == m_buttonStyleSpline->getElement() )
+      style = Gui2dPlot::SPLINE;
+    else if( element == m_buttonStyleArea->getElement() )
+      style = Gui2dPlot::AREA;
+    else if( element == m_buttonStyleDots->getElement() )
+      style = Gui2dPlot::DOTS;
+    else if( element == m_buttonStyleBar->getElement() )
+      style = Gui2dPlot::BAR;
+    else if( element == m_buttonStyleStackingBar->getElement() )
+      style = Gui2dPlot::STACKING_BAR;
+    else if( element == m_buttonStylePolar->getElement() )
+      style = Gui2dPlot::POLAR;
+    else if( element == m_buttonStyleStep->getElement() ){
+      style = Gui2dPlot::STEP;
+      plot = true;
+    }
+    m_plot->setYPlotStyle( style, myEvent->m_axisType );
+    if( plot )
+      m_plot->doPlot(true);
+    m_plot->getElement()->update(GuiElement::reason_Always);
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* StyleMenu::setStyleButtons --                                               */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::StyleMenu::setStyleButtons( Gui2dPlot::eStyle style ) {
+  if( m_buttonStylePlot == 0 )
+    // We test only one here and assume
+    // all others behave the same
+    return;
+  m_currentStyle = style;
+  switch( style ) {
+  case Gui2dPlot::PLOT:
+    m_buttonStylePlot->setToggleStatus( true );
+    m_buttonStyleBar->setToggleStatus( false );
+//     m_buttonStyleStackingBar->setToggleStatus( false );
+    m_buttonStyleSpline->setToggleStatus( false );
+    m_buttonStyleArea->setToggleStatus( false );
+//     m_buttonStylePolar->setToggleStatus( false );
+    m_buttonStyleDots->setToggleStatus( false );
+    break;
+  case Gui2dPlot::BAR:
+    m_buttonStylePlot->setToggleStatus( false );
+    m_buttonStyleBar->setToggleStatus( true );
+//     m_buttonStyleStackingBar->setToggleStatus( false );
+    m_buttonStyleSpline->setToggleStatus( false );
+    m_buttonStyleArea->setToggleStatus( false );
+//     m_buttonStylePolar->setToggleStatus( false );
+    m_buttonStyleDots->setToggleStatus( false );
+    break;
+//   case Gui2dPlot::STACKING_BAR:
+//     m_buttonStylePlot->setToggleStatus( false );
+//     m_buttonStyleBar->setToggleStatus( false );
+//     m_buttonStyleStackingBar->setToggleStatus( true );
+//     m_buttonStyleSpline->setToggleStatus( false );
+//     m_buttonStyleArea->setToggleStatus( false );
+//     m_buttonStylePolar->setToggleStatus( false );
+//     m_buttonStyleDots->setToggleStatus( false );
+//     break;
+  case Gui2dPlot::AREA:
+    m_buttonStylePlot->setToggleStatus( false );
+//     m_buttonStyleBar->setToggleStatus( false );
+//     m_buttonStyleStackingBar->setToggleStatus( false );
+    m_buttonStyleSpline->setToggleStatus( false );
+    m_buttonStyleArea->setToggleStatus( true );
+//     m_buttonStylePolar->setToggleStatus( false );
+    m_buttonStyleDots->setToggleStatus( false );
+    break;
+//   case Gui2dPlot::POLAR:
+//     m_buttonStylePlot->setToggleStatus( false );
+//     m_buttonStyleStackingBar->setToggleStatus( false );
+//     m_buttonStyleBar->setToggleStatus( false );
+//     m_buttonStyleSpline->setToggleStatus( false );
+//     m_buttonStyleArea->setToggleStatus( false );
+//     m_buttonStylePolar->setToggleStatus( true );
+//     m_buttonStyleDots->setToggleStatus( false );
+//     break;
+  case Gui2dPlot::SPLINE:
+    m_buttonStylePlot->setToggleStatus( false );
+//     m_buttonStyleStackingBar->setToggleStatus( false );
+//     m_buttonStyleBar->setToggleStatus( false );
+    m_buttonStyleSpline->setToggleStatus( false );
+    m_buttonStyleArea->setToggleStatus( false );
+//     m_buttonStylePolar->setToggleStatus( false );
+    m_buttonStyleDots->setToggleStatus( false );
+    break;
+  case Gui2dPlot::DOTS:
+    m_buttonStylePlot->setToggleStatus( false );
+//     m_buttonStyleStackingBar->setToggleStatus( false );
+//     m_buttonStyleBar->setToggleStatus( false );
+    m_buttonStyleSpline->setToggleStatus( false );
+    m_buttonStyleArea->setToggleStatus( false );
+//     m_buttonStylePolar->setToggleStatus( false );
+    m_buttonStyleDots->setToggleStatus( true );
+    break;
+  default:
+    break;
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::CopyListener::ButtonPressed                                     */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::CopyListener::ButtonPressed() {
+  m_plot->copy();
+}
+
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::FullscreenListener::ButtonPressed                               */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::FullscreenListener::ButtonPressed() {
+  m_plot->fullscreen();
+}
+
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::ResetListener::ToggleStatusChanged                               */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::ResetListener::ButtonPressed() {
+  m_plot->zoomReset();
+
+  // GuiUpdate
+  m_plot->getElement()->update(GuiElement::reason_Always);
+}
+
+
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::RedrawListener::ButtonPressed                                   */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::RedrawListener::ButtonPressed() {
+  // GuiUpdate
+  m_plot->getElement()->update(GuiElement::reason_Always);
+}
+

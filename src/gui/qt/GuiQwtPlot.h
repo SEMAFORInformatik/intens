@@ -155,7 +155,7 @@ public:
   //------------------------------------
 public:
   virtual GuiElement::ElementType Type(){
-    return GuiElement::type_QWTPlot;
+    return GuiElement::type_2dPlot;
   }
   virtual void create();
   virtual void manage();

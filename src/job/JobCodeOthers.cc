@@ -964,7 +964,7 @@ JobElement::OpStatus JobCodeGetSelection::execute( JobEngine *eng ){
   }
 
   // QWTPlot
-  if ( e->Type() == GuiElement::type_QWTPlot ) {
+  if ( e->Type() == GuiElement::type_2dPlot ) {
     Gui2dPlot *plot = e->get2dPlot();
     assert( plot != 0 );
 

@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QMimeData>
 #include <QBuffer>
+#include "gui/qt/GuiQt2dPlot.h"
 #include "gui/qt/GuiQwtPlot.h"
 #include "gui/qt/GuiQtNavigatorMenu.h"
 #include "gui/qt/GuiQtScrolledText.h"
@@ -304,7 +305,11 @@ Gui2dPlot* GuiQtFactory::create2dPlot( const std::string &name, bool isPlot2d ) 
     return 0;
   }
   Gui2dPlot *plot=0;
+#if HAVE_QCHARTS
+  plot = new GuiQt2dPlot( name );
+#else
   plot = new GuiQWTPlot( name );
+#endif
   return plot;
 }
 

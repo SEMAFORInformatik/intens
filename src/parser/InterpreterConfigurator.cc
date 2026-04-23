@@ -5488,7 +5488,7 @@ bool InterpreterConfigurator::attachPlot2d( const std::string &elementId, GuiEle
   if( m_rep->element == 0 ){
     ParserError( compose(_("Undeclared identifier '%1'."), elementId) );
   }
-  if( m_rep->element->Type() != GuiElement::type_QWTPlot ){
+  if( m_rep->element->Type() != GuiElement::type_2dPlot ){
     ParserError( compose(_("'%1' is not a plot2d"), elementId) );
   }
   if( m_rep->element->installed() ){
@@ -9083,7 +9083,7 @@ bool InterpreterConfigurator::opGetSelection( const std::string &guiElementId ){
   if( e == 0 ){
     ParserError( compose(_("Undeclared identifier '%1'."), guiElementId) );
   }
-  if( e->Type() != GuiElement::type_QWTPlot &&
+  if( e->Type() != GuiElement::type_2dPlot &&
       e->Type() != GuiElement::type_List &&
       e->Type() != GuiElement::type_Table &&
       e->Type() != GuiElement::type_Navigator ){

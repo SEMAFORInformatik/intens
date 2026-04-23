@@ -1,4 +1,4 @@
-#if !HAVE_QGRAPHS
+#if HAVE_QCHARTS
 #include <QLayout>
 #include <QGraphicsLayout>
 #include <QtCharts/QSplineSeries>

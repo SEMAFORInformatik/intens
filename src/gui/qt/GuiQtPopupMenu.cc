@@ -10,6 +10,8 @@
 
 #include "utils/Debugger.h"
 
+INIT_LOGGER();
+
 /*******************************************************************************/
 /* public member functions                                                     */
 /*******************************************************************************/
@@ -33,8 +35,7 @@ QWidget* GuiQtPopupMenu::myWidget(){
 }
 
 void GuiQtPopupMenu::create(){
-  BUG_PARA(BugGui,"GuiQtPopupMenu::create"
-                 ,"Elements = " << m_container.size());
+  BUG_DEBUG("GuiQtPopupMenu::create ElementSize = " << m_container.size());
   if( m_container.size() == 0 ){
     return;
   }

@@ -1003,7 +1003,7 @@ void GuiQtManager::writeSettings() {
 
   // write qwt plot  settings
   flist.clear();
-  GuiElement::findElementType(flist, type_QWTPlot);
+  GuiElement::findElementType(flist, type_2dPlot);
   for( it = flist.begin(); it != flist.end(); ++it ) {
     (*it)->writeSettings();
   }

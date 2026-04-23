@@ -172,7 +172,7 @@ public:
   , type_NavIconView
   , type_Simpel
   , type_ListPlot
-  , type_QWTPlot
+  , type_2dPlot
   , type_Slider
   , type_Image
   , type_Thermo

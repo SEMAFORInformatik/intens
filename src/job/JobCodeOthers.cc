@@ -26,6 +26,8 @@
 #include "job/JobStackAddress.h"
 #include "job/JobStackReturn.h"
 #include "job/JobStackDataVariable.h"
+#include "job/JobManager.h"
+#include "job/JobElement.h"
 #include "job/JobConfirmation.h"
 #include "job/JobMessage.h"
 #include "gui/GuiElement.h"
@@ -83,6 +85,19 @@ INIT_LOGGER();
 JobElement::OpStatus JobCodeUpdateGuiElement::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeUpdateGuiElement::execute");
   m_element->update( GuiElement::reason_Always );
+  return op_Ok;
+}
+
+/* --------------------------------------------------------------------------- */
+/* execute --                                                                  */
+/* --------------------------------------------------------------------------- */
+
+JobElement::OpStatus JobCodeGetFunction::execute( JobEngine *eng ){
+  BUG(BugJobCode,"JobCodeGetFunction::execute");
+  std::string name;
+  m_item->Data()->GetValue(name);
+  auto action = JobManager::Instance().getFunction(name, false);
+  eng->pushTrue(action != 0);
   return op_Ok;
 }
 
@@ -403,7 +418,6 @@ JobElement::OpStatus JobCodeSerializeElement::execute( JobEngine *eng ){
     JobStackDataPtr e( eng->pop() );
     e->getStringValue( s );
     elem = GuiElement::findElement(s);
-    BUG_INFO("ELEM: " << elem << "S: " << s.empty())
     if( !elem && s.empty()){
       // default GuiElement is MainForm
       GuiElementList mlist;

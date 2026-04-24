@@ -36,6 +36,23 @@ private:
   GuiElement   *m_element;
 };
 
+/** Get function
+ */
+class JobCodeGetFunction : public JobCodeExec
+{
+public:
+  JobCodeGetFunction( XferDataItem *item ): m_item( item ){}
+  virtual ~JobCodeGetFunction(){}
+  /** Diese Funktion ruft die Funktion update() eines GuiElements auf.
+      Der Typ des GuiElements spielt keine Rolle.
+      @param eng Pointer auf das aufrufende JobEngine Objekt.
+      @return Status des laufenden Jobs (siehe JobElement.h)
+  */
+  virtual OpStatus execute( JobEngine * );
+private:
+  XferDataItem   *m_item;
+};
+
 /** Enable GuiElement
  */
 class JobCodeEnableGuiElement : public JobCodeExec

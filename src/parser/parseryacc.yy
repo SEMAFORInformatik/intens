@@ -360,7 +360,7 @@ static XferDataItem::ParameterType parametertype;
 %type <val_integer>    message_queue_statement message_queue_action
 %type <val_integer>    job_run_statement job_run_function
 %type <val_string>     function_reference
-%type <val_integer>    job_run_action
+%type <val_integer>    job_run_action job_get_function
 %type <val_integer>    job_open_statement job_open_action
 %type <val_integer>    job_xml_query_statement job_xml_query_action
 %type <val_integer>    job_description_statement job_description_action
@@ -7672,6 +7672,13 @@ set_func_statement /* DOCUMENTATION:DIAGRAM */
       } /* DOCUMENTATION:HIDE END */
   ;
 
+job_get_function /* DOCUMENTATION:UNFOLD */
+  : temp_data_reference
+      {
+        $$ = configurator -> opGetFunction( $1 );
+      }
+  ;
+
 /* --------------------------------------------------------------------------- */
 /* REST SERVICE                                                                */
 /* --------------------------------------------------------------------------- */
@@ -9210,6 +9217,10 @@ function_expression /* DOCUMENTATION:DIAGRAM */
       {
         configurator -> opEvalValid();
         $$=$3;
+      }
+  | tFUNC '(' job_get_function ')'
+      {
+        $$ = $3;
       }
   | tINDEX '(' job_expression ')'
       {

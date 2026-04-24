@@ -8319,6 +8319,17 @@ int InterpreterConfigurator::opExecuteFunction( XferDataItem *xfer ) {
   return JobManager::Instance().opExecuteFunction( m_rep->function, xfer );
 }
 //======================================================================//
+// - opGetFunction
+//======================================================================//
+int InterpreterConfigurator::opGetFunction( XferDataItem *xfer ) {
+  if (xfer) {
+    if( xfer->getDataType() != DataDictionary::type_String ){
+      ParserError( _("Parameter is not of type STRING") );
+    }
+  }
+  return JobManager::Instance().opGetFunction( m_rep->function, xfer );
+}
+//======================================================================//
 // - opExecuteProcess
 //======================================================================//
 int InterpreterConfigurator::opExecuteProcess( const std::string &processgroupId ){

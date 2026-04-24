@@ -842,6 +842,7 @@ class Configurator {
   virtual int  opExecuteTask( const std::string &taskId ) = 0;
   virtual int  opExecuteFunction( const std::string &funcId ) = 0;
   virtual int  opExecuteFunction( XferDataItem *xferdataitem ) = 0;
+  virtual int  opGetFunction( XferDataItem *xferdataitem ) = 0;
   virtual int  opExecuteProcess( const std::string &processgroupId ) = 0;
   virtual int  opPluginInitialise( const std::string &pluginId ) = 0;
   virtual bool opExecutePlugin() = 0;

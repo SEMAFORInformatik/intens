@@ -936,6 +936,15 @@ int JobManager::opVisible( JobFunction *func, XferDataItem *xferdataitem ){
 }
 
 /* --------------------------------------------------------------------------- */
+/* opGetFunction --                                                                  */
+/* --------------------------------------------------------------------------- */
+
+int JobManager::opGetFunction( JobFunction *func, XferDataItem *xferdataitem ){
+  JobCodeGetFunction *code = new JobCodeGetFunction( xferdataitem );
+  return func->attach( code );
+}
+
+/* --------------------------------------------------------------------------- */
 /* opEditable --                                                               */
 /* --------------------------------------------------------------------------- */
 

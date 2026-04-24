@@ -304,8 +304,14 @@ FUNCTIONS
       mqReply_response.status = "ERROR";
       mqReply_response.message = "Empty Function name";
     } ELSE {
-      RUN(mqReply_functionArgs.name);
-      mqReply_response.status = "OK";
+
+      IF (!FUNC(mqReply_functionArgs.name)) {
+        mqReply_response.status = "ERROR";
+        mqReply_response.message = "Function " + mqReply_functionArgs.name + " does not exist.";
+      } ELSE {
+        RUN(mqReply_functionArgs.name);
+        mqReply_response.status = "OK";
+      }
     }
 
     // QUIT (only set an exit status)

@@ -825,6 +825,7 @@ public:
   virtual int  opExecuteTask( const std::string &taskId );
   virtual int  opExecuteFunction( const std::string &funcId );
   virtual int  opExecuteFunction( XferDataItem *xferdataitem );
+  virtual int  opGetFunction( XferDataItem *xferdataitem );
   virtual int  opExecuteProcess( const std::string &processgroupId );
   virtual int  opPluginInitialise( const std::string &pluginId );
   virtual bool opExecutePlugin();

@@ -721,6 +721,7 @@ public:
   int opUnmapGuiElement( JobFunction *, const std::string & );
   int opUnmapTableLine( JobFunction *, const std::string & );
   int opVisible( JobFunction *, XferDataItem* xferDataItem );
+  int opGetFunction( JobFunction *, XferDataItem* xferDataItem );
   int opVisibleForm( JobFunction *, GuiForm * );
   int opVisibleFolderGroup( JobFunction *, const std::string & );
   int opEditable( JobFunction *, GuiElement* elem=0);

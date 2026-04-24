@@ -855,6 +855,10 @@ JobElement::OpStatus JobCodeAssignFuncArguments::execute( JobEngine *eng ){
     XferDataItem *xfer = new XferDataItem(dref_selIndex);
     std::string guiElementId;
     if (dref_elem->GetValue(guiElementId) && dref_selIndex->GetValue(row)) {
+      if (GuiElement::findElement(guiElementId) == 0) {
+        delete dref_elem;
+        return op_FatalError;
+      }
       JobCodeSelectRows::executeElement(guiElementId, xfer, row);
     }
     // delete xfer; // delete inside JobCodeSelectRows::executeElement

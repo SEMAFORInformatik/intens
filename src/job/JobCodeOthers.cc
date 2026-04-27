@@ -418,6 +418,49 @@ JobElement::OpStatus JobCodeSerializeElement::execute( JobEngine *eng ){
     JobStackDataPtr e( eng->pop() );
     e->getStringValue( s );
     elem = GuiElement::findElement(s);
+
+    // serialization for web endpoints listing all forms and all cycles
+    if (s == "__FORM_LIST" || s == "__CYCLES_LIST") {
+      Json::Value jsonAry = Json::Value(Json::arrayValue);
+      if (s== "__FORM_LIST") {
+        GuiElementList mainFormList;
+        GuiElementList mlist;
+
+        GuiElement::findElementType(mainFormList, GuiElement::type_Main);
+        // add main form to the list
+        mlist.emplace_back(mainFormList[0]);
+        GuiElement::findElementType(mlist, GuiElement::type_Form);
+        for( auto ele : mlist ) {
+          if (ele->getForm() && ele->getForm()->isShown()) {
+            jsonAry.append(ele->getName());
+          }
+        }
+      }
+
+      if (s == "__CYCLES_LIST") {
+        DataPoolIntens &dp = DataPoolIntens::Instance();
+        std::string name;
+        int numcyc = dp.getDataPool().NumCycles();
+
+        for( int cyc=0; cyc < numcyc; cyc++ ) {
+          if( dp.getCycleName( cyc, name ) ){
+            if( !name.empty() ){
+              jsonAry.append(name);
+            }
+          }
+        }
+      }
+      if( m_filename.empty() ){
+        f->setStringValue( ch_semafor_intens::JsonUtils::value2string(jsonAry), 0 );
+      } else {
+        std::ofstream os;
+        os.open( fn.c_str() );
+        os << ch_semafor_intens::JsonUtils::value2string(jsonAry);
+        os.close();
+      }
+      return op_Ok;
+    }
+
     if( !elem && s.empty()){
       // default GuiElement is MainForm
       GuiElementList mlist;

@@ -13,6 +13,7 @@ STRUCT
   MQReply_Status {
     STRING  {SCALAR} status;
     STRING  {SCALAR} forms;
+    STRING  {SCALAR} cycles;
   }
 ;
 
@@ -489,6 +490,10 @@ FUNCTIONS
     } ELSE {
       mqReply_status.status = mqReply_response.status;
     }
+    mqReply_uimanager.name = "__FORM_LIST";
+    SERIALIZE_FORM(mqReply_uimanager.name, JSON, mqReply_status.forms);
+    mqReply_uimanager.name = "__CYCLES_LIST";
+    SERIALIZE_FORM(mqReply_uimanager.name, JSON, mqReply_status.cycles);
   };
 
   FUNC {SILENT} mqReply_uimanager_func {

@@ -88,6 +88,7 @@ class GuiQtDiagramConnection : public QGraphicsLineItem
 public:
   enum { Type = UserType + 4 };
   enum ConnectType { Line, HalfStep, OneStep, TwoStep };
+  enum ConnectStartType { Horizontal, Vertical, Undefined };
 
   GuiQtDiagramConnection(GuiQtDiagramPixmapItem *startItem, QPoint& startAnchor,
                          GuiQtDiagramPixmapItem *endItem, QPoint& endAnchor,
@@ -123,6 +124,7 @@ private:
     GuiQtDiagramPixmapItem *myStartItem;
     GuiQtDiagramPixmapItem *myEndItem;
     ConnectType connectType;
+    ConnectStartType connectStartType;
     int lineWidth;
     std::string lineStyle;
     QColor myColor;

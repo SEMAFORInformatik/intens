@@ -1348,19 +1348,28 @@ void GuiQtDiagram::updateConnectionAttr(std::string& node0, std::string& node1,
     cattr.anchor_ypos.push_back(y);
   }
 
-  // lineColor
+  // connectType
   if (nodeProps0.size() > 2) {
-    if (nodeProps0[2] == "I") {
+    // base connect type
+    if (nodeProps0[2].starts_with("I")) {
       cattr.connectType = GuiQtDiagramConnection::Line;
     }
-    if (nodeProps0[2] == "L") {
+    if (nodeProps0[2].starts_with("L")) {
       cattr.connectType = GuiQtDiagramConnection::HalfStep;
     }
-    if (nodeProps0[2] == "S") {
+    if (nodeProps0[2].starts_with("S")) {
       cattr.connectType = GuiQtDiagramConnection::OneStep;
     }
-    if (nodeProps0[2] == "W") {
+    if (nodeProps0[2].starts_with("W")) {
       cattr.connectType = GuiQtDiagramConnection::TwoStep;
+    }
+    cattr.connectStartType = GuiQtDiagramConnection::Undefined;
+    // connect end type
+    if (nodeProps0[2].ends_with("-H")) {
+      cattr.connectStartType = GuiQtDiagramConnection::Horizontal;
+    }
+    if (nodeProps0[2].ends_with("-V")) {
+      cattr.connectStartType = GuiQtDiagramConnection::Vertical;
     }
   }
 

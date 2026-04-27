@@ -1,5 +1,5 @@
 # Dockerfile for semafor/intens
-FROM ubuntu:24.04 AS builder
+FROM ubuntu:26.04 AS builder
 ARG CMAKE_BUILD_TYPE=Release
 ARG nproc=8
 
@@ -62,7 +62,7 @@ RUN  mkdir lib; \
 ###########
 # RUNTIME #
 ###########
-FROM ubuntu:24.04 AS runtime
+FROM ubuntu:26.04 AS runtime
 LABEL maintainer="Ronald Tanner <tar@semafor.ch>"
 LABEL org.label-schema.vendor="Semafor Informatik & Energie AG"
 LABEL org.label-schema.url="https://semafor.ch"
@@ -84,7 +84,7 @@ RUN set -eux; \
     libcurl4 \
     libzmq5 \
     libltdl7 \
-    libxml2 \
+    libxml2-dev \
     libxslt1.1 \
     liblog4cplus-2.0.5t64 $EXTRA_PACKAGES; \
   echo "en_US.UTF-8 UTF-8"> /etc/locale.gen;\

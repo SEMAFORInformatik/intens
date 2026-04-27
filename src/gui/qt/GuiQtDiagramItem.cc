@@ -237,6 +237,7 @@ GuiQtDiagramConnection::GuiQtDiagramConnection(GuiQtDiagramPixmapItem *startItem
     myEndItem(endItem),
     m_endAnchor(endAnchor),
     connectType(cType),
+    connectStartType(Undefined),
     lineWidth(lw),
     lineStyle(lower(ls)){
   setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -250,6 +251,7 @@ GuiQtDiagramConnection::GuiQtDiagramConnection(GuiQtDiagramPixmapItem *startItem
   : myStartItem(startItem),
     myEndItem(endItem),
     connectType((GuiQtDiagramConnection::ConnectType) attr->connectType),
+    connectStartType((GuiQtDiagramConnection::ConnectStartType) attr->connectStartType),
     lineWidth(attr->lineWidth),
     lineStyle(lower(attr->lineStyle)){
   if (attr->anchor_xpos.size() == 2 && attr->anchor_ypos.size() == 2) {
@@ -367,8 +369,20 @@ void GuiQtDiagramConnection::updateConnectLines(){
     dX +=  m_endAnchor.x() - m_startAnchor.x();
     dY +=  m_endAnchor.y() - m_startAnchor.y();
   }
-  double xFac = 0.5;
-  bool vertConnection = xFac*abs(dX) < abs(dY);
+
+  // connection orientation
+  bool vertConnection(true);
+  switch(connectStartType){
+  case GuiQtDiagramConnection::Horizontal:
+    vertConnection = false;
+    break;
+  case GuiQtDiagramConnection::Vertical:
+    vertConnection = true;
+    break;
+  default:
+    vertConnection = 0.5 * abs(dX) < abs(dY);
+    break;
+  }
 
   if (vertConnection) {  // VERT
     qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : 0.5 * sBB.width();
@@ -376,20 +390,20 @@ void GuiQtDiagramConnection::updateConnectLines(){
 
     qreal sdy = isValid(m_startAnchor) ? m_startAnchor.y() : dY > 0  ? sBB.bottom() : sBB.top();
     qreal edy = isValid(m_endAnchor) ? m_endAnchor.y() : dY < 0  ? eBB.bottom() : eBB.top();
-    setLine(QLineF(myEndItem->pos().x() + edx,
-                   myEndItem->pos().y() + edy,
-                   myStartItem->pos().x() + sdx,
-                   myStartItem->pos().y() + sdy));
+    setLine(QLineF(myStartItem->pos().x() + sdx,
+                   myStartItem->pos().y() + sdy,
+                   myEndItem->pos().x() + edx,
+                   myEndItem->pos().y() + edy));
   } else {  // HORZ
     qreal sdy = isValid(m_startAnchor) ? m_startAnchor.y() : 0.5 * sBB.height();
     qreal edy = isValid(m_endAnchor) ? m_endAnchor.y() : 0.5 * eBB.height();
 
     qreal sdx = isValid(m_startAnchor) ? m_startAnchor.x() : dX > 0  ? sBB.right() : sBB.left();
     qreal edx = isValid(m_endAnchor) ? m_endAnchor.x() : dX < 0  ? eBB.right() : eBB.left();
-    setLine(QLineF(myEndItem->pos().x() + edx,
-                   myEndItem->pos().y() + edy,
-                   myStartItem->pos().x() + sdx,
-                   myStartItem->pos().y() + sdy));
+    setLine(QLineF(myStartItem->pos().x() + sdx,
+                   myStartItem->pos().y() + sdy,
+                   myEndItem->pos().x() + edx,
+                   myEndItem->pos().y() + edy));
   }
 
   m_connectLine.clear();
@@ -442,6 +456,16 @@ void GuiQtDiagramConnection::updateConnectLines(){
   case OneStep:
   default:
     m_connectLine << line().p1() << pm1 << pm2 << line().p2();
+  }
+  BUG_DEBUG("ConnType: " << connectType << ", vert: " << vertConnection << std::endl
+            << "StartItem id: "<< myStartItem->getId()
+            << ", pos["<< myStartItem->pos().x()<<", "<< myStartItem->pos().y()<<"]"
+            << ", anchor["<< m_startAnchor.x()<<", "<< m_startAnchor.y()<<"]"  << std::endl
+            << "EndItem id: "<< myEndItem->getId()
+            << ", pos["<< myEndItem->pos().x()<<", "<< myEndItem->pos().y()<<"]"
+            << ", anchor["<< m_endAnchor.x()<<", "<< m_endAnchor.y()<<"]");
+  for (auto pt: m_connectLine) {
+    BUG_DEBUG("  pt["<<pt.x()<<", "<<pt.y()<<"]");
   }
 }
 

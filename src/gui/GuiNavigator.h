@@ -163,6 +163,7 @@ class GuiNavigator
     std::vector<double> xpos, ypos;
     std::vector<int> anchor_xpos, anchor_ypos;
     int connectType;  // enum GuiQtDiagramConnection::ConnectType
+    int connectStartType;  // enum GuiQtDiagramConnection::ConnectStartType
   };
   public:
  private:

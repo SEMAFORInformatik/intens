@@ -16,6 +16,7 @@
 #include "job/JobMsgQueuePublish.h"
 #include "job/JobDataReference.h"
 #include "operator/ClientSocket.h"
+#include "operator/ProcessGroup.h"
 #include "operator/MessageQueue.h"
 #include "operator/MessageQueueSubscriber.h"
 #include "job/JobCodeOthers.h"
@@ -96,7 +97,13 @@ JobElement::OpStatus JobCodeGetFunction::execute( JobEngine *eng ){
   BUG(BugJobCode,"JobCodeGetFunction::execute");
   std::string name;
   m_item->Data()->GetValue(name);
-  auto action = JobManager::Instance().getFunction(name, false);
+  void* action = JobManager::Instance().getFunction(name, false);
+  if (action == 0) {
+    action = JobManager::Instance().getTask(name);
+  }
+  if (action == 0) {
+    action = ProcessGroup::find( name );
+  }
   eng->pushTrue(action != 0);
   return op_Ok;
 }

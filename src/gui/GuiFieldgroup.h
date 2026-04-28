@@ -113,7 +113,7 @@ public:
   /** set Fielgroup title */
   virtual void setFieldgroupTitle(const std::string &title) = 0;
   /** set Accordion Expanded Flag */
-  virtual void setAccordionExpanded(bool expand) = 0;
+  virtual void setAccordionExpanded(bool expand, bool with_clones=true) = 0;
 
 /*=============================================================================*/
 /* protected                                                                   */

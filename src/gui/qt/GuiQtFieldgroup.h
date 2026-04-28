@@ -100,7 +100,7 @@ public:
 #endif
   bool serializeContainerElements(Json::Value& jsonObj, bool onlyUpdated = false) override;
   void setFieldgroupTitle(const std::string &title) override;
-  void setAccordionExpanded(bool open) override;
+  void setAccordionExpanded(bool open, bool with_clones=true) override;
 /*=============================================================================*/
 /* public member functions                                                     */
 /*=============================================================================*/

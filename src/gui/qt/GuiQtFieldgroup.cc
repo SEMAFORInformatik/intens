@@ -944,10 +944,12 @@ void GuiQtFieldgroup::setFieldgroupTitle(const std::string &title){
 /* setAccordionExpanded --                                                     */
 /* --------------------------------------------------------------------------- */
 
-void GuiQtFieldgroup::setAccordionExpanded(bool open){
-  // handle clones
-  for (auto clone: m_clonedFieldgroup){
-    clone->setAccordionExpanded(open);
+void GuiQtFieldgroup::setAccordionExpanded(bool open, bool with_clones){
+  if (with_clones){
+    // handle clones
+    for (auto clone: m_clonedFieldgroup){
+      clone->setAccordionExpanded(open);
+    }
   }
 
   // set checked flag

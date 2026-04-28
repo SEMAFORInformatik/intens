@@ -788,10 +788,23 @@ std::string GuiFieldgroup::variantMethod(const std::string& method,
     }
   }
 
+  // SelectList
+  if (method == "SetAccordionOpen") {
+    BUG_DEBUG("SetAccordionOpen Args: " << ch_semafor_intens::JsonUtils::value2string(jsonArgs)
+              << ", isArray: " << jsonArgs["id"].isArray());
+    if (jsonArgs.isMember("open") && jsonArgs["open"].isBool()) {
+      setAccordionExpanded(jsonArgs["open"].asBool(), false);
+      jsonElem["status"] = "OK";
+    } else {
+      jsonElem["message"] = "Wrong Parameter";
+      jsonElem["status"] = "Error";
+    }
+  }
+
   if (!jsonElem.isNull()) {
     BUG_INFO("variantMethod Method[" << method << "], Args["
-              << ch_semafor_intens::JsonUtils::value2string(jsonArgs) << "]  Return: "
-              << ch_semafor_intens::JsonUtils::value2string(jsonElem));
+             << ch_semafor_intens::JsonUtils::value2string(jsonArgs) << "]  Return: "
+             << ch_semafor_intens::JsonUtils::value2string(jsonElem));
     return ch_semafor_intens::JsonUtils::value2string(jsonElem);
   }
   return getElement()->defaultVariantMethod(method, jsonArgs, eng);

@@ -52,6 +52,7 @@ char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
   std::string s;
   if (std::isnan(d) || std::isinf(d)){
     *decpt = 9999;
+    *sign = 0;
     if(std::isinf(d)){
       s = "Infinity";
     }
@@ -62,6 +63,7 @@ char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
   else {
     if(!d){
       s = "0";
+      ndigits = 1;
     }
     else {
       int decptoffset = int(log10(abs(d)));

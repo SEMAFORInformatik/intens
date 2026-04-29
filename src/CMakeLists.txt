@@ -104,7 +104,6 @@ target_link_libraries(intens
         PRIVATE
         $<TARGET_OBJECTS:app>
         $<TARGET_OBJECTS:datapool>
-        $<TARGET_OBJECTS:gdtoa>
         $<TARGET_OBJECTS:gui>
         $<TARGET_OBJECTS:gui_qt>
         $<TARGET_OBJECTS:job>

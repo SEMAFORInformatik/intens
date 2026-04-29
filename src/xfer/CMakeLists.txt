@@ -1,6 +1,4 @@
 
-add_subdirectory(gdtoa)
-
 add_library(xfer OBJECT
         Scale.cc
         XferConverter.cc
@@ -14,8 +12,6 @@ add_library(xfer OBJECT
         XferParameterString.cc
         XferScale.cc
         )
-
-add_dependencies(xfer gdtoa)
 
 target_include_directories(xfer
         PRIVATE

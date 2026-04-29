@@ -6,7 +6,7 @@
 #include "xfer/gdtoa/gdtoa.h"
 #include <gtest/gtest.h>
 
-char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, const char**rve){
+char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
  /*	returns string representing the number d. trailing zeros are suppressed.
     If not null, *rve is set to point to the end of the return value.
     If d is +-Infinity or NaN, then *decpt is set to 9999.

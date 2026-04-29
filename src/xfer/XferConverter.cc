@@ -23,9 +23,10 @@
 #endif
 #endif
 
+#define DTOA xdtoa
+
 #include "xml/XMLDocumentHandler.h"
 #include "xfer/XferConverter.h"
-#include "xfer/gdtoa/gdtoa.h"
 #include "xfer/XferDataItem.h"
 #include "xfer/XferScale.h"
 #include "app/AppData.h"
@@ -33,6 +34,72 @@
 #include "utils/NumLim.h"
 
 INIT_LOGGER();
+
+char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
+ /*	returns string representing the number d. trailing zeros are suppressed.
+    If not null, *rve is set to point to the end of the return value.
+    If d is +-Infinity or NaN, then *decpt is set to 9999.
+
+	mode:
+		0 ==> shortest string that yields d when read in
+			and rounded to nearest.
+		3 ==> through ndigits past the decimal point.
+        ndigits can be negative.
+
+    NOTE: this function is a replacement of dtoa from
+         https://github.com/jwiegley/gdtoa
+ */
+  std::string s;
+  if (std::isnan(d) || std::isinf(d)){
+    *decpt = 9999;
+    if(std::isinf(d)){
+      s = "Infinity";
+    }
+    else {
+      s = "NaN";
+    }
+  }
+  else {
+    if(!d){
+      s = "0";
+    }
+    else {
+      int decptoffset = int(log10(abs(d)));
+      if(mode == 3){
+        ndigits -= decptoffset;
+      }
+      else {
+        ndigits = 15 - decptoffset;
+      }
+      if(d<1){
+        ndigits += 2;
+      }
+      s = std::format("{:.{}f}", d, ndigits);
+      *sign = 0;
+      if(d<0){
+        *sign = 1;
+        s.erase(0, 1);
+      }
+      *decpt = s.find(".");
+      if( *decpt != s.npos){
+        s.erase(*decpt, 1);
+      }
+      else {
+        *decpt = s.size();
+      }
+      // remove trailing 0
+      s.erase(s.find_last_not_of("0") + 1);
+      // remove leading 0
+      int origsize = s.size();
+      s.erase(0, s.find_first_not_of("0"));
+      *decpt -= origsize - s.size();
+    }
+  }
+  char *ret = strdup(s.c_str());
+  *rve = ret + s.size();
+  return ret;
+}
+
 
 static char _decimalSymbol('0');
 char RealConverter::decimalPoint() {
@@ -197,10 +264,10 @@ static std::string dfmt( double x, int width, int nprec, char decimal_point, cha
   // x != 0;
   // -----------------------------------------------
   if( nprec < 0 ){
-    s = dtoa(x, 0, 0, &decpt, &sign, &se);
+    s = DTOA(x, 0, 0, &decpt, &sign, &se);
   }
   else {
-    s = dtoa(x, 3, nprec, &decpt, &sign, &se);
+    s = DTOA(x, 3, nprec, &decpt, &sign, &se);
   }
   // -----------------------------------------------
   // Infinity
@@ -289,7 +356,7 @@ static std::string dfmt( double x, int width, int nprec, char decimal_point, cha
     }
 
     int mw;
-    s = dtoa(x, 0, 0, &decpt, &sign, &se);
+    s = DTOA(x, 0, 0, &decpt, &sign, &se);
     ndec = decpt-1;
     if( ndec < 0 ){
       ndec = -ndec;

@@ -63,7 +63,8 @@ char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
   else {
     if(!d){
       s = "0";
-      ndigits = 1;
+      *decpt = 1;
+      *sign = 0;
     }
     else {
       int decptoffset = int(log10(abs(d)));

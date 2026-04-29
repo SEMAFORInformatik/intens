@@ -3,7 +3,6 @@
 #include <numbers> // std::numbers
 #include <cmath> // log10, isnan, isinf
 
-#include "xfer/gdtoa/gdtoa.h"
 #include <gtest/gtest.h>
 
 char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
@@ -74,17 +73,11 @@ char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
 TEST(GdtoaTest, double2stringtest)
 {
   int nprec = 9;
-  char *se;
-  const char *sec;
+  char *sec;
   char *actual;
   int decpt, sign;
 
   double pi = std::numbers::pi;
-
-  actual = dtoa(pi, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("3141592654", std::string(actual));
-  ASSERT_EQ(1, decpt);
-  ASSERT_EQ(0, sign);
 
   actual = xdtoa(pi, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("3141592654", std::string(actual));
@@ -92,26 +85,11 @@ TEST(GdtoaTest, double2stringtest)
   ASSERT_EQ(0, sign);
   free(actual);
 
-  actual = dtoa(pi, 0, 0, &decpt, &sign, &se);
-  ASSERT_EQ("3141592653589793", std::string(actual));
-  ASSERT_EQ(1, decpt);
-  ASSERT_EQ(0, sign);
-
-  actual = dtoa(pi*1e3, 0, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("3141592653589793", std::string(actual));
-  ASSERT_EQ(4, decpt);
-  ASSERT_EQ(0, sign);
-
   actual = xdtoa(pi*1e3, 0, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("3141592653589793", std::string(actual));
   ASSERT_EQ(4, decpt);
   ASSERT_EQ(0, sign);
   free(actual);
-
-  actual = dtoa(pi*1e-3, 0, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("31415926535897933", std::string(actual));
-  ASSERT_EQ(-2, decpt);
-  ASSERT_EQ(0, sign);
 
   actual = xdtoa(pi*1e-3, 0, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("31415926535897933", std::string(actual));
@@ -120,24 +98,12 @@ TEST(GdtoaTest, double2stringtest)
   free(actual);
 
   pi = 3.14;
-  char *cp = dtoa(pi, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("314", std::string(cp));
-  ASSERT_EQ(1, decpt);
-  ASSERT_EQ(0, sign);
-  ASSERT_EQ(3, se-cp);
-
-  cp = xdtoa(pi, 3, nprec, &decpt, &sign, &sec);
+  char *cp = xdtoa(pi, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("314", std::string(cp));
   ASSERT_EQ(1, decpt);
   ASSERT_EQ(0, sign);
   ASSERT_EQ(3, sec-cp);
   free(cp);
-
-  cp = dtoa(-pi, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("314", std::string(cp));
-  ASSERT_EQ(1, decpt);
-  ASSERT_EQ(1, sign);
-  ASSERT_EQ(3, se-cp);
 
   cp = xdtoa(-pi, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("314", std::string(cp));
@@ -147,12 +113,6 @@ TEST(GdtoaTest, double2stringtest)
   free(cp);
 
   double x = 0.123456789;
-  cp = dtoa(x, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("123456789", std::string(cp));
-  ASSERT_EQ(0, decpt);
-  ASSERT_EQ(0, sign);
-  ASSERT_EQ(9, se-cp);
-
   cp = xdtoa(x, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("123456789", std::string(cp));
   ASSERT_EQ(0, decpt);
@@ -161,12 +121,6 @@ TEST(GdtoaTest, double2stringtest)
   free(cp);
 
   x = 1234500;
-  cp = dtoa(x, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("12345", std::string(cp));
-  ASSERT_EQ(7, decpt);
-  ASSERT_EQ(0, sign);
-  ASSERT_EQ(5, se-cp);
-
   cp = xdtoa(x, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("12345", std::string(cp));
   ASSERT_EQ(7, decpt);
@@ -175,12 +129,6 @@ TEST(GdtoaTest, double2stringtest)
   free(cp);
 
   x = 0.0;
-  cp = dtoa(x, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("0", std::string(cp));
-  ASSERT_EQ(1, decpt);
-  ASSERT_EQ(0, sign);
-  ASSERT_EQ(1, se-cp);
-
   cp = xdtoa(x, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("0", std::string(cp));
   ASSERT_EQ(1, decpt);
@@ -192,29 +140,18 @@ TEST(GdtoaTest, double2stringtest)
 TEST(GdtoaTest, naninf2stringtest)
 {
   int nprec = 9;
-  char *se;
-  const char *sec;
+  char *sec;
   char *actual;
   int decpt, sign;
 
   double inf = std::numeric_limits<double>::infinity();
   double nan = std::numeric_limits<double>::quiet_NaN();
 
-  actual = dtoa(inf, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("Infinity", std::string(actual));
-  ASSERT_EQ(9999, decpt);
-  ASSERT_EQ(0, sign);
-
   actual = xdtoa(inf, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("Infinity", std::string(actual));
   ASSERT_EQ(9999, decpt);
   ASSERT_EQ(0, sign);
   free(actual);
-
-  actual = dtoa(nan, 3, nprec, &decpt, &sign, &se);
-  ASSERT_EQ("NaN", std::string(actual));
-  ASSERT_EQ(9999, decpt);
-  ASSERT_EQ(0, sign);
 
   actual = xdtoa(nan, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("NaN", std::string(actual));

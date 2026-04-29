@@ -13,8 +13,7 @@ target_include_directories(gdtoa_test
 
 target_link_libraries(gdtoa_test
  PRIVATE
-  GTest::gtest_main
-        gdtoa)
+  GTest::gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(gdtoa_test)

@@ -19,6 +19,7 @@ add_custom_target(
   )
 
 add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/grammar.json
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/node-types.json
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/parser.c
@@ -64,6 +65,9 @@ add_custom_target(
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/pybuild/lsp
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/lsp.spec
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/build
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/pybuild
   DEPENDS tree-sitter-intens
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/lsp.py
   DEPENDS "${VENV_BIN}/pyinstaller"

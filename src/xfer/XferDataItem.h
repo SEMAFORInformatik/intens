@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(XFER_DATAITEM_INCLUDED_H)
 #define XFER_DATAITEM_INCLUDED_H
 
@@ -15,8 +19,6 @@ class ItemAttr;
     Indizes für den Zugriff auf Datapool-Werte. Diese Zugriffe werden mit Hilfe
     dieser Objekt stark vereinfacht.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: XferDataItem.h,v 1.52 2005/11/08 12:06:55 ked Exp $
 */
 class XferDataItem: public Serializable
 {
@@ -282,11 +284,6 @@ private:
   ParameterType         m_paramtype;
 };
 
-/** Das XferEditDataItemFunctor
-
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: XferDataItem.h,v 1.52 2005/11/08 12:06:55 ked Exp $
-*/
 class XferEditDataItemFunctor
 {
 public:

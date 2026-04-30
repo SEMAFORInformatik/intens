@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_TOGGLE_LISTENER_INCLUDED_H)
 #define GUI_TOGGLE_LISTENER_INCLUDED_H
 
@@ -11,8 +15,6 @@ class GuiEventData;
     welches durch ein Toggle aktiviert werden soll. Ein GuiToggleListener kann
     nur mit einem Button verbunden werden.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiToggleListener.h,v 1.6 2003/10/07 09:27:44 hob Exp $
 */
 class GuiToggleListener : public GuiListener
 {

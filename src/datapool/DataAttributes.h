@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ATTRIBUTES__)
 #define __DP_DATA_ATTRIBUTES__
 
@@ -6,11 +10,6 @@
 
 #include <iostream>
 
-/** Ein DataAttributes-Objekt enthält die Attribut-Bitmaske für Datencontainer.
-    Diese Klasse wird allen Klassen vererbt, welche eine Bitmask verwenden
-    (DataElement, DataValue, DataItem).
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAttributes
 {
 /*=============================================================================*/

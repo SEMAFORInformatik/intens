@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #ifndef GUIQTBARGRAPH_H_
 #define GUIQTBARGRAPH_H_
 #if HAVE_QGRAPHS

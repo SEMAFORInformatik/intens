@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(INTENS_XML_DOC_HANDLER_H)
 #define INTENS_XML_DOC_HANDLER_H
 #include <string>

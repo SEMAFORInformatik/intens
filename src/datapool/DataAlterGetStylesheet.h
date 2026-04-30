@@ -1,14 +1,14 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_GET_STYLESHEET__)
 #define __DP_DATA_ALTER_GET_STYLESHEET__
 
 #include "datapool/DataAlterFunctor.h"
 #include "datapool/DataAttributes.h"
 
-/** Mit einem DataAlterGetStylesheet-Objekt wird die Attribut-Bitmaske eines
-    DataElement-Objekts gesucht.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterGetStylesheet : public DataAlterFunctor
 {
 /*=============================================================================*/

@@ -1,4 +1,9 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 #if !defined(__DP_DATA_ALTER_ASSIGN_CORR_DATAITEM__)
 #define __DP_DATA_ALTER_ASSIGN_CORR_DATAITEM__
 
@@ -7,12 +12,6 @@
 class DataElement;
 class DataDictionary;
 
-/** Mit einem DataAlterAssignCorrDataItem-Objekt wird einem DataItem der Inhalt eines
-    anderen DataItem zugewiesen. Es muss sich im ein Struktur-Item handeln, sonst
-    geschieht nichts. In der Struktur werden nur DataItems mit übereinstimmendem
-    DataDictionary zugewiesen. Die übrigen DataItems bleiben erhalten.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterAssignCorrDataItem : public DataAlterFunctor
 {
 /*=============================================================================*/

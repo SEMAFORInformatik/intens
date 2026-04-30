@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_LISTENERCONTROLLER_INCLUDED_H)
 #define GUI_LISTENERCONTROLLER_INCLUDED_H
 
@@ -17,8 +21,6 @@ class GuiButtonbar;
     über mehrere Buttons oder Toggles aktiviert werden wollen, werden einfach
     von GuiListenerController abgeleitet.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiListenerController.h,v 1.12 2003/11/25 14:25:28 hob Exp $
 */
 class GuiListenerController
 {

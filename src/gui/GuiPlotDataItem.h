@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef GUI_PLOTDATAITEM_INCLUDED_H
 #define GUI_PLOTDATAITEM_INCLUDED_H
 
@@ -8,8 +12,6 @@
    Refernenz auf ein DataItem. Ueber die Anzahl der Wildcards kann die zu verwendende
    Dimension des DataItems festgelegt weden. Die DataItems koennen, unabhaengig von
    den Wildcards, zusammen mit Indizes verwendet werden.
-   @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-   @version $Id: GuiPlotDataItem.h,v 1.24 2006/02/07 17:35:31 tar Exp $
 */
 #include <map>
 #include <jsoncpp/json/value.h>

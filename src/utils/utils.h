@@ -1,10 +1,5 @@
-
-/*******************************************************************************/
-/* utils.h                                                                 */
-/* Dieses Includefile zieht all die Utility-Includes hinein. Es ist fuer den   */
-/* Benutzer des Utilities-Modules gedacht um ihm zu ersparen jedesmal exakt    */
-/* herauszufinden, was nun eigentlich included werden soll.                    */
-/*******************************************************************************/
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #if !defined(UTILITIES_H__INCLUDED_)
 #define UTILITIES_H__INCLUDED_

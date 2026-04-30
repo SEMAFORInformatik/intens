@@ -1,4 +1,7 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(UIMANAGER_H)
 #define UIMANAGER_H
 
@@ -28,9 +31,6 @@ typedef std::map<std::string, GuiMenuButtonListener *> FileButtonList;
 
 /** Der UImanager ist ein Singleton-Object. Er kontrolliert die gesammte
     Applikation INTENS.
-
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: UiManager.h,v 1.43 2006/03/08 14:56:02 amg Exp $
 */
 class UImanager
 {

@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include "qostream.h"
 
 //--------------------------------------
@@ -8,11 +12,11 @@ qoutbuf::qoutbuf( QProcess *process )
   : m_process( process )
   , m_pending_data(false)
   , m_close_later(false){
-  assert( process != 0 ); 
+  assert( process != 0 );
   connect( process, SIGNAL( wroteToStdin () )
 	   , this, SLOT( slot_wroteToStdin () ) );
 }
-  
+
 qoutbuf::~qoutbuf(){
   if( m_pending_data ){
     new qprocess_close_listener( m_process );

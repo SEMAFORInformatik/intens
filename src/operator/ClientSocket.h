@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef CLIENT_SOCKET
 #define CLIENT_SOCKET
 
@@ -15,8 +19,7 @@ class ClientSocket{
   // Constructor / Destructor
   //-------------------------------------------------
 public:
-  ClientSocket(	Stream *
-		, Stream * );
+  ClientSocket(	Stream *out, Stream *in );
 
   virtual ~ClientSocket();
 

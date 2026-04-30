@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_COMPLEX_ELEMENT__)
 #define __DP_DATA_COMPLEX_ELEMENT__
 
@@ -8,9 +12,6 @@
 
 class DataValue;
 
-/** Das DataComplexElement-Objekt ist der DatenContainer für einen Complex-Wert.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataComplexElement : public DataElement
 {
 /*=============================================================================*/

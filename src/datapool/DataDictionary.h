@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATADICTIONARY_H__INCLUDED__)
 #define __DP_DATADICTIONARY_H__INCLUDED__
 
@@ -17,9 +21,6 @@ class DataDictionaryRoot;
 class DataReference;
 class DataUserAttr;
 
-/** Der Baum aus DataDictionary-Objekten ergibt die logische Struktur des DataPool.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataDictionary : public DataGlobals, public LSPItem
 {
 /*=============================================================================*/

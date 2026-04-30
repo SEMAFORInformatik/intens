@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 /****************************************************************************
 **
 ** Copyright (C) 1992-2005 Trolltech AS. All rights reserved.
@@ -328,7 +332,7 @@ void viewportPaintEvent(QPaintEvent*);
     bool highQualityRendering() const;
 public slots:
     void setHighQualityRendering(bool enable);
-    
+
 protected:
     friend class QtCanvasWidget;
     virtual void drawContents(QPainter *p, int cx, int cy, int cw, int ch);

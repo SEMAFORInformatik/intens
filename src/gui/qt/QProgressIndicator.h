@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 *
 * This file is part of QProgressIndicator,
@@ -81,12 +85,12 @@ public:
 
     /*! Sets the delay between animation steps.
         Setting the \a delay to a value larger than 40 slows the animation, while setting the \a delay to a smaller value speeds it up.
-        \param delay The delay, in milliseconds. 
-        \sa animationDelay 
+        \param delay The delay, in milliseconds.
+        \sa animationDelay
      */
     void setAnimationDelay(int delay);
 
-    /*! Sets whether the component hides itself when it is not animating. 
+    /*! Sets whether the component hides itself when it is not animating.
        \param state The animation state. Set false to hide the progress indicator when it is not animating; otherwise true.
        \sa isDisplayedWhenStopped
      */
@@ -97,7 +101,7 @@ public:
      */
     void setColor(const QColor & color);
 protected:
-    virtual void timerEvent(QTimerEvent * event); 
+    virtual void timerEvent(QTimerEvent * event);
     virtual void paintEvent(QPaintEvent * event);
 private:
     int m_angle;

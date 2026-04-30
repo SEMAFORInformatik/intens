@@ -1,14 +1,13 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_GET_ITEM_UPDATED__)
 #define __DP_DATA_ALTER_GET_ITEM_UPDATED__
 
 #include "datapool/DataAlterFunctor.h"
 
-/** Mit einem DataAlterGetItemUpdated-Objekt werden die Timestamps für das
-    gewünschte DataItem-Objekt eingesammelt. Mit den entsprechenden Funktionen
-    isUpdated() und getUpdated() kann die gewünschte Information abgefragt werden.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterGetItemUpdated : public DataAlterFunctor
 {
 /*=============================================================================*/

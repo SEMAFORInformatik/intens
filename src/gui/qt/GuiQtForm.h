@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_FORM_INCLUDED_H)
 #define GUI_QT_FORM_INCLUDED_H
 
@@ -24,8 +28,6 @@ class QScrollArea;
 /** Alle Dialoge werden mit der Klasse GuiForm erstellt. Verschiedene Optionen
     sorgen dafür, dass ein Dialog mit den gewünschten Eigenschaften daherkommt.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtForm.h,v 1.35 2008/07/08 07:21:50 amg Exp $
 */
 class GuiQtForm
 : public GuiQtElement, // Container

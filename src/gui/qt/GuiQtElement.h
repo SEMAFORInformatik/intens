@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_ELEMENT_INCLUDED_H)
 #define GUI_QT_ELEMENT_INCLUDED_H
 
@@ -23,9 +27,6 @@ class GuiQtIndex;
 
 
 /** class for all qt gui objects
-
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtElement.h,v 1.22 2006/08/03 11:59:47 amg Exp $
  */
 
 class GuiQtElement : public QObject, public GuiElement

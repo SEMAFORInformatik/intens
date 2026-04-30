@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 #
 # Generates liquibase migrations
-# Ronald Tanner SEMAFOR Informatik & Energie AG (2023)
 #
 import os
 import pathlib

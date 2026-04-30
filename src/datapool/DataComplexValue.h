@@ -1,14 +1,14 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_COMPLEX_VALUE__)
 #define __DP_DATA_COMPLEX_VALUE__
 
 #include "datapool/DataDictionary.h"
 #include "datapool/DataValue.h"
 
-/** Die DataComplexValue-Objekte werden von den DataComplexElement-Objekten erstellt.
-    Sie enthalten temporär Wert und Attribute für Aktionen mit Vektoren.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataComplexValue : public DataValue
 {
 /*=============================================================================*/

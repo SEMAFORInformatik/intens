@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_ELEMENT_INCLUDED_H)
 #define JOB_ELEMENT_INCLUDED_H
 
@@ -10,8 +14,6 @@ class JobCodeItem;
 /** Die JobElement-Klasse bildet die Basis aller Job-Klassen. Sie beinhaltet alle
     Definitionen, welche innerhalb des Job-Handlings von Bedeutung sind.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobElement.h,v 1.11 2004/12/14 11:22:18 ked Exp $
 */
 class JobElement
 {

@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_ENGINE_INCLUDED_H)
 #define JOB_ENGINE_INCLUDED_H
 
@@ -19,8 +23,6 @@ class JobStackReturn;
     soll das Objekt gelöscht werden. Zum Ausführen der Funktion wird die
     Procedure executeCode() verwendet.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobEngine.h,v 1.18 2005/04/05 12:37:41 ked Exp $
 */
 class JobEngine : public JobElement
                 , public TransactionOwner

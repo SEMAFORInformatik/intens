@@ -1,9 +1,8 @@
-﻿// ****************************************************************
-// DataException
-//
-// $Id: DataException.h 1.14 2012/09/28 12:53:24Z bho Exp $
-// ****************************************************************
-
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_EXCEPTION__)
 #define __DP_EXCEPTION__
 

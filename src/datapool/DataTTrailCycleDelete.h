@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_TTRAIL_DELETE_CYCLE__)
 #define __DP_DATA_TTRAIL_DELETE_CYCLE__
 
@@ -8,9 +12,6 @@
 class DataPool;
 class DataItem;
 
-/** DataTTrailCycleDelete
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataTTrailCycleDelete : public DataTTrailElement
 {
 /*=============================================================================*/

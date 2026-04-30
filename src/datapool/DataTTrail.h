@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_TTRAIL__)
 #define __DP_DATA_TTRAIL__
 
@@ -12,11 +16,6 @@ class DataItem;
 class DataTTrailElement;
 class TransactionOwner;
 
-/** Das DataTTrail-Objekt kontrolliert alle Transactions im Datapool. Eine
-    Transaction wird immer von einem TransactionOwner ausgelöst und auch wieder
-    beendet. Anhand der TTrail-Daten wird bei einem Abort der Datapool wieder restauriert.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataTTrail
 {
   friend class DataPool;

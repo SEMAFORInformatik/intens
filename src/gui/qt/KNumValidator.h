@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 1999 Glen Parker <glenebob@nwlink.com>
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 /**********************************************************************
  **
  ** $Id: KNumValidator.h,v 1.3 2005/02/01 09:43:15 amg Exp $
@@ -20,16 +24,16 @@
  ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **
  *****************************************************************************/
- 
+
 #ifndef __KNUMVALIDATOR_H
 #define __KNUMVALIDATOR_H
- 
+
 #include <qvalidator.h>
- 
+
 class QWidget;
 class QString;
 class Scale;
- 
+
 class KIntValidator : public QValidator {
 
  public:
@@ -43,7 +47,7 @@ class KIntValidator : public QValidator {
      virtual int bottom () const;
      virtual int top () const;
      virtual int base () const;
- 
+
   static QString decimalSymbol();
   static QString thousandsSeparator();
 
@@ -51,13 +55,13 @@ class KIntValidator : public QValidator {
      int _base;
      int _min;
      int _max;
- 
+
  };
- 
+
 class KFloatValidatorPrivate;
 
 class KFloatValidator : public QValidator {
-  
+
  public:
   KFloatValidator ( QWidget * parent, const char * name = 0 );
   KFloatValidator ( double bottom, double top, QWidget * parent, const char * name = 0 );
@@ -73,7 +77,7 @@ class KFloatValidator : public QValidator {
  private:
   double _min;
   double _max;
- 
+
   KFloatValidatorPrivate *d;
  };
 
@@ -85,9 +89,9 @@ class KDoubleValidator : public QDoubleValidator {
   KDoubleValidator( double bottom, double top, int decimals,
 		    QObject * parent, const char * name=0 );
   virtual ~KDoubleValidator();
- 
+
   virtual QValidator::State validate( QString & input, int & pos ) const;
-  
+
   virtual void setRange ( double bottom, double top );
   bool acceptLocalizedNumbers() const;
   void setAcceptLocalizedNumbers( bool accept );

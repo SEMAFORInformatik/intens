@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_BUTTON_INCLUDED_H)
 #define GUI_QT_BUTTON_INCLUDED_H
 
@@ -12,8 +16,6 @@ class QPushButton;
 /** Dieses Objekt wird in der Regel als ActionButton in der GuiButtonbar
     verwendet.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtButton.h,v 1.5 2005/03/08 10:05:39 tar Exp $
  */
 class GuiButtonListener;
 class GuiEventData;

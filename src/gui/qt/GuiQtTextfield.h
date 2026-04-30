@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_TEXTFIELD_INCLUDED_H)
 #define GUI_QT_TEXTFIELD_INCLUDED_H
 
@@ -20,8 +24,6 @@ class QStackedWidget;
 /** Ein GuiQtTextfield-Objekt beinhaltet ein einzeiliges Ein- und/oder Ausgabefeld
     für eine Datapool-variable.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtTextfield.h,v 1.44 2008/07/22 06:00:18 amg Exp $
 */
 class GuiQtTextfield : public GuiQtDataField
 {

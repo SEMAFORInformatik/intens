@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_DATAFIELD_INCLUDED_H)
 #define GUI_QT_DATAFIELD_INCLUDED_H
 
@@ -20,8 +24,6 @@ class QColor;
 /** Das GuiMotifDataField ist die Basisklasse aller GuiElemente, welche mit einer
     Datenvariablen verbunden sind, welche auf der Oberfläche gezeigt wird.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtDataField.h,v 1.26 2006/04/13 07:18:42 amg Exp $
 */
 class GuiQtDataField : public GuiQtElement
 		     , public GuiDataField

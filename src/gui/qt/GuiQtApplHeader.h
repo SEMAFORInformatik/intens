@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_APPLHEADER_INCLUDED_H)
 #define GUI_QT_APPLHEADER_INCLUDED_H
 
@@ -14,8 +18,6 @@
     Links und rechts davon ist jeweils ein Label zum Platzieren einer Pixmap
     vorhanden. Der Inhalt dieser Labels wird im Resourcefile gesetzt.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtApplHeader.h,v 1.5 2006/03/08 14:07:52 amg Exp $
  */
 class GuiQtApplHeader : public GuiApplHeader, public GuiQtElement
 {

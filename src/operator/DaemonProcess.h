@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef DAEMON_PROCESS_H
 #define DAEMON_PROCESS_H
 
@@ -8,7 +12,6 @@
 /** DaemonProcess
     The class DaemonProcess manages Unix daemon processes. A daemon process is executed
     from a shell (/bin/sh) and is expected to read and write on file descriptors.
-    @version $Id: DaemonProcess.h,v 1.5 2003/12/31 12:38:20 amg Exp $
 */
 class DaemonProcess: public Process
 {

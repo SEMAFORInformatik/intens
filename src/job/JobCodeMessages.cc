@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if HAVE_LOG4CPLUS
 #if defined _WIN32
 #undef UNICODE  // log4cplus wchar bug (see third-party/CMakeLists.txt UNICODE=OFF)

@@ -1,6 +1,9 @@
-/* $Id: DataProcessing.h,v 1.12 2007/05/02 12:38:59 bas Exp $
- * Simple Utility classes for Scanning Probe Data Analysis
- */
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+// Simple Utility classes for Scanning Probe Data Analysis
+
 #ifndef DATA_PROCESSING_H
 #define DATA_PROCESSING_H
 #include <numeric>

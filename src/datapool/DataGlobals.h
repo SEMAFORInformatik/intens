@@ -9,6 +9,12 @@
 
 //#define __OMIT_DP_TIMESTAMPS__
 
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 #include <complex>
 
 /// Datentyp für complexe Zahlen im Datapool
@@ -34,10 +40,6 @@ typedef unsigned long SerializableMask;
 
 #define DATAelAttrNext     7
 
-/** Diese Klasse beinhaltet alle Definitionen, welche überall im Datapool
-    verwendet werden.
-    @author Copyright (C) 2015 SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataGlobals
 {
 /*=============================================================================*/

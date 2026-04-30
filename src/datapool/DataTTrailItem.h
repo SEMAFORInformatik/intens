@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(DATA_TTRAIL_ITEM_INCLUDED)
 #define DATA_TTRAIL_ITEM_INCLUDED
 
@@ -9,9 +13,6 @@ class DataPool;
 class DataItemContainer;
 class DataItem;
 
-/** DataTTrailItem
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataTTrailItem : public DataTTrailElement
 {
 /*=============================================================================*/

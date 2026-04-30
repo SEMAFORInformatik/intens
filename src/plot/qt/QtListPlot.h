@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef QT_LISTPLOT_H
 #define QT_LISTPLOT_H
 
@@ -34,7 +38,6 @@ class InputChannelEvent;
 /** QtListPlot
     Mit der Klasse QtListPlot k\oennen Objekte der Klasse 'ListGraph' horizontal
     und vertikal in einem Zeichnungsf\"ache angeordnet werden.
-    @version $Id: QtListPlot.h,v 1.6 2009/02/11 12:07:27 amg Exp $
 */
 class QtListPlot : public GuiQtElement, public ListPlot /*,
 		     public RedisplayListener,

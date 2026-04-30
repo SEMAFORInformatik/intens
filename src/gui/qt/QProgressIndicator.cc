@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 *
 * This file is part of QProgressIndicator,
@@ -112,10 +116,10 @@ void QProgressIndicator::paintEvent(QPaintEvent * /*event*/)
         return;
 
     int width = qMin(this->width(), this->height());
-    
+
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
-    
+
     int outerRadius = (width-1)*0.5;
     int innerRadius = (width-1)*0.5*0.38;
 

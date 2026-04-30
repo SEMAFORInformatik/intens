@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_TASK_INCLUDED_H)
 #define JOB_TASK_INCLUDED_H
 
@@ -10,8 +14,6 @@ class Timer;
 
 /** Eine JobTask wird immer als selbständiger Job (TASK) mit execute() aufgerufen.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobTask.h,v 1.21 2005/04/07 13:26:19 ked Exp $
 */
 class JobTask : public JobFunction
 {

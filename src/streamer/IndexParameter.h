@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(STREAMER_INDEX_PARAMETER_H)
 #define STREAMER_INDEX_PARAMETER_H
 
@@ -14,7 +18,6 @@ class DataStreamParameter;
 /** IndexParameter
     Instances of this class can be used to control the index value
     of one or more client parameters
-    @version $Id: IndexParameter.h,v 1.14 2005/02/01 14:46:42 tar Exp $
 */
 class IndexParameter: public StreamParameter
 {

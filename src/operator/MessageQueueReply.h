@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #include "app/LSPItem.h"
 #if !defined(MESSAGING_QUEUE_REPLY_INCLUDED_H)
 #define MESSAGING_QUEUE_REPLY_INCLUDED_H

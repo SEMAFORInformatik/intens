@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_MENUTOGGLE_INCLUDED_H)
 #define GUI_MENUTOGGLE_INCLUDED_H
 #if HAVE_PROTOBUF
@@ -15,8 +19,6 @@ class GuiEventData;
     werden kann. Er gibt den Input über einen GuiToggleListener weiter. Er kann von
     einem GuiListenerController kontrolliert werden.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiMenuToggle.h,v 1.9 2003/10/21 13:54:12 hob Exp $
  */
 class GuiMenuToggle
 {

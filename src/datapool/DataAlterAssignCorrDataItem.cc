@@ -1,4 +1,8 @@
-﻿#include "datapool/DataElement.h"
+﻿
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+#include "datapool/DataElement.h"
 #include "datapool/DataInx.h"
 #include "datapool/DataAlterAssignCorrDataItem.h"
 #include "datapool/DataReference.h"

@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_BUTTON_LISTENER_INCLUDED_H)
 #define GUI_BUTTON_LISTENER_INCLUDED_H
 
@@ -16,8 +20,6 @@ class JobAction;
     welches durch einen Button aktiviert werden soll. Ein GuiButtonListener kann
     nur mit einem Button verbunden werden.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiButtonListener.h,v 1.11 2005/10/28 09:51:43 ked Exp $
 */
 class GuiButtonListener : public GuiListener
 {

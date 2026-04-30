@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include <QFile>
 #include <QWheelEvent>
 #include <QMouseEvent>
@@ -110,7 +114,7 @@ void GuiQtSvgView::paintEvent(QPaintEvent *event)
     } else {
         QGraphicsView::paintEvent(event);
     }
-   
+
   } catch( const std::exception e ) {
     std::cerr << "GuiQtSvgView::paintEven Error: " << e.what() << std::endl;
   } catch (...) {
@@ -155,7 +159,7 @@ void GuiQtSvgView::contextMenuEvent ( QContextMenuEvent * event ) {
 
   // no m_textEdit, return
   if (!m_textEdit) return;
-  
+
   if (!menu)
     menu =  new QMenu();
   QFont font = menu->font();
@@ -166,7 +170,7 @@ void GuiQtSvgView::contextMenuEvent ( QContextMenuEvent * event ) {
   _popup_menu->setTearOff( true );
   _popup_menu->clearDefaultMenu( false );
   _popup_menu->attach( new GuiQtSeparator( _popup_menu->getElement() ) );
-    
+
   // Save Menu
   button = new GuiQtMenuButton( _popup_menu, &(m_textEdit->m_save_listener) );
   _popup_menu->attach( button );

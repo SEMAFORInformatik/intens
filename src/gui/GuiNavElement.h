@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef GUI_NAV_ELEMENT_H
 #define GUI_NAV_ELEMENT_H
 

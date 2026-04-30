@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_MENUBUTTON_INCLUDED_H)
 #define GUI_QT_MENUBUTTON_INCLUDED_H
 
@@ -13,8 +17,6 @@ class QAction;
     werden kann. Er gibt den Input über einen GuiButtonListener weiter. Er kann von
     einem GuiListenerController kontrolliert werden.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtMenuButton.h,v 1.3 2006/03/08 13:54:06 amg Exp $
  */
 class GuiQtMenuButton : public GuiQtElement, public GuiMenuButton
 {

@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_READ_RAPID_JSON__)
 #define __DP_DATA_ALTER_READ_RAPID_JSON__
 
@@ -6,10 +10,6 @@
 #include <jsoncpp/json/json.h>
 #include <stack>
 
-/** Mit einem DataAlterReadRapidJSON-Objekt schreibt der MessageHandler von
-    RapidJson die Werte in den Datapool.
-    @author Copyright (C) 2020  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterReadRapidJSON : public DataAlterSetElement
 {
 /*=============================================================================*/

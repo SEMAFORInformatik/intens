@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include <QProcess>
 #include <streambuf>
 #include <iostream>
@@ -12,11 +16,11 @@
 //------------------------------------------------------
 
 class qoutbuf : public QObject, public std::streambuf {
-Q_OBJECT  
+Q_OBJECT
 public:
-  qoutbuf( QProcess *process ); 
+  qoutbuf( QProcess *process );
   virtual ~qoutbuf();
-  
+
 protected:
   virtual int_type overflow( int_type c = EOF) {
     if( c != EOF ) {
@@ -29,13 +33,13 @@ protected:
     }
     return c;
   }
-  
+
   virtual std::streamsize xsputn( const char* s , std::streamsize anz ) {
     m_pending_data=true;
     m_process->write( s );
     return anz;
   }
-  
+
   virtual int sync() {
     return 0;
   }
@@ -59,7 +63,7 @@ private:
 
 class qostream : public std::ostream{
 public:
-  qostream( QProcess *process ) 
+  qostream( QProcess *process )
     : m_buf( process )
     , std::ostream(&m_buf ){
     rdbuf(&m_buf);
@@ -70,7 +74,7 @@ public:
   void close(){
     m_buf.close();
   }
-  
+
 protected:
   qoutbuf m_buf;
 };

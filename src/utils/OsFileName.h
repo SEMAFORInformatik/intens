@@ -1,11 +1,7 @@
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
-/*******************************************************************************/
-/* Diese Klasse abstarahiert einen Filename. Unterschiedliche Betriebssystem   */
-/* haben unterschiedliche Filenamens-Konventionen. D.h. wie ein Filename auf-  */
-/* gebaut ist. Diese Klasse versucht, alle Unterschiede auszubuegeln und ein   */
-/* einheitliches Interface zu den Namen zu lieferen.                           */
-/*******************************************************************************/
-
+// Generic Filename Handling
 
 #if !defined(AFX_OSFILENAME_H__INCLUDED_)
 #define AFX_OSFILENAME_H__INCLUDED_

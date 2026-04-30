@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JSON_STREAM_PARAMETER_H)
 #define JSON_STREAM_PARAMETER_H
 

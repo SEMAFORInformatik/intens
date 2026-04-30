@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include <QProgressBar>
 #include "gui/qt/GuiQtDataField.h"
 #include "utils/Debugger.h"
@@ -200,4 +204,3 @@ void GuiQtProgressBar::publishData() {
   }
   publisher->startPublish(true);
 }
-

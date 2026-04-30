@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #include "gui/GuiElement.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiButtonListener.h"

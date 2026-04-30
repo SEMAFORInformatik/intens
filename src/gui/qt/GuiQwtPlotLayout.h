@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QWT_PLOT_LAYOUT_INCLUDED_H)
 #define GUI_QWT_PLOT_LAYOUT_INCLUDED_H
 #include <qwt_plot_layout.h>

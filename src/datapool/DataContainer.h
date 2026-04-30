@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_CONTAINER__)
 #define __DP_DATA_CONTAINER__
 
@@ -21,17 +25,10 @@ class DataInx;
 class DataIndexList;
 class PythonObject;
 
-/** Der DataContainer ist die Basisklasse für DataElement oder DataDimension.
-    Diese Objekte enthalten die Werte eines DataItem-Objekts.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataContainer : public DataGlobals
 {
-/*=============================================================================*/
-/* Daten-Definitionen                                                          */
-/*=============================================================================*/
 public:
-  /** Liste von DataContainer-Objekten im DataDimension-Objekt.
+  /** List of DataContainer objects of a DataDimension.
    */
   typedef std::vector<DataContainer *> ContainerList;
 

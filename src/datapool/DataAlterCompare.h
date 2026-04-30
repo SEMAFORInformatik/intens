@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_COMPARE__)
 #define __DP_DATA_ALTER_COMPARE__
 
@@ -6,10 +10,6 @@
 
 class DataItem;
 
-/** Mit einem DataAlterCompare-Objekt werden Listen von DataStructElement-Objekten
-    miteinander verglichen.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterCompare : public DataAlterFunctor
 {
 /*=============================================================================*/

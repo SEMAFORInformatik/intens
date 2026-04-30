@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_FORM_INCLUDED_H)
 #define GUI_FORM_INCLUDED_H
 
@@ -18,9 +22,6 @@ class JobFunction;
 
 /** Alle Dialoge werden mit der Klasse GuiForm erstellt. Verschiedene Optionen
     sorgen dafür, dass ein Dialog mit den gewünschten Eigenschaften daherkommt.
-
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiForm.h,v 1.33 2005/11/25 13:22:58 amg Exp $
 */
 class GuiForm : public GuiListenerController{
 /*=============================================================================*/

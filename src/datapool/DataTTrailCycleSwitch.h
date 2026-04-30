@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__PD_DATA_TTRAIL_CYCLE_SWITCH__)
 #define __PD_DATA_TTRAIL_CYCLE_SWITCH__
 
@@ -9,9 +13,6 @@ class DataPool;
 class DataItemContainer;
 class DataItem;
 
-/** DataTTrailCycleSwitch
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataTTrailCycleSwitch : public DataTTrailElement
 {
 /*=============================================================================*/

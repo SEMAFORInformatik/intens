@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if HAVE_PROTOBUF
 #include <google/protobuf/repeated_ptr_field.h>
 #endif
@@ -3157,4 +3161,3 @@ void Gui2dPlot::RedrawListener::ButtonPressed() {
   // GuiUpdate
   m_plot->getElement()->update(GuiElement::reason_Always);
 }
-

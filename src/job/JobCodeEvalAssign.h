@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_CODE_EVAL_ASSIGN_INCLUDED_H)
 #define JOB_CODE_EVAL_ASSIGN_INCLUDED_H
 

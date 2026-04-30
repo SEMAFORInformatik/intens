@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(OPERATOR_PROCESS_H)
 #define OPERATOR_PROCESS_H
 
@@ -17,7 +21,6 @@ class GuiPulldownMenu;
     A process has a number of
     input and output streams, each containing a number of parameters that
     are beeing transfered to and from the external process.
-    @version $Id: Process.h,v 1.28 2005/06/22 14:33:10 ked Exp $
 */
 class Process : public StreamDestination
               , public StreamSource

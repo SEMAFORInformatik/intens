@@ -1,11 +1,8 @@
-/* $Id: GdevPS.h,v 1.13 2007/06/06 09:30:43 amg Exp $
- * Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef GDEVPS_H
 #define GDEVPS_H
 #include <sstream>
@@ -16,7 +13,6 @@
 /** GdevPS.
     Die Klasse GdevPS sorgt für die Ausgabe von Grafikelementen
     auf einen Stream (iostream) in PostScript-Format (EPS Version 3.0)
-    @version $Id: GdevPS.h,v 1.13 2007/06/06 09:30:43 amg Exp $
 */
 class GdevPS: public Gdev {
 public:

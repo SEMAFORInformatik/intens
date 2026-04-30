@@ -1,4 +1,7 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(__DP_DATA_EVENTS_INTENS__)
 #define __DP_DATA_EVENTS_INTENS__
 

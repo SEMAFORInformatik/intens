@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef STREAMER_STREAM_PARAMETER_H
 #define STREAMER_STREAM_PARAMETER_H
 
@@ -29,7 +33,6 @@ class XferDataItem;
     The abstract interface class StreamDestination contains
     the required functions for a data transfer operation
     from the Intens datapool to an external destination
-    @version $Id: StreamParameter.h,v 1.31 2007/05/22 11:55:36 amg Exp $
 */
 class StreamDestination{
  public:
@@ -100,7 +103,6 @@ class StreamDestination{
     The abstract interface class StreamSource contains
     the required functions for a data transfer operation
     from an external destination to the Intens datapool
-    @version $Id: StreamParameter.h,v 1.31 2007/05/22 11:55:36 amg Exp $
 */
 class StreamSource{
  public:
@@ -122,7 +124,6 @@ class StreamSource{
 /** StreamParameter
     This abstract base class defines the interface common to
     all derived stream parameters
-    @version $Id: StreamParameter.h,v 1.31 2007/05/22 11:55:36 amg Exp $
 */
 class StreamParameter : public Serializable, public GuiIndexListener
 {

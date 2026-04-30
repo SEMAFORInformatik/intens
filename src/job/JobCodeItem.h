@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(JOB_CODE_ITEM_INCLUDED_H)
 #define JOB_CODE_ITEM_INCLUDED_H
 
@@ -7,8 +11,6 @@ class JobEngine;
 
 /** Alle Code-Objekte werden von JobCodeItem abgeleitet.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobCodeItem.h,v 1.3 2005/04/07 13:26:19 ked Exp $
 */
 class JobCodeItem : public JobElement
 {

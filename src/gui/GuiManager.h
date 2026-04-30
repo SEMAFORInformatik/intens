@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_MANAGER_INCLUDED_H)
 #define GUI_MANAGER_INCLUDED_H
 
@@ -25,8 +29,6 @@ class SmartPluginInterface;
    Der GuiManager ist ein Singleton-Objekt. Er ist die Wurzel aller
    GuiElement-Bäume.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiManager.h,v 1.86 2008/01/07 16:11:32 amg Exp $
 */
 class GuiManager
 {

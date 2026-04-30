@@ -1,12 +1,14 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_RULER_INCLUDED_H)
 #define GUI_RULER_INCLUDED_H
 
 /** Ein GuiRuler-Objekt dient einer GuiFieldgroup als Massstab zum Ausrichten
     von horizontal und vertikal angelegten GuiElementen.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiRuler.h,v 1.7 2003/08/29 13:51:08 hed Exp $
 */
 class GuiRuler
 {

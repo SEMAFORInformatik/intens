@@ -1,13 +1,13 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_GET_ITEM_ATTR__)
 #define __DP_DATA_ALTER_GET_ITEM_ATTR__
 
 #include "datapool/DataAlterFunctor.h"
 
-/** Mit einem DataAlterGetItemAttr-Objekt wird das DataItemAttr-Objekt eines DataItems
-    im Datenbaum gesucht.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterGetItemAttr : public DataAlterFunctor
 {
 /*=============================================================================*/

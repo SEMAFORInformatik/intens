@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 #+SETUPFILE: ./styles/theme-bigblow-local.setup
 # source https://github.com/fniessen/org-html-themes
 #+EXPORT_FILE_NAME: ./public/index

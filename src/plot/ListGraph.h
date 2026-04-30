@@ -1,11 +1,8 @@
-/* $Id: ListGraph.h,v 1.16 2009/02/11 12:38:44 amg Exp $
- * Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
- *
- */
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef LISTGRAPH_H
 #define LISTGRAPH_H
 
@@ -23,7 +20,6 @@ class GuiHorizontalContainer;
 /** ListGraph
     Mit der Klasse 'ListGraph' k\"onnen vorhandene Daten in einem x/y-Diagramm
     grafisch dargestellt werden.
-    @version $Id: ListGraph.h,v 1.16 2009/02/11 12:38:44 amg Exp $
 */
 class ListGraph {
  public:
@@ -34,7 +30,7 @@ class ListGraph {
   , Invisible
   };
   /** Konstruktor
-      @param name Name 
+      @param name Name
   */
   ListGraph( const std::string &name, ListPlot *plot, const std::string &id );
   /** Destruktor
@@ -44,7 +40,7 @@ class ListGraph {
       @param title neuer Text
   */
   bool setStringTitle( const std::string &title );
-  /** Setzt den Titel 
+  /** Setzt den Titel
       @param title Stream der den neuen Text enth\"aelt
   */
   bool setStreamTitle( const std::string &titlestream );
@@ -99,13 +95,13 @@ class ListGraph {
 
   /** Werte im Datenpool aktualisieren
       @param reset Flag zum Zuruecksetzen der von Hand eingestellten Werten
-   */ 
+   */
   void writeValues( bool reset=false );
   /** Lokale Werte aktualisieren
    */
   void readValues();
 
-  /** Zeichnet den Graph 
+  /** Zeichnet den Graph
       @param gdev Ger\"atedevice
       @param plotarea Plotbereich
       @param nhelmnts Anzahl horizontaler Elemente
@@ -134,7 +130,7 @@ class ListGraph {
       @param values Skalierungen (Vektor)
       @param dataitem Achsenelement
    */
-  void drawXAxis( const Frame &viewport, 
+  void drawXAxis( const Frame &viewport,
 		  const std::deque<double> &values,
 		  GuiPlotDataItem *dataitem );
   /** Zeichnet eine Y-Achse
@@ -142,7 +138,7 @@ class ListGraph {
       @param values Skalierungen (Vektor)
       @param column Nummer der Spalte (erstes Element = 1)
    */
-  void drawYAxis( const Frame &viewport, 
+  void drawYAxis( const Frame &viewport,
 		  const std::vector<double> &values,
 		  int column );
   /** Zeichnet ein Label einer Y-Achse
@@ -150,17 +146,17 @@ class ListGraph {
       @param dataitem Achsenelement
       @param column Nummer der Spalte (erstes Element = 1)
    */
-  void drawYAxisLabel( const Frame &viewport, 
+  void drawYAxisLabel( const Frame &viewport,
 		       GuiPlotDataItem *dataitem,
 		       int column );
   /** Sucht Minimal- und Maximalwerte
-      @param true wenn die letzten vorhanden Werte ber\"cksichtigt 
+      @param true wenn die letzten vorhanden Werte ber\"cksichtigt
              werden sollen
       @return gr\"osste Dimension
    */
   int calculateMinMax( bool first );
-  /** Korrigiert die Schrittweite der Achse so das alle Werte in dieser 
-      dargestellt werden k\"onnen 
+  /** Korrigiert die Schrittweite der Achse so das alle Werte in dieser
+      dargestellt werden k\"onnen
       @param steps Anzahl Unterteilungen
       @param min Minimalwert
       @param max Maximalwert
@@ -184,7 +180,7 @@ class ListGraph {
       @param xvalues X-Achsenwerte (Vektor)
       @param column Nummer der Spalte (erstes Element = 1)
    */
-  void drawValues( const Frame &viewport, 
+  void drawValues( const Frame &viewport,
 		   Frame &windowsize,
 		   GuiPlotDataItem *dataitem,
 		   std::vector<double> &xvalues,
@@ -257,9 +253,9 @@ private:
   double                 m_outminxaxis;
   std::string            m_xaxisname;
 
-  std::vector<GuiDataField*>  m_cDminDataFields;  
-  std::vector<GuiDataField*>  m_cDmaxDataFields;  
-  std::vector<GuiDataField*>  m_cDstateDataFields;  
+  std::vector<GuiDataField*>  m_cDminDataFields;
+  std::vector<GuiDataField*>  m_cDmaxDataFields;
+  std::vector<GuiDataField*>  m_cDstateDataFields;
 };
 
 #endif

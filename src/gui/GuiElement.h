@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_ELEMENT_INCLUDED_H)
 #define GUI_ELEMENT_INCLUDED_H
 #include <shared_mutex>
@@ -59,9 +63,6 @@ typedef std::map<std::string, std::string>                GuiValueList;
 typedef long    TransactionNumber;    // Transactions of Datapool
 
 /** Base class for all gui objects
-
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiElement.h,v 1.81 2008/07/08 07:39:23 amg Exp $
  */
 
 class GuiElement : public GuiIndexListener

@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #include "app/LSPItem.h"
 #if !defined(JOB_FUNCTION_INCLUDED_H)
 #define JOB_FUNCTION_INCLUDED_H
@@ -28,8 +32,6 @@ class XferGenericParameter;
     or JobTask. In this latter case its code is accessed with getCodeStream()
     and executed by a JobEngine.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobFunction.h,v 1.43 2007/12/19 15:35:32 amg Exp $
 */
 class JobFunction : public JobElement
                   , public JobAction

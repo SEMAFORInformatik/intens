@@ -1,13 +1,15 @@
-﻿
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_VALUE_VECTOR__)
 #define __DP_DATA_VALUE_VECTOR__
 
 #include <vector>
 #include <iostream>
-
 #include "datapool/DataValue.h"
 #include "datapool/DataDebugger.h"
-
 /** Das DataVector-Objekt ist eine Liste von DataValue-Objekten.
     Sie werden mit dem DataAlterGetVector-Funktor mit einer Wildcard erstellt.
     Mit dem DataAlterSetVector-Funktor und einer Wildcard wird ein Vector in

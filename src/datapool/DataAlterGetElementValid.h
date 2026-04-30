@@ -1,17 +1,13 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_GET_ELEMENT_VALID__)
 #define __DP_DATA_ALTER_GET_ELEMENT_VALID__
 
 #include "datapool/DataAlterFunctor.h"
 
-/** Mit einem DataAlterGetElementValid-Objekt werden die Timestamps für das
-    gewünschte DataElement-Objekt eingesammelt. Mit den entsprechenden Funktionen
-    isUpdated() und getUpdated() kann die gewünschte Information abgefragt werden.
-    ACHTUNG: Es dürfen auch Wildcards auf der letzten Datenebene verwendet werden.
-    In diesem Fall wird der jüngste Timestamp über alle referenzierten DataElemente
-    verwendet resp. geliefert.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterGetElementValid : public DataAlterFunctor
 {
 /*=============================================================================*/

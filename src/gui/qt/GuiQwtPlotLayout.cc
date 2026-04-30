@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #include "utils/Debugger.h"
 #include "gui/qt/GuiQwtPlot.h"
 #include "gui/qt/GuiQwtPlotLayout.h"

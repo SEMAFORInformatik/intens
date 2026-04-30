@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATAPOOL__)
 #define __DP_DATAPOOL__
 
@@ -14,11 +18,6 @@ class DataItemAttr;
 class TransactionOwner;
 class DataEvents;
 
-/** DataPool
-
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: DataPool.h,v 1.22 2005/06/21 06:35:08 ked Exp
- */
 class DataPool
 {
 /*=============================================================================*/

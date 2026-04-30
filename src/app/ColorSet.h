@@ -1,4 +1,7 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(COLORSET_INCLUDED_H)
 #define COLORSET_INCLUDED_H
 

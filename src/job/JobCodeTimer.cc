@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #include "job/JobEngine.h"
 #include "job/JobCodeTimer.h"
 #include "operator/TimerFunction.h"

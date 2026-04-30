@@ -1,4 +1,7 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(MODULE_FACTORY_INCLUDED_H)
 #define MODULE_FACTORY_INCLUDED_H
 
@@ -9,8 +12,6 @@ class Plugin;
 
 /** Der ModuleFactory ist ein Singleton-Object. Er stellt die gesammte
     Schnittstelle zwischen Intens und einer dynamisch dazugelinkten Library.
-
-    @author Copyright (C) 2004  SEMAFOR Informatik & Energie AG, Basel, Switzerland
 */
 class ModuleFactory {
 public:

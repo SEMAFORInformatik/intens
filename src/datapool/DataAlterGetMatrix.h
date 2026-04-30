@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_GET_MATRIX__)
 #define __DP_DATA_ALTER_GET_MATRIX__
 
@@ -6,11 +10,6 @@
 
 class DataMatrix;
 
-/** Mit einem DataAlterGetMatrix-Objekt wird eine Matrix mit DataValue-Objekten
-    gefüllt. Die DataValue-Objekte werden von den Jeweiligen DataElement-Objekten
-    erzeugt. Die zu füllende Matrix wird dem Konstruktor als Parameter mitgegeben.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterGetMatrix : public DataAlterFunctor
 {
 /*=============================================================================*/

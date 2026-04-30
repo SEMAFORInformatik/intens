@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_CONTROLPROCESS_INCLUDED_H)
 #define JOB_CONTROLPROCESS_INCLUDED_H
 

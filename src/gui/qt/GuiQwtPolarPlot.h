@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifdef HAVE_QWT_POLAR_H
 
 #if !defined(GUI_QWT_POLARPLOT_INCLUDED_H)

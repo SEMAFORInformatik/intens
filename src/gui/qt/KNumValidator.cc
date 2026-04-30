@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 1999 Glen Parker <glenebob@nwlink.com>
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 /**********************************************************************
  **
  ** $Id: KNumValidator.cpp,v 1.9 2006/03/15 09:22:44 amg Exp $

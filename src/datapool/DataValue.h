@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_VALUE__)
 #define __DP_DATA_VALUE__
 
@@ -12,10 +16,6 @@
 class DataElement;
 class DataStructValue;
 
-/** Die DataValue-Objekte werden von den DataElement-Objekten erstellt.
-    Sie enthalten temporär Wert und Attribute für Aktionen mit Vektoren.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataValue : public PointerBasis<DataValue>
 {
 /*=============================================================================*/

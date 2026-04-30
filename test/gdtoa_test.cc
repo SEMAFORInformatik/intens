@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #include <format>
 #include <numbers> // std::numbers
@@ -5,6 +7,7 @@
 
 #include <gtest/gtest.h>
 
+// TODO: duplicate code src/xfer/XferConverter
 char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
  /*	returns string representing the number d. trailing zeros are suppressed.
     If not null, *rve is set to point to the end of the return value.

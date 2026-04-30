@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if HAVE_QCHARTS
 // #include <math.h>
 // #include <stdexcept>
@@ -1926,7 +1930,7 @@ bool GuiQt2dPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, in
 
   //
   ///  series->setSelectedLightMarker(roundrect(6.0, Qt::red));
-  
+
   // legend
   series->setName(qTitle);
   item->setPlotCurve(cycle, xWildcardIndex, yWildcardIndex, series);

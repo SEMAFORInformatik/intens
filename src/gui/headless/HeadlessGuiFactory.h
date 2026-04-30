@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #ifndef HEADLESS_GUI_FACTORY_H
 #define HEADLESS_GUI_FACTORY_H
 
@@ -48,7 +52,7 @@ public:
   GuiTableItem       *createTableDataItem( GuiElement *parent );
   GuiTableItem       *createTableComboBoxItem( GuiElement *parent, const std::string& datasetName );
   GuiList            *createList ( GuiElement *parent, const std::string &name );
-  GuiFilterList      *createFilterList ( GuiElement *parent, GuiFilterListListener &listener, 
+  GuiFilterList      *createFilterList ( GuiElement *parent, GuiFilterListListener &listener,
 						 const std::string &name );
   GuiPrinterDialog   *createPrinterDialog();
   GuiNavigator       *createNavigator( const std::string &id, GuiNavigator::Type navType );
@@ -56,7 +60,7 @@ public:
 						     , DialogWorkClockListener *listener
 						     , const std::string &title
 						     , const std::string &msg );
-  
+
   GuiElement::ButtonType showDialogConfirmation(GuiElement *
                                                  , const std::string &
                                                  , const std::string &
@@ -109,7 +113,7 @@ public:
   GuiPixmap       *createPixmap  ( GuiElement *parent, XferDataItem *dataitem );
   GuiIndex        *createGuiIndex( GuiElement *parent, const std::string &name );
   GuiIndex        *getGuiIndex( const std::string &name );
-  
+
   Gui2dPlot* create2dPlot( const std::string &, bool isPlot2d = false);
   Gui3dPlot* create3dPlot( GuiElement *, const std::string & );
 
@@ -133,7 +137,7 @@ public:
   GuiScrolledText *getStandardWindow();
   GuiScrolledText *getLogWindow();
   GuiScrolledText *getHtmlWindow();
-  
+
   void installDialogsWaitCursor(GuiDialog* diag_modal=0);
   void removeDialogsWaitCursor(GuiDialog* diag_modal=0);
   DialogProgressBar *getDialogProgressBar();
@@ -141,7 +145,7 @@ public:
 
   ServerSocket *createServerSocket( IntensServerSocket *server, int port );
   ClientSocket *createClientSocket( const std::string &header
-					    , Stream *out_stream 
+					    , Stream *out_stream
 					    , Stream *in_stream ) ;
   bool doCopy(Stream *out_stream, GuiElement* elem) ;
   bool doPaste( Stream *in_stream) ;

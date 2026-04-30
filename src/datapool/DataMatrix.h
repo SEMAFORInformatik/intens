@@ -1,4 +1,8 @@
-﻿
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_VALUE_MATRIX__)
 #define __DP_DATA_VALUE_MATRIX__
 
@@ -12,16 +16,8 @@
  */
 class DataMatrix : public std::vector<DataVector*>
 {
-/*=============================================================================*/
-/* Constructor / Destructor                                                    */
-/*=============================================================================*/
 public:
-  /** Konstruktor
-   */
   DataMatrix();
-
-  /** Destruktor
-   */
   virtual ~DataMatrix();
 
 protected:

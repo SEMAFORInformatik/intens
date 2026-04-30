@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_COMPARE_DIALOG_H)
 #define GUI_QT_COMPARE_DIALOG_H
 
@@ -17,7 +21,6 @@ class GuiFieldgroup;
 
 /** Mit einem QtDialogCompare-Objekt werden die Ergebnisse vom Aufruf der
     DataReference::compareElements - Funktionen graphisch dargestellt.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
  */
 class QtDialogCompare : public GuiQtForm, public DialogCompare {
  public:

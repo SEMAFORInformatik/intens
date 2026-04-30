@@ -1,15 +1,17 @@
-;;; -*- lexical-binding: t; -*-
+;;; intens-ts-mode -- major mode for intens description files -*- lexical-binding: t; -*-
+;;;
 ;;; SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
 ;;;
 ;;; SPDX-License-Identifier: Apache-2.0
-
-;; ====================================
-;; Intens Tree-Sitter
-;; ====================================
+;;; 
+;;; Commentary:
+;;; 
+;;; Intens Tree-Sitter
+;;;
 (require 'treesit)
-
-(setq intens-lib-dir (concat (file-name-directory (or load-file-name (buffer-file-name))) "../lib"))
-(setq intens-lib64-dir (concat (file-name-directory (or load-file-name (buffer-file-name))) "../lib64"))
+;;; Code:
+(defconst intens-lib-dir (concat (file-name-directory (or load-file-name (buffer-file-name))) "../lib"))
+(defconst intens-lib64-dir (concat (file-name-directory (or load-file-name (buffer-file-name))) "../lib64"))
 (add-to-list 'treesit-extra-load-path intens-lib-dir)
 (add-to-list 'treesit-extra-load-path intens-lib64-dir)
 
@@ -97,3 +99,4 @@
 ;not yet; (add-to-list 'auto-mode-alist '("\\.des.in\\'" . intens-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . intens-ts-mode))
 (provide 'intens-ts-mode)
+;;; intens-ts-mode.el ends here

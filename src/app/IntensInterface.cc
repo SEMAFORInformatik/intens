@@ -1,4 +1,6 @@
-//#ifdef _WIN32 // nur auf Windows Platform
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #ifdef HAVE_QT
 #include <qfont.h>

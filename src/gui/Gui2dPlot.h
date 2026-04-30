@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef GUI_2DPLOT_INCLUDED_H
 #define GUI_2DPLOT_INCLUDED_H
 
@@ -33,9 +37,6 @@ class GuiMenuToggle;
 typedef long TransactionNumber;
 
 /** Die Klasse 'Gui2dPlot' ermoeglicht das Darstellen von 2d-Plots
-
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: Gui2dPlot.h,v 1.25 2008/10/01 08:08:08 amg Exp $
 */
 class Gui2dPlot :   public HardCopyListener,
 		    public ScaleDialogListener,

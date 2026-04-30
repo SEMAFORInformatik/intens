@@ -1,11 +1,7 @@
-/*
- * Copyright (C) 2021 SEMAFOR Informatik & Energie AG, Basel, Switzerland
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include <iostream>
 #include "string.h"
 

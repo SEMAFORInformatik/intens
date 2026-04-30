@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #ifndef GUIQT3DBASEPLOT_H_
 #define GUIQT3DBASEPLOT_H_
 

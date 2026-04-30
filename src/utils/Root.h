@@ -1,6 +1,5 @@
-//
-// Root.h: interface for the Root class.
-//
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #if !defined(ROOT_H__INCLUDED_)
 #define ROOT_H__INCLUDED_

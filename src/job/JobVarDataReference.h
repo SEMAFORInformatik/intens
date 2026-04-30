@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_VAR_DATAREFERENCE_INCLUDED_H)
 #define JOB_VAR_DATAREFERENCE_INCLUDED_H
 
@@ -7,8 +11,6 @@
 /** Die JobDataReference enthält eine DataReference. Sie enthält zusätzlich eine
     Liste aller Indizes, welche zur Laufzeit eines Jobs neu gesetzt werden.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobVarDataReference.h,v 1.3 2007/02/14 13:07:56 amg Exp $
 */
 class JobVarDataReference : public JobDataReference
 {

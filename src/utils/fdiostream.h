@@ -1,18 +1,19 @@
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 #ifndef FDOSTREAM_H
 #define FDOSTREAM_H
-/**********************************************************************************/
-/* fdiostream.h                                                                   */
-/* Dieses Klassen kapseln die Klassen istream und ostream um mit einem            */
-/* beliebigen Datei Deskriptor einen Eingabestream bzw. Ausgabestream zu erzeugen.*/
-/*                                                                                */
-/* fdistream heisst die neue gekapselte Eingabestream Klasse                      */
-/* Aufruf einfach mit einem Datei Descriptor                                      */
-/* z.B.: fdistream in(0);  // entspricht cin                                      */
-/*                                                                                */
-/* fdostream heisst die neue gekapselte Ausgabestream Klasse                      */
-/* Aufruf einfach mit einem Datei Descriptor                                      */
-/* z.B.: fdostream in(0);  // entspricht cin                                      */
-/**********************************************************************************/
+/*
+ * Dieses Klassen kapseln die Klassen istream und ostream um mit einem
+ * beliebigen Datei Deskriptor einen Eingabestream bzw. Ausgabestream zu erzeugen.
+ *
+ * fdistream heisst die neue gekapselte Eingabestream Klasse
+ * Aufruf einfach mit einem Datei Descriptor
+ * z.B.: fdistream in(0);  // entspricht cin
+ * 
+ * fdostream heisst die neue gekapselte Ausgabestream Klasse
+ * Aufruf einfach mit einem Datei Descriptor
+ * z.B.: fdostream in(0);  // entspricht cin
+ */
 
 #include <streambuf>
 #include <iostream>
@@ -20,13 +21,9 @@
 
 const int FD_BUFFERSIZE = 100;
 
-/** This class handles only output streams and connects a file descriptor with the
-    streambuf class. It is a auxiliary class and should be only used by the class fdostream.
-    @author Semafor Informatik & Energie AG
-    @version $id$
-    @short This class is a derived class of the streambuf class, which connects a
-           file descriptor with the streambuf class.
-   @see fdistream
+/** 
+   This class is a derived class of the streambuf class, which connects a
+   file descriptor with the streambuf class.
 */
 class fdoutbuf : public std::streambuf {
 
@@ -107,13 +104,8 @@ class fdoutbuf : public std::streambuf {
 };
 
 
-/** This class can be used in the same way as for examples the cout class with the
-    exception that you can select the file descriptor you want to connect the output stream.
-    @author Semafor Informatik & Energie AG
-    @version $id$
-    @short This class is a derived class of the ostream class, which connects a
-           file descriptor with the ostream class.
-    @see fdistream
+/** This class is a derived class of the ostream class, which connects a
+    file descriptor with the ostream class.
 */
 
 class fdostream : public std::ostream {
@@ -231,13 +223,8 @@ class gzofbuf : public std::streambuf {
 };
 
 
-/** This class can be used in the same way as for examples the cout class with the
-    exception that you can select the file descriptor you want to connect the output stream.
-    @author Semafor Informatik & Energie AG
-    @version $id$
-    @short This class is a derived class of the ostream class, which connects a
-           file descriptor with the ostream class.
-    @see fdistream
+/** This class is a derived class of the ostream class, which connects a
+    file descriptor with the ostream class.
 */
 
 class gzofstream : public std::ostream {

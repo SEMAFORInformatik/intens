@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_WRITE_JSON__)
 #define __DP_DATA_ALTER_WRITE_JSON__
 
@@ -6,10 +10,6 @@
 #include "utils/Separator.h"
 #include <stack>
 
-/** Mit einem DataAlterGetItem-Objekt wird ein DataItem-Objekt im JSON-Format
-    in einen Outputstream geschrieben.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterWriteJSON : public DataAlterFunctor
 {
 /*=============================================================================*/

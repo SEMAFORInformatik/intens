@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_DATAREFERENCE_INCLUDED_H)
 #define JOB_DATAREFERENCE_INCLUDED_H
 
@@ -19,7 +23,6 @@ class JobStackDataPtr;
     Liste aller Indizes, welche zur Laufzeit eines Jobs neu gesetzt werden. alle
     Zugriffe auf den Datapool aus Jobs werden über Objekte dieser Klasse getätigt.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
 */
 class JobDataReference : public JobElement
 {

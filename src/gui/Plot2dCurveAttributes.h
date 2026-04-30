@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef GUI_2DPLOT_CURVE_ATTRIBUTES_INCLUDED_H
 #define GUI_2DPLOT_CURVE_ATTRIBUTES_INCLUDED_H
 

@@ -1,4 +1,8 @@
-
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_REFERENCE__)
 #define __DP_DATA_REFERENCE__
 
@@ -27,9 +31,6 @@ class DataRefImplV2;
 class DataIndexList;
 class DataDiff;
 
-/** Mit einem DataReference-Objekt wird auf die Daten im DataPool zugegriffen.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataReference : public DataGlobals
                     , public PointerBasis<DataReference>
 {

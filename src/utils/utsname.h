@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #if !defined(UTSNAME__INCLUDED_) && defined __MINGW32__
 #define UTSNAME_H__INCLUDED_

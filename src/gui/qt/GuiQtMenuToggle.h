@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_MENUTOGGLE_INCLUDED_H)
 #define GUI_QT_MENUTOGGLE_INCLUDED_H
 
@@ -15,8 +19,6 @@ class QAction;
     werden kann. Er gibt den Input über einen GuiToggleListener weiter. Er kann von
     einem GuiListenerController kontrolliert werden.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtMenuToggle.h,v 1.3 2008/06/20 12:03:45 amg Exp $
  */
 class GuiQtMenuToggle : public GuiQtElement, public GuiMenuToggle
 {

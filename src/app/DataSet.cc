@@ -1,13 +1,16 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include "app/DataSet.h"
 #include "app/DataPoolIntens.h"
 #include "app/UserAttr.h"
 #include "datapool/DataValue.h"
-#include "datapool/DataVector.h"
+//
 #include "datapool/DataReference.h"
 #include "datapool/DataStringValue.h"
 #include "datapool/DataRealValue.h"
-
+#include "datapool/DataVector.h"
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/

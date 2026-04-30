@@ -1,8 +1,6 @@
-﻿// ****************************************************************
-// DataException
-//
-// $Id: DataException.cpp 1.18 2012/09/28 12:53:23Z bho Exp $
-// ****************************************************************
+﻿
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #include "DataException.h"
 #include <sstream>

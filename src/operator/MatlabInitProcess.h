@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef MATLAB_INIT_PROCESS_H
 #define MATLAB_INIT_PROCESS_H
 

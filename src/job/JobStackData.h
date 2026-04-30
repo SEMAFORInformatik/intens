@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_STACK_DATA_INCLUDED_H)
 #define JOB_STACK_DATA_INCLUDED_H
 
@@ -15,8 +19,6 @@ class DataReference;
 /** JobStackData ist die Basisklasse aller Datenobjekte welche auf dem Stack eines
     laufenden Jobs (JobEngine) abgelegt werden müssen.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobStackData.h,v 1.21 2005/05/24 09:08:28 ked Exp $
 */
 class JobStackData : public JobStackItem
 {

@@ -1,4 +1,6 @@
-﻿
+﻿// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #if !defined(DATA_TRANSACTION_OWNER_INCLUDED)
 #define DATA_TRANSACTION_OWNER_INCLUDED
 

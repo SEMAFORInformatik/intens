@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_MANAGER_INCLUDED_H)
 #define JOB_MANAGER_INCLUDED_H
 
@@ -41,8 +45,6 @@ class FileStream;
     OpCodes in den Code der Functionen ein. Er enthält alle mehrfach verwendeten
     JobCode-Objekte als Member-Variablen.
 
-    @author Copyright (C) 1999  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: JobManager.h,v 1.74 2008/06/11 09:36:52 amg Exp $
 */
 class JobManager : public JobElement
 {

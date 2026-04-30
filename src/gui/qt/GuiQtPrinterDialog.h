@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined( GUI_QT_PRINTER_DIALOG )
 #define GUI_QT_PRINTER_DIALOG
 

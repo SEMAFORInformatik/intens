@@ -1,8 +1,6 @@
-﻿// ****************************************************************
-// DataDebugger
-//
-// $Id: DataDebugger.cpp 1.8 2014/03/04 14:17:17Z bho Exp $
-// ****************************************************************
+﻿
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #include <iomanip>
 #include <iostream>

@@ -1,24 +1,7 @@
-/* $Id: Timer.h,v 1.2 2003/12/09 08:38:48 ked Exp $
- * 
- *                             Timer class
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 1, or (at your option)
- *   any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
- *   Author: Ronald Tanner                   Created: 2001/11/10
- *
- */
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #ifndef GUI_TIMER_H
 #define GUI_TIMER_H
 
@@ -37,13 +20,13 @@ public:
    */
   Timer( unsigned long interval=1000, bool restartTimer = false );
   virtual ~Timer();
-  
+
   /**
    * fügt ein TimerTask-Objekt hinzu
    * @param l TimerTask-Objekt, das hinzugefügt werden soll
    */
   void addTask( TimerTask *l );
-  
+
   /** entfernt ein TimerTask-Objekt
    * @param l TimerTask-Objekt, das entfernt werden soll
    */
@@ -77,15 +60,15 @@ public:
    * stoppt den Timer
    */
   virtual void stop()=0;
-  
+
 protected:
   // ruft die tick-Methode der TimerTask-Objekte auf
   void execute();
-  bool m_restartTimer; 
+  bool m_restartTimer;
   bool m_stopped;
 
 private:
-  
+
   typedef std::vector< TimerTask *> TaskCollection;
   TaskCollection m_tasks;
   unsigned long  m_interval;

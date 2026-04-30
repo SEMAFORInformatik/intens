@@ -1,21 +1,6 @@
-/*
-                          GuiList.h  -  description
-                             -------------------
-    begin                : Wed May 23 2000
-    copyright            : (C) 2000 by SEMAFOR Informatik & Energie AG
-    email                : tar@semafor.ch
 
- $Id: GuiList.h,v 1.10 2006/10/25 13:08:59 amg Exp $
-                       All Rights Reserved.
-
- SEMAFOR MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY
- OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
- TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- PURPOSE, OR NON-INFRINGEMENT. SEMAFOR SHALL NOT BE LIABLE FOR ANY
- DAMAGES SUFFERED BY USERS AS A RESULT OF USING, MODIFYING OR
- DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
-                                                                               
-*/
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
 
 #if !defined(GUI_LIST_INCLUDED_H)
 #define GUI_LIST_INCLUDED_H
@@ -41,7 +26,7 @@ class GuiList
   GuiList();
   virtual ~GuiList();
   GuiList(const GuiList&);
-  
+
   /*=============================================================================*/
   /* public member functions                                                     */
   /*=============================================================================*/
@@ -57,7 +42,7 @@ class GuiList
   void setTitle( const std::string &title, GuiElement::Alignment align );
   std::string getTitle();
   GuiElement::Alignment getTitleAlignment() { return m_titleAlign; }
-  
+
   virtual int sortOrder() = 0;
   virtual bool selectRow(int row, bool recursive=true, bool interactiveSelect=false) = 0;
   virtual bool selectRows(std::vector<int> rows, bool recursive=true) = 0;
@@ -128,17 +113,17 @@ class GuiList
 /*=============================================================================*/
  protected:
   bool isDataItemUpdated( TransactionNumber trans );
-  
+
  private:
 /*=============================================================================*/
 /* private class Column                                                        */
 /*=============================================================================*/
- 
+
   class Column : public GuiIndexListener{
  public:
    Column( int column
 	       ,const std::string &label
-	       , XferDataItem *dataItem 
+	       , XferDataItem *dataItem
 	       , const GuiElement::Alignment &align
 	       , const int length
 	       , const int precision
@@ -147,7 +132,7 @@ class GuiList
 	       , bool optional);
    Column( int column
 	       , XferDataItem *dataItemLabel
-	       , XferDataItem *dataItem 
+	       , XferDataItem *dataItem
 	       , const GuiElement::Alignment &align
 	       , const int length
 	       , const int precision

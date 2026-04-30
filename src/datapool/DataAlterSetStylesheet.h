@@ -1,13 +1,13 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_SET_STYLESHEET__)
 #define __DP_DATA_ALTER_SET_STYLESHEET__
 
 #include "datapool/DataAlterSetElement.h"
 
-/** Mit einem DataAlterSetStylesheet-Objekt wird den referenzierten DataElements
-    der gewünschte Stylesheet gesetzt. Es sind Wildcards an beliebiger Stelle möglich.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterSetStylesheet : public DataAlterFunctor
 {
 /*=============================================================================*/

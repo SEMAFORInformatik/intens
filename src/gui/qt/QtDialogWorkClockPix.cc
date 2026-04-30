@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 /* XPM */
 static const char *semafor_xpm[] = {
 /* width height number_of_colors chars_per_pixel */

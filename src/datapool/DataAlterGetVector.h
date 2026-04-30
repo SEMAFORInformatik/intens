@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_GET_VECTOR__)
 #define __DP_DATA_ALTER_GET_VECTOR__
 
@@ -6,11 +10,6 @@
 
 class DataVector;
 
-/** Mit einem DataAlterGetVector-Objekt wird ein Vektor mit DataValue-Objekten
-    gefüllt. Die DataValue-Objekte werden von den Jeweiligen DataElement-Objekten
-    erzeugt. Der zu füllende Vektor wird dem Konstruktor als Parameter mitgegeben.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterGetVector : public DataAlterFunctor
 {
 /*=============================================================================*/

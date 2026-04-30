@@ -1,4 +1,8 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ELEMENT__)
 #define __DP_DATA_ELEMENT__
 
@@ -17,14 +21,6 @@ class DataDimension;
 class DataAlterFunctor;
 class DataReadFunctor;
 
-/** Die Klasse DataElement ist die Basisklasse aller Datenelemente.
-    Ein DataElement enthält in der Regel genau einen Wert eines Basisdatentyps
-    plus den zugehörigen Attributen (siehe Klasse DataAttributes).<br>
-    Die Ausnahme bildet das Struktur-Element der Klasse DataStructElement. Es
-    enthält eine Liste von DataItem-Objekten mit wiederum einer beliebigen
-    Anzahl von DataElement-Objekten.
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataElement : public DataContainer
                   , public DataAttributes
 {

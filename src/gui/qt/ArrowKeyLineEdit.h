@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #ifndef ARROW_KEY_LINE_EDIT_H
 #define ARROW_KEY_LINE_EDIT_H
 
@@ -16,17 +20,17 @@ class ArrowKeyListener {
 class ArrowKeyLineEdit : public QLineEdit {
   Q_OBJECT
   public:
-    ArrowKeyLineEdit( QWidget* parent, GuiQtTextfield *e ) 
+    ArrowKeyLineEdit( QWidget* parent, GuiQtTextfield *e )
       : QLineEdit( parent )
       , m_textfield( e ), m_converter(0), m_listener(0), m_saveInDataPool(false) {
     }
-    ArrowKeyLineEdit( QWidget* parent, RealConverter *c ) 
+    ArrowKeyLineEdit( QWidget* parent, RealConverter *c )
       : QLineEdit( parent )
 	, m_textfield( 0 ), m_converter(c), m_listener(0), m_saveInDataPool(false) {
 	setAlignment(Qt::AlignRight);
     }
     virtual ~ArrowKeyLineEdit() { }
-    
+
     void attachListener( ArrowKeyListener *l ){
       m_listener=l;
     }

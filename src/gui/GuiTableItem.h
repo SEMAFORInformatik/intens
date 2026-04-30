@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_TABLEITEM_INCLUDED_H)
 #define GUI_TABLEITEM_INCLUDED_H
 #if HAVE_PROTOBUF

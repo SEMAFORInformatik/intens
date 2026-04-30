@@ -1,3 +1,7 @@
+
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
 #include <iostream>
 #include <QMetaType>
 
@@ -305,13 +309,13 @@ void MessageQueue::lspWrite( std::ostream &ostr ){
     ostr << "</ITEM>" << std::endl;
 
   for (auto socket : s_subscriberMap) {
-    SOCKET_SERIALIZE_FUNC 
+    SOCKET_SERIALIZE_FUNC
   }
   for (auto socket : s_publisherMap) {
-    SOCKET_SERIALIZE_FUNC 
+    SOCKET_SERIALIZE_FUNC
   }
   for (auto socket : s_requestMap) {
-    SOCKET_SERIALIZE_FUNC 
+    SOCKET_SERIALIZE_FUNC
   }
 }
 

@@ -1,4 +1,8 @@
-﻿
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(_DATA_TTRAIL_UNDO_DISABLER_INCLUDED_)
 #define _DATA_TTRAIL_UNDO_DISABLER_INCLUDED_
 

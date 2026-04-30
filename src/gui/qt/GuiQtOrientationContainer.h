@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(GUI_QT_ORIENTATION_CONTAINER_INCLUDED_H)
 #define GUI_QT_ORIENTATION_CONTAINER_INCLUDED_H
 
@@ -13,8 +17,6 @@
 /** Der GuiQtOrientationContainer ist ein GuiCointainer-Objekt, welches eine Liste von
     GuiElementen horizontal  anordnet und gegebenenfalls gegeneinander ausrichtet.
 
-    @author Copyright (C) 2000  SEMAFOR Informatik & Energie AG, Basel, Switzerland
-    @version $Id: GuiQtOrientationContainer.h,v 1.18 2006/08/03 12:30:22 amg Exp $
 */
 class GuiQtOrientationContainer : public GuiOrientationContainer, public GuiQtElement
 {

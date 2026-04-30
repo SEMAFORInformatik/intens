@@ -1,9 +1,8 @@
-﻿// ****************************************************************
-// DataDebugger
-//
-// $Id: DataDebugger.h 1.5 2014/03/04 14:17:17Z bho Exp $
-// ****************************************************************
-
+/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DEBUGGER_H__)
 #define __DP_DEBUGGER_H__
 

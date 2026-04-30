@@ -1,13 +1,13 @@
-﻿
+﻿/*
+ * SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #if !defined(__DP_DATA_ALTER_CLEAR_DATAITEM__)
 #define __DP_DATA_ALTER_CLEAR_DATAITEM__
 
 #include "datapool/DataAlterFunctor.h"
 
-/** Mit einem DataAlterClearDataItem-Objekt wird genau ein DataItem ungültig
-    gemacht. Alle angehängten DataElemente werden ungültig.
-    @author Copyright (C) 2015  SEMAFOR Informatik & Energie AG, Basel, Switzerland
- */
 class DataAlterClearDataItem : public DataAlterFunctor
 {
 /*=============================================================================*/

@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #ifndef BATCH_PROCESS_H
 #define BATCH_PROCESS_H
 
@@ -9,7 +13,6 @@ class QProcess;
 /** BatchProcess
     The class BatchProcess manages Unix batch processes. A batch process is executed
     from a shell (/bin/sh) and is expected to read and write on file descriptors.
-    @version $Id: BatchProcess.h,v 1.11 2006/03/08 15:00:58 amg Exp $
 */
 class BatchProcess: public Process
 {
@@ -59,7 +62,7 @@ public:
   */
   virtual bool start();
   /** sends a SIGTERM signal to every process in the currently running process group
-   */ 
+   */
   virtual bool stop();
   /** sends a SIGHUP signal to every process in the currently running process group
    */
@@ -135,7 +138,7 @@ private:
   bool                     m_bDaemon;
 
   // unschoen, aber wollte Processimplementation aus dieser Klasse nehmen
-  friend class ProcessPosix;  
+  friend class ProcessPosix;
   friend class ProcessQt;
 };
 

@@ -1,4 +1,8 @@
 
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+
 #if !defined(JOB_ENGINE_STACK_H)
 #define JOB_ENGINE_STACK_H
 
@@ -8,7 +12,6 @@
 
 /** Die Klasse JobStack wird als Stack von Objekten der Klasse JobStackItem
     von der JobEngine verwendet.
-    @author Copyright (C) 2016  SEMAFOR Informatik & Energie AG, Basel, Switzerland
 */
 class JobStack
 {

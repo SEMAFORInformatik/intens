@@ -1,22 +1,21 @@
 # French translations for intens package.
-# Copyright (C) 2014 SEMAFOR Informatik & Energie AG, Switzerland
-# This file is distributed under the same license as the intens package.
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 # Simon Bader <bader@semafor.ch>, 2014.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: intens 4.4.16-snapshot\n"
+"Project-Id-Version: intens 6\n"
 "Report-Msgid-Bugs-To: bugs@semafor.ch\n"
 "POT-Creation-Date: 2023-09-26 11:08+0200\n"
 "PO-Revision-Date: 2023-09-26 11:18+0200\n"
 "Last-Translator: Simon Bader <bader@semafor.ch>\n"
-"Language-Team: French\n"
+"Language-Team: French semafor.ch\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.10\n"
 
 #: etc/MessageQueueReply.inc:260
 #, fuzzy

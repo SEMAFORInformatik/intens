@@ -1,0 +1,56 @@
+version = 1
+
+[[annotations]]
+path = ["**/.gitattributes", "**.gitignore", "**.gitreview", ".github/**", ".gitmodules"]
+precedence = "closest"
+comment = "infrastructure"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["test/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = [".tag", ".cmake.conf", "**.yaml", "**.pro", "**ci_config_linux.json"]
+precedence = "closest"
+comment = "build system"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["example/**"]
+comment = ""
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["etc/**"]
+comment = ""
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["templates/**"]
+comment = ""
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["doc/system-admin/**"]
+comment = "System Admin Manual"
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["doc/gettingstarted/images/**"]
+comment = "Getting started images"
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
+SPDX-License-Identifier = "Apache-2.0"

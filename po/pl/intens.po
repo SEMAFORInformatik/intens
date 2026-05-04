@@ -1,11 +1,11 @@
 # Polish translations for intens package.
-# Copyright (C) 2014 SEMAFOR Informatik & Energie AG, Switzerland
-# This file is distributed under the same license as the intens package.
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 # Simon Bader <bader@semafor.ch>, 2014.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: intens 4.4.16-snapshot\n"
+"Project-Id-Version: intens 6\n"
 "Report-Msgid-Bugs-To: bugs@semafor.ch\n"
 "POT-Creation-Date: 2023-09-26 11:08+0200\n"
 "PO-Revision-Date: 2014-09-30 16:19+0200\n"

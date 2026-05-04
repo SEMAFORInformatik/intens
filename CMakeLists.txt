@@ -153,6 +153,9 @@ endif()
 endif()
 
 # i18n
+# https://github.com/erri120/Gettext-CMake
+# MIT License
+# 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/po/")
 include(Gettext_helpers)
 set (YEAR 2025)

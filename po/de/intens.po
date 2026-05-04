@@ -1,21 +1,20 @@
 # German translations for INTENS package.
-# Copyright (C) 2014 SEMAFOR Informatik & Energie AG, Switzerland
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
+# Simon Bader <bader@semafor.ch> 2014
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Intens 4.4\n"
+"Project-Id-Version: Intens 6\n"
 "Report-Msgid-Bugs-To: bugs@semafor.ch\n"
 "POT-Creation-Date: 2023-09-26 11:08+0200\n"
 "PO-Revision-Date: 2023-09-26 11:08+0200\n"
 "Last-Translator: Simon Bader <bader@semafor.ch>\n"
-"Language-Team: DE <LL@li.org>\n"
+"Language-Team: DE semafor.ch\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
 
 #: etc/MessageQueueReply.inc:260
 msgid "Do you really want to leave this application?"

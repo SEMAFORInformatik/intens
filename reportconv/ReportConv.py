@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
-# \file ReportConv.py
-# \brief A report format converter
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
+# A report format converter
 #
 import sys
 import os

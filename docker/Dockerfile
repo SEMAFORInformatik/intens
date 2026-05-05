@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 # Dockerfile for semafor/intens
 FROM ubuntu:26.04 AS builder
 ARG CMAKE_BUILD_TYPE=Release

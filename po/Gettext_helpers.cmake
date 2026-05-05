@@ -1,4 +1,8 @@
-
+# SPDX-FileCopyrightText: 2019 Skye Soss
+# SPDX-License-Identifier: MIT
+#
+# https://github.com/erri120/Gettext-CMake
+#
 find_program(GETTEXT_XGETTEXT_COMMAND xgettext)
 find_program(GETTEXT_MSGFMT_COMMAND msgfmt)
 find_program(GETTEXT_MSGINIT_COMMAND msginit)

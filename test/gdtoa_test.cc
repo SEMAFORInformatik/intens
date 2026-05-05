@@ -41,12 +41,13 @@ char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
     }
     else {
       int decptoffset = int(log10(abs(d)));
-      if(mode == 3){
-        ndigits -= decptoffset;
-      }
-      else {
+      if(mode == 0){
         ndigits = 15 - decptoffset;
       }
+        /*
+      else {
+        ndigits -= decptoffset;
+      } */
       if(d<1){
         ndigits += 2;
       }
@@ -134,7 +135,17 @@ TEST(GdtoaTest, double2stringtest)
   ASSERT_EQ(5, sec-cp);
   free(cp);
 
+  x = 1234.567;
+  nprec = 1;
+  cp = xdtoa(x, 3, nprec, &decpt, &sign, &sec);
+  ASSERT_EQ("12346", std::string(cp));
+  ASSERT_EQ(4, decpt);
+  ASSERT_EQ(0, sign);
+  ASSERT_EQ(5, sec-cp);
+  free(cp);
+  
   x = 0.0;
+  nprec = 9;
   cp = xdtoa(x, 3, nprec, &decpt, &sign, &sec);
   ASSERT_EQ("0", std::string(cp));
   ASSERT_EQ(1, decpt);

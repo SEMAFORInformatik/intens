@@ -72,16 +72,24 @@ char *xdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char**rve){
     }
     else {
       int decptoffset = int(log10(abs(d)));
-      if(mode == 3){
-        ndigits -= decptoffset;
-      }
-      else {
+      if(mode == 0){
         ndigits = 15 - decptoffset;
       }
+      /* mode == 3
+      else {
+        ndigits -= decptoffset;
+      } */
       if(d<1){
         ndigits += 2;
       }
-      s = std::format("{:.{}f}", d, ndigits);
+      try {
+        s = std::format("{:.{}f}", d, ndigits);
+      }
+      catch( const std::exception &e){
+        BUG_ERROR(e.what() << " d " << d << ", mode " << mode << ", ndigits " << ndigits << ", decptoffset" <<
+                  decptoffset);
+                  
+      }
       *sign = 0;
       if(d<0){
         *sign = 1;

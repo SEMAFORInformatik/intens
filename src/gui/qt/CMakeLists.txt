@@ -4,6 +4,8 @@
 add_library(gui_qt OBJECT
         ../headless/HeadlessGuiFactory.cc
         ArrowKeyLineEdit.cc
+        IntegerValidator.cc
+        DoubleValidator.cc
         DateValidator.cc
         GuiMFMSettings.cc
         GuiQwtPlot.cc
@@ -94,7 +96,6 @@ add_library(gui_qt OBJECT
         GuiQwtThermo.cc
         GuiQtProgressBar.cc
         HelpWindow.cc
-        KNumValidator.cc
         GuiQtProgressIndicator.cc
         QtDialogCompare.cc
         QtDialogConfirmation.cc

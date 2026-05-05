@@ -24,7 +24,8 @@
 #include "gui/qt/GuiQtManager.h"
 #include "gui/qt/GuiQtTextfield.h"
 #include "gui/qt/QtMultiFontString.h"
-#include "gui/qt/KNumValidator.h"
+#include "gui/qt/DoubleValidator.h"
+#include "gui/qt/IntegerValidator.h"
 #include "gui/qt/ArrowKeyLineEdit.h"
 #include "gui/qt/QtIconManager.h"
 #include "gui/GuiLabel.h"
@@ -42,58 +43,6 @@ INIT_LOGGER();
 
 bool GuiQtTextfield::m_arrowKeyAllowed = true;
 int  GuiQtTextfield::m_oldCursorPos = 0;
-
-#ifdef __USE_GUITIMETABLE__
-/*=============================================================================*/
-/* intern MyQCalMonthLookup class for popup a month calendar dialog            */
-/*=============================================================================*/
-const unsigned int nHorOffset = 14;
-const unsigned int s_dCaptionHeight = 20;
-class MyQCalMonthLookup : public QCalMonthLookup {
-public:
-  MyQCalMonthLookup(QDialog* parent) : QCalMonthLookup(parent), m_dialog(parent) {
-    QFont font =  QWidget::font();
-    font.setPointSize( 8 );
-    setFont( font );
-    resize(180, 140);
-  }
-private:
-  virtual void keyPressEvent(QKeyEvent* e) {
-    if (e->key() == Qt::Key_Escape ) {
-      QDate d;
-      setDate(d);
-    }
-    QCalMonthLookup::keyPressEvent(e);
-  }
-  virtual void mousePressEvent(QMouseEvent* thisEvent) {
-    lastClick = QTime::currentTime();
-    QCalMonthLookup::mousePressEvent( thisEvent );
-  }
-  virtual void mouseDoubleClickEvent(QMouseEvent* thisEvent) {
-    QTime currTime = QTime::currentTime();
-    if (lastClick.msecsTo(currTime) > 300) {
-      QCalMonthLookup::mouseDoubleClickEvent( thisEvent );
-      return;
-    }
-    float x_dist = 1.0f * (this->width() - 2 * nHorOffset) / 7;
-    float y_dist = 1.0f * (this->height() - 3 * s_dCaptionHeight) / 6;
-    int mX = (int)(thisEvent->pos().x() - nHorOffset);
-    int mY = (int)(thisEvent->pos().y() - 2.0f * s_dCaptionHeight);
-
-    // sake of consistence, col starts at 1, row at 0, see paintEvent for details
-    unsigned int col = (unsigned int)(1.0f + 1.0f * mX/*thisEvent->pos().x()*/ / x_dist);
-    unsigned int row = (unsigned int)(1.0f * mY/*(thisEvent->pos().y() - 2 * s_dCaptionHeight)*/ / y_dist);
-
-    if (mY < 0 || mX < 0 || col < 1 || col > 7 || row < 0 || row > 5) {
-      return;
-    }
-    m_dialog->close();
-  }
-  QDialog *m_dialog;
-  QTime lastClick;
-};
-#endif
-
 
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
@@ -655,7 +604,7 @@ void GuiQtTextfield::setCursor(QLineEdit* lineEdit, std::string& text, int old_r
 
   // Ist ein ungueltiger Wert => alte Einstellungen speichern und raus (und auf naechsten gueltigen Wert warten)
   // !!! sollte nie passieren, aber passiert in Verbindung mit Socketverbindungen
-  QString decPt( KIntValidator::decimalSymbol() );
+  QString decPt( DoubleValidator::decimalSymbol() );
   if (QString::fromStdString(text).trimmed().length()==0) {
     m_arrowKeyAllowed = false;
     m_oldCursorPos = old_relCursorPos; //diff;
@@ -1489,20 +1438,12 @@ void GuiQtTextfield::MyQComboBox::wheelEvent(QWheelEvent* e) {
 
 QChar              GuiQtTextfield::MyQDateEdit::s_delimeter;
 QString            GuiQtTextfield::MyQDateEdit::s_displayFormat;
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL  // <= Qt 4.2.1 // workaround (FIXME)
-
-QString            GuiQtTextfield::MyQDateEdit::s_lastEditString;
-QValidator::State  GuiQtTextfield::MyQDateEdit::s_lastEditState = QValidator::Invalid;
-#endif
 short s_ylen=0, s_mlen=0, s_dlen=0, s_len;
 
 GuiQtTextfield::MyQDateEdit::MyQDateEdit( QWidget* parent, GuiQtTextfield *e )
   : QDateEdit( QDate(), parent )
   , b_editmode( false )
   , b_valid( false )
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL  // <= Qt 4.2.1
-  , m_regv(NULL)
-#endif
   , m_textfield( e ) {
   assert( e != 0 );
 
@@ -1537,71 +1478,9 @@ GuiQtTextfield::MyQDateEdit::MyQDateEdit( QWidget* parent, GuiQtTextfield *e )
     s_dlen = displayFormat().count( 'd', Qt::CaseInsensitive);
     s_len  = displayFormat().size();
   }
-  if (!s_delimeter.isNull()) {
-    if (!m_regv) {
-      QRegularExpression exp(QString("[\\d]+%1[\\d]+%1[\\d]+").arg(s_delimeter));
-      m_regv = new QRegularExpressionValidator( exp, this  );
-    }
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL  // <= Qt 4.2.1  // workaround (FIXME)
-    lineEdit()->setInputMask(displayFormat().replace(QRegularExpression("\\w"), "0"));
-#endif
-  }
 }
 
 QValidator::State GuiQtTextfield::MyQDateEdit::validate ( QString & input, int & pos ) const {
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL  // <= Qt 4.2.1  // workaround (FIXME)
-  // einfache Validierungen
-  QValidator::State state = m_regv ? m_regv->validate(input, pos) : QDateEdit::validate( input, pos);
-  if (input.count(' ')>0) state = QValidator::Intermediate;
-  if (input.size()  < 7) return QValidator::Invalid;
-
-  // speichern aktueller Daten fuer andere member methoden
-  s_lastEditState = state;
-  s_lastEditString = input;
-
-   // cursor position setzen und return
-  if (state == QValidator::Intermediate) {
-    pos = lineEdit()->cursorPosition();
-    return state;
-  }
-
-  // Weitere Validierungen fuer Validator
-  if (m_regv && state == QValidator::Acceptable) {
-    pos = lineEdit()->cursorPosition();
-    lineEdit()->setCursorPosition(pos);
-    if (currentSection() == QDateTimeEdit::YearSection &&  input.size() != s_len &&
-	sectionText(QDateTimeEdit::YearSection).trimmed().size() < s_ylen) {
-      return QValidator::Intermediate;
-    }
-    if (currentSection() == QDateTimeEdit::MonthSection && input.size() != s_len &&
-	sectionText(QDateTimeEdit::MonthSection).trimmed().size() < s_mlen) {
-      if (pos > 0 && input[pos-1] != s_delimeter)
-	return QValidator::Intermediate;
-    }
-    if (currentSection() == QDateTimeEdit::DaySection &&  input.size() != s_len &&
-	sectionText(QDateTimeEdit::DaySection).trimmed().size() < s_dlen) {
-      if (pos > 0 && input[pos-1] != s_delimeter)
-	return QValidator::Intermediate;
-    }
-
-    // weitere Validierungen
-    bool dOk, mOk, yOk;
-    int d = sectionText(QDateTimeEdit::DaySection).toInt(&dOk);
-    int m = sectionText(QDateTimeEdit::MonthSection).toInt(&mOk);
-    int y = sectionText(QDateTimeEdit::YearSection).toInt(&yOk);
-    if (!dOk || !mOk || !yOk) return QValidator::Intermediate; // zur Sicherheit
-    if (d < 1) d = 1;  else  if (d > 31) d = 31;
-    if (m < 1) m = 1;  else  if (m > 12) m = 12;
-    if (!y) y=2000;
-    // Neuen String erzeugen
-    do {
-      input = QDate(y,m,d).toString(getDisplayFormat());
-      --d;
-    } while (input.size() == 0);
-  }
-  return state;
-  // so waere es normal, wenn qt keine bugs haette
-#else
   bool dOk, mOk, yOk;
   QString qsD = sectionText(QDateTimeEdit::DaySection).remove(s_delimeter);
   QString qsM = sectionText(QDateTimeEdit::MonthSection).remove(s_delimeter);
@@ -1614,7 +1493,9 @@ QValidator::State GuiQtTextfield::MyQDateEdit::validate ( QString & input, int &
   int prod = sectionText(QDateTimeEdit::DaySection).trimmed().size() *
     sectionText(QDateTimeEdit::MonthSection).trimmed().size() *
     sectionText(QDateTimeEdit::YearSection).trimmed().size();
-  QDate dateS(2000, m, d);  // schaltjahr
+  QDate dateS(y, m, d);  // leap year
+  // this happens sometimes
+  if (input.size() < pos) return QValidator::Invalid;
   // simple checks
   if (cntDel > 2 || cntDel > sum ||
       (pos > 1 && input[pos-1] == s_delimeter && displayFormat()[pos-1] != s_delimeter) ||
@@ -1649,44 +1530,9 @@ QValidator::State GuiQtTextfield::MyQDateEdit::validate ( QString & input, int &
     }
   }
   return state;
-#endif
 }
 
 void GuiQtTextfield::MyQDateEdit::fixup ( QString & input ) const {
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL  // <= Qt 4.2.1  // workaround (FIXME)
-  if ( !s_delimeter.isNull() ) {
-    QString inp(input);
-    // validate String
-    QString dStr = sectionText(QDateTimeEdit::DaySection).trimmed();
-    QString mStr = sectionText(QDateTimeEdit::MonthSection).trimmed();
-    QString yStr = sectionText(QDateTimeEdit::YearSection).trimmed();
-    bool retD, retM, retY;
-    int iD = dStr.toInt(&retD);
-    int iM = mStr.toInt(&retM);
-    int iY = yStr.toInt(&retY);
-    QString date;
-    QChar f('0');
-    if (retD) {
-      if (iD > 31) iD=31;
-      if (iD == 0) iD=1;
-      date = QString("%1%2").arg(iD, s_dlen, s_len, f).arg(s_delimeter);
-    }
-    else
-      date = QString("  %1").arg(s_delimeter);
-    if (retM) {
-      if (iM > 12) iM=12;
-      if (iM == 0) iM=1;
-      date += QString("%1%2").arg(iM, s_mlen, s_len, f).arg(s_delimeter);;
-    } else
-      date += QString("  %1").arg(s_delimeter);
-    if (retY)
-      date += QString("%1").arg(iY, s_ylen);
-    else
-      date += "    ";
-
-    input = date;
-  }
-#else
   // validate String
   QString dStr = sectionText(QDateTimeEdit::DaySection).remove(s_delimeter).trimmed();
   QString mStr = sectionText(QDateTimeEdit::MonthSection).remove(s_delimeter).trimmed();
@@ -1696,7 +1542,6 @@ void GuiQtTextfield::MyQDateEdit::fixup ( QString & input ) const {
   int iM = mStr.toInt(&retM);
   int iY = yStr.toInt(&retY);
   if (!retD || !retM || !retY)  input.clear();
-#endif
 }
 
 void GuiQtTextfield::MyQDateEdit::enterEvent ( QEnterEvent *e ) {
@@ -1712,22 +1557,6 @@ void GuiQtTextfield::MyQDateEdit::leaveEvent ( QEvent *e ) {
 void GuiQtTextfield::MyQDateEdit::keyPressEvent(QKeyEvent* e) {
   m_textfield->m_textChanged = true;
   switch (e->key()) {
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL
-  case Qt::Key_Delete:
-    {
-      setValid(false);
-      // 	m_textfield->m_textChanged = true;
-      QString s;
-      bool sb = signalsBlocked();
-      blockSignals(true);
-      QDateEdit::lineEdit()->setText(s);
-      e->accept();
-      m_textfield->lostFocus();
-      blockSignals(sb);
-      setValid(true);
-      return;
-    }
-#endif
     case Qt::Key_Enter:
     case Qt::Key_Return:
       if (e->type() == QEvent::KeyPress && e->count() == 1) {
@@ -1788,31 +1617,10 @@ GuiQtTextfield::MyQDateTimeEdit::MyQDateTimeEdit( QWidget* parent, GuiQtTextfiel
 
 QString GuiQtTextfield::MyQDateTimeEdit::textFromDateTime(const QDateTime& datetime) const {
   QString str = QDateTimeEdit::textFromDateTime(datetime);
-#if QT_VERSION < SELF_MADE_VALIDATION_TILL  // <= Qt 4.2.1     // workaround (FIXME)
-  if (!isValid()) {
-    // (FIXME)
-      str.replace(QRegularExpression("\\w"), " ");
-  }
-#endif  // workaround (FIXME) ENDE
   return str;
 }
 
 void GuiQtTextfield::MyQDateTimeEdit::contextMenuEvent( QContextMenuEvent *e ){
-#ifdef __USE_GUITIMETABLE__
-  QDateTimeEdit *datetimeEdit = static_cast<QDateTimeEdit*>(m_textfield->m_dateEdit);
-  if ( e->x() > datetimeEdit->width() )
-    return;
-  QDialog  dialog(m_textfield->myWidget(), Qt::FramelessWindowHint);
-  MyQCalMonthLookup lookupwidget( &dialog );
-  if (datetimeEdit->dateTime().date().isValid())
-    lookupwidget.setDate( datetimeEdit->dateTime().date() );
-  dialog.move( e->globalX()-90, e->globalY()+12 );
-  dialog.exec();
-  if (lookupwidget.getDate().isValid() ) {
-    datetimeEdit->setDate( lookupwidget.getDate() );
-    m_textfield->FinalWork( datetimeEdit->dateTime().toString(Qt::ISODate).toStdString() );
-  }
-#endif
 }
 
 void GuiQtTextfield::MyQDateTimeEdit::enterEvent ( QEnterEvent *e )

@@ -15,7 +15,7 @@
 #include "gui/qt/GuiQtManager.h"
 #include "gui/qt/ArrowKeyLineEdit.h"
 #include "gui/qt/QtMultiFontString.h"
-#include "gui/qt/KNumValidator.h"
+#include "gui/qt/DoubleValidator.h"
 
 bool ArrowKeyLineEdit::event(QEvent* e) {
   if (e->type() == QEvent::ShortcutOverride) {
@@ -214,8 +214,8 @@ bool ArrowKeyLineEdit::processCursorStep(bool up) {
   if (data_type == DataDictionary::type_Real ||
       data_type == DataDictionary::type_Integer ) {
     long double diff_value;
-    QString decPt( KIntValidator::decimalSymbol() );
-    QString tsep( KIntValidator::thousandsSeparator() );
+    QString decPt( DoubleValidator::decimalSymbol() );
+    QString tsep( DoubleValidator::thousandsSeparator() );
     QString qstr( text() );
     int tsepCnt = qstr.count(tsep);
     int tsepDiff = 2*tsepCnt;

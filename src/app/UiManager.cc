@@ -8,7 +8,6 @@
 #include <qstylefactory.h>
 #include <qstringlist.h>
 #include <qapplication.h>
-// #include <qpopupmenu.h>
 #include <qstyle.h>
 #include <qfontdialog.h>
 #include <qcolordialog.h>
@@ -16,7 +15,6 @@
 #if !defined HAVE_HEADLESS
 #include "gui/qt/GuiQtManager.h"
 #include "gui/qt/GuiQtPulldownMenu.h"
-#include "gui/qt/stylesheeteditor.h"
 #endif
 #endif
 
@@ -690,15 +688,6 @@ void UImanager::createPrintMenuButtons(){
 }
 
 /* --------------------------------------------------------------------------- */
-/* createPreviewMenuButtons --                                                   */
-/* --------------------------------------------------------------------------- */
-
-void UImanager::createPreviewMenuButtons(){
-  bool preview(true);
-  GuiFactory::Instance()->createPrinterDialog()->createPrintMenu( m_preview_menu, preview );
-}
-
-/* --------------------------------------------------------------------------- */
 /* addHelpCallback --                                                          */
 /* --------------------------------------------------------------------------- */
 
@@ -1021,11 +1010,6 @@ void UImanager::addOptions(){
   button = factory->createMenuButton( m_option_menu->getElement(), listener);
   m_option_menu->attach( button->getElement() );
   button->setLabel( "QColorDialog" );
-
-  listener = new QtDialogListener( "QStylesheet" );
-  button = factory->createMenuButton( m_option_menu->getElement(), listener);
-  m_option_menu->attach( button->getElement() );
-  button->setLabel( "QStylesheetEditor" );
 #endif
 
 #endif
@@ -1531,11 +1515,6 @@ void UImanager::QtDialogListener::ButtonPressed() {
     QColor bg = QColorDialog::getColor( pal.color(QPalette::Window));
     pal.setColor(QPalette::Window, bg );
     QApplication::setPalette(pal);
-  } else
-  if (m_dialog == "QStylesheet") {
-    static StyleSheetEditor* styleSheetEditor = new StyleSheetEditor();
-    styleSheetEditor->show();
-    styleSheetEditor->activateWindow();
   }
 #endif
 }

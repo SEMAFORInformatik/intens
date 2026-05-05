@@ -95,8 +95,7 @@ add_library(gui_qt OBJECT
         GuiQtProgressBar.cc
         HelpWindow.cc
         KNumValidator.cc
-        PlotCurve.cc
-        QProgressIndicator.cc
+        GuiQtProgressIndicator.cc
         QtDialogCompare.cc
         QtDialogConfirmation.cc
         QtDialogCopyright.cc
@@ -117,8 +116,6 @@ add_library(gui_qt OBJECT
         QtSimpleAction.cc
         QtTimer.cc
         GuiQwtBasePlot.cc
-        printpreview.cc
-        stylesheeteditor.cc
         )
 
 target_include_directories(gui_qt

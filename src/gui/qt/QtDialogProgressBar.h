@@ -17,7 +17,7 @@ class GuiQtPixmap;
 class QLabel;
 class QPushButton;
 class QTabWidget;
-class QProgressIndicator;
+class GuiQtProgressIndicator;
 class QDialogButtonBox;
 class GuiQtFieldgroup;
 class GuiEventLoopListener;
@@ -110,7 +110,7 @@ private:
   QLabel *mainFooterLabel;
   QLabel *subStatusLabel;
   QLabel *errorLabel;
-  QProgressIndicator *progressIndicator;
+  GuiQtProgressIndicator *progressIndicator;
   QTime  m_startTime;
 
   QWidget *pixWidget;

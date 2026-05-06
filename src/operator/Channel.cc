@@ -43,9 +43,6 @@
 // #include "utils/MultiLanguage.h"
 #include "utils/gettext.h"
 #include <fstream>
-#if ( __GNUC__ > 2 )
-  #include "utils/fdiostream.h"
-#endif
 #include "streamer/Stream.h"
 
 #define CLOSED -1
@@ -682,11 +679,7 @@ bool InputChannel::open( const std::string &filename )
   BUG_DEBUG("InputChannel::open, file: " << filename);
   if( m_istr != 0 )
     delete m_istr;
-#if 1
-  m_istr = new igzstream( filename.c_str() );
-#else
-  m_istr = new gzifstream( filename );
-#endif
+  m_istr = getInputStream(filename);
   if( !(*m_istr ) ){
     m_istr = new std::ifstream( filename.c_str() );
 #ifdef __MINGW32__

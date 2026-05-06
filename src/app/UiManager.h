@@ -143,7 +143,6 @@ private:
   void createHelpMenu();
   void createOpenMenuButtons();
   void createSaveMenuButtons();
-  void createPreviewMenuButtons();
   void createPrintMenuButtons();
   void setMainTitle();
   void addCopyrightDialog();

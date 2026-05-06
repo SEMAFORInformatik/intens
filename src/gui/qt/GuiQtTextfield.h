@@ -18,9 +18,6 @@ class QComboBox;
 class QStackedWidget;
 
 
-#define SELF_MADE_VALIDATION_TILL 0x050000
-
-
 /** Ein GuiQtTextfield-Objekt beinhaltet ein einzeiliges Ein- und/oder Ausgabefeld
     für eine Datapool-variable.
 

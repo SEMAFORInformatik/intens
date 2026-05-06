@@ -224,6 +224,7 @@ configure_gettext(
         "src/gui/qt/GuiQtTextfield.cc"
         "src/gui/qt/GuiQtTimetable.cc"
         "src/gui/qt/GuiQtToggle.cc"
+        "src/gui/qt/GuiQt3dPlot.cc"
         "src/gui/qt/GuiQwtPlot.cc"
         "src/gui/qt/GuiQwtPlotPicker.cc"
         "src/gui/qt/GuiQwtPlotZoomer.cc"

@@ -21,7 +21,7 @@
 #include "gui/qt/GuiQtFieldgroup.h"
 #include "gui/qt/GuiQtFieldgroupLine.h"
 #include "gui/qt/GuiQtLabel.h"
-#include "gui/qt/QProgressIndicator.h"
+#include "gui/qt/GuiQtProgressIndicator.h"
 #include "gui/qt/QtMultiFontString.h"
 #include "gui/qt/QtDialogWorkClock.h"
 #include "datapool/DataVector.h"
@@ -162,10 +162,9 @@ void QtDialogProgressBar::create(){
   mainLayout->addWidget(mainFooterLabel);
 
   // create a default progress indicator
-  progressIndicator = new QProgressIndicator();
+  progressIndicator = new GuiQtProgressIndicator();
   progressIndicator->setMinimumSize(30,30);
-  progressIndicator->setAnimationDelay(1000);
-  progressIndicator->startAnimation();
+  progressIndicator->startTimer(1000);
   mainLayout->addWidget(progressIndicator);
 
   mainLayout->addStretch(1);

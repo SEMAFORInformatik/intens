@@ -27,11 +27,7 @@
 #include "operator/Worker.h"
 #include "utils/Date.h"
 #include "utils/gettext.h"
-#if 1
 #include "utils/gzstream.h"
-#else
-#include "utils/fdiostream.h"
-#endif
 
 #include "utils/StringUtils.h"
 #include "utils/FileUtilities.h"
@@ -550,11 +546,7 @@ void FileStream::writeFile( const std::string &filename ){
   else {
     std::ostream *ostr=0;
     if( filename.find(".gz", filename.size()-3) != std::string::npos ){
-#if 1
-      ostr = new ogzstream( filename.c_str() );
-#else
-      ostr = new gzofstream( filename.c_str() );
-#endif
+      ostr = getOutputStream(filename);
     }
     else{
       if (m_binary_mode ||
@@ -580,14 +572,7 @@ void FileStream::writeFile( const std::string &filename ){
     }
     setFilename( filename );
     m_stream->write( *ostr );
-    if( filename.find(".gz", filename.size()-3) != std::string::npos ){
-#if 1
-      ((ogzstream*)ostr)->close();
-#else
-      ((gzofstream*)ostr)->close();
-#endif
-    }
-    else{
+    if( filename.find(".gz", filename.size()-3) == std::string::npos ){
       ((std::ofstream*)ostr)->close();
     }
     delete ostr;
@@ -796,7 +781,7 @@ void FileStream::openFile( FileStreamAction *action, FileSelectListener *listene
           readFile(fn);
         } else {
           BUG_INFO("igzstream, file: " << fn);
-          std::istream *is = new igzstream(fn);
+          std::istream *is = getInputStream(fn);
           if(!is->good()){
             BUG_INFO("igz failed: " << fn << ", good:" << is->good()) ;
             endFileStream( JobAction::job_Nok );
@@ -1010,7 +995,7 @@ void FileStream::readFile( const std::string &filename ){
   bool isgz_stream(true);
   std::istream *is = m_stream->hasNoGzOption() ||
     filename.find(".gz", filename.size()-3) == std::string::npos ?
-    0 : new igzstream(filename.c_str());
+    0 : getInputStream(filename);
   if( !is || !(*is) ){
     isgz_stream = false;
     is = FileUtilities::ReadFile(filename);

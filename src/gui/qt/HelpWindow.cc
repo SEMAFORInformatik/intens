@@ -4,7 +4,6 @@
 
 
 #include "HelpWindow.h"
-#include "printpreview.h"
 
 #include <QAction>
 #include <QApplication>
@@ -106,17 +105,11 @@ void HelpWindow::setupFileActions()
     a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("&Print..."), this);
     a->setShortcut(Qt::CTRL|Qt::Key_P);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrint()));
-//     tb->addAction(a);
-    menu->addAction(a);
-
-    a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("Print Preview..."), this);
-    connect(a, SIGNAL(triggered()), this, SLOT(filePrintPreview()));
     menu->addAction(a);
 
     a = new QAction(QIcon(rsrcPath + "/exportpdf.png"), tr("&Export PDF..."), this);
     a->setShortcut(Qt::CTRL|Qt::Key_D);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrintPdf()));
-//     tb->addAction(a);
     menu->addAction(a);
 
     menu->addSeparator();
@@ -253,14 +246,6 @@ void HelpWindow::filePrint()
     }
     delete dlg;
 #endif
-}
-
-void HelpWindow::filePrintPreview()
-{
-    PrintPreview *preview = new PrintPreview(textEdit->document(), this);
-    preview->setWindowModality(Qt::WindowModal);
-    preview->setAttribute(Qt::WA_DeleteOnClose);
-    preview->show();
 }
 
 void HelpWindow::filePrintPdf()

@@ -9,7 +9,8 @@
 #include <qlineedit.h>
 #include <qcolor.h>
 #if defined Q_OS_WIN || defined Q_OS_CYGWIN || defined  Q_OS_UNIX
-#include "gui/qt/KNumValidator.h"
+#include "gui/qt/DoubleValidator.h"
+#include "gui/qt/IntegerValidator.h"
 #include "gui/qt/DateValidator.h"
 #endif
 
@@ -506,22 +507,21 @@ void GuiQtDataField::setValidator( QLineEdit *editor ){
   switch(m_param->DataItem()->getDataType() ) {
   case DataDictionary::type_Integer:
     {
-      KIntValidator* validator = new KIntValidator( editor );
-      if (min != std::numeric_limits<double>::min() ||
-          max != std::numeric_limits<double>::max() ) {
-        int imax = max == std::numeric_limits<double>::max() ? std::numeric_limits<int>::max() :
-          floor(0.5+max);
-        int imin = min == std::numeric_limits<double>::min() ? std::numeric_limits<int>::min() :
-          floor(0.5+min);
-       	validator->setRange(imin, imax);
-      }
+      std::cout << " INIT RANGE("<<min<<", "<<max<<")\n";
+      IntegerValidator* validator = new IntegerValidator(min, max, editor, m_param->getScalefactor());
+      int imax = max == std::numeric_limits<double>::max() ? std::numeric_limits<int>::max() :
+        floor(0.5+max);
+      int imin = min == std::numeric_limits<double>::min() ? std::numeric_limits<int>::min() :
+        floor(0.5+min);
+      validator->setRange(imin, imax);
+      std::cout << " SET RANGE("<<imin<<", "<<imax<<")\n";
       editor->setValidator(  validator );
       break;
     }
   case DataDictionary::type_Real:
     {
-      KDoubleValidator * validator;
-      validator = new KDoubleValidator( editor, "", m_param->getScalefactor() );
+      DoubleValidator * validator;
+      validator = new DoubleValidator( editor, m_param->getScalefactor() );
       if (min != std::numeric_limits<double>::min() ||
           max != std::numeric_limits<double>::max() ) {
         validator->setRange(min, max);

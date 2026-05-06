@@ -10,6 +10,8 @@ message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
 message("-- CMAKE_SYSTEM_VERSION:   ${CMAKE_SYSTEM_VERSION}")
 message("-- CMAKE_INSTALL_PREFIX:   ${CMAKE_INSTALL_PREFIX}")
 
+find_package(Gettext REQUIRED)
+find_package(Boost REQUIRED COMPONENTS iostreams)
 find_package(Cppzmq REQUIRED)
 find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
@@ -132,6 +134,7 @@ target_link_libraries(intens
   ZLIB::ZLIB
   LibXml2::LibXml2
   LibXslt::LibXslt
+  Boost::iostreams
 )
 
 if (Protobuf_FOUND)

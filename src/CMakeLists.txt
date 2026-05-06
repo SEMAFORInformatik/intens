@@ -104,33 +104,34 @@ target_include_directories(intens
         ${CMAKE_BINARY_DIR}/src )
 
 target_link_libraries(intens
-        PRIVATE
-        $<TARGET_OBJECTS:app>
-        $<TARGET_OBJECTS:datapool>
-        $<TARGET_OBJECTS:gui>
-        $<TARGET_OBJECTS:gui_qt>
-        $<TARGET_OBJECTS:job>
-        $<TARGET_OBJECTS:operator>
-        $<TARGET_OBJECTS:parser>
-        $<TARGET_OBJECTS:plot>
-        $<TARGET_OBJECTS:plot_qt>
-        $<TARGET_OBJECTS:streamer>
-        $<TARGET_OBJECTS:utils>
-        $<TARGET_OBJECTS:xfer>
-        $<TARGET_OBJECTS:xml>
-        jsoncpp
-        Qwt::Qwt
-        Qt::PrintSupport
-        Qt::Network
-        Qt::Widgets
-        Qt::Gui
-        Qt::Core
-        Cppzmq::Cppzmq
-        CURL::libcurl
-        Ltdl::Ltdl
-        ZLIB::ZLIB
-        LibXml2::LibXml2
-        LibXslt::LibXslt
+  PRIVATE
+  $<TARGET_OBJECTS:app>
+  $<TARGET_OBJECTS:datapool>
+  $<TARGET_OBJECTS:gui>
+  $<TARGET_OBJECTS:gui_qt>
+  $<TARGET_OBJECTS:job>
+  $<TARGET_OBJECTS:operator>
+  $<TARGET_OBJECTS:parser>
+  $<TARGET_OBJECTS:plot>
+  $<TARGET_OBJECTS:plot_qt>
+  $<TARGET_OBJECTS:streamer>
+  $<TARGET_OBJECTS:utils>
+  $<TARGET_OBJECTS:xfer>
+  $<TARGET_OBJECTS:xml>
+  jsoncpp
+  Intl::Intl
+  Qwt::Qwt
+  Qt::PrintSupport
+  Qt::Network
+  Qt::Widgets
+  Qt::Gui
+  Qt::Core
+  Cppzmq::Cppzmq
+  CURL::libcurl
+  Ltdl::Ltdl
+  ZLIB::ZLIB
+  LibXml2::LibXml2
+  LibXslt::LibXslt
 )
 
 if (Protobuf_FOUND)
@@ -190,7 +191,6 @@ target_link_libraries(intens
         nghttp2
         unistring
         bcrypt
-        ${Intl_LIBRARY}
         )
 endif (MINGW)
 if (USE_LOG4CPLUS)

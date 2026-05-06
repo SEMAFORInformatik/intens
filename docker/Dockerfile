@@ -20,6 +20,7 @@ RUN set -eux; \
     bison \
     gettext \
     libcurl4-openssl-dev \
+    libboost-iostreams1.83-dev \
     libxml2-dev \
     libxslt-dev \
     libjsoncpp-dev \
@@ -77,6 +78,7 @@ RUN set -eux; \
     ca-certificates \
     gettext \
     locales \
+    libboost-iostreams1.83.0 \
     libqt6gui6 \
     libqt6svg6 \
     libqt6printsupport6 \

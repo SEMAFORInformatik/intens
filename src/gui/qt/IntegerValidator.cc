@@ -1,4 +1,7 @@
- #include <limits>
+// SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+// SPDX-License-Identifier: Apache-2.0
+
+#include <limits>
 #include "xfer/Scale.h"
 #include "xfer/XferConverter.h"
 #include "app/AppData.h"

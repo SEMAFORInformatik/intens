@@ -4736,7 +4736,7 @@ ui_navigator_root_option /* DOCUMENTATION:UNFOLD */
       {
         configurator -> setAutoLevel();
       }
-  | tHIDE_EMPTY_FOLDER /* DOCUMENTATION:HIDE BEGIN (deprecated, use HIDE_EMPTY_FOLDER instead) */
+  | tHIDE_EMPTY_FOLDER /* DOCUMENTATION:HIDE BEGIN (deprecated, use HIDE_EMPTY_FOLDERS instead) */
       {
         configurator -> setHideEmptyFolder();
         std::cerr << "HIDE_EMPTY_FOLDER is deprecated. Please use HIDE_EMPTY_FOLDERS instead." << std::endl;

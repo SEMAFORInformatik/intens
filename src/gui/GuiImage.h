@@ -9,6 +9,7 @@
 #include<limits>
 #include "app/HardCopyListener.h"
 #include "gui/GuiMFMImageMapper.h"
+#include "datapool/DataVector.h"
 
 class GuiPlotDataItem;
 class XferDataItem;
@@ -157,6 +158,8 @@ public:
   double getManualScaleY();
   void setManualScaleX( double );
   void setManualScaleY( double );
+  const DataVector& getXValues();
+  const std::string &getXAxisLabel();
   double getWeight();
   void setWeight( double w );
   const std::string &getChannelName();
@@ -228,6 +231,8 @@ private:
   double m_range_max_manual;
   double m_scale_x_manual;
   double m_scale_y_manual;
+  std::string m_axis_x_label;
+  DataVector m_axis_x_values;
   std::vector<DataProcessing *>m_processingVector;
   int m_processingIndex;
 

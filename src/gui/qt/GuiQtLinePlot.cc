@@ -301,6 +301,7 @@ void GuiQtLinePlot::updateLabel(){
 void GuiQtLinePlot::updateUnit(){
   if( m_plot ){
     m_plot->setAxisTitle( QwtPlot::yLeft, QString::fromStdString(getChannelUnit()) );
+    m_plot->setAxisTitle( QwtPlot::xBottom, QString::fromStdString(getXAxisLabel()) );
   }
 }
 
@@ -419,8 +420,15 @@ void GuiQtLinePlot::setLine( int id, int line,
 
     int i;
     double y;
+    const DataVector& x_values = getXValues();
     for( i=0; i<data.size(); ++i ){
-      m_xArray[dir][i] = i;
+      if (i < x_values.size()){
+        double x;
+        x_values[i]->getValue(x);
+        m_xArray[dir][i] = x;
+      }else{
+        m_xArray[dir][i] = i;
+      }
       y = (*dproc)( data[i] );
       m_yArray[dir][i] = f * y;
     }

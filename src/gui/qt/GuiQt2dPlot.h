@@ -312,7 +312,6 @@ private:
 //  ConfigDialog::eItemStyle getConfigDialogItemStyle(PlotItem* plotItem);
 
 //   // menu staff
-//   GuiQtMenuButton* newPopupMenuDialogButton( std::string label, GuiMenuButtonListener* listener);
 //   void newPopupMenuToggle( std::string label, bool status, GuiToggleListener* listener );
 //   void timerEvent ( QTimerEvent * event );
 //   void configDialogSetCurvePalette();
@@ -333,28 +332,10 @@ private:
 //   private:
 //     GuiQt2dPlot  *m_plot;
 //   };
-//   class PrintListener : public GuiMenuButtonListener
-//   {
-//   public:
-//     PrintListener( GuiQt2dPlot *plot ): m_plot( plot ) {}
-//     virtual void ButtonPressed();
-//     virtual JobAction *getAction(){ return 0; }
-//   private:
-//     GuiQt2dPlot  *m_plot;
-//   };
 //   class OpenScaleListener : public GuiMenuButtonListener
 //   {
 //   public:
 //     OpenScaleListener( GuiQt2dPlot *plot ): m_plot( plot ) {}
-//     virtual void ButtonPressed();
-//     virtual JobAction *getAction(){ return 0; }
-//   private:
-//     GuiQt2dPlot  *m_plot;
-//   };
-//   class OpenCycleListener : public GuiMenuButtonListener
-//   {
-//   public:
-//     OpenCycleListener( GuiQt2dPlot *plot ): m_plot( plot ) {}
 //     virtual void ButtonPressed();
 //     virtual JobAction *getAction(){ return 0; }
 //   private:
@@ -493,7 +474,6 @@ private:
 //   GuiQwtPlotZoomer          *m_zoomer[2];
 //   GuiQwtPlotPicker          *m_picker;
 //   GuiQwtPlotBarChart        *m_barPlotChart[2];
-//   GuiQtPopupMenu            *m_popupMenu;
 //   UserInteractionModeMenu    m_userInteractionMenu;
 //   QString                    m_background;
    int                        m_lineWidth;
@@ -505,20 +485,17 @@ private:
   std::map<QString, bool>    m_legendVis;
 
 //   OpenScaleListener          m_openScaleListener;
-//   OpenCycleListener          m_openCycleListener;
 //   OpenConfigListener         m_openConfigListener;
-//   PrintListener              m_printListener;
 //   AnnotationListener         m_annotationListener;
 //   PropertyListener           m_propertyListener;
 
   HardCopyListener::FileFormat  m_currentFileFormat;
-//   HardCopyListener::FileFormats2 m_supportedFileFormats;
+  HardCopyListener::FileFormats2 m_supportedFileFormats;
 //   static eUserInteractionMode s_userInteractionMode;
 //   eUserInteractionMode m_userInteractionMode;
   Plot2dCurveAttributes      m_curveAttrs;
   QLineSeries              *m_lastSelectedCurve;
 //   GuiQtMenuButton           *m_configButton;
-//   GuiQtMenuButton           *m_cyclesButton;
 
 //   ///  tPlotVector          m_plots;
 //   bool                 m_selectionRectMode;

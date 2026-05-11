@@ -23,9 +23,11 @@ ARG MXE_TARGET_LINK2=static
 #
 # mxe master 2026-02-23
 # qt6: update to version 6.9.2
-ARG MXE_GIT_TAG=be3ac46b3f6e501bef517e527bf4d5c3d5ccfc99
+# ARG MXE_GIT_TAG=be3ac46b3f6e501bef517e527bf4d5c3d5ccfc99
 # qt6: update to version 6.10.2
-#ARG MXE_GIT_TAG=9e26afc79b8e8c59ca863a35dd09755ceb09a3ca
+# ARG MXE_GIT_TAG=9e26afc79b8e8c59ca863a35dd09755ceb09a3ca
+# qt6: update to version 6.11.0
+ARG MXE_GIT_TAG=717610f71f487cb3bc4c3caf2b9af1c760ab1de3
 
 ENV CMAKE_TOOLCHAIN_FILE=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
 ENV CMAKE_TOOLCHAIN_FILE2=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
@@ -109,21 +111,21 @@ RUN set -eux; \
   echo "MXE_TARGETS := ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD} ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}" > settings.mk && \
   echo "MXE_USE_CCACHE :="                                         >> settings.mk && \
   echo "MXE_PLUGIN_DIRS := plugins/gcc14"                          >> settings.mk && \
-  echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 zlib flex log4cplus treesitter"  >> settings.mk && \
+  echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 boost zlib flex log4cplus treesitter qwt"  >> settings.mk && \
   echo ".DEFAULT local-pkg-list:"                                  >> settings.mk && \
   echo "local-pkg-list: \$(LOCAL_PKG_LIST)"                        >> settings.mk
 
-COPY flex.mk libxslt.mk qwt.mk log4cplus.mk treesitter.mk /usr/src/mxe/src
+COPY flex.mk qwt.mk log4cplus.mk treesitter.mk /usr/src/mxe/src
 COPY qt6-qtnetworkauth.mk /usr/src/mxe/src/qt/qt6/
-#COPY qt6-qtnetworkauth.mk qt6-qtquick3d.mk qt6-qtgraphs.mk /usr/src/mxe/src/qt/qt6/
-#COPY gcc-14.3.0.tar.xz /usr/src/mxe/pkg/
+#COPY qt6-qtquick3d.mk qt6-qtgraphs.mk /usr/src/mxe/src/qt/qt6/
 #
 # Build MXE
 #
 RUN set -eux; \
   cd /usr/src/mxe && \
   make JOBS=$(nproc) && \
-  make qwt && \
+  make clean-junk && make clean-pkg && \
+  rm -rf /usr/src/mxe/usr/x86_64-w64-mingw32.static && \
   #
   # Cleanup: By keeping the MXE build system (Makefile, ...), derived images will be able to install
   #          additional packages.
@@ -151,6 +153,10 @@ RUN set -eux; \
   # clean up temporary wine files
   #
   rm -rf /tmp/wine-* && \
+  # boost install fix
+  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_iostreams-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_iostreams-mt-x64.dll \
+  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_random-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_random-mt-x64.dll \
+  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_regex-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_regex-mt-x64.dll \
   #
   # create FlexLexer.h link (flex is for some unknown reason installed inside x86_64-pc-linux-gnu)
   #

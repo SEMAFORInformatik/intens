@@ -73,6 +73,7 @@
 // #include "gui/qt/GuiQwtPlotPicker.h"
 // #include "gui/qt/GuiQwtPlotZoomer.h"
 #include "gui/qt/GuiQtFactory.h"
+#include "gui/qt/GuiQtPrinterDialog.h"
 
 #include "gui/qt/QtMultiFontString.h"
 
@@ -80,9 +81,9 @@
 // #include "plot/qt/QtScaleDialog.h"
 #include "plot/qt/QtCyclesDialog.h"
 #include "gui/qt/GuiQtPopupMenu.h"
-// #include "gui/qt/GuiQtMenuButton.h"
+#include "gui/GuiMenuButton.h"
 // #include "gui/qt/GuiQtSeparator.h"
-// #include "gui/qt/GuiQtPrinterDialog.h"
+#include "gui/GuiPrinterDialog.h"
 // #include "gui/qt/GuiQwtScaleDraw.h"
 // #include "gui/qt/GuiQwtPlotBarChart.h"
 // #include "gui/qt/GuiQwtScaleEngine.h"
@@ -504,16 +505,13 @@ GuiQt2dPlot::GuiQt2dPlot( const std::string &name )
 //   , m_picker( 0 )
 //   , m_userInteractionMenu( this )
 //   , m_resetListener( this )
-//   , m_printListener( this )
 //   , m_openScaleListener( this )
-//   , m_openCycleListener( this )
 //   , m_openConfigListener( this )
 //   , m_annotationListener( this )
 //   , m_propertyListener( this )
    , m_currentFileFormat( HardCopyListener::Postscript )
    , m_lastSelectedCurve( 0 )
 //   , m_configButton( 0 )
-//   , m_cyclesButton( 0 )
    , m_showAnnotationLabels( false )
    , m_withAnnotationOption( false )
 //   , m_majorTicks( MAJOR_TICKS )
@@ -687,17 +685,14 @@ GuiQt2dPlot::GuiQt2dPlot( const GuiQt2dPlot &plot )
 //   , m_picker( 0 )
 //   , m_userInteractionMenu( this )
 //   , m_resetListener( this )
-//   , m_printListener( this )
 //   , m_openScaleListener( this )
-//   , m_openCycleListener( this )
 //   , m_openConfigListener( this )
 //   , m_annotationListener( this )
 //   , m_propertyListener( this )
    , m_currentFileFormat( plot.m_currentFileFormat )
-//   , m_supportedFileFormats( plot.m_supportedFileFormats )
+   , m_supportedFileFormats( plot.m_supportedFileFormats )
    , m_lastSelectedCurve( 0 )
 //   , m_configButton( 0 )
-//   , m_cyclesButton( 0 )
    , m_showAnnotationLabels( plot.m_showAnnotationLabels )
    , m_withAnnotationOption( plot.m_withAnnotationOption )
 //   , m_majorTicks( plot.m_majorTicks )
@@ -1153,21 +1148,21 @@ void GuiQt2dPlot::create(){
 void GuiQt2dPlot::setAutoScale(){
   double min, max;
   if (!getAxis(0).isScaleEnabled()) {
-    getBoundingBox(Y1AXIS, min, max);
+    if(getBoundingBox(Y1AXIS, min, max))
+       m_y1axis->setRange(min, max);
     ///    m_y1axis->setRange(0,0); // trick, autoscale
-    m_y1axis->setRange(min, max);
     BUG_DEBUG("range y1axis: " << min << ", " << max);
     m_y1axis->setLabelsEditable(true);
   }
   if (!getAxis(1).isScaleEnabled())  {
-    getBoundingBox(Y2AXIS, min, max);
-    m_y2axis->setRange(min, max);
+    if (getBoundingBox(Y2AXIS, min, max))
+      m_y2axis->setRange(min, max);
     BUG_DEBUG("range y2xis: " << min << ", " << max);
     m_y2axis->setLabelsEditable(true);
   }
   if (!getAxis(2).isScaleEnabled()) {
-    getBoundingBox(XAXIS, min, max);
-    m_xaxis->setRange(min, max);
+    if (getBoundingBox(XAXIS, min, max))
+      m_xaxis->setRange(min, max);
     BUG_DEBUG("range xaxis: " << min << ", " << max);
     m_xaxis->setLabelsEditable(true);
   }
@@ -1334,14 +1329,14 @@ void GuiQt2dPlot::update( GuiElement::UpdateReason reason ){
 //     always = true;
 //   }
 
-//   // enable or disable cycle popup menu button
-//   if( m_cyclesButton != 0 ) {
-//     if( dpi().numCycles() > 1 ){
-//       m_cyclesButton->enable();
-//     } else {
-//       m_cyclesButton->disable();
-//     }
-//   }
+  // enable or disable cycle popup menu button
+  if( getCyclesButton() != 0 ) {
+    if( dpi().numCycles() > 1 ){
+      getCyclesButton()->getElement()->enable();
+    } else {
+      getCyclesButton()->getElement()->disable();
+    }
+  }
 
 //   updateAxisTypes();
 
@@ -1863,6 +1858,7 @@ bool GuiQt2dPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, in
   if (pts.size() == 0)
     return false;
   QXYSeries* xyseries(0);
+  QXYSeries* xyseriesLower(0);
   QBarSeries* barseries(0);
   if (!series) {
     eStyle style = m_style[ (item->getAxisType() == Y1AXIS ? 0 : 1) ];
@@ -1871,15 +1867,21 @@ bool GuiQt2dPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, in
       else series = new QLineSeries();
     }else if (style == DOTS)
       series = new QScatterSeries();
-    else if (style == AREA)
-      series = new QAreaSeries();
-    else if (style == BAR){
+    else if (style == AREA){
+      auto seriesArea = new QAreaSeries(new QLineSeries(), new QLineSeries());
+      xyseries = seriesArea->upperSeries();
+      xyseriesLower = seriesArea->lowerSeries();
+      series = seriesArea;
+    }else if (style == BAR){
       barseries = new QBarSeries();
       series = barseries;
     }
     else
       series = new QSplineSeries();
-    xyseries = dynamic_cast<QXYSeries*>(series);
+    if (!xyseries)
+      xyseries = dynamic_cast<QXYSeries*>(series);
+    BUG_DEBUG("style: " << style << " => xyseries: " << xyseries
+              << ", xyseriesLower: " << xyseriesLower);
 
     // add data
     if (barseries){
@@ -1893,7 +1895,8 @@ bool GuiQt2dPlot::updateCurve( PlotItem *item, int cycle, int xWildcardIndex, in
       for (auto pt: pts) {
         if (xyseries){
           xyseries->append(pt.x, pt.y);
-          xyseries->append(pt.x, pt.y);
+          if (style == AREA && xyseriesLower)
+            xyseriesLower->append(pt.x, 0);
         }
       }
       QObject::connect(xyseries, &QLineSeries::pressed, this, &GuiQt2dPlot::clickPoint);
@@ -2688,15 +2691,12 @@ HardCopyListener::FileFormat GuiQt2dPlot::getFileFormat() {
 /* isFileFormatSupported --                                                    */
 /* --------------------------------------------------------------------------- */
 bool GuiQt2dPlot::isFileFormatSupported( const HardCopyListener::FileFormat &fileFormat ){
-//   HardCopyListener::FileFormats2::iterator it;
-  bool result = false;
-//   for( it = m_supportedFileFormats.begin();
-//        it != m_supportedFileFormats.end() && !result;
-//        ++it ){
-//     if( (*it).first == fileFormat )
-//       result = true;
-//   }
-  return result;
+  HardCopyListener::FileFormats2::iterator it;
+  for(auto it : m_supportedFileFormats){
+    if( it.first == fileFormat )
+      return true;
+  }
+  return false;
 }
 
 // /* --------------------------------------------------------------------------- */
@@ -2727,51 +2727,17 @@ bool GuiQt2dPlot::isFileFormatSupported( const HardCopyListener::FileFormat &fil
 /* --------------------------------------------------------------------------- */
 bool GuiQt2dPlot::write( InputChannelEvent &event ) {
   BUG_DEBUG("write( InputChannelEvent &event )");
-
-//   std::string msg;
-//   GuiQtPrinterDialog& hardcopy = GuiQtPrinterDialog::Instance();
-//   switch( hardcopy.FileFormat() ){
-//   case HardCopyListener::Postscript :
-//   case HardCopyListener::PNG :
-//   case HardCopyListener::GIF :
-//   case HardCopyListener::PDF :
-//     m_currentFileFormat = HardCopyListener::Postscript;
-//     break;
-//   case HardCopyListener::JPEG :
-//     m_currentFileFormat = HardCopyListener::JPEG;
-//     break;
-//   default :
-//     msg = compose(_("%1: Selected file format is not supported"),getName() );
-//     printMessage( msg, GuiElement::msg_Error );
-//     //    return false;
-//   }
-
-//   if( m_plot == 0 && getMyForm()){
-//     getMyForm()->getElement()->getQtElement()->create();
-//   }
-//   update(reason_Always);
-//   std::string tmp_eps_name("/tmp/xxxx.eps");
-//   if (AppData::Instance().disableFeatureSVG()) {
-//     QTemporaryFile tmp_file( QString::fromStdString(compose("%1%2XXXXXX.eps", QDir::tempPath().toStdString(),QDir::separator().row())) );
-//     if (tmp_file.open()){
-//       tmp_eps_name =  tmp_file.fileName().toStdString();
-//       tmp_file.remove();
-//     }
-//     QSize s(m_chart->sizeHint());
-//     QPixmap pm(s.width(), s.height());
-//     pm.fill();
-//     m_chart->print( pm, true );
-//     pm.save( QString::fromStdString(tmp_eps_name) );
-//   } else {
-//     generateFileWithSvgGenerator( tmp_eps_name, true );
-//   }
-//   QFile tmp_eps(QString::fromStdString(tmp_eps_name));
-
-//   std::ostringstream os;
-//   if (tmp_eps.open(QIODevice::ReadOnly))
-//     os << tmp_eps.readAll().data() << std::flush;
-//   event.write( os );
-
+  std::string msg;
+  GuiQtPrinterDialog& hardcopy = GuiQtPrinterDialog::Instance();
+  if( m_chart == 0 && getMyForm()){
+    getMyForm()->getElement()->getQtElement()->create();
+  }
+  update(reason_Always);
+  QSize s(m_chartView->sizeHint());
+  QPainter painter;
+  painter.begin(hardcopy.getQPrinter());
+  m_chartView->render(&painter);
+  painter.end();
   return true;
 }
 
@@ -2959,18 +2925,6 @@ bool GuiQt2dPlot::saveFile( GuiElement *e ){
   GuiQtElement::saveFile(NULL);
   return true;
 }
-
-// /* --------------------------------------------------------------------------- */
-// /* newPopupMenuDialogButton --                                                 */
-// /* --------------------------------------------------------------------------- */
-
-// GuiQtMenuButton* GuiQt2dPlot::newPopupMenuDialogButton( std::string label,
-// 					   GuiMenuButtonListener* listener ){
-//   GuiQtMenuButton *button =  new GuiQtMenuButton( m_popupMenu, listener );
-//   m_popupMenu->attach( button );
-//   button->setDialogLabel( label );
-//   return button;
-// }
 
 // /* --------------------------------------------------------------------------- */
 // /* newPopupMenuToggle --                                                       */
@@ -3650,56 +3604,35 @@ void GuiQt2dPlot::getSelectionPoints(tPointVector& pts,
 //   dialog->getElement()->getQtElement()->create();
 // }
 
-// /* --------------------------------------------------------------------------- */
-// /* openCyclesDialog --                                                         */
-// /* --------------------------------------------------------------------------- */
-
-// void GuiQt2dPlot::openCyclesDialog() {
-//   if (getName().size() == 0) // funktion in popupMenu nicht nutzbar
-//     return;
-//   std::vector<int> intVector;
-//   int value = getAllCycles();
-
-//   if( getCyclesDialog() != 0 ){
-//     getCyclesDialog()->getValues( intVector, value );
-//     delete getCyclesDialog();
-//     setCyclesDialog(0);
-//   }
-
-//   buildCyclesDialog();
-//   getCyclesDialog()->setValues( intVector, value );
-//   getCyclesDialog()->getElement()->manage();
-// }
-
 /* --------------------------------------------------------------------------- */
 /* buildCyclesDialog --                                                        */
 /* --------------------------------------------------------------------------- */
 void GuiQt2dPlot::buildCyclesDialog() {
-//   double value;
-//   int status = 0;
+  double value;
+  int status = 0;
 
-//   GuiEventData *event = new GuiEventData();
-//   QtCyclesDialog*  _cyclesDialog = new QtCyclesDialog( this, this, _("CaseDialog"), event );
-//   setCyclesDialog( _cyclesDialog );
-//   std::string name = m_isCloned ? compose("%1_%2", getName(), this) : getName();
-//   _cyclesDialog->initialize( name );
+  GuiEventData *event = new GuiEventData();
+  QtCyclesDialog*  _cyclesDialog = new QtCyclesDialog( this, this, _("CaseDialog"), event );
+  setCyclesDialog( _cyclesDialog );
+  std::string name = m_isCloned ? compose("%1_%2", getElement()->getName(), this) : getElement()->getName();
+  _cyclesDialog->initialize( name );
 
-//   int numCycles = dpi().numCycles();
-//   int currentCycle = dpi().currentCycle();
-//   for( int i = 0; i < numCycles; ++i ){
-//     if( i != currentCycle ){
-//       std::ostringstream os;
-//       XferDataItem *xfer = initXfer( "showCycle", i );
-//       xfer->setValue( 0 );
-//       os << _("Case") << " " << i+1;
-//       std::string cycleName;
-//       dpi().getCycleName( i, cycleName );
-//       if( cycleName.empty() )
-// 	cycleName = "<no name>";
-//       _cyclesDialog->addItem( os.str(),cycleName, xfer );
-//     }
-//   }
-//   _cyclesDialog->create( );
+  int numCycles = dpi().numCycles();
+  int currentCycle = dpi().currentCycle();
+  for( int i = 0; i < numCycles; ++i ){
+    if( i != currentCycle ){
+      std::ostringstream os;
+      XferDataItem *xfer = initXfer( "showCycle", i );
+      xfer->setValue( 0 );
+      os << _("Case") << " " << i+1;
+      std::string cycleName;
+      dpi().getCycleName( i, cycleName );
+      if( cycleName.empty() )
+        cycleName = "<no name>";
+      _cyclesDialog->addItem( os.str(),cycleName, xfer );
+    }
+  }
+  _cyclesDialog->create( );
 }
 
 /* --------------------------------------------------------------------------- */
@@ -4079,27 +4012,20 @@ void GuiQt2dPlot::clearPlots(bool always) {
 //   m_chart->setUserInteractionMode(mode);
 // }
 
-// /* --------------------------------------------------------------------------- */
-// /* GuiQt2dPlot::PrintListener::ButtonPressed                                    */
-// /* --------------------------------------------------------------------------- */
-// void GuiQt2dPlot::PrintListener::ButtonPressed() {
-//   GuiPrinterDialog::MyEventData event( ReportGen::PRINT );
-//   GuiQtPrinterDialog::Instance().showDialog( (HardCopyListener*) m_plot,
-//                                              m_plot, &event );
-// }
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::PrintListener::ButtonPressed                                    */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::PrintListener::ButtonPressed() {
+  GuiPrinterDialog::MyEventData event( ReportGen::PRINT );
+  GuiFactory::Instance()->createPrinterDialog()->showDialog( (HardCopyListener*) m_plot,
+                                                             m_plot->getElement(), &event );
+}
 
 // /* --------------------------------------------------------------------------- */
 // /* GuiQt2dPlot::OpenScaleListener::ButtonPressed                                */
 // /* --------------------------------------------------------------------------- */
 // void GuiQt2dPlot::OpenScaleListener::ButtonPressed() {
 //   m_chart->openScaleDialog();
-// }
-
-// /* --------------------------------------------------------------------------- */
-// /* GuiQt2dPlot::OpenCycleListener::ButtonPressed                                */
-// /* --------------------------------------------------------------------------- */
-// void GuiQt2dPlot::OpenCycleListener::ButtonPressed() {
-//   m_chart->openCyclesDialog();
 // }
 
 // /* --------------------------------------------------------------------------- */
@@ -4420,6 +4346,7 @@ void GuiQt2dPlot::handleMarkerClicked(){
 /* --------------------------------------------------------------------------- */
 void GuiQt2dPlot::handleMarker(QLegendMarker* marker){
   switch (marker->type()){
+  case QLegendMarker::LegendMarkerTypeArea:
   case QLegendMarker::LegendMarkerTypeBar:
   case QLegendMarker::LegendMarkerTypeXY:{
     // Turn legend marker back to visible, since hiding series also hides the marker

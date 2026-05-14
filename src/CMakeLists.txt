@@ -11,13 +11,32 @@ message("-- CMAKE_SYSTEM_VERSION:   ${CMAKE_SYSTEM_VERSION}")
 message("-- CMAKE_INSTALL_PREFIX:   ${CMAKE_INSTALL_PREFIX}")
 
 find_package(Gettext REQUIRED)
+  sbom_add_library("gettext" "${Gettext_VERSION}")
 find_package(Boost REQUIRED COMPONENTS iostreams)
-find_package(Cppzmq REQUIRED)
+  sbom_add_library("boost" "${Boost_VERSION}")
+find_package(cppzmq REQUIRED)
+  sbom_add_library("zmq" "${cppzmq_VERSION}")
 find_package(CURL REQUIRED)
+if(NOT CURL_VERSION)
+  pkg_check_modules(PC_curl QUIET libcurl)
+  set(CURL_VERSION ${PC_curl_VERSION})
+endif()
+  sbom_add_library("curl" "${CURL_VERSION}")
 find_package(LibXml2 REQUIRED)
+  sbom_add_library("libxml2" "${LibXml2_VERSION}")
 find_package(LibXslt REQUIRED)
+if(NOT LibXslt_VERSION)
+  pkg_check_modules(PC_libxslt QUIET libxslt)
+  set(LibXslt_VERSION ${PC_libxslt_VERSION})
+endif()
+  sbom_add_library("libxslt" "${LibXslt_VERSION}")
 find_package(Ltdl REQUIRED)
+#  sbom_add_library("ltdl" ${Ldtl_VERSION})
 find_package(Intl REQUIRED)
+#  sbom_add_library("intl" ${Intl_VERSION})
+pkg_check_modules(PC_jsoncpp "jsoncpp")
+#message("JSONCPP ${PC_jsoncpp_VERSION}")
+sbom_add_library("jsoncpp" ${PC_jsoncpp_VERSION})
 
 if (USE_MATLAB)
   find_path (MATLAB_INCLUDE_DIR include/engine.h
@@ -40,6 +59,7 @@ if (USE_QT6)
   if (USE_QT6GRAPHS)
     find_package(Qt6 REQUIRED COMPONENTS GraphsWidgets QuickWidgets)
   endif(USE_QT6GRAPHS)
+  sbom_add_library("qt6" "${Qt6_VERSION}")
 endif()
 if (USE_OAUTH)
   if (USE_QT6)
@@ -51,7 +71,9 @@ if(USE_QT6)
   qt_standard_project_setup()
 endif()
 find_package(Qwt REQUIRED)
+  sbom_add_library("qwt" "${QWT_VERSION_STRING}")
 find_package(ZLIB REQUIRED)
+  sbom_add_library("zlib" "${ZLIB_VERSION}")
 
 add_custom_command(
   OUTPUT intens_revision.h_
@@ -128,7 +150,7 @@ target_link_libraries(intens
   Qt::Widgets
   Qt::Gui
   Qt::Core
-  Cppzmq::Cppzmq
+  cppzmq
   CURL::libcurl
   Ltdl::Ltdl
   ZLIB::ZLIB
@@ -221,7 +243,7 @@ target_include_directories(
 target_link_libraries(
   mq_request
   PUBLIC
-  Cppzmq::Cppzmq
+  cppzmq
   jsoncpp
   )
 if (MINGW)
@@ -246,7 +268,7 @@ target_include_directories(
 target_link_libraries(
   mq_push
   PUBLIC
-  Cppzmq::Cppzmq
+  cppzmq
   jsoncpp
   )
 if (MINGW)
@@ -270,6 +292,11 @@ target_link_libraries(
   Qt::Widgets
   )
 
+# SBOM generation integration
+if(ENABLE_SBOM_GENERATION)
+    generate_sbom_data(intens)
+endif()
+ 
 # todo: should collect libraries but gives error:
 #   "could not find requested file"
 #include(GetRuntimeDependencies)
@@ -318,7 +345,7 @@ else()
   if(EXISTS "/usr/local/qwt-6.3.0/lib/libqwt.so.6.3.0")
     #install(FILES $<TARGET_FILE:Qwt::Qwt> TYPE LIB)
     install(FILES /usr/local/qwt-6.3.0/lib/libqwt.so.6.3.0 TYPE LIB RENAME libqwt.so.6.3)
-    #file(INSTALL .. DESTINATION lib FOLLOW_SYMLINK_CHAIN)
+    #sbom_add_library( .. DESTINATION lib FOLLOW_SYMLINK_CHAIN)
     # cp  /usr/local/qwt.6.3.0/lib/libqwt.so -> libqwt.so.6.3.0
     #install(IMPORTED_RUNTIME_ARTIFACTS Qwt::Qwt)
  endif()

@@ -10,6 +10,9 @@ endif()
 if(CMAKE_VERSION VERSION_GREATER "3.17")
   cmake_policy(SET CMP0100 NEW) # Let AUTOMOC, AUTOUIC process .hh files
 endif()
+if(CMAKE_VERSION VERSION_GREATER "3.29")
+  cmake_policy(SET CMP0167 NEW) # find boost directly
+endif()
 
 project(intens LANGUAGES C CXX)
 # project does not support non numeric suffixes:
@@ -29,10 +32,24 @@ string(CONCAT PACKAGE_VERSION
   ".${PACKAGE_VERSION_MINOR}"
   ".${PACKAGE_VERSION_PATCH}"
 )
+set(ROJECT_VERSION ${PACKAGE_VERSION})
 if(UNIX)
   include(GNUInstallDirs)
 endif()
 
+set(CMAKE_MODULE_PATH
+  ${CMAKE_MODULE_PATH}
+  ${PROJECT_SOURCE_DIR}/cmake/Modules
+)
+
+# Enable SBOM generation features
+option(ENABLE_SBOM_GENERATION "Enable SBOM generation during build" ON)
+if(ENABLE_SBOM_GENERATION)
+  include(SBOMGeneration)
+  sbom_init()
+  set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
+ 
 option(CMAKE_DEBUG_MESSAGES "Enable verbose status messages for CMakeLists.txt logic." OFF)
 
 # change the default install path without overriding a user-provided value
@@ -97,11 +114,6 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR WIN32)
   set(CMAKE_INSTALL_DATADIR "." CACHE PATH "public dataroot dir" FORCE)
 endif()
 
-set(CMAKE_MODULE_PATH
-  ${CMAKE_MODULE_PATH}
-  ${PROJECT_SOURCE_DIR}/cmake/Modules
-)
-
 # define _DEBUG in debug mode (cmake -DCMAKE_BUILD_TYPE=Debug)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 
@@ -125,6 +137,7 @@ if (USE_LOG4CPLUS)
   if (log4cplus_FOUND)
     add_compile_definitions(HAVE_LOG4CPLUS)
     set(INTENS_INSTALL_FLAGS "-DHAVE_LOG4CPLUS=1")
+    sbom_add_library("log4cplus" ${log4cplus_VERSION})
   endif()
 endif()
 
@@ -147,6 +160,9 @@ find_package(Protobuf)
 if (Protobuf_FOUND)
   message("-- Found Protobuf")
   add_compile_definitions(HAVE_PROTOBUF)
+  sbom_add_library("protobuf" ${Protobuf_VERSION})
+  find_package(absl)
+  sbom_add_library("absl" ${absl_VERSION})
 else()
   message("-- Protobuf not found")
 endif()

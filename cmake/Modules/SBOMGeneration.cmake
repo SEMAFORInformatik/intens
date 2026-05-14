@@ -38,7 +38,7 @@ function(generate_sbom_data target_name)
     COMMAND python3 "${CMAKE_SOURCE_DIR}/scripts/cmake_sbom_generator.py"
       --build-dir "${CMAKE_BINARY_DIR}"
       --target "${target_name}"
-      --output "${CMAKE_BINARY_DIR}/sbom-${target_name}.spdx.json"
+      --output "${CMAKE_BINARY_DIR}/sbom-${target_name}.cyclonedx.json"
     COMMENT "Generating SBOM for ${target_name}"
   )
 endfunction()

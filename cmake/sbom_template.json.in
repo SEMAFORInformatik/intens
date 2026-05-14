@@ -1,6 +1,3 @@
-# SBOM metadata template
-# SPDX-FileCopyrightText: 2026 SEMAFOR Informatik & Energie AG
-# SPDX-License-Identifier: Apache-2.0
 {
   "project": {
     "name": "@PACKAGE_NAME@",

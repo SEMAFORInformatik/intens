@@ -49,7 +49,7 @@ components = [
           {"type": "website", "url": "https://github.com/log4cplus/log4cplus"}]
     },
     {
-      "group": "The Qt Company", "name": "Qt6Core", "version": "6.10.3",
+      "group": "The Qt Company", "name": "qt6", "version": "6.10.3",
       "type": "library","bom-ref": "Qt6Core",
       "licenses": [{"license": {"id": "LGPL-3.0-only"}}]
     },

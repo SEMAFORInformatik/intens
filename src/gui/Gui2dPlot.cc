@@ -36,6 +36,7 @@
 #include "gui/GuiButtonbar.h"
 #include "gui/GuiPulldownMenu.h"
 #include "gui/GuiPopupMenu.h"
+#include "gui/GuiPrinterDialog.h"
 #include "gui/qt/GuiQtElement.h"
 
 INIT_LOGGER();
@@ -74,12 +75,15 @@ Gui2dPlot::Gui2dPlot( const std::string &name )
   , m_allCycles( false )
   , m_maxCurveLen( 0 )
   , m_fullscreenDialog( 0 )
-
+  , m_popupMenu(0)
   , m_redrawListener( this )
   , m_resetListener( this )
   , m_logarithmicMenu( this )
   , m_copyListener( this )
   , m_fullscreenListener( this )
+  , m_openCycleListener( this )
+  , m_printListener( this )
+  , m_cyclesButton( 0 )
 {
   for( int axis = 0; axis < 2; ++axis ){
     m_yStyleMenu[axis] = new StyleMenu( this );
@@ -150,13 +154,16 @@ Gui2dPlot::Gui2dPlot( const Gui2dPlot& plot)
   , m_precMINMAX(plot.m_precMINMAX)
   , m_precAVG(plot.m_precAVG)
   , m_precRMS(plot.m_precRMS)
-
   , m_fullscreenDialog( plot.m_fullscreenDialog )
+  , m_popupMenu(0)
   , m_redrawListener( this )
   , m_resetListener( this )
   , m_logarithmicMenu( this )
   , m_copyListener( this )
   , m_fullscreenListener( this )
+  , m_openCycleListener( this )
+  , m_printListener( this )
+  , m_cyclesButton( 0 )
 {
   for( int axis = 0; axis < 2; ++axis ){
     m_yStyleMenu[axis] = new StyleMenu( this );
@@ -2768,7 +2775,8 @@ GuiMenuButton* Gui2dPlot::newPopupMenuButton(GuiElement* parent, std::string lab
 /* createPopupMenu --                                                          */
 /* --------------------------------------------------------------------------- */
 void Gui2dPlot::createPopupMenu() {
-  auto m_popupMenu = getElement()->newPopupMenu();
+  if (!m_popupMenu)
+    m_popupMenu = getElement()->newPopupMenu();
 
   const std::vector<Plot2dMenuDescription::eEntry> &desc =
     GuiFactory::Instance()->getPlot2dMenuDescription()->getDescription();
@@ -2779,10 +2787,10 @@ void Gui2dPlot::createPopupMenu() {
 //      case Plot2dMenuDescription::eZOOM :
 //        createUserInteractionModeMenu( m_popupMenu );
 //        break;
-     // case Plot2dMenuDescription::eRESET :
-     //   newPopupMenuButton(m_popupMenu->getElement(), _("Zoom Out"),
-     //                       &m_resetListener );
-     //   break;
+     case Plot2dMenuDescription::eRESET :
+       newPopupMenuButton(m_popupMenu->getElement(), _("Zoom Out"),
+                           &m_resetListener );
+       break;
      case Plot2dMenuDescription::eREDRAW :
        newPopupMenuButton(m_popupMenu->getElement(),  _("Redraw"),
                            &m_redrawListener );
@@ -2795,12 +2803,12 @@ void Gui2dPlot::createPopupMenu() {
 //       else
 // 	showAnnotationLabels( false );
 //       break;
-//     case Plot2dMenuDescription::ePRINT :
-//       if (!AppData::Instance().HeadlessWebMode()) {
-// 	newPopupMenuDialogButton( _("Print"),
-// 				  &m_printListener );
-//       }
-//       break;
+    case Plot2dMenuDescription::ePRINT :
+      if (!AppData::Instance().HeadlessWebMode()) {
+        newPopupMenuDialogButton( _("Print"),
+                                  &m_printListener );
+      }
+      break;
     case  Plot2dMenuDescription::eLOGARITHMIC :
       createLogarithmicMenu(m_popupMenu);
       break;
@@ -2812,10 +2820,10 @@ void Gui2dPlot::createPopupMenu() {
 //       m_configButton = newPopupMenuDialogButton( _("Configuration"),
 //                                                  &m_openConfigListener );
 //       break;
-//     case Plot2dMenuDescription::eCYCLES :
-//       m_cyclesButton = newPopupMenuDialogButton( _("Select cases"),
-//                                                  &m_openCycleListener );
-//       break;
+    case Plot2dMenuDescription::eCYCLES :
+      m_cyclesButton = newPopupMenuDialogButton( _("Select cases"),
+                                                 &m_openCycleListener );
+      break;
     case Plot2dMenuDescription::eSTYLE :
       createYStyleMenu( m_popupMenu, Y1AXIS );
       createYStyleMenu( m_popupMenu, Y2AXIS );
@@ -2898,6 +2906,18 @@ void Gui2dPlot::createYStyleMenu( GuiPopupMenu *menu, eAxisType axis ){
 }
 
 /* --------------------------------------------------------------------------- */
+/* newPopupMenuDialogButton --                                                 */
+/* --------------------------------------------------------------------------- */
+
+GuiMenuButton* Gui2dPlot::newPopupMenuDialogButton(std::string label,
+                                                      GuiMenuButtonListener* listener){
+  GuiMenuButton *button =  GuiFactory::Instance()->createMenuButton(m_popupMenu->getElement(), listener);
+  m_popupMenu->attach(button->getElement());
+  button->setDialogLabel(label);
+  return button;
+}
+
+/* --------------------------------------------------------------------------- */
 /* createStyleMenu --                                                          */
 /* --------------------------------------------------------------------------- */
 
@@ -2974,7 +2994,7 @@ void Gui2dPlot::fullscreen() {
     std::string str = ( pheaderText() != 0 ? pheaderText()[0] : MenuLabel()) + " - " + _("Fullscreen");
     m_fullscreenDialog->setTitle(str);
     m_fullscreenDialog->resetCycleButton();
-    m_fullscreenDialog->hasCloseButton( true );
+    m_fullscreenDialog->hasCloseButton( false );
     // m_fullscreenDialog->setApplicationModal();
 
     // if not created, create first
@@ -3110,7 +3130,7 @@ void Gui2dPlot::StyleMenu::setStyleButtons( Gui2dPlot::eStyle style ) {
     m_buttonStylePlot->setToggleStatus( false );
 //     m_buttonStyleStackingBar->setToggleStatus( false );
 //     m_buttonStyleBar->setToggleStatus( false );
-    m_buttonStyleSpline->setToggleStatus( false );
+    m_buttonStyleSpline->setToggleStatus( true );
     m_buttonStyleArea->setToggleStatus( false );
 //     m_buttonStylePolar->setToggleStatus( false );
     m_buttonStyleDots->setToggleStatus( false );
@@ -3161,3 +3181,41 @@ void Gui2dPlot::RedrawListener::ButtonPressed() {
   // GuiUpdate
   m_plot->getElement()->update(GuiElement::reason_Always);
 }
+
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::OpenCycleListener::ButtonPressed                                */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::OpenCycleListener::ButtonPressed() {
+  m_plot->openCyclesDialog();
+}
+
+/* --------------------------------------------------------------------------- */
+/* Gui2dPlot::PrintListener::ButtonPressed                                    */
+/* --------------------------------------------------------------------------- */
+void Gui2dPlot::PrintListener::ButtonPressed() {
+  GuiPrinterDialog::MyEventData event( ReportGen::PRINT );
+  GuiFactory::Instance()->createPrinterDialog()->showDialog( (HardCopyListener*) m_plot,
+                                                             m_plot->getElement(), &event );
+}
+
+/* --------------------------------------------------------------------------- */
+/* openCyclesDialog --                                                         */
+/* --------------------------------------------------------------------------- */
+
+void Gui2dPlot::openCyclesDialog() {
+  if (getName().size() == 0) // funktion in popupMenu nicht nutzbar
+    return;
+  std::vector<int> intVector;
+  int value = getAllCycles();
+
+  if( getCyclesDialog() != 0 ){
+    getCyclesDialog()->getValues( intVector, value );
+    delete getCyclesDialog();
+    setCyclesDialog(0);
+  }
+
+  buildCyclesDialog();
+  getCyclesDialog()->setValues( intVector, value );
+  getCyclesDialog()->getElement()->manage();
+}
+

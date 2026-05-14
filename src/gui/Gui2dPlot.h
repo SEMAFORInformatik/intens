@@ -257,9 +257,11 @@ public:
 protected:
   void createPopupMenu();
   GuiMenuButton* newPopupMenuButton(GuiElement* parent, std::string label, GuiMenuButtonListener* listener );
+  GuiMenuButton* newPopupMenuDialogButton( std::string label, GuiMenuButtonListener* listener);
   void createLogarithmicMenu( GuiPopupMenu *menu );
   void createYStyleMenu( GuiPopupMenu *menu, eAxisType axis );
   void createStyleMenu( GuiPulldownMenu *pullDownMenu, eAxisType axis );
+  GuiMenuButton* getCyclesButton(){ return m_cyclesButton; }
 
   //---------
   // Plot
@@ -387,6 +389,7 @@ protected:
   int getInitialWidth(){ return m_initial_width; }
   bool AspectRatioMode();
   eAxisType AspectRatioReferenceAxis();
+  void openCyclesDialog();
 
 /*=============================================================================*/
 /* public function of ScaleDialogListener & ConfigDialogListener               */
@@ -521,6 +524,24 @@ private:
   private:
     Gui2dPlot  *m_plot;
   };
+  class OpenCycleListener : public GuiMenuButtonListener
+  {
+  public:
+    OpenCycleListener( Gui2dPlot *plot ): m_plot( plot ) {}
+    virtual void ButtonPressed();
+    virtual JobAction *getAction(){ return 0; }
+  private:
+    Gui2dPlot  *m_plot;
+  };
+  class PrintListener : public GuiMenuButtonListener
+  {
+  public:
+    PrintListener( Gui2dPlot *plot ): m_plot( plot ) {}
+    virtual void ButtonPressed();
+    virtual JobAction *getAction(){ return 0; }
+  private:
+    Gui2dPlot  *m_plot;
+  };
   //----------
   // StyleMenu
   //----------
@@ -586,6 +607,8 @@ private:
   ConfigDialog        *m_configDialog;
   ScaleDialog         *m_scaleDialog;
   CyclesDialog        *m_cyclesDialog;
+  GuiMenuButton       *m_cyclesButton;
+  GuiPopupMenu        *m_popupMenu;
 
   char               **m_pheaderText;
   Stream              *m_pheaderStream;
@@ -615,5 +638,7 @@ private:
   LogarithmicMenu      m_logarithmicMenu;
   CopyListener         m_copyListener;
   FullscreenListener   m_fullscreenListener;
+  OpenCycleListener    m_openCycleListener;
+  PrintListener        m_printListener;
 };
 #endif

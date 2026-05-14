@@ -43,6 +43,7 @@ public:
   HardCopyListener::FileFormat FileFormat();
   void setFileFormat(HardCopyListener::FileFormat ff) { m_fileFormat = ff; }
   void doPreview();
+  QPrinter* getQPrinter() {return m_printer;}
 private:
   static GuiQtPrinterDialog *s_instance;
   QPrinter         *m_printer;

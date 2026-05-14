@@ -658,6 +658,35 @@ double GuiImage::getManualRangeMax(){
     return m_range_max_manual;
 }
 
+//-------------------------------------------------------------
+// getXValues
+//-------------------------------------------------------------
+
+const DataVector& GuiImage::getXValues(){
+  m_axis_x_values.erase(m_axis_x_values.begin(), m_axis_x_values.end());
+  if( m_settings_xfer ){
+    int id[1] = {-1};
+    DataReference *d=DataPoolIntens::Instance().getDataReference( "MFM_x_axis.values" );
+    double max;
+    if(d){
+	    d->getDataVector(m_axis_x_values, 1, id);
+    }
+    delete d;
+  }
+  return m_axis_x_values;
+}
+
+
+//-------------------------------------------------------------
+// getXAxisLabel
+//-------------------------------------------------------------
+
+const std::string &GuiImage::getXAxisLabel() {
+  m_axis_x_label.clear();
+  getDataPool( "MFM_x_axis.label", 0, m_axis_x_label );
+  return m_axis_x_label;
+}
+
 /** calculate statistics values (min/max/avg/stddev)
  * @return true if range has changed
  */

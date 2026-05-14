@@ -507,14 +507,12 @@ void GuiQtDataField::setValidator( QLineEdit *editor ){
   switch(m_param->DataItem()->getDataType() ) {
   case DataDictionary::type_Integer:
     {
-      std::cout << " INIT RANGE("<<min<<", "<<max<<")\n";
       IntegerValidator* validator = new IntegerValidator(min, max, editor, m_param->getScalefactor());
       int imax = max == std::numeric_limits<double>::max() ? std::numeric_limits<int>::max() :
         floor(0.5+max);
       int imin = min == std::numeric_limits<double>::min() ? std::numeric_limits<int>::min() :
         floor(0.5+min);
       validator->setRange(imin, imax);
-      std::cout << " SET RANGE("<<imin<<", "<<imax<<")\n";
       editor->setValidator(  validator );
       break;
     }

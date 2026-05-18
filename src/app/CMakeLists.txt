@@ -27,6 +27,7 @@ add_library(app OBJECT
   ReportGen.cc
   SmartIntensInterface_Impl.cc
   UiManager.cc
+  URIHandler.cc
   UserAttr.cc
   log.cc
   md5.cc

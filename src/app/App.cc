@@ -47,6 +47,7 @@
 #include "app/DataPoolIntens.h"
 #include "app/UiManager.h"
 #include "app/ModuleFactory.h"
+#include "app/URIHandler.h"
 #include "gui/GuiManager.h"
 #include "gui/UnitManager.h"
 #include "datapool/DataPool.h"
@@ -503,6 +504,10 @@ bool App::parse( int &argc, char ** argv ){
     return true;
   }
 
+  if( !appdata.UriOpener().empty() ){
+    return true;
+  }
+
   char* desFile = NULL;
   desFile = (char*)appdata.DesFile().c_str();
 
@@ -673,6 +678,17 @@ int App::run(){
     MessageQueue::Instance().lspWrite( std::cout );
     JobManager::Instance().serializeFunctions( std::cout, AppData::serialize_XML);
     std::cout << "</DICT>" << std::endl;
+    return 0;
+  }
+
+
+#ifdef _WIN32
+  URIHandler h;
+  h.registerHandler();
+#endif
+  if (!appdata.UriOpener().empty()) {
+    URIHandler h(appdata.UriOpener());
+    h.call();
     return 0;
   }
 

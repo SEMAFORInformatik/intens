@@ -122,6 +122,7 @@ static struct option long_options[] = {
   ,{"oauth",     required_argument, 0,  0}
   ,{"oauthAccessTokenUrl",     required_argument, 0,  0}
   ,{"oauthScopes",     required_argument, 0,  0}
+  ,{"uriOpener",     required_argument, 0,  0}
 #endif
   ,{"opentelemetryMetadata", no_argument,  0,  0}
   ,{"lspWorker", no_argument,  0,  0}
@@ -416,6 +417,7 @@ void AppData::setDisableFeatureSVG( bool f )             { m_disableFeatureSVG =
 void AppData::setOAuth( const std::string &s )           { m_oauth = s; }
 void AppData::setOAuthAccessTokenUrl( const std::string &s )           { m_oauthAccessTokenUrl = s; }
 void AppData::setOAuthScopes( const std::string &s )     { m_oauthScopes = s; }
+void AppData::setUriOpener( const std::string &s )     { m_uriOpener = s; }
 
 void AppData::setPersistItemsFilename( const char *filename, bool restdb ){
   m_persistItemsFilename = filename;
@@ -660,6 +662,7 @@ const std::string& AppData::TestModeFunc()        { return m_testModeFunc; }
 const std::string &AppData::OAuth()               { return m_oauth; }
 const std::string &AppData::OAuthAccessTokenUrl()               { return m_oauthAccessTokenUrl; }
 const std::string &AppData::OAuthScopes()               { return m_oauthScopes; }
+const std::string &AppData::UriOpener()               { return m_uriOpener; }
 void AppData::runOAuthClient(UserPasswordListener* listener) {
   if (!OAuth().size()) return;
 
@@ -1078,6 +1081,9 @@ void AppData::getOpt(int &argc, char **argv){
       }
       else if( strcmp( optName, "oauthScopes")==0){
         if (optarg) setOAuthScopes(optarg);
+      }
+      else if( strcmp( optName, "uriOpener")==0){
+        if (optarg) setUriOpener(optarg);
       }
 #endif
       else if( strcmp( optName, "opentelemetryMetadata")==0){

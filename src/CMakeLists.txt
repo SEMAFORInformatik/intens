@@ -334,7 +334,7 @@ if(WIN32)
       libssh2-1.dll libzstd.dll libdl.dll libsodium-23.dll icuuc74.dll
       icuin74.dll libpcre2-16-0.dll libharfbuzz-0.dll libfreetype-6.dll
       libpng16-16.dll libbrotlicommon.dll libunistring-5.dll icudt74.dll
-      libglib-2.0-0.dll libpcre2-8-0.dll libbz2.dll)
+      libglib-2.0-0.dll libpcre2-8-0.dll libbz2.dll liblzma-5.dll)
       install(FILES /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/${lib} TYPE BIN)
     endforeach()
     if (USE_OAUTH)

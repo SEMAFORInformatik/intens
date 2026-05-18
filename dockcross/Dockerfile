@@ -125,7 +125,6 @@ RUN set -eux; \
   cd /usr/src/mxe && \
   make JOBS=$(nproc) && \
   make clean-junk && make clean-pkg && \
-  rm -rf /usr/src/mxe/usr/x86_64-w64-mingw32.static && \
   #
   # Cleanup: By keeping the MXE build system (Makefile, ...), derived images will be able to install
   #          additional packages.
@@ -154,9 +153,9 @@ RUN set -eux; \
   #
   rm -rf /tmp/wine-* && \
   # boost install fix
-  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_iostreams-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_iostreams-mt-x64.dll \
-  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_random-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_random-mt-x64.dll \
-  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_regex-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_regex-mt-x64.dll \
+  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_iostreams-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_iostreams-mt-x64.dll && \
+  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_random-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_random-mt-x64.dll && \
+  cp /usr/src/mxe/usr/x86_64-w64-mingw32.shared/bin/libboost_regex-mt-x64.dll /usr/src/mxe/usr/x86_64-w64-mingw32.shared/lib/libboost_regex-mt-x64.dll && \
   #
   # create FlexLexer.h link (flex is for some unknown reason installed inside x86_64-pc-linux-gnu)
   #
@@ -168,7 +167,8 @@ RUN set -eux; \
   cd /usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}/include && \
     ln -s . jsoncpp && \
   cd /usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}/include && \
-    ln -s . jsoncpp
+    ln -s . jsoncpp && \
+  rm -rf /usr/src/mxe/usr/x86_64-w64-mingw32.static
 
 ENV PATH=${PATH}:/usr/src/mxe/usr/bin
 

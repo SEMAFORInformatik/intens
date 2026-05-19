@@ -50,12 +50,11 @@ For windows (using docker image dockcross with https://mxe.cc) :
   build-essential \
   cmake \
   libxkbcommon-dev \
-  libprotobuf-dev \
-  protobuf-compiler \
   pkg-config \
   libssl-dev \
   libnsl-dev \
   libfl-dev \
+  libboost-all-dev \
   bison \
   gettext \
   libcurl4-openssl-dev \
@@ -68,7 +67,6 @@ For windows (using docker image dockcross with https://mxe.cc) :
   qt6-base-dev \
   qt6-5compat-dev \
   qt6-svg-dev \
-  qt6-networkauth-dev \
   qt6-charts-dev \
   libgtest-dev \
   zlib1g-dev \

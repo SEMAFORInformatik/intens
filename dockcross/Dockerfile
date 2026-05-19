@@ -116,7 +116,6 @@ RUN set -eux; \
   echo "local-pkg-list: \$(LOCAL_PKG_LIST)"                        >> settings.mk
 
 COPY flex.mk qwt.mk log4cplus.mk treesitter.mk /usr/src/mxe/src
-COPY qt6-qtnetworkauth.mk /usr/src/mxe/src/qt/qt6/
 #COPY qt6-qtquick3d.mk qt6-qtgraphs.mk /usr/src/mxe/src/qt/qt6/
 #
 # Build MXE
@@ -129,8 +128,17 @@ RUN set -eux; \
   # Cleanup: By keeping the MXE build system (Makefile, ...), derived images will be able to install
   #          additional packages.
   #
-  rm -rf log pkg && \
-  #
+  rm -rf log pkg; \
+  # fix missing pkg-config files (shared only)
+    for pkg in log4cplus gettext boost libzmq curl libxml2 libxslt jsoncpp; do \
+    if ! ./usr/bin/x86_64-w64-mingw32.${MXE_TARGET_LINK}-pkg-config --modversion ${pkg} >/dev/null 2>&1; then \
+      version=$(grep -e '^$(PKG)_VERSION' ./src/${pkg}.mk | sed 's/^.*:=\(.*\)/\1/'); \
+      echo "Version: $version" > ./usr/x86_64-w64-mingw32.${MXE_TARGET_LINK}/lib/pkgconfig/${pkg}.pc; \
+    fi; \
+    done; \
+    version=$(grep -e '^#define ZMQ_VERSION_' ./usr/x86_64-w64-mingw32.${MXE_TARGET_LINK}/include/zmq.h | \
+    cut -d ' ' -f 3 | tr '\n' '.' | sed 's/.$//'); \
+    [ -n "$version" ] && echo "Version: $version" > ./usr/x86_64-w64-mingw32.${MXE_TARGET_LINK}/lib/pkgconfig/libzmq.pc; \
   # Update MXE toolchain file
   #
   echo 'set(CMAKE_CROSSCOMPILING_EMULATOR "/usr/bin/wine")' >> ${CMAKE_TOOLCHAIN_FILE} && \

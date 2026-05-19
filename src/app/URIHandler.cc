@@ -9,8 +9,8 @@
 #include <zmq.hpp>
 
 #ifdef _WIN32
-#include <windows.h>
 #include <shlobj.h>
+#include <windows.h>
 #pragma comment(lib, "shlwapi.lib")
 #endif
 
@@ -26,6 +26,7 @@ URIHandler::URIHandler(const std::string &uri) {
 }
 
 void login(const std::string &jwt) {
+  const std::string command = "control";
   zmq::context_t ctx;
   zmq::socket_t sock(ctx, zmq::socket_type::req);
 
@@ -40,10 +41,26 @@ void login(const std::string &jwt) {
   jsonElem["argument"] = array;
 
   auto message = ch_semafor_intens::JsonUtils::value2string(jsonElem);
+  zmq::message_t zmqMessage(message.size());
+  memcpy(zmqMessage.data(), message.data(), message.size());
 
   sock.connect("tcp://localhost:15560");
-  sock.send(zmq::str_buffer("control"), zmq::send_flags::sndmore);
+#if CPPZMQ_VERSION >= ZMQ_MAKE_VERSION(4, 7, 0)
+  sock.send(zmq::buffer(command), zmq::send_flags::sndmore);
   sock.send(zmq::buffer(message));
+#else
+
+  {
+    zmq::message_t zmqMessage(command.size());
+    memcpy(zmqMessage.data(), command.data(), command.size());
+    sock.send(zmqMessage, ZMQ_SNDMORE);
+  }
+  {
+    zmq::message_t zmqMessage(message.size());
+    memcpy(zmqMessage.data(), message.data(), message.size());
+    sock.send(zmqMessage);
+  }
+#endif
 }
 
 void URIHandler::call() {
@@ -55,54 +72,49 @@ void URIHandler::call() {
   }
 }
 
-
 #ifdef _WIN32
 void URIHandler::registerHandler() {
-    wchar_t exePathC[MAX_PATH];
-    GetModuleFileNameW(nullptr, exePathC, MAX_PATH);
-    std::wstring exePath = exePathC;
+  wchar_t exePathC[MAX_PATH];
+  GetModuleFileNameW(nullptr, exePathC, MAX_PATH);
+  std::wstring exePath = exePathC;
 
-    HKEY hKey = nullptr;
-    LONG result;
-    std::wstring basePath = L"Software\\Classes\\intens";
+  HKEY hKey = nullptr;
+  LONG result;
+  std::wstring basePath = L"Software\\Classes\\intens";
 
-    // Create/open the main protocol key
-    result = RegCreateKeyExW(
-        HKEY_CURRENT_USER,
-        basePath.c_str(),
-        0, nullptr, REG_OPTION_NON_VOLATILE,
-        KEY_WRITE, nullptr, &hKey, nullptr
-    );
+  // Create/open the main protocol key
+  result = RegCreateKeyExW(HKEY_CURRENT_USER, basePath.c_str(), 0, nullptr,
+                           REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey,
+                           nullptr);
 
-    if (result != ERROR_SUCCESS) return;
+  if (result != ERROR_SUCCESS)
+    return;
 
-    std::wstring description = L"URL:intens Protocol";
-    RegSetValueExW(hKey, nullptr, 0, REG_SZ, 
-                   (const BYTE*)description.c_str(), 
-                   (DWORD)((description.size() + 1) * sizeof(wchar_t)));
+  std::wstring description = L"URL:intens Protocol";
+  RegSetValueExW(hKey, nullptr, 0, REG_SZ, (const BYTE *)description.c_str(),
+                 (DWORD)((description.size() + 1) * sizeof(wchar_t)));
 
-    // Set "URL Protocol" value (empty string required)
-    RegSetValueExW(hKey, L"URL Protocol", 0, REG_SZ, 
-                   (const BYTE*)L"", 0);
+  // Set "URL Protocol" value (empty string required)
+  RegSetValueExW(hKey, L"URL Protocol", 0, REG_SZ, (const BYTE *)L"", 0);
 
-    RegCloseKey(hKey);
+  RegCloseKey(hKey);
 
-    // Create shell/open/command subkey
-    std::wstring commandKey = basePath + L"\\shell\\open\\command";
-    result = RegCreateKeyExW(HKEY_CURRENT_USER, commandKey.c_str(), 0, nullptr,
-                             REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, nullptr);
-    if (result != ERROR_SUCCESS) return;
+  // Create shell/open/command subkey
+  std::wstring commandKey = basePath + L"\\shell\\open\\command";
+  result = RegCreateKeyExW(HKEY_CURRENT_USER, commandKey.c_str(), 0, nullptr,
+                           REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey,
+                           nullptr);
+  if (result != ERROR_SUCCESS)
+    return;
 
-    std::wstring commandLine = L"\"" + exePath + L"\" --uriOpener \"%1\"";
-    RegSetValueExW(hKey, nullptr, 0, REG_SZ,
-                   (const BYTE*)commandLine.c_str(),
-                   (DWORD)((commandLine.size() + 1) * sizeof(wchar_t)));
+  std::wstring commandLine = L"\"" + exePath + L"\" --uriOpener \"%1\"";
+  RegSetValueExW(hKey, nullptr, 0, REG_SZ, (const BYTE *)commandLine.c_str(),
+                 (DWORD)((commandLine.size() + 1) * sizeof(wchar_t)));
 
-    RegCloseKey(hKey);
+  RegCloseKey(hKey);
 
-    // Notify system of changes
-    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSHNOWAIT, nullptr, nullptr);
-
+  // Notify system of changes
+  SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSHNOWAIT, nullptr, nullptr);
 }
 
 #endif

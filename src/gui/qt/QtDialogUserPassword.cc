@@ -94,6 +94,9 @@ QtDialogUserPassword::QtDialogUserPassword(UserPasswordListener *listener
     , m_listener( listener )
     , m_unmap( unmap )
     , m_errorMessage("")
+    , m_dbLabel(0)
+    , m_userLabel(0)
+    , m_pwLabel(0)
     , m_db_list_w(0)
     , m_db_w(0)
     , m_user_list_w(0)
@@ -148,13 +151,18 @@ void QtDialogUserPassword::showDialog( const std::string &connect,
     BUG_INFO("DialogUserPassword::showDialog NetworkAuth: " << AppData::Instance().OAuth());
 
     // hide widgets
-    if (m_db_list_w) m_db_list_w->hide();
-    if (m_db_w) m_db_w->hide();
-    if (m_user_list_w) m_user_list_w->hide();
-    if (m_user_w) m_user_w->hide();
-    if (m_password_w) m_password_w->hide();
+    hideDataWidgets();
     updateDialog(_("Sign in to your account "));
     AppData::Instance().runOAuthClient(m_listener);
+  }
+  // DashboardURL
+  if (!AppData::Instance().DashboardURL().empty()) {
+    BUG_INFO("DialogUserPassword::showDialog DashboardURL: " << AppData::Instance().DashboardURL());
+
+    // hide widgets
+    hideDataWidgets();
+    updateDialog(_("Sign in to your account "));
+    AppData::Instance().runDashboardClient(m_listener);
   }
 
   GuiEventLoopListener *loopcontrol = new GuiEventLoopListener( false );
@@ -213,19 +221,16 @@ void QtDialogUserPassword::create(){
   m_errorLabel->setStyleSheet("QLabel { font-weight: bold; color : red; }");
 
 
-  QLabel *dbLabel = 0;
-  QLabel *userLabel = 0;
-  QLabel *pwLabel = 0;
   if (AppData::Instance().OAuth().empty()) {
     // The strings should be taken from a language resource file
-    dbLabel = new QLabel(_("Database"), userDialog);
-    userLabel = new QLabel(_("Username"), userDialog);
-    pwLabel = new QLabel(_("Password"), userDialog);
+    m_dbLabel = new QLabel(_("Database"), userDialog);
+    m_userLabel = new QLabel(_("Username"), userDialog);
+    m_pwLabel = new QLabel(_("Password"), userDialog);
 
     // set font
-    dbLabel->setFont( font );
-    userLabel->setFont( font );
-    pwLabel->setFont( font );
+    m_dbLabel->setFont( font );
+    m_userLabel->setFont( font );
+    m_pwLabel->setFont( font );
 
     if ( m_dbconnect_list.empty() ) {
       m_db_w = new MyDUPQLineEdit(userDialog);
@@ -345,7 +350,7 @@ void QtDialogUserPassword::create(){
 
   // direct rest service
   if (AppData::Instance().OAuth().empty()) {
-    layout->addWidget(dbLabel, row, 0);
+    layout->addWidget(m_dbLabel, row, 0);
     if ( m_dbconnect_list.empty() ) {
       layout->addWidget(m_db_w, row++, 1);
     } else {
@@ -353,7 +358,7 @@ void QtDialogUserPassword::create(){
     }
 
     // user
-    layout->addWidget(userLabel, row, 0);
+    layout->addWidget(m_userLabel, row, 0);
     if ( m_username_list.empty() ) {
       layout->addWidget(m_user_w, row++, 1);
     } else {
@@ -361,7 +366,7 @@ void QtDialogUserPassword::create(){
     }
 
     // password
-    layout->addWidget(pwLabel, row, 0);
+    layout->addWidget(m_pwLabel, row, 0);
     layout->addWidget(m_password_w, row++, 1);
 
   }
@@ -373,6 +378,21 @@ void QtDialogUserPassword::create(){
   userDialog->setLayout( layout );
 
   userDialog -> setModal( true );
+}
+
+/* --------------------------------------------------------------------------- */
+/* hideDataWidgets --                                                          */
+/* --------------------------------------------------------------------------- */
+void QtDialogUserPassword::hideDataWidgets(){
+  // hide widgets
+  if (m_dbLabel) m_dbLabel->hide();
+  if (m_userLabel) m_userLabel->hide();
+  if (m_pwLabel) m_pwLabel->hide();
+  if (m_db_list_w) m_db_list_w->hide();
+  if (m_db_w) m_db_w->hide();
+  if (m_user_list_w) m_user_list_w->hide();
+  if (m_user_w) m_user_w->hide();
+  if (m_password_w) m_password_w->hide();
 }
 
 /* --------------------------------------------------------------------------- */

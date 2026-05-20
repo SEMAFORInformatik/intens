@@ -122,8 +122,9 @@ static struct option long_options[] = {
   ,{"oauth",     required_argument, 0,  0}
   ,{"oauthAccessTokenUrl",     required_argument, 0,  0}
   ,{"oauthScopes",     required_argument, 0,  0}
-  ,{"uriOpener",     required_argument, 0,  0}
 #endif
+  ,{"uriOpener",     required_argument, 0,  0}
+  ,{"dashboardURL", required_argument, 0,  0}
   ,{"opentelemetryMetadata", no_argument,  0,  0}
   ,{"lspWorker", no_argument,  0,  0}
   ,{"unitManager", optional_argument,  0,  0}
@@ -417,7 +418,8 @@ void AppData::setDisableFeatureSVG( bool f )             { m_disableFeatureSVG =
 void AppData::setOAuth( const std::string &s )           { m_oauth = s; }
 void AppData::setOAuthAccessTokenUrl( const std::string &s )           { m_oauthAccessTokenUrl = s; }
 void AppData::setOAuthScopes( const std::string &s )     { m_oauthScopes = s; }
-void AppData::setUriOpener( const std::string &s )     { m_uriOpener = s; }
+void AppData::setUriOpener( const std::string &s )       { m_uriOpener = s; }
+void AppData::setDashboardURL( const std::string &s )    { m_dashboardURL = s; }
 
 void AppData::setPersistItemsFilename( const char *filename, bool restdb ){
   m_persistItemsFilename = filename;
@@ -660,9 +662,10 @@ const bool AppData::DBAutologon()const            { return m_dbAutologon; }
 const std::string &AppData::DesFile()const        { return m_desFile; }
 const std::string& AppData::TestModeFunc()        { return m_testModeFunc; }
 const std::string &AppData::OAuth()               { return m_oauth; }
-const std::string &AppData::OAuthAccessTokenUrl()               { return m_oauthAccessTokenUrl; }
-const std::string &AppData::OAuthScopes()               { return m_oauthScopes; }
-const std::string &AppData::UriOpener()               { return m_uriOpener; }
+const std::string &AppData::OAuthAccessTokenUrl() { return m_oauthAccessTokenUrl; }
+const std::string &AppData::OAuthScopes()         { return m_oauthScopes; }
+const std::string &AppData::UriOpener()           { return m_uriOpener; }
+const std::string &AppData::DashboardURL()        { return m_dashboardURL; }
 void AppData::runOAuthClient(UserPasswordListener* listener) {
   if (!OAuth().size()) return;
 
@@ -674,6 +677,32 @@ void AppData::runOAuthClient(UserPasswordListener* listener) {
   m_oauthClient->setListener(listener);
   m_oauthClient->grant();
 #endif
+}
+
+void AppData::runDashboardClient(UserPasswordListener* listener) {
+  if (!DashboardURL().size()) return;
+
+  std::string url = DashboardURL();
+  std::string command;
+
+#if defined(_WIN32)
+    // Windows
+    command = "start " + url;
+#elif defined(__APPLE__)
+    // macOS
+    command = "open " + url;
+#elif defined(__linux__)
+    // Linux
+    command = "xdg-open " + url;
+#else
+    #error "Unknown OS is not supported"
+#endif
+
+    // Befehl an das System übergeben
+    int result = std::system(command.c_str());
+    if (result != 0) {
+        std::cerr << "A runtime error has occurred." << std::endl;
+    }
 }
 
 std::string AppData::OAuthToken()  {
@@ -1082,10 +1111,13 @@ void AppData::getOpt(int &argc, char **argv){
       else if( strcmp( optName, "oauthScopes")==0){
         if (optarg) setOAuthScopes(optarg);
       }
+#endif
       else if( strcmp( optName, "uriOpener")==0){
         if (optarg) setUriOpener(optarg);
       }
-#endif
+      else if( strcmp( optName, "dashboardURL")==0){
+        if (optarg) setDashboardURL(optarg);
+      }
       else if( strcmp( optName, "opentelemetryMetadata")==0){
         setOpenTelemetryMetadata();
       }

@@ -583,6 +583,10 @@ bool App::parse( int &argc, char ** argv ){
       // parse UnitManager.inc
       UnitManager::Instance().parseIncludeFile();
     }
+    if (!AppData::Instance().DashboardURL().empty()) {
+      // parse DashboardURL.inc
+      MessageQueue::parseDashboardURLIncludeFile();
+    }
   }
 #ifndef _PARSER_ONLY
 

@@ -544,6 +544,17 @@ JobElement::OpStatus RestService::post() {
 JobElement::OpStatus RestService::login( const std::string &baseUrl,
                                          const std::string &username,
                                          const std::string &password ) {
+  // dashboardURL, do login in dashboard
+  if (!AppData::Instance().DashboardURL().empty()) {
+    std::string token;
+    bool ret = checkDashboardLoginData(token);
+    if (ret){
+      BUG_INFO("Dashboard Authentification");
+      decode_token(token);
+      return login(baseUrl, token);
+    }
+    return JobElement::op_Aborted;
+  }
   BUG_DEBUG("Begin of login(" << baseUrl << ", " << username << ", " << password << ")");
   if (getUsername().size()) {
     BUG_INFO("Already logged in as user '" << getUsername() << "', ignore this login("
@@ -2327,6 +2338,29 @@ void RestService::writeModifications(std::ostream& os, Json::Value& modification
     os << "<br/>" << std::endl;
   }
 };
+
+/* --------------------------------------------------------------------------- */
+/* operator << --                                                              */
+/* --------------------------------------------------------------------------- */
+
+bool RestService::checkDashboardLoginData(std::string& token){
+  std::string user;
+  token.clear();
+  DataReference *ref = DataPoolIntens::Instance().getDataReference( "login_data.user" );
+  if ( ref != 0 ) {
+    ref->GetValue(user);
+    delete ref;
+  }
+  ref = DataPoolIntens::Instance().getDataReference( "login_data.token" );
+  if ( ref != 0 ) {
+    ref->GetValue(token);
+    delete ref;
+  }
+  BUG_DEBUG("checkDashboardLoginData user: " << user << ", token: " << token);
+
+  return !token.empty();
+}
+
 
 /* --------------------------------------------------------------------------- */
 /* operator << --                                                              */

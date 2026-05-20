@@ -53,6 +53,7 @@ public:
 					 const std::string& host,
                                int port, int lineNo = 0, std::string filename = "");
   static void parseIncludeFile();
+  static void parseDashboardURLIncludeFile();
   static void initialise();
 
   static MessageQueueRequest *getRequest( const std::string &name );

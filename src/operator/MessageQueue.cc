@@ -191,6 +191,43 @@ void MessageQueue::parseIncludeFile() {
   }
 }
 
+void MessageQueue::parseDashboardURLIncludeFile(){
+  if (AppData::Instance().DashboardURL().empty())
+    return;
+  int replyPort = 4000;
+  std::string tokenReply("__PORT_REPLY__");
+  std::string tokenIntensNS(App::TOKEN_INTENS_NAMESPACE);
+  std::string intensNS(std::string("DBURL_") + App::INTENS_NAMESPACE);
+
+  // load and parse UnitManager.inc
+  std::vector<std::string> files;
+  files.push_back(AppData::Instance().IntensHome() +"/etc/DashboardURL.inc");
+  std::string fn = FileUtilities::GetNewestFile(files);
+  std::ostringstream os;
+  std::ifstream file(fn.c_str());
+  std::string line;
+  while(std::getline(file, line)) {
+    std::string::size_type n;
+    n = line.find(tokenReply);
+    if (n != std::string::npos) {
+      std::ostringstream osp;
+      osp << (replyPort);
+        line.replace(n, tokenReply.size(), osp.str());
+    }
+    while ((n = line.find(tokenIntensNS)) != std::string::npos) {
+      std::ostringstream osp;
+      line.replace(n, tokenIntensNS.size(), intensNS);
+    }
+    os << line << std::endl;
+  }
+  if (!App::Instance().parse(os.str())){
+    BUG_ERROR("ERROR parsing mq reply include.");
+  }
+  else{
+    BUG_INFO("MessageQueueReply successfully included");
+  }
+}
+
 /* --------------------------------------------------------------------------- */
 /* initialise --                                                               */
 /* --------------------------------------------------------------------------- */

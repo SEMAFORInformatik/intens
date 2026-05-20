@@ -231,6 +231,7 @@ private:
   std::string   getInputItemGuiValue(const std::string &subvarname, const Json::Value& value);
   void decode_token( const std::string &jwt);
   void writeModifications(std::ostream& os, Json::Value& modifications, Json::Value::Members& members, std::string lineprefix);
+  bool checkDashboardLoginData(std::string& token);
 
   std::string   m_base_list;
   std::string   m_base;

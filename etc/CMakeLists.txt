@@ -39,6 +39,7 @@ add_custom_command(
 
 ### make install ###
 install(
-  FILES  ${CMAKE_CURRENT_BINARY_DIR}/MessageQueueReply.inc UnitManager.inc intens-mode.el intens-ts-mode.el ${G_INTENS_TS_EL}
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/MessageQueueReply.inc UnitManager.inc DashboardURL.inc
+        intens-mode.el intens-ts-mode.el ${G_INTENS_TS_EL}
   DESTINATION ${CMAKE_INSTALL_DATADIR}/etc
   )

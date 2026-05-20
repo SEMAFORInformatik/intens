@@ -61,6 +61,7 @@ private:
   void setDbConnection( const std::string &conn );
   void setUsername( const std::string &user );
   virtual void create();
+  virtual void hideDataWidgets();
 
 protected:
   virtual void manage();
@@ -77,6 +78,9 @@ protected:
   std::vector<std::string> m_username_list;
   std::string             m_password;
   std::string             m_errorMessage;
+  QLabel*                 m_dbLabel;
+  QLabel*                 m_userLabel;
+  QLabel*                 m_pwLabel;
   QComboBox*              m_db_list_w;
   QLineEdit*              m_db_w;
   QComboBox*              m_user_list_w;

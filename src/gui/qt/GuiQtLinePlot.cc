@@ -218,6 +218,7 @@ QWidget* GuiQtLinePlot::myWidget(){
 void GuiQtLinePlot::update( UpdateReason reason ){
   TransactionNumber trans = GuiQtManager::Instance().LastGuiUpdate();
   GuiImage::update( trans );
+  updateUnit();
 }
 
 /* --------------------------------------------------------------------------- */

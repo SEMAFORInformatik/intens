@@ -1,4 +1,7 @@
 #! /bin/sh
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
+#
 # configure, build and package intens executables for Windows
 # using docker mxe dockcross image (https://mxe.cc)
 # script for build intens executables for Windows
@@ -8,7 +11,7 @@
 #
 path=$(dirname "$(realpath $0)")
 
-DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:2026-05
+DOCKCROSS_IMAGE=hub.semafor.ch/semafor/intens/dockcross-wintens-build:2026-05a
 TARGET_DIR=/work/build-windows-shared-x64
 if [ "$1" = static ]; then
   echo "Static"
@@ -26,5 +29,5 @@ DOCKCROSS="docker run --rm --name dockcross-$$RANDOM \
 ${DOCKCROSS_IMAGE}"
 
 # NOTE: -DUSE_LSP is off, cannot use matlab in shared config
-${DOCKCROSS} bash -c "cp -r /tmp/wine /tmp/wineuser && cmake${PLATFORM_EXT} -DUSE_LSP=ON -DUSE_QT6GRAPHS=OFF -B ${TARGET_DIR} -S . && \
+${DOCKCROSS} bash -c "cp -r /tmp/wine /tmp/wineuser && cmake${PLATFORM_EXT} -DUSE_LSP=OFF -DUSE_QT6GRAPHS=OFF -B ${TARGET_DIR} -S . && \
     cmake${PLATFORM_EXT} --build $TARGET_DIR -j8 && (cd ${TARGET_DIR}; cpack${PLATFORM_EXT})"

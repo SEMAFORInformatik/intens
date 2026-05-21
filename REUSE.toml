@@ -14,7 +14,7 @@ SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
-path = [".tag", ".cmake.conf", "**.yaml", "**.pro", "**ci_config_linux.json"]
+path = [".tag", ".cmake.conf", "**.json.in", "**.yaml", "**.pro", "**ci_config_linux.json"]
 precedence = "closest"
 comment = "build system"
 SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"

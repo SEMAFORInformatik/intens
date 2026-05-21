@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-FileCopyrightText: 2015 Steeve Morin, Rob Burns, Matthew McCormick, Jean-Christophe-Fillion-Robin, Bensuperpc
+# SPDX-License-Identifier: MIT
+#
 # https://github.com/dockcross/dockcross
 # Not using dockcross/windows-shared-x64 because that includes gcc 11
 # Changing MXE_PLUGIN_DIRS in settings.mk was too late because mxe is built
@@ -10,7 +14,6 @@ LABEL maintainer="Simon Bader <bader@semafor.ch>"
 # WINEARCH environment variable to either "win64" or "win32"
 # MXE_TARGET_ARCH argument to either "x86_64" or "i686". See http://mxe.cc/
 # MXE_TARGET_THREAD argument to either "" or ".posix". Default is win32. See https://mxe.cc/
-# MXE_TARGET_LINK argument to either "static" or "shared"
 #
 # For example:
 #
@@ -19,7 +22,6 @@ ENV WINEPREFIX=/tmp/wine
 ARG MXE_TARGET_ARCH=x86_64
 ARG MXE_TARGET_THREAD=
 ARG MXE_TARGET_LINK=shared
-ARG MXE_TARGET_LINK2=static
 #
 # mxe master 2026-02-23
 # qt6: update to version 6.9.2
@@ -30,7 +32,6 @@ ARG MXE_TARGET_LINK2=static
 ARG MXE_GIT_TAG=717610f71f487cb3bc4c3caf2b9af1c760ab1de3
 
 ENV CMAKE_TOOLCHAIN_FILE=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
-ENV CMAKE_TOOLCHAIN_FILE2=/usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}/share/cmake/mxe-conf.cmake
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -107,8 +108,7 @@ RUN set -eux; \
   #
   # Configure "settings.mk" required to build MXE
   #
-  cd /usr/src/mxe && \
-  echo "MXE_TARGETS := ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD} ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}" > settings.mk && \
+  echo "MXE_TARGETS := ${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}" > settings.mk && \
   echo "MXE_USE_CCACHE :="                                         >> settings.mk && \
   echo "MXE_PLUGIN_DIRS := plugins/gcc14"                          >> settings.mk && \
   echo "LOCAL_PKG_LIST := cc cmake cppzmq curl libxml2 libxslt libltdl jsoncpp qt6 boost zlib flex log4cplus treesitter qwt"  >> settings.mk && \
@@ -121,9 +121,9 @@ COPY flex.mk qwt.mk log4cplus.mk treesitter.mk /usr/src/mxe/src
 # Build MXE
 #
 RUN set -eux; \
-  cd /usr/src/mxe && \
+  cd /usr/src/mxe; \
   make JOBS=$(nproc) && \
-  make clean-junk && make clean-pkg && \
+  make clean-junk && make clean-pkg; \
   #
   # Cleanup: By keeping the MXE build system (Makefile, ...), derived images will be able to install
   #          additional packages.
@@ -141,8 +141,7 @@ RUN set -eux; \
     [ -n "$version" ] && echo "Version: $version" > ./usr/x86_64-w64-mingw32.${MXE_TARGET_LINK}/lib/pkgconfig/libzmq.pc; \
   # Update MXE toolchain file
   #
-  echo 'set(CMAKE_CROSSCOMPILING_EMULATOR "/usr/bin/wine")' >> ${CMAKE_TOOLCHAIN_FILE} && \
-  echo 'set(CMAKE_CROSSCOMPILING_EMULATOR "/usr/bin/wine")' >> ${CMAKE_TOOLCHAIN_FILE2} && \
+  echo 'set(CMAKE_CROSSCOMPILING_EMULATOR "/usr/bin/wine")' >> ${CMAKE_TOOLCHAIN_FILE}; \
   #
   # Add a sysmbolic link for makensis
   #
@@ -153,9 +152,7 @@ RUN set -eux; \
   cd /usr/bin && \
   rm cmake cpack && \
   ln -s /usr/src/mxe/usr/bin/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}-cmake cmake && \
-  ln -s /usr/src/mxe/usr/bin/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}-cmake cmake-static && \
   ln -s /usr/src/mxe/usr/bin/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}${MXE_TARGET_THREAD}-cpack cpack && \
-  ln -s /usr/src/mxe/usr/bin/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}${MXE_TARGET_THREAD}-cpack cpack-static && \
   #
   # clean up temporary wine files
   #
@@ -169,14 +166,9 @@ RUN set -eux; \
   #
   ln -s /usr/src/mxe/usr/x86_64-pc-linux-gnu/include/FlexLexer.h \
     /usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}/include/ && \
-  ln -s /usr/src/mxe/usr/x86_64-pc-linux-gnu/include/FlexLexer.h \
-    /usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}/include/ && \
   # must correct include path for jsoncpp
   cd /usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK}/include && \
-    ln -s . jsoncpp && \
-  cd /usr/src/mxe/usr/${MXE_TARGET_ARCH}-w64-mingw32.${MXE_TARGET_LINK2}/include && \
-    ln -s . jsoncpp && \
-  rm -rf /usr/src/mxe/usr/x86_64-w64-mingw32.static
+    ln -s . jsoncpp 
 
 ENV PATH=${PATH}:/usr/src/mxe/usr/bin
 

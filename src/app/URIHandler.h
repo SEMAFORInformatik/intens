@@ -12,9 +12,7 @@ public:
   URIHandler() = default;
   URIHandler(const std::string &uri);
 
-#ifdef _WIN32
   void registerHandler();
-#endif
   void call();
 
 private:

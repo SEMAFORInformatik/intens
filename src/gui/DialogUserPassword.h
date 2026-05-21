@@ -32,7 +32,7 @@ public:
   virtual void updateDialog(const std::string& errorMessage) = 0;
   virtual void invalidPassword() = 0;
   virtual void unmanage() = 0;
-  virtual void okButtonPressed() = 0;
+  virtual bool okButtonPressed() = 0;
   virtual void cancelButtonPressed() = 0;
   virtual void resetListener( UserPasswordListener *, DialogUnmapListener *) = 0;
 

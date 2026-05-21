@@ -10,9 +10,6 @@
 #include <list>
 #include <map>
 
-class OAuthClient;
-class UserPasswordListener;
-
 class AppData
 {
 /*******************************************************************************/
@@ -152,6 +149,7 @@ public:
   void setOAuthAccessTokenUrl( const std::string &n );
   void setOAuthScopes( const std::string &n );
   void setUriOpener( const std::string &n );
+  void setDashboardURL( const std::string &n );
   void setOpenTelemetryMetadata();
   void setLspWorker();
   UnitManagerFeature getUnitManagerFeature() const;
@@ -242,8 +240,7 @@ public:
   const std::string &OAuthAccessTokenUrl();
   const std::string &OAuthScopes();
   const std::string &UriOpener();
-  void runOAuthClient(UserPasswordListener* listener=0 );
-  std::string OAuthToken();
+  const std::string &DashboardURL();
   bool OpenTelemetryMetadata() const;
   bool LspWorker() const;
   bool hasUnitManagerFeature() const;
@@ -298,6 +295,7 @@ private:
   std::string       m_oauthAccessTokenUrl;       /* Network Authorization */
   std::string       m_oauthScopes;       /* Network Authorization */
   std::string       m_uriOpener;       /* Network Authorization */
+  std::string       m_dashboardURL;
   std::string       m_organization;
   std::string       m_division;
   std::string       m_site;
@@ -377,7 +375,6 @@ private:
   bool              m_opentelemetry_metadata;
   bool              m_lspWorker;
   UnitManagerFeature m_unitManagerFeature;
-  OAuthClient*      m_oauthClient;
 };
 
 #endif

@@ -49,14 +49,17 @@ public:
   void addHeader( std::string header, std::vector<Stream*>& in,
                   std::vector<Stream*>&  out, std::vector<Plugin*> plugins, JobFunction* func);
 
-  /** start message queue subscriber
+  /** start message queue reply
    */
   void start();
-  /** stop message queue subscriber
+  /** stop message queue  reply
    */
   void stop();
+  /** is runny query to message queue reply
+   */
+  bool isRunning();
 
-  /** set connection listener for a single reply to message queue publisher
+  /** set connection listener for a single reply to message queue
    */
   void setListener( ConnectionListener *listener ){
     m_listener = listener;

@@ -11,12 +11,10 @@
 #include <iomanip>
 #include <libintl.h>
 #include <getopt.h>
+#include <QDesktopServices>
 
 #include "app/AppData.h"
 #include "app/App.h"
-#ifdef HAVE_OAUTH
-#include "app/oauthclient.h"
-#endif
 #include "utils/utils.h"
 
 #include "gui/GuiElement.h"
@@ -122,8 +120,9 @@ static struct option long_options[] = {
   ,{"oauth",     required_argument, 0,  0}
   ,{"oauthAccessTokenUrl",     required_argument, 0,  0}
   ,{"oauthScopes",     required_argument, 0,  0}
-  ,{"uriOpener",     required_argument, 0,  0}
 #endif
+  ,{"uriOpener",     required_argument, 0,  0}
+  ,{"dashboardURL", required_argument, 0,  0}
   ,{"opentelemetryMetadata", no_argument,  0,  0}
   ,{"lspWorker", no_argument,  0,  0}
   ,{"unitManager", optional_argument,  0,  0}
@@ -180,7 +179,6 @@ AppData::AppData()
   , m_sendMessageQueueWithMetadata(false)
   , m_defaultMessageQueueDependencies(true)
   , m_pyLogMode( false )
-  , m_oauthClient(0)
   , m_opentelemetry_metadata(false)
   , m_lspWorker(false)
   , m_unitManagerFeature(unitManagerFeature_none)
@@ -417,7 +415,8 @@ void AppData::setDisableFeatureSVG( bool f )             { m_disableFeatureSVG =
 void AppData::setOAuth( const std::string &s )           { m_oauth = s; }
 void AppData::setOAuthAccessTokenUrl( const std::string &s )           { m_oauthAccessTokenUrl = s; }
 void AppData::setOAuthScopes( const std::string &s )     { m_oauthScopes = s; }
-void AppData::setUriOpener( const std::string &s )     { m_uriOpener = s; }
+void AppData::setUriOpener( const std::string &s )       { m_uriOpener = s; }
+void AppData::setDashboardURL( const std::string &s )    { m_dashboardURL = s; }
 
 void AppData::setPersistItemsFilename( const char *filename, bool restdb ){
   m_persistItemsFilename = filename;
@@ -660,29 +659,11 @@ const bool AppData::DBAutologon()const            { return m_dbAutologon; }
 const std::string &AppData::DesFile()const        { return m_desFile; }
 const std::string& AppData::TestModeFunc()        { return m_testModeFunc; }
 const std::string &AppData::OAuth()               { return m_oauth; }
-const std::string &AppData::OAuthAccessTokenUrl()               { return m_oauthAccessTokenUrl; }
-const std::string &AppData::OAuthScopes()               { return m_oauthScopes; }
-const std::string &AppData::UriOpener()               { return m_uriOpener; }
-void AppData::runOAuthClient(UserPasswordListener* listener) {
-  if (!OAuth().size()) return;
+const std::string &AppData::OAuthAccessTokenUrl() { return m_oauthAccessTokenUrl; }
+const std::string &AppData::OAuthScopes()         { return m_oauthScopes; }
+const std::string &AppData::UriOpener()           { return m_uriOpener; }
+const std::string &AppData::DashboardURL()        { return m_dashboardURL; }
 
-#ifdef HAVE_OAUTH
-  if (!m_oauthClient && OAuth().size()) {
-    m_oauthClient = new OAuthClient(QString::fromStdString(OAuth()),
-                                    QString::fromStdString(OAuthAccessTokenUrl()));
-  }
-  m_oauthClient->setListener(listener);
-  m_oauthClient->grant();
-#endif
-}
-
-std::string AppData::OAuthToken()  {
-#ifdef HAVE_OAUTH
-  return m_oauthClient ? m_oauthClient->token() : "";
-#else
-  return "";
-#endif
-}
 bool AppData::OpenTelemetryMetadata() const       { return m_opentelemetry_metadata; }
 bool AppData::LspWorker() const                   { return m_lspWorker; }
 bool AppData::hasUnitManagerFeature() const       {
@@ -1082,10 +1063,13 @@ void AppData::getOpt(int &argc, char **argv){
       else if( strcmp( optName, "oauthScopes")==0){
         if (optarg) setOAuthScopes(optarg);
       }
+#endif
       else if( strcmp( optName, "uriOpener")==0){
         if (optarg) setUriOpener(optarg);
       }
-#endif
+      else if( strcmp( optName, "dashboardURL")==0){
+        if (optarg) setDashboardURL(optarg);
+      }
       else if( strcmp( optName, "opentelemetryMetadata")==0){
         setOpenTelemetryMetadata();
       }

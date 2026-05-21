@@ -8,7 +8,7 @@ services:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
 
   config-service:
-    image: ghcr.io/semaforinformatik/config-controller:1.5.1
+    image: ghcr.io/semaforinformatik/config-controller:2.7.1
     environment:
       - LABEL_KEY=app
       - DOCKER=true
@@ -42,7 +42,7 @@ services:
       - "traefik.http.services.webtens-service.loadbalancer.server.port=8000"
 
   workbook:
-    image: ghcr.io/semaforinformatik/workbook:3.4
+    image: ghcr.io/semaforinformatik/workbook:3.8.3
     expose:
       - 8080
     environment:

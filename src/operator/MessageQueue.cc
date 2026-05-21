@@ -18,6 +18,7 @@
 
 MessageQueue *MessageQueue::s_instance = 0;
 MessageQueue::RequestMap    MessageQueue::s_requestMap;
+MessageQueue::ReplyMap      MessageQueue::s_replyMap;
 MessageQueue::SubscriberMap MessageQueue::s_subscriberMap;
 MessageQueue::PublisherMap  MessageQueue::s_publisherMap;
 const std::string MessageQueue::OPENTELEMETRY_METADATA_IN_STREAM("opentelemetry_metadata_in@intens");
@@ -99,6 +100,12 @@ MessageQueueReply* MessageQueue::createReply( const std::string &name,
                                                    default_in_streams,
                                                    default_out_streams,
                                                    default_func);
+  // add to static request map
+  if (port > 0) {
+    auto iter =  s_replyMap.find( name );
+    if( iter ==  s_replyMap.end() )
+      s_replyMap.insert( ReplyMap::value_type( name, reply ) );
+  }
   reply->setLSPLineno(lineNo);
   reply->setLSPFilename(filename);
   return reply;
@@ -192,6 +199,47 @@ void MessageQueue::parseIncludeFile() {
 }
 
 /* --------------------------------------------------------------------------- */
+/* parseDashboardURLIncludeFile --                                             */
+/* --------------------------------------------------------------------------- */
+
+void MessageQueue::parseDashboardURLIncludeFile(){
+  if (AppData::Instance().DashboardURL().empty())
+    return;
+  int replyPort = 4000;
+  std::string tokenReply("__PORT_REPLY__");
+  std::string tokenIntensNS(App::TOKEN_INTENS_NAMESPACE);
+  std::string intensNS(std::string("DBURL_") + App::INTENS_NAMESPACE);
+
+  // load and parse UnitManager.inc
+  std::vector<std::string> files;
+  files.push_back(AppData::Instance().IntensHome() +"/etc/DashboardURL.inc");
+  std::string fn = FileUtilities::GetNewestFile(files);
+  std::ostringstream os;
+  std::ifstream file(fn.c_str());
+  std::string line;
+  while(std::getline(file, line)) {
+    std::string::size_type n;
+    n = line.find(tokenReply);
+    if (n != std::string::npos) {
+      std::ostringstream osp;
+      osp << (replyPort);
+        line.replace(n, tokenReply.size(), osp.str());
+    }
+    while ((n = line.find(tokenIntensNS)) != std::string::npos) {
+      std::ostringstream osp;
+      line.replace(n, tokenIntensNS.size(), intensNS);
+    }
+    os << line << std::endl;
+  }
+  if (!App::Instance().parse(os.str())){
+    BUG_ERROR("ERROR parsing mq reply include.");
+  }
+  else{
+    BUG_INFO("MessageQueueReply successfully included");
+  }
+}
+
+/* --------------------------------------------------------------------------- */
 /* initialise --                                                               */
 /* --------------------------------------------------------------------------- */
 
@@ -223,6 +271,19 @@ MessageQueueRequest* MessageQueue::getRequest( const std::string &name ) {
   }
   return 0;
 }
+
+/* --------------------------------------------------------------------------- */
+/* getReply --                                                                 */
+/* --------------------------------------------------------------------------- */
+
+MessageQueueReply* MessageQueue::getReply( const std::string &name ) {
+  auto iter =  s_replyMap.find( name );
+  if( iter !=  s_replyMap.end() ){
+    return (*iter).second;
+  }
+  return 0;
+}
+
 /* --------------------------------------------------------------------------- */
 /* terminateAllRequestThreads --                                               */
 /* --------------------------------------------------------------------------- */

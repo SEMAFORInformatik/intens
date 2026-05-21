@@ -53,9 +53,11 @@ public:
 					 const std::string& host,
                                int port, int lineNo = 0, std::string filename = "");
   static void parseIncludeFile();
+  static void parseDashboardURLIncludeFile();
   static void initialise();
 
   static MessageQueueRequest *getRequest( const std::string &name );
+  static MessageQueueReply *getReply( const std::string &name );
   static MessageQueueSubscriber *getSubscriber( const std::string &name );
   static MessageQueuePublisher *getPublisher( const std::string &name );
 
@@ -71,6 +73,7 @@ public:
 private:
   MessageQueue();
   typedef std::map<std::string, MessageQueueRequest *> RequestMap;
+  typedef std::map<std::string, MessageQueueReply *> ReplyMap;
   typedef std::map<std::string, MessageQueueSubscriber *> SubscriberMap;
   typedef std::map<std::string, MessageQueuePublisher *>  PublisherMap;
 
@@ -98,6 +101,7 @@ private:
   HeaderDataMap            m_headerData;
   static MessageQueue*     s_instance;
   static RequestMap        s_requestMap;
+  static ReplyMap          s_replyMap;
   static SubscriberMap     s_subscriberMap;
   static PublisherMap      s_publisherMap;
 

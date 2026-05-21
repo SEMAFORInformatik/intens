@@ -120,7 +120,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 # Options
 option(NLS "Enable native language support" ON)
 option(USE_LOG4CPLUS "use log4cplus Library" ON)
-option(USE_OAUTH "use OAuth / QtNetworkAuth" ON)
+option(USE_OAUTH "use OAuth / QtNetworkAuth" OFF)
 option(USE_PROTOBUF "use protobuf" ON)
 option(USE_QT6 "use Qt6 Library" ON)
 option(USE_QT6CHARTS "use Qt6 Charts Library" OFF)

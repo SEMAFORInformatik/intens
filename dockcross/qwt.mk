@@ -1,5 +1,6 @@
-# This file is part of MXE. See LICENSE.md for licensing information.
-
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
+#
 PKG             := qwt
 $(PKG)_WEBSITE  := https://qwt.sourceforge.io/
 $(PKG)_DESCR    := Qwt

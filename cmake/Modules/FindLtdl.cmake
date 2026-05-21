@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 
 find_path(Ltdl_INCLUDE_DIR
         NAMES ltdl.h

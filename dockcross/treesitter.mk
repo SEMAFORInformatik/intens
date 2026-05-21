@@ -1,4 +1,5 @@
-# This file is part of MXE. See LICENSE.md for licensing information.
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
 
 PKG             := treesitter
 $(PKG)_WEBSITE  := https://github.com/tree-sitter/tree-sitter

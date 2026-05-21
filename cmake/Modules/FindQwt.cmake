@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Olaf Mendel, Rolf Eike Beer, Julien Schueller
+# SPDX-License-Identifier: BSD-2-Clause
+#
 # Qt Widgets for Technical Applications
 # available at http://www.http://qwt.sourceforge.net/
 #

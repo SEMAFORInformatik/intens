@@ -6,6 +6,8 @@ find_path(cppzmq_INCLUDE_DIR
         NAMES zmq.hpp
         PATHS ${PC_cppzmq_INCLUDE_DIRS}
         )
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
 
 find_library(cppzmq_LIBRARY
         NAMES zmq

@@ -11,7 +11,6 @@
 #include <iomanip>
 #include <libintl.h>
 #include <getopt.h>
-#include <QDesktopServices>
 
 #include "app/AppData.h"
 #include "app/App.h"

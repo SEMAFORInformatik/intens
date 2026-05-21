@@ -71,6 +71,7 @@
 #include <QApplication>
 #endif
 #include <QFile>
+#include <QDesktopServices>
 
 #include <ltdl.h>
 

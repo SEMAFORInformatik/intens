@@ -46,5 +46,5 @@ target "citest" {
 target "dockcross" {
   context = "dockcross"
   dockerfile = "Dockerfile"
-  tags = ["ghcr.io/semaforinformatik/intens/dockcross:latest"]
+  tags = ["hub.semafor.ch/semafor/intens/dockcross-wintens-build:latest"]
 }

@@ -7,6 +7,8 @@
 
 class Flexer;
 class Configurator;
+class UserPasswordListener;
+class OAuthClient;
 
 class App {
  public:
@@ -28,6 +30,9 @@ class App {
   void log( const std::string &s );
   void printLog();
   static const char* FeaturePackage() { return FEATURE_PACKAGE; }
+  void runOAuthClient(UserPasswordListener* listener=0 );
+  std::string OAuthToken();
+  void runDashboardClient(UserPasswordListener* listener=0 );
 
  private:
   App( int &argc, char **argv );
@@ -39,6 +44,7 @@ class App {
   static const char* FEATURE_PACKAGE;
   static const char* FEATURE_MATLAB;
   static const char* FEATURE_MATHEMATICA;
+  OAuthClient*      m_oauthClient;
  public:
   static const char* INTENS_NAMESPACE;
   static const char* TOKEN_INTENS_NAMESPACE;

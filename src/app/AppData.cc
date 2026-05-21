@@ -15,9 +15,6 @@
 
 #include "app/AppData.h"
 #include "app/App.h"
-#ifdef HAVE_OAUTH
-#include "app/oauthclient.h"
-#endif
 #include "utils/utils.h"
 
 #include "gui/GuiElement.h"
@@ -182,7 +179,6 @@ AppData::AppData()
   , m_sendMessageQueueWithMetadata(false)
   , m_defaultMessageQueueDependencies(true)
   , m_pyLogMode( false )
-  , m_oauthClient(0)
   , m_opentelemetry_metadata(false)
   , m_lspWorker(false)
   , m_unitManagerFeature(unitManagerFeature_none)
@@ -667,35 +663,7 @@ const std::string &AppData::OAuthAccessTokenUrl() { return m_oauthAccessTokenUrl
 const std::string &AppData::OAuthScopes()         { return m_oauthScopes; }
 const std::string &AppData::UriOpener()           { return m_uriOpener; }
 const std::string &AppData::DashboardURL()        { return m_dashboardURL; }
-void AppData::runOAuthClient(UserPasswordListener* listener) {
-  if (!OAuth().size()) return;
 
-#ifdef HAVE_OAUTH
-  if (!m_oauthClient && OAuth().size()) {
-    m_oauthClient = new OAuthClient(QString::fromStdString(OAuth()),
-                                    QString::fromStdString(OAuthAccessTokenUrl()));
-  }
-  m_oauthClient->setListener(listener);
-  m_oauthClient->grant();
-#endif
-}
-
-void AppData::runDashboardClient(UserPasswordListener* listener) {
-  if (!DashboardURL().size()) return;
-
-  std::string url = DashboardURL() + "?desktopLogin";
-  std::string command;
-
-  QDesktopServices::openUrl(QString::fromStdString(url));
-}
-
-std::string AppData::OAuthToken()  {
-#ifdef HAVE_OAUTH
-  return m_oauthClient ? m_oauthClient->token() : "";
-#else
-  return "";
-#endif
-}
 bool AppData::OpenTelemetryMetadata() const       { return m_opentelemetry_metadata; }
 bool AppData::LspWorker() const                   { return m_lspWorker; }
 bool AppData::hasUnitManagerFeature() const       {

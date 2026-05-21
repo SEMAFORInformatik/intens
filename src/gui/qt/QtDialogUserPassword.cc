@@ -23,7 +23,7 @@
 #include "gui/qt/QtDialogUserPassword.h"
 #include "gui/qt/QtDialogInformation.h"
 #include "gui/qt/QtMultiFontString.h"
-#include "app/AppData.h"
+#include "app/App.h"
 #include "gui/GuiFactory.h"
 
 INIT_LOGGER();
@@ -104,6 +104,7 @@ QtDialogUserPassword::QtDialogUserPassword(UserPasswordListener *listener
     , m_password_w(0)
     , m_errorLabel(0)
     , userDialog(0)
+    , m_timerId(-1)
 {
   listener->setDialog( this );
 }
@@ -147,22 +148,24 @@ void QtDialogUserPassword::showDialog( const std::string &connect,
   m_errorLabel->setVisible(m_errorMessage.size() > 0 ? true : false);
 
   // NetworkAuth
-  if (!AppData::Instance().OAuth().empty()) {
-    BUG_INFO("DialogUserPassword::showDialog NetworkAuth: " << AppData::Instance().OAuth());
+  auto appData = AppData::Instance();
+  if (!appData.OAuth().empty()) {
+    BUG_INFO("DialogUserPassword::showDialog NetworkAuth: " << appData.OAuth());
 
     // hide widgets
     hideDataWidgets();
     updateDialog(_("Sign in to your account "));
-    AppData::Instance().runOAuthClient(m_listener);
+    App::Instance().runOAuthClient(m_listener);
   }
   // DashboardURL
-  if (!AppData::Instance().DashboardURL().empty()) {
-    BUG_INFO("DialogUserPassword::showDialog DashboardURL: " << AppData::Instance().DashboardURL());
+  if (!appData.DashboardURL().empty()) {
+    BUG_INFO("DialogUserPassword::showDialog DashboardURL: " << appData.DashboardURL());
 
     // hide widgets
     hideDataWidgets();
     updateDialog(_("Sign in to your account "));
-    AppData::Instance().runDashboardClient(m_listener);
+    App::Instance().runDashboardClient(m_listener);
+    m_timerId = startTimer(1000);
   }
 
   GuiEventLoopListener *loopcontrol = new GuiEventLoopListener( false );
@@ -399,7 +402,7 @@ void QtDialogUserPassword::hideDataWidgets(){
 /* okButtonPressed --                                                          */
 /* --------------------------------------------------------------------------- */
 
-void QtDialogUserPassword::okButtonPressed(){
+bool QtDialogUserPassword::okButtonPressed(){
   m_password_ok.disallow();
   assert( m_listener != 0 );
 
@@ -421,7 +424,9 @@ void QtDialogUserPassword::okButtonPressed(){
 
   if (m_listener -> okButtonPressed( m_dbconnect, m_username, m_password )){
     unmanage();
+    return true;
   }
+  return false;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -431,6 +436,10 @@ void QtDialogUserPassword::okButtonPressed(){
 void QtDialogUserPassword::cancelButtonPressed(){
   m_listener -> cancelButtonPressed();
   unmanage();
+  if (m_timerId){
+    killTimer( m_timerId );
+    m_timerId = 0;
+  }
 }
 
 /* --------------------------------------------------------------------------- */
@@ -518,5 +527,19 @@ void QtDialogUserPassword::setUsername( const std::string &user ) {
   }
   if (m_username_list.empty() && m_user_w) {
     m_user_w->setText(QString::fromStdString(user));
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/* timerEvent --                                                               */
+/* --------------------------------------------------------------------------- */
+
+void QtDialogUserPassword::timerEvent(QTimerEvent *event){
+  if( m_timerId == event->timerId() ){
+    if (okButtonPressed()){
+      killTimer( m_timerId );
+      m_timerId = 0;
+    }
+    return;
   }
 }

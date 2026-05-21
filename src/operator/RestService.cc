@@ -14,6 +14,8 @@
 
 #include "jwt-cpp/jwt.h"
 #include "operator/RestService.h"
+#include "operator/MessageQueue.h"
+#include "operator/MessageQueueReply.h"
 #include "utils/base64.h"
 #include "utils/StringUtils.h"
 #include "streamer/Stream.h"
@@ -31,6 +33,7 @@
 #include "utils/UrlConverter.h"
 #include "utils/StringUtils.h"
 #include "gui/GuiScrolledText.h"
+#include "app/App.h"
 #include "app/AppData.h"
 #include "datapool/DataVector.h"
 #include "datapool/DataReference.h"
@@ -90,6 +93,10 @@ public:
 
   virtual void cancelButtonPressed(){
     m_restService.loginCanceled();
+    auto reply = MessageQueue::getReply("DashboardURL_mqReply_mq");
+    if (reply){
+      reply->stop();
+    }
   }
 
 private:
@@ -186,7 +193,7 @@ bool RestService::checkCredentials() {
 
   clearLogonStatus();
   m_loginCanceled = false;
-  while ( m_loginCanceled == false && AppData::Instance().OAuthToken().empty() &&
+  while ( m_loginCanceled == false && App::Instance().OAuthToken().empty() &&
           (m_base.empty() || m_authHeader.empty())
           ) {
     BUG_DEBUG("m_base = " << m_base);
@@ -251,7 +258,7 @@ bool RestService::checkCredentials() {
   }
 
   BUG_DEBUG("End of checkCredentials: -- ok --");
-  if (m_username.empty() && !AppData::Instance().OAuthToken().empty()){
+  if (m_username.empty() && !App::Instance().OAuthToken().empty()){
     return false;
   }
   return true;
@@ -551,6 +558,10 @@ JobElement::OpStatus RestService::login( const std::string &baseUrl,
     if (ret){
       BUG_INFO("Dashboard Authentification");
       decode_token(token);
+      auto reply = MessageQueue::getReply("DashboardURL_mqReply_mq");
+      if (reply){
+        reply->stop();
+      }
       return login(baseUrl, token);
     }
     return JobElement::op_Aborted;
@@ -567,7 +578,7 @@ JobElement::OpStatus RestService::login( const std::string &baseUrl,
   // oauth !!!
   if (username == "__token__" &&
       !AppData::Instance().OAuth().empty() &&
-      AppData::Instance().OAuthToken().empty()) {
+      App::Instance().OAuthToken().empty()) {
     BUG_INFO("Network Authentification");
     decode_token(password);
     showDialogUserPassword();
@@ -588,8 +599,8 @@ JobElement::OpStatus RestService::login( const std::string &baseUrl,
     if ( checkCredentials() ) {
       BUG_DEBUG("End of login(): checkCredentials() ok");
       setLogonStatus("OK");
-      if(!AppData::Instance().OAuthToken().empty()){
-        decode_token(AppData::Instance().OAuthToken());
+      if(!App::Instance().OAuthToken().empty()){
+        decode_token(App::Instance().OAuthToken());
       }
 
       return JobElement::op_Ok;
@@ -1842,9 +1853,9 @@ void RestService::setHeaders( const std::string& authorization ) {
   if ( m_authorization == "jwt" ) {
     mysetenv( "REST_SERVICE_AUTHORIZATION", authorization.c_str() );
     if (!m_username.empty() && !authorization.empty() &&
-        AppData::Instance().OAuthToken().empty()){
+        App::Instance().OAuthToken().empty()){
       setUsername(m_username);
-    }else if (!AppData::Instance().OAuthToken().empty()){
+    }else if (!App::Instance().OAuthToken().empty()){
       decode_token(authorization.substr(7));
     }
     // else: username is inside token

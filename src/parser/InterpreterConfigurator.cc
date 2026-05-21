@@ -6137,7 +6137,8 @@ bool InterpreterConfigurator::newMsgQueue( const std::string& id ){
       }
       m_rep->msgQueueHeader.clearAllRequests();
     }
-    reply->start();
+    if (id != "DashboardURL_mqReply_mq")
+      reply->start();
   }
   //
   // Publish

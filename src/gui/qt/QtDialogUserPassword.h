@@ -50,7 +50,7 @@ public:
   virtual void resetListener( UserPasswordListener *, DialogUnmapListener *);
 
 public slots:
-  virtual void okButtonPressed();
+  virtual bool okButtonPressed();
   virtual void cancelButtonPressed();
 
 /*=============================================================================*/
@@ -62,6 +62,7 @@ private:
   void setUsername( const std::string &user );
   virtual void create();
   virtual void hideDataWidgets();
+  void timerEvent(QTimerEvent *event);
 
 protected:
   virtual void manage();
@@ -93,7 +94,7 @@ protected:
   UserPasswordListener   *m_listener;
   QDialog                *userDialog;
   DialogUnmapListener    *m_unmap;
-
+  int                     m_timerId;
 };
 
 #endif

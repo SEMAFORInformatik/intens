@@ -23,7 +23,7 @@ END FUNCTIONS;
 
 OPERATOR
   MESSAGE_QUEUE
-    {NS}mqReply_mq {
+    DashboardURL_mqReply_mq {
       REPLY  // MessageQueue Pattern
     , PORT_REQUEST=__PORT_REPLY__
     , NO_DEPENDENCIES

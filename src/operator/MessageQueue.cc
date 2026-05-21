@@ -18,6 +18,7 @@
 
 MessageQueue *MessageQueue::s_instance = 0;
 MessageQueue::RequestMap    MessageQueue::s_requestMap;
+MessageQueue::ReplyMap      MessageQueue::s_replyMap;
 MessageQueue::SubscriberMap MessageQueue::s_subscriberMap;
 MessageQueue::PublisherMap  MessageQueue::s_publisherMap;
 const std::string MessageQueue::OPENTELEMETRY_METADATA_IN_STREAM("opentelemetry_metadata_in@intens");
@@ -99,6 +100,12 @@ MessageQueueReply* MessageQueue::createReply( const std::string &name,
                                                    default_in_streams,
                                                    default_out_streams,
                                                    default_func);
+  // add to static request map
+  if (port > 0) {
+    auto iter =  s_replyMap.find( name );
+    if( iter ==  s_replyMap.end() )
+      s_replyMap.insert( ReplyMap::value_type( name, reply ) );
+  }
   reply->setLSPLineno(lineNo);
   reply->setLSPFilename(filename);
   return reply;
@@ -191,6 +198,10 @@ void MessageQueue::parseIncludeFile() {
   }
 }
 
+/* --------------------------------------------------------------------------- */
+/* parseDashboardURLIncludeFile --                                             */
+/* --------------------------------------------------------------------------- */
+
 void MessageQueue::parseDashboardURLIncludeFile(){
   if (AppData::Instance().DashboardURL().empty())
     return;
@@ -260,6 +271,19 @@ MessageQueueRequest* MessageQueue::getRequest( const std::string &name ) {
   }
   return 0;
 }
+
+/* --------------------------------------------------------------------------- */
+/* getReply --                                                                 */
+/* --------------------------------------------------------------------------- */
+
+MessageQueueReply* MessageQueue::getReply( const std::string &name ) {
+  auto iter =  s_replyMap.find( name );
+  if( iter !=  s_replyMap.end() ){
+    return (*iter).second;
+  }
+  return 0;
+}
+
 /* --------------------------------------------------------------------------- */
 /* terminateAllRequestThreads --                                               */
 /* --------------------------------------------------------------------------- */

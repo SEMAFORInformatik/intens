@@ -4,7 +4,9 @@
 
 #include "gui/GuiElement.h"
 #include "gui/GuiFolderGroup.h"
+#include "gui/DialogUserPassword.h"
 #include "operator/MessageQueue.h"
+#include "operator/MessageQueueReply.h"
 #ifdef __MINGW32__
 #include <winsock2.h>
 #endif
@@ -71,6 +73,10 @@
 #include <QFile>
 
 #include <ltdl.h>
+
+#ifdef HAVE_OAUTH
+#include "app/oauthclient.h"
+#endif
 
 INIT_LOGGER();
 
@@ -213,6 +219,7 @@ std::string getHomeDir(){
 
 App::App( int &argc, char **argv )
   : m_flexer( 0 )
+  , m_oauthClient(0)
   , m_configurator( 0 ){
   char *p;
 
@@ -741,3 +748,49 @@ void App::printLog(){
     std::cerr << *iter << std::endl;
   }
 }
+
+/* --------------------------------------------------------------------------- */
+/* runOAuthClient --                                                           */
+/* --------------------------------------------------------------------------- */
+
+void App::runOAuthClient(UserPasswordListener* listener) {
+  if (AppData::Instance().OAuth().empty()) return;
+
+#ifdef HAVE_OAUTH
+  if (!m_oauthClient && AppData::Instance().OAuth().size()) {
+    m_oauthClient = new OAuthClient(QString::fromStdString(AppData::Instance().OAuth()),
+                                    QString::fromStdString(AppData::Instance().OAuthAccessTokenUrl()));
+  }
+  m_oauthClient->setListener(listener);
+  m_oauthClient->grant();
+#endif
+}
+
+/* --------------------------------------------------------------------------- */
+/* OAuthToken --                                                               */
+/* --------------------------------------------------------------------------- */
+
+std::string App::OAuthToken()  {
+#ifdef HAVE_OAUTH
+  return m_oauthClient ? m_oauthClient->token() : "";
+#else
+  return "";
+#endif
+}
+
+/* --------------------------------------------------------------------------- */
+/* runDashboardClient --                                                       */
+/* --------------------------------------------------------------------------- */
+
+void App::runDashboardClient(UserPasswordListener* listener) {
+  std::string url = AppData::Instance().DashboardURL();
+  if (url.empty()) return;
+  auto reply = MessageQueue::getReply("DashboardURL_mqReply_mq");
+  if (!reply || reply && reply->isRunning()) return;
+  reply->start();
+
+  url += "?desktopLogin";
+  QDesktopServices::openUrl(QString::fromStdString(url));
+}
+
+

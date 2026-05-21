@@ -10,9 +10,6 @@
 #include <list>
 #include <map>
 
-class OAuthClient;
-class UserPasswordListener;
-
 class AppData
 {
 /*******************************************************************************/
@@ -244,9 +241,6 @@ public:
   const std::string &OAuthScopes();
   const std::string &UriOpener();
   const std::string &DashboardURL();
-  void runOAuthClient(UserPasswordListener* listener=0 );
-  void runDashboardClient(UserPasswordListener* listener=0 );
-  std::string OAuthToken();
   bool OpenTelemetryMetadata() const;
   bool LspWorker() const;
   bool hasUnitManagerFeature() const;
@@ -381,7 +375,6 @@ private:
   bool              m_opentelemetry_metadata;
   bool              m_lspWorker;
   UnitManagerFeature m_unitManagerFeature;
-  OAuthClient*      m_oauthClient;
 };
 
 #endif

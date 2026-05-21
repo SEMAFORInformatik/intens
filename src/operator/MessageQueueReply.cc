@@ -85,6 +85,12 @@ void MessageQueueReply::addHeader( std::string header, std::vector<Stream*>& in,
 // stop
 //-------------------------------------------------
 void MessageQueueReply::stop(){
+  if (m_replyThread){
+    if (m_timer) m_timer->stop();
+    m_replyThread->terminateThread();
+    delete m_replyThread;
+    m_replyThread = 0;
+  }
 }
 
 //-------------------------------------------------
@@ -110,12 +116,12 @@ void MessageQueueReply::MyTimerTask::tick() {
 //-------------------------------------------------
 // start
 //-------------------------------------------------
+
 void MessageQueueReply::start(){
   BUG_DEBUG("MessageQueueReply::start portReply: " << m_portReply);
-  assert(m_replyThread==0);
 
   // start request connection to message queue
-  if ( m_portReply > 0) {
+  if (!m_replyThread && m_portReply > 0) {
     BUG_DEBUG("Create Reply Thread, port: "<< m_portReply);
     m_replyThread = new MessageQueueReplyThread(m_host, m_portReply, m_default_in_streams, *this);
     #ifdef HAVE_QT
@@ -128,6 +134,14 @@ void MessageQueueReply::start(){
     #endif
     m_replyThread->start();
   }
+}
+
+//-------------------------------------------------
+// start
+//-------------------------------------------------
+
+bool MessageQueueReply::isRunning(){
+  return m_replyThread != 0;
 }
 
 void MessageQueueReply::confirmYesButtonPressed() {

@@ -3,9 +3,15 @@
 
 #include "URIHandler.h"
 #include "utils/JsonUtils.h"
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <jsoncpp/json/value.h>
 #include <qurl.h>
 #include <qurlquery.h>
+#include <sstream>
+#include <string_view>
 #include <zmq.hpp>
 
 #ifdef _WIN32
@@ -26,25 +32,19 @@ URIHandler::URIHandler(const std::string &uri) {
 }
 
 void login(const std::string &jwt) {
-  const std::string command = "control";
+  const std::string command = "login_token";
   zmq::context_t ctx;
   zmq::socket_t sock(ctx, zmq::socket_type::req);
 
-  auto jsonElem = Json::Value(Json::objectValue);
-  jsonElem["command"] = "LOGIN";
+  auto args = Json::Value(Json::objectValue);
+  args["user"] = "empty";
+  args["token"] = jwt;
 
-  auto array = Json::Value(Json::arrayValue);
-  array.append("__token__");
-  array.append(jwt);
-  array.append("en-US");
-
-  jsonElem["argument"] = array;
-
-  auto message = ch_semafor_intens::JsonUtils::value2string(jsonElem);
+  auto message = ch_semafor_intens::JsonUtils::value2string(args);
   zmq::message_t zmqMessage(message.size());
   memcpy(zmqMessage.data(), message.data(), message.size());
 
-  sock.connect("tcp://localhost:15560");
+  sock.connect("tcp://localhost:4000");
 #if CPPZMQ_VERSION >= ZMQ_MAKE_VERSION(4, 7, 0)
   sock.send(zmq::buffer(command), zmq::send_flags::sndmore);
   sock.send(zmq::buffer(message));
@@ -117,4 +117,40 @@ void URIHandler::registerHandler() {
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSHNOWAIT, nullptr, nullptr);
 }
 
+#else
+void URIHandler::registerHandler() {
+  std::stringstream applicationFolderStream;
+  auto dataHome = std::getenv("XDG_DATA_HOME");
+  std::system("xdg-mime default intens-uri.desktop x-scheme-handler/intens");
+
+  if (dataHome) {
+    applicationFolderStream << dataHome << "/applications";
+  } else {
+    auto home = std::getenv("HOME");
+    applicationFolderStream << home << "/.local/share/applications";
+  }
+
+  auto applicationFolder = applicationFolderStream.str();
+
+  if (!std::filesystem::exists(applicationFolder)) {
+    std::filesystem::create_directory(applicationFolder);
+  }
+
+  auto filename = applicationFolder + "/intens-uri.desktop";
+
+  if (std::filesystem::exists(filename)) {
+    return;
+  }
+
+  std::ofstream file(applicationFolder + "/intens-uri.desktop");
+  file << R"([Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Intens URI Handler
+Exec=intens --uriOpener %u
+Terminal=false
+Comment=INTENS URL handler
+Categories=Application;Network;
+MimeType=x-scheme-handler/intens;)";
+}
 #endif

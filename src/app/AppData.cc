@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <libintl.h>
 #include <getopt.h>
+#include <QDesktopServices>
 
 #include "app/AppData.h"
 #include "app/App.h"
@@ -682,27 +683,10 @@ void AppData::runOAuthClient(UserPasswordListener* listener) {
 void AppData::runDashboardClient(UserPasswordListener* listener) {
   if (!DashboardURL().size()) return;
 
-  std::string url = DashboardURL();
+  std::string url = DashboardURL() + "?desktopLogin";
   std::string command;
 
-#if defined(_WIN32)
-    // Windows
-    command = "start " + url;
-#elif defined(__APPLE__)
-    // macOS
-    command = "open " + url;
-#elif defined(__linux__)
-    // Linux
-    command = "xdg-open " + url;
-#else
-    #error "Unknown OS is not supported"
-#endif
-
-    // Befehl an das System übergeben
-    int result = std::system(command.c_str());
-    if (result != 0) {
-        std::cerr << "A runtime error has occurred." << std::endl;
-    }
+  QDesktopServices::openUrl(QString::fromStdString(url));
 }
 
 std::string AppData::OAuthToken()  {

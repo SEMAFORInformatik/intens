@@ -584,6 +584,8 @@ bool App::parse( int &argc, char ** argv ){
       UnitManager::Instance().parseIncludeFile();
     }
     if (!AppData::Instance().DashboardURL().empty()) {
+      URIHandler h;
+      h.registerHandler();
       // parse DashboardURL.inc
       MessageQueue::parseDashboardURLIncludeFile();
     }
@@ -686,10 +688,6 @@ int App::run(){
   }
 
 
-#ifdef _WIN32
-  URIHandler h;
-  h.registerHandler();
-#endif
   if (!appdata.UriOpener().empty()) {
     URIHandler h(appdata.UriOpener());
     h.call();

@@ -102,7 +102,7 @@ NAVIGATOR project_navi{
     "Rev" rev_tag:3,
     "Creation date" variant_date_tag:16
   ), SIZE(450, 600), EXPAND, TOOLTIP(tooltip_tag)} (
-  project[*] = _("Workbook") {AUTOLEVEL, HIDE_EMPTY_FOLDER}
+  project[*] = _("Workbook") {AUTOLEVEL, HIDE_EMPTY_FOLDERS}
 );
 
 FORM project_overview_form{

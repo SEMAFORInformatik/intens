@@ -80,6 +80,6 @@ NAVIGATOR variant_navi {
 } (
   activeVariant[*] = "Variant" {
     AUTOLEVEL
-  , HIDE_EMPTY_FOLDER
+  , HIDE_EMPTY_FOLDERS
   }
 );

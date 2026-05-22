@@ -93,7 +93,7 @@ in more detail.
 This demo project can be built on a Linux/Unix or Windows system with the
 following packages installed:
 
-- Intens 6 (with REST-DB-Server)
+- Intens 6 (with REST-DB-Service)
 - Python >=3.12 (virtualenv)
 - Java (JRE) >=17
 - CMake (Version >3.10, for Windows, see special information in appendix [[*Installation on Windows]])
@@ -105,7 +105,7 @@ straightforward. (see appendix [[*Installation on Linux]]).
 In addition to the above listed software the
 database service must be installed and started
 with a special installation script. The description of these steps
-can be found in section [[*Database Installation]].
+can be found in section [[*Database Service Installation]].
 
 It is assumed that the reader has some basic knowledge of the bash
 shell and a text editor such as Emacs (recommended) or Vi.
@@ -149,13 +149,13 @@ modified are ~motor_datapool.inc~ and ~motor_uiManager.inc~.
 
 The final result can be downloaded from [[https://owncloud.semafor.ch/s/f0sTdM9gKZh61q4/download]]
 
-** Database Installation
+** Database Service Installation
 1. Create a new project directory:
   #+begin_example
   $ mkdir intens-training
   $ cd intens-training
   #+end_example
-2. Download the DB server from https://owncloud.semafor.ch/s/B1RWj71nvPNO89t/download (100 MB)
+2. Download the DB service from https://owncloud.semafor.ch/s/B1RWj71nvPNO89t/download (100 MB)
   and unpack the file:
   #+begin_example
   ~/intens-training $ tar -xf workbook.tgz
@@ -230,7 +230,7 @@ Open http://localhost:8080/workbook in your browser (Firefox, Google Chrome):
 #+ATTR_HTML: :width 400px :align center
 [[./images/screenshots/dashboard-users.png]]
 
-A user must have an active group, with the ~ROLE_USER~. When a component is created,
+A user must have an active group. When a component is created,
 it is owned by the current user and its active group.
 These settings, along with a component's approval state,
 determine the accessability of the component.
@@ -1437,12 +1437,17 @@ To do that, you just have to pass the URL of the dashboard as a launch option:
 
 With this option, your app will open the dashboard when it needs you to log in.
 The dashboard will then prompt you to open the ~intens://~ url handler which will then log you in on your desktop app.
-If the dashboard doesn't trigger the login automatically, there's a button on the site to do it manually.
+If the dashboard doesn't trigger the login automatically, there's a button "Login to local INTENS" on the site to do it manually. Then press the
+button "Open Intens URI Handler" to proceed.
+
+#+caption: Intens login handling with the DB service dashboard
+#+attr_html: :width 500px :align center
+[[./images/dashboard-intens-login.png]]
 
 *** OAuth in DB-dashboard
 
 If you set the Workbook to use OAuth, you will also need to set up the dashboard accordingly.
-The dashboard needs a public client and you will need to give it the different endpoints manually:
+The dashboard is a public oauth client which must be configured in the DB service (application yaml):
 
 #+begin_example
 app.dashboard.authorizationEndpoint=https://keycloak.example.com/realms/semafor/protocol/openid-connect/auth
@@ -1611,7 +1616,6 @@ Create the directory where all testing files will be stored by using the followi
 (training) ~/intens-training/testing/webtesting $ cd behave
 #+end_example
 
-
 Now install the Python packages from the requirements.txt and run the Behave
   test
 #+begin_example
@@ -1625,13 +1629,6 @@ Now install the Python packages from the requirements.txt and run the Behave
   The test report should open in your web browser. If it does not open automatically, you can
 see the report visiting the url given in the terminal (i.E. *http://127.0.0.1:45043*).
 
-
-#+begin_comment
-- explain helm/helmfile
-- explain minikube https://www.baeldung.com/ops/docker-local-images-minikube
-- liquibase handling
-- oauth2
-#+end_comment
 * Data Management
 ** Data Model
 The database access is implemented by a REST service which is connected

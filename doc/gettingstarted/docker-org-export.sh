@@ -54,5 +54,5 @@ fi
 
 emacs_export_command=$1
 orgfile=doc/gettingstarted/$2
-docker run --rm -i -t -v $(pwd)/../..:/work --workdir=/work -e USERID=$UID -e USER=$USER $docker_image \
+docker run --rm -i -t -v $(pwd)/../..:/work --workdir=/work -u $UID:$GID -e USER=$$USER $docker_image \
        emacs $orgfile --batch -l publish.el -f $emacs_export_command $KILLARG

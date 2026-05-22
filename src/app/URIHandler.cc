@@ -35,6 +35,13 @@ void login(const std::string &jwt) {
   const std::string command = "login_token";
   zmq::context_t ctx;
   zmq::socket_t sock(ctx, zmq::socket_type::req);
+  // linger
+  int linger = 5000;
+#if CPPZMQ_VERSION >= ZMQ_MAKE_VERSION(4, 7, 0)
+  sock.set(zmq::sockopt::linger, linger);
+#else
+  sock.setsockopt(ZMQ_LINGER, &linger, sizeof(int));
+#endif
 
   auto args = Json::Value(Json::objectValue);
   args["user"] = "empty";

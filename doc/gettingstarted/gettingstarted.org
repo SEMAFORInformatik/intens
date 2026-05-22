@@ -1426,36 +1426,30 @@ The specific entries needed in your access token are the following:
 
 For details see [[*Keycloak group and active_group mappers]]
 
-*** OAuth in desktop
 
-OAuth login is also supported when running as a desktop application.
-With the only configuration difference that the OIDC client in Keycloak
-needs to be set to public access by disabling "Client authentication".
+*** Desktop login with DB-dashboard
 
-#+CAPTION: SCIM client
-#+NAME:   fig:keycloak-scim-client
-#+ATTR_HTML: :width 500px :align center
-[[./images/screenshots/scim-keycloak1.png]]
-
-#+CAPTION: SCIM client authentication config
-#+NAME:   fig:keycloak-scim-client-authentication
-#+ATTR_HTML: :width 500px :align center
-[[./images/screenshots/scim-keycloak2.png]]
-
-#+CAPTION: SCIM client redirects
-#+NAME:   fig:keycloak-scim-client-redirects
-#+ATTR_HTML: :width 500px :align center
-[[./images/screenshots/scim-keycloak3.png]]
-
-Intens requires two command line arguments to use OIDC, with the client name being specified before the url in the first one:
+The login to the desktop application can alternatively be delegated to the db service dashboard.
+To do that, you just have to pass the URL of the dashboard as a launch option:
 #+begin_example
-  --oauth "https://scim@keycloak.example.com/realms/semafor/protocol/openid-connect/auth" \
-  --oauthAccessTokenUrl "https://keycloak.example.com/realms/semafor/protocol/openid-connect/token" \
+  --dashboardURL http://example.com/workbook
 #+end_example
 
-There is an additional argument you can pass called --oauthAccessTokenUrl containing a list of the requested scopes from
-your OAuth provider.
-If the option is not set, it will request the default list of scopes "openid profile roles".
+With this option, your app will open the dashboard when it needs you to log in.
+The dashboard will then prompt you to open the ~intens://~ url handler which will then log you in on your desktop app.
+If the dashboard doesn't trigger the login automatically, there's a button on the site to do it manually.
+
+*** OAuth in DB-dashboard
+
+If you set the Workbook to use OAuth, you will also need to set up the dashboard accordingly.
+The dashboard needs a public client and you will need to give it the different endpoints manually:
+
+#+begin_example
+app.dashboard.authorizationEndpoint=https://keycloak.example.com/realms/semafor/protocol/openid-connect/auth
+app.dashboard.tokenEndpoint=https://keycloak.example.com/realms/semafor/protocol/openid-connect/token
+app.dashboard.clientId=dashboard
+app.dashboard.dashboardUrl=https://webtens.semafor.ch/workbook
+#+end_example
 
 ** Deploying to the cloud
 

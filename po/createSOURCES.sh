@@ -1,3 +1,9 @@
+#!/usr/bin/bash
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
+#
+# create source list of files with translatable strings _(...)
+#
 pushd ..
 
 output="CMakeLists.txt_SOURCES"

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
+# 
 # Dockcross
 
 This folder contains the scripts and files required to cross-build INTENS for Windows.

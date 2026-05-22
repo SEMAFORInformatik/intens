@@ -1,4 +1,7 @@
 #! /bin/sh
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
+#
 # configure, build and package intens executables for Linux
 #
 # Author Ronald Tanner, Günther Amsler

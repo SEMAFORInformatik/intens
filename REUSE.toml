@@ -1,7 +1,7 @@
 version = 1
 
 [[annotations]]
-path = ["**/.gitattributes", "**.gitignore", "**.gitreview", ".github/**", ".gitmodules"]
+path = ["**/.gitattributes", "**.gitignore", "**.gitreview", ".github/**", ".gitmodules", ".dockerignore"]
 precedence = "closest"
 comment = "infrastructure"
 SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
@@ -14,7 +14,7 @@ SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
-path = [".tag", ".cmake.conf", "**.json.in", "**.yaml", "**.pro", "**ci_config_linux.json"]
+path = [".tag", ".cmake.conf", "**.json.in", "**.yaml", "**.pro", "**ci_config_linux.json", ".toml"]
 precedence = "closest"
 comment = "build system"
 SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
@@ -54,3 +54,9 @@ comment = "Getting started images"
 precedence = "closest"
 SPDX-FileCopyrightText = "2025 SEMAFOR Informatik & Energie AG, Basel"
 SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["doc/gettingstarted/styles/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2011 Fabrice Niessen"
+SPDX-License-Identifier = "GPL-3.0"

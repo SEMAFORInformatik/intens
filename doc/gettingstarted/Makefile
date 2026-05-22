@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: Apache-2.0
+#
+# export org to html
 .PHONY: all clean install-doc
 
 all: gettingstarted.html

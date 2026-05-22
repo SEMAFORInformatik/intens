@@ -1,5 +1,9 @@
 #!/bin/sh
-
+# SPDX-FileCopyrightText: 2016 Alexey Lebedeff
+# SPDX-FileCopyrightText: 2018 Olivier Berger - IMT/Télécom SudParis
+# SPDX-FileCopyrightText: 2025 SEMAFOR Informatik & Energie AG, Basel
+# SPDX-License-Identifier: MIT
+#
 # Launch the org-mode exporter inside docker
 
 # example: ./docker-org-export org-html-export-to-html slides.org

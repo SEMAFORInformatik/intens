@@ -336,7 +336,7 @@ PATH=$PATH:<installed_intens_directory>/bin
   ``(training)'' in your shell prompt keeps you informed about that.
 - Install the required python packages:
   The required packages for a specific project should be maintained in a file,
-  usually named as ~requirements.txt~. The following packages are required:
+  usually named as ~pyproject.toml~. The following packages are required:
 #+begin_example
 Jinja2
 lxml
@@ -348,7 +348,7 @@ requests
 #+end_example
 Install the python packages:
 #+begin_example
-(training) ~/intens-training $ pip install -r requirements.txt
+(training) ~/intens-training $ uv add Jinja2 lxml Mako PypInstaller python-dateutil requests
 #+end_example
 ** Create and Build the Base Application
 Create the directory structure using the Intens application generator
@@ -1057,7 +1057,7 @@ set(DIST_BIN_SCRIPTS api-gateway.py
 #+end_src
 - Now install in the training environment the additional required Python packages:
 #+begin_example
-(training) ~/intens-training/scim $ pip install -r api-gateway/requirements.txt
+(training) ~/intens-training/scim $ cd api-gateway && uv sync
 #+end_example
 - Check if the application is runninhg now:
   Type make and start the scim-script in the build folder:
@@ -1186,15 +1186,10 @@ behave uses tests written in a natural language style, backed up by python code.
                 └── 📄 intensZMQ.py    Functions to communicate with Intens using ZeroMQ
 #+END_EXAMPLE
 *** Installation
-#+begin_example
-(training) ~/intens-training $ pip install behave allure-behave
-#+end_example
-
 Download from [https://allurereport.org/docs/v2/install] (Version 2), unpack the file and
-add the bin directory of the unpacked files to you ~PATH~ variable.
+add the bin directory of the unpacked files to your ~PATH~ variable.
 
 *** Features
-
 A behave feature is a collection of scenarios found in a feature file. These files are stored in the folder
 *{testing/features}*.
 
@@ -1281,7 +1276,7 @@ Line 36 maps the step
 
 *** Running the tests
 #+begin_example
-(training) ~/intens-training $ cd scim/testing
+(training) ~/intens-training $ cd scim/testing && uv sync
 (training) ~/intens-training $ behave -f allure_behave.formatter:AllureFormatter -o reports
 (training) ~/intens-training $ allure serve reports
 #+end_example
@@ -1616,10 +1611,9 @@ Create the directory where all testing files will be stored by using the followi
 (training) ~/intens-training/testing/webtesting $ cd behave
 #+end_example
 
-Now install the Python packages from the requirements.txt and run the Behave
-  test
+Now install the Python packages from the pyproject.toml and run the Behave test
 #+begin_example
-(training) ~/intens-training/testing/webtesting $ pip install -r requirements.txt
+(training) ~/intens-training/testing/webtesting $ uv sync
 (training) ~/intens-training/testing/webtesting $ behave -f allure_behave.formatter:AllureFormatter -o reports
 #+end_example
 #+CAPTION: Allure Report

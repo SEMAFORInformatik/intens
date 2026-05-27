@@ -794,4 +794,50 @@ void App::runDashboardClient(UserPasswordListener* listener) {
   QDesktopServices::openUrl(QString::fromStdString(url));
 }
 
+std::string App::getAppStatus() {
+  Json::Value jsonObj = Json::Value(Json::objectValue);
 
+  Json::Value formAry = Json::Value(Json::arrayValue);
+  GuiElementList mainFormList;
+  GuiElementList mlist;
+
+  GuiElement::findElementType(mainFormList, GuiElement::type_Main);
+  // add main form to the list
+  mlist.emplace_back(mainFormList[0]);
+  GuiElement::findElementType(mlist, GuiElement::type_Form);
+  for( auto ele : mlist ) {
+    if (ele->getForm() && ele->getForm()->isShown()) {
+      formAry.append(ele->getName());
+    }
+  }
+
+  jsonObj["forms"] = formAry;
+
+  Json::Value cycleAry = Json::Value(Json::arrayValue);
+  DataPoolIntens &dp = DataPoolIntens::Instance();
+  std::string name;
+  int numcyc = dp.getDataPool().NumCycles();
+
+  for( int cyc=0; cyc < numcyc; cyc++ ) {
+    if( dp.getCycleName( cyc, name ) ){
+      if( !name.empty() ){
+        cycleAry.append(name);
+      }
+    }
+  }
+
+  jsonObj["cycles"] = cycleAry;
+  DataReference* refStatus = DataPoolIntens::Instance().getDataReference("mqReply_response.status");
+  if ( refStatus != 0 ) {
+    std::string value;
+    refStatus->GetValue(value);
+    delete refStatus;
+    if (value.empty()) {
+      jsonObj["status"] = "BUSY";
+    } else {
+      jsonObj["status"] = value;
+    }
+  }
+
+  return ch_semafor_intens::JsonUtils::value2string(jsonObj);
+}

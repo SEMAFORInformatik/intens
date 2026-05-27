@@ -10,6 +10,7 @@
 #include "operator/MessageQueueRequest.h"
 #include "operator/MessageQueueReply.h"
 #include "operator/MessageQueueThreads.h"
+#include "app/App.h"
 #include "zhelpers.h"
 
 INIT_LOGGER();
@@ -113,6 +114,19 @@ bool BaseThread::readMultiPartMessage(std::vector<std::string>& resultDataList, 
       msg = s_recv (socket);
     }
     BUG_DEBUG("msg, len: " << msg.size());
+
+    // We always want to be able to call for the application's status
+    if (msg == "\xEF\xBF\xBEStatusCall\xEF\xBF\xBF") {
+      std::string reply = App::Instance().getAppStatus();
+      #if CPPZMQ_VERSION >= ZMQ_MAKE_VERSION(4, 7, 0)
+        socket.send(zmq::buffer(reply));
+      #else
+        zmq::message_t zmqMessage(reply.size());
+        memcpy(zmqMessage.data(), reply.data(), reply.size());
+        sock.send(zmqMessage, ZMQ_SNDMORE);
+      #endif
+      continue;
+    }
 
     // Multipart detection
 #if CPPZMQ_VERSION >= ZMQ_MAKE_VERSION(4, 7, 0)

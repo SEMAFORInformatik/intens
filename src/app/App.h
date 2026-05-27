@@ -33,6 +33,7 @@ class App {
   void runOAuthClient(UserPasswordListener* listener=0 );
   std::string OAuthToken();
   void runDashboardClient(UserPasswordListener* listener=0 );
+  std::string getAppStatus();
 
  private:
   App( int &argc, char **argv );

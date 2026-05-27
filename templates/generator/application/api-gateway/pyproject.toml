@@ -1,0 +1,12 @@
+[project]
+name = "api-gateway"
+version = "0.1.0"
+classifiers = ["private :: do not upload"]
+description = "api gateway "
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "opentelemetry-distro>=0.60b1",
+    "opentelemetry-exporter-otlp-proto-http>=1.39.1",
+    "pyzmq>=27.1.0"
+]

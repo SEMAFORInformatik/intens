@@ -158,20 +158,20 @@ class CMakeSBOMGenerator:
                     {
                         "name": "SEMAFOR Informatik & Energie AG"
                     }
-                ]
-            },
-            "lifecycles": [
-                {
-                    "phase": "build"
+                ],
+                "lifecycles": [
+                    {
+                        "phase": "build"
+                    }
+                ],
+                "component": {
+                    "group": "ch.semafor",
+                    "name": f"{self.target_name}",
+                    "version": metadata['project']['version'],
+                    "type": "application",
+                    "purl": "pkg:generic/intens",
+                    "bom-ref": "pkg:generic/intens"
                 }
-            ],
-            "component": {
-                "group": "ch.semafor",
-                "name": f"{self.target_name}",
-                "version": metadata['project']['version'],
-                "type": "application",
-                "purl": "pkg:generic/intens",
-                "bom-ref": "pkg:generic/intens"
             },
             "components": []
         }

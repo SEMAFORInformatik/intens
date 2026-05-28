@@ -94,7 +94,7 @@ This demo project can be built on a Linux/Unix or Windows system with the
 following packages installed:
 
 - Intens 6 (with REST-DB-Service)
-- Python >=3.12 (virtualenv)
+- Python >=3.12
 - Java (JRE) >=17
 - CMake (Version >3.10, for Windows, see special information in appendix [[*Installation on Windows]])
 - MinGW/MSys (on Windows only, see appendix [[*Installation on Windows]])
@@ -320,36 +320,14 @@ your PATH-Variable includes the intens bin folder.
 #+begin_example
 PATH=$PATH:<installed_intens_directory>/bin
 #+end_example
-- Create a virtual environment with venv: This is used to manage python packages
-  for different projects. Using venv allows you to avoid installing python packages globally
-  which could break system tools or other projects. Make sure python3 is in your PATH when exec python.
+- Create a virtual environment for python: This is used to manage python packages
+  for different projects. There are several options. We strongly recommend using [[https://docs.astral.sh/uv]]
 #+begin_example
-~/intens-training $ python -m venv training
-~/intens-training $ source training/bin/activate
-(training) ~/intens-training $
+~/intens-training $ uv init --bare
+~/intens-training $ uv add Mako
 #+end_example
-  On Windows, the activate file is placed in the folder 'Scripts' instead of 'bin'.
-#+begin_example
-~/intens-training $ source training/Scripts/activate
-#+end_example
-  The above command activates the python virtual environment named ``training'', and the string
-  ``(training)'' in your shell prompt keeps you informed about that.
-- Install the required python packages:
-  The required packages for a specific project should be maintained in a file,
-  usually named as ~pyproject.toml~. The following packages are required:
-#+begin_example
-Jinja2
-lxml
-Mako
-PyInstaller
-python-dateutil
-pyzmq
-requests
-#+end_example
-Install the python packages:
-#+begin_example
-(training) ~/intens-training $ uv add Jinja2 lxml Mako PypInstaller python-dateutil requests
-#+end_example
+  The above commands create  the file ~pyproject.toml~ ``training'' and add the python package
+  mako as a dependency.
 ** Create and Build the Base Application
 Create the directory structure using the Intens application generator
 #+begin_example

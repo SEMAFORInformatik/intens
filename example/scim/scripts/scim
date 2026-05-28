@@ -100,12 +100,8 @@ if [ -z "$API_GATEWAY_HOST" ]; then
     APIGW_FILENAME="${TOP_DIR}/api-gateway/api-gateway.py"
     export API_GATEWAY_HOST="localhost"
 
-    if [ -n "$conda_env" ]; then
-        CONDADIR=$(echo /${minicondadir} | tr -s '\\' '/' | tr -s ':' '/')
-        export CONDADIR
-        [ ! -d "$CONDADIR" ] && messagebox "CONDADIR" "CONDADIR is not valid (${minicondadir})" && exit 1
-        [ ! -d "$CONDADIR/envs/$conda_env" ] && messagebox "conda_env" "CONDA Enviroment is not valid (${conda_env})" && exit 1
-        PATH="$CONDADIR/envs/$conda_env:$CONDADIR/envs/$conda_env/Library/bin:$PATH"
+    if [ -f "${TOP_DIR}/api-gateway/uv.lock" ]; then
+        APIGW="uv run --directory ${TOP_DIR}/api-gateway"
     elif [ -f "${TOP_DIR}/api-gateway/api-gateway.exe" ]; then
         PATH=$PATH:"${TOP_DIR}/api-gateway"
         APIGW=api-gateway.exe

@@ -66,7 +66,10 @@ if (USE_LOG4CPLUS)
 endif()
 if (USE_QT6)
   set(QT_NO_PRIVATE_MODULE_WARNING ON)
-  find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network SvgWidgets PrintSupport Charts)
+  find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network SvgWidgets PrintSupport)
+  if (USE_QT6CHARTS)
+    find_package(Qt6 REQUIRED COMPONENTS Charts)
+  endif(USE_QT6CHARTS)
   if (USE_QT6GRAPHS)
     find_package(Qt6 REQUIRED COMPONENTS GraphsWidgets QuickWidgets)
   endif(USE_QT6GRAPHS)
@@ -195,10 +198,10 @@ target_link_libraries(intens
         )
  else()
 # needed for os windows
-  target_link_libraries(intens
-         PRIVATE
-         Qt::Charts
-         )
+###  target_link_libraries(intens
+###         PRIVATE
+###         Qt::Charts
+###         )
  endif(USE_QT6GRAPHS)
  if (USE_QT6CHARTS)
  target_link_libraries(intens

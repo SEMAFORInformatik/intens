@@ -3688,7 +3688,7 @@ void GuiQWTPlot::buildScaleDialog() {
   GuiEventData *event = new GuiEventData();
   ScaleDialog *dialog = new QtScaleDialog( this, this, "Scale Plot", "Axis", event );
   setScaleDialog( dialog );
-  std::string name = m_isCloned ? compose("%1_%2", getName(), this) : getName();
+  std::string name = m_isCloned ? compose("{0}_{1}", getName(), (void*) this) : getName();
   dialog->initialize( name, initXfer( "aspectRatioType", 0 ) );
 
   std::string axisString[AXIS_TYPE_COUNT - 1] = { "Xaxis", "Y1Axis", "Y2Axis" };
@@ -3762,7 +3762,7 @@ void GuiQWTPlot::buildCyclesDialog() {
   GuiEventData *event = new GuiEventData();
   QtCyclesDialog*  _cyclesDialog = new QtCyclesDialog( this, this, _("CaseDialog"), event );
   setCyclesDialog( _cyclesDialog );
-  std::string name = m_isCloned ? compose("%1_%2", getName(), this) : getName();
+  std::string name = m_isCloned ? compose("{0}_{1}", getName(), (void*) this) : getName();
   _cyclesDialog->initialize( name );
 
   int numCycles = dpi().numCycles();

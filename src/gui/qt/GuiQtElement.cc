@@ -704,7 +704,9 @@ bool GuiQtElement::processConvert( const std::string &inFilename, std::string &o
   // no output filename => create temporary filename
   if (outFilename.size() == 0) {
     std::string tmp_out_filename;
-    QTemporaryFile tmp_eps( QString::fromStdString(compose("%1%2XXXXXX.%3", QDir::tempPath().toStdString(),QDir::separator().toLatin1(), suffix.toStdString())) );
+    QTemporaryFile tmp_eps( QString::fromStdString(compose("%1%2XXXXXX.%3", QDir::tempPath().toStdString(),
+                                                           QString(QDir::separator()).toStdString(),
+                                                           suffix.toStdString())) );
     if(!tmp_eps.open()) return false;
     //  tmp_out_filename
     outFilename =  tmp_eps.fileName().toStdString();

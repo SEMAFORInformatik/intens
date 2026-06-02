@@ -6609,7 +6609,7 @@ job_task /* DOCUMENTATION:UNFOLD */
     job_task_declaration
       {
         if( configurator -> isNOTTaskImplemented() )
-          ParserError( compose(_("Task '%1' already declared."), $1) );
+          ParserError( compose(_("Task '{0}' already declared."), *($1)) );
       }
   ;
 

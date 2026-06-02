@@ -51,7 +51,6 @@ void setSignals ( void )
 }
 
 const char *program_name;
-
 int main( int argc, char **argv )
 {
   program_name=argv[0];

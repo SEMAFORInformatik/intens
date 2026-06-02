@@ -1137,13 +1137,13 @@ void GuiElement::manageForm(){
 
 void GuiElement::printMessage( const std::string &msg, MessageType type, time_t delay ){
   if( m_parent != 0 ){
-    BUG_DEBUG("printMessage: " << compose("type[%1], message[%2]", type, msg));
+    BUG_DEBUG("printMessage: " << compose("type[%1], message[%2]", (int) type, msg));
     m_parent->printMessage( msg, type, delay );
   }
 }
 
 void GuiElement::printMessage( GuiElement *elem, const std::string &msg, MessageType type, time_t delay ){
-  BUG_DEBUG("printMessage: " << compose("type[%1], message[%2]", type, msg));
+  BUG_DEBUG("printMessage: " << compose("type[%1], message[%2]", (int) type, msg));
   if( elem ){
     elem->printMessage( msg, type, delay );
   }

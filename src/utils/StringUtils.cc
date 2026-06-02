@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <regex>
+#include <ranges>
 
 #include "utils/StringUtils.h"
 #include "utils/Debugger.h"
@@ -136,4 +137,22 @@ std::string longestWord(const std::string& str){
   }
 
   return longestWord;
+}
+
+namespace SemaforString{
+  std::string convert2StdFormat(const std::string& format){
+    if (!format.contains('%') && !format.contains('{') && !format.contains('}'))
+      return format;
+    std::string f(format);
+    for (int i : std::views::iota(1, 20)) {
+      replaceAll(f, std::format("%{}", i), std::format("{{{}}}", i-1));
+      if (!f.contains('%'))
+        break;
+    }
+    std::regex patternL(R"(\{([^\d]+))");
+    std::regex patternR(R"(([^\d]+)\})");
+    f = std::regex_replace(f, patternL, "{{$1");
+    f = std::regex_replace(f, patternR, "$1}}");
+    return f;
+  }
 }

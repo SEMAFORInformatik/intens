@@ -3614,7 +3614,7 @@ void GuiQt2dPlot::buildCyclesDialog() {
   GuiEventData *event = new GuiEventData();
   QtCyclesDialog*  _cyclesDialog = new QtCyclesDialog( this, this, _("CaseDialog"), event );
   setCyclesDialog( _cyclesDialog );
-  std::string name = m_isCloned ? compose("%1_%2", getElement()->getName(), this) : getElement()->getName();
+  std::string name = m_isCloned ? compose("%1_%2", getElement()->getName(), (void*) this) : getElement()->getName();
   _cyclesDialog->initialize( name );
 
   int numCycles = dpi().numCycles();
@@ -4011,15 +4011,6 @@ void GuiQt2dPlot::clearPlots(bool always) {
 
 //   m_chart->setUserInteractionMode(mode);
 // }
-
-/* --------------------------------------------------------------------------- */
-/* Gui2dPlot::PrintListener::ButtonPressed                                    */
-/* --------------------------------------------------------------------------- */
-void Gui2dPlot::PrintListener::ButtonPressed() {
-  GuiPrinterDialog::MyEventData event( ReportGen::PRINT );
-  GuiFactory::Instance()->createPrinterDialog()->showDialog( (HardCopyListener*) m_plot,
-                                                             m_plot->getElement(), &event );
-}
 
 // /* --------------------------------------------------------------------------- */
 // /* GuiQt2dPlot::OpenScaleListener::ButtonPressed                                */

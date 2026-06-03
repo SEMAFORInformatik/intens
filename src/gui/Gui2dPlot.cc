@@ -1496,6 +1496,7 @@ bool Gui2dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated)
   double xmin(NumLim::MAX_DOUBLE), ymin(NumLim::MAX_DOUBLE);
   double xmax(NumLim::MIN_DOUBLE), ymax(NumLim::MIN_DOUBLE);
   int currentCycle = dpi().currentCycle();
+  std::map<std::string, int> nameMap;  // to detect duplicate names
   for( plotIter = m_plots.begin(); plotIter != m_plots.end(); ++plotIter ) {
     if ( !(*plotIter) || !dpi().goCycle( (*plotIter)->cycle(), false )) continue;
     dpi().goCycle( (*plotIter)->cycle(), false );  // do not clear undo stack
@@ -1509,6 +1510,15 @@ bool Gui2dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated)
               (*it)->xPlotDataItem() && (*it)->xPlotDataItem()->isDataItemUpdated(trans) ){
             if (m_showCycleVector[(*plotIter)->cycle() ]) {
               std::string label = PlotItemLabel((*it)->plotDataItem());
+              // if duplicate name, append zero width space
+              auto fit = nameMap.find(label);
+              if (fit != nameMap.end()) {
+                label += std::string("\u200B", fit->second);
+                fit->second += 1;
+              } else {
+                nameMap[label] = 1;
+              }
+              // end duplicate name
               tMarkerDataVector markerLabels;
               int validCnt = readData((*it), (*plotIter)->xIndex(), (*plotIter)->yIndex(), pts, markerLabels);
 

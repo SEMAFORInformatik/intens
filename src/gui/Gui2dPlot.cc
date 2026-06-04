@@ -1707,6 +1707,7 @@ bool Gui2dPlot::serializePlotCurveData(google::protobuf::RepeatedPtrField<in_pro
   tPlotIterator plotIter;
   TransactionNumber trans = 0;
 
+  std::map<std::string, int> nameMap;  // to detect duplicate names
   for( plotIter = m_plots.begin(); plotIter != m_plots.end(); ++plotIter ) {
     if ( !(*plotIter) || !dpi().goCycle( (*plotIter)->cycle(), false )) continue;
     dpi().goCycle( (*plotIter)->cycle(), false );  // do not clear undo stack
@@ -1720,6 +1721,16 @@ bool Gui2dPlot::serializePlotCurveData(google::protobuf::RepeatedPtrField<in_pro
               (*it)->xPlotDataItem() && (*it)->xPlotDataItem()->isDataItemUpdated(trans) ){
             if (m_showCycleVector[(*plotIter)->cycle() ]) {
               std::string label = PlotItemLabel((*it)->plotDataItem());
+              // if duplicate name, append zero width space
+              auto fit = nameMap.find(label);
+              if (fit != nameMap.end()) {
+                for (int i = 0; i < fit->second; i++) {
+                  label += "\u200B";
+                }
+                fit->second += 1;
+              } else {
+                nameMap[label] = 1;
+              }
               tMarkerDataVector markerLabels;
               tPointVector pts;
               if ((*it)->DataCache_PointVector().empty()) {

@@ -1513,7 +1513,9 @@ bool Gui2dPlot::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated)
               // if duplicate name, append zero width space
               auto fit = nameMap.find(label);
               if (fit != nameMap.end()) {
-                label += std::string("\u200B", fit->second);
+                for (int i = 0; i < fit->second; i++) {
+                  label += "\u200B";
+                }
                 fit->second += 1;
               } else {
                 nameMap[label] = 1;

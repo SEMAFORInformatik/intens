@@ -186,6 +186,11 @@ FUNC g_variant_load_nav_components_func {
 };
 
 FUNC g_variant_get_status_func {
+  IF(VALID(variant.name)){  // don't modify invalid variant
+    // variants are unique within each project
+    // invalid projectId means: variant belongs to a new project
+    variant.projectId = project.id;
+  }
   IF(MODIFIED(variant) && variant.detached != 1) {
     variant.type = "Variant";
     [elementStatus] = PUT(

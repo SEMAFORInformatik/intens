@@ -211,9 +211,9 @@ FUNC project_store_func{
   // get projects of this name and check id
   // --------------------------------------
   IF( VALID(project.name) && VALID( variant.name ) ){
-    [db_comp2[#]] = GET(PATH=["projects?name=", project.name] );
-    SIZE(db_comp2[*], existing_projects);
     IF( VALID(project.id) ){
+      [db_comp2[#]] = GET(PATH=["projects?name=", project.name] );
+      SIZE(db_comp2[*], existing_projects);
       i=0;
       found=0;
       WHILE( i<existing_projects ){
@@ -226,8 +226,8 @@ FUNC project_store_func{
       IF( found==0 ){
         CLEAR(project.id);
       }
+      CLEAR( db_comp2 );
     }
-    CLEAR( db_comp2 );
   }
 
   //

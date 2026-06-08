@@ -1360,6 +1360,11 @@ bool InterpreterConfigurator::unsetDictItemFolder(){
 // - setDictItemRange
 //======================================================================//
 bool InterpreterConfigurator::setDictItemRange( double min, double max ){
+  if ( m_rep -> datatype != DataDictionary::type_Real &&
+       m_rep -> datatype != DataDictionary::type_Integer ){
+    ParserError( _("RANGE is only used with REAL and INTEGER.") );
+    return false;
+  }
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetRange( min, max );
   return true;
 }
@@ -1459,6 +1464,10 @@ bool InterpreterConfigurator::setDictItemUnits( const std::string &units ){
 // - setDictItemPattern
 //======================================================================//
 bool InterpreterConfigurator::setDictItemPattern( const std::string &pattern ){
+  if ( m_rep -> datatype != DataDictionary::type_String ){
+    ParserError( _("PATTERN is only used with STRING.") );
+    return false;
+  }
   static_cast<UserAttr*>(m_rep -> dictitem -> GetAttr() )->SetPattern( compose("(%1)?",pattern) );
   return true;
 }

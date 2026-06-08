@@ -272,7 +272,9 @@ Options          & Description \\ \hline
                    (see also section \nameref{sec:uifieldgroup} on page \pageref{sec:uifieldgroup}) \\
 \UNIT            & The item has a unit which can be used by the \UIMANAGER{} and \STREAMER.
                    (see also section \nameref{sec:uifieldgroup} on page \pageref{sec:uifieldgroup})\\
-\PATTERN         & A regular expression that defines the possible input values. \\
+\PATTERN         & A regular expression that defines the possible input values. \newline
+                   It has to match the entire expression. \newline
+                   Only implemented for \STRING. \\+
 \HELPTEXT        & For each item a helptext may be defined.
                     This text appears as soon as the mouse-pointer crosses the field,
                    which contains the data-item.\\
@@ -283,7 +285,8 @@ Options          & Description \\ \hline
 \PROGRESS        & The item is displayed as a progress bar. \newline
                    This makes it possible to show a progress bar inside a \FIELDGROUP{}. Assign the desired
                    value (from 0 to 100) to the (integer) variable and the item shows the progress. \\
-\RANGE           & Minimal and maximal values for a \SLIDER. \\
+\RANGE           & Minimal and maximal values for a \SLIDER. \newline
+                   Or the range of possible input values for \REAL{} or \INTEGER{} values. \\
 \STEP            & Difference between the labels of \SLIDER. \\
 \TOGGLE          & The item is displayed as Toggle on the user interface.
                    Activating the toggle changes the value from 0 to 1,

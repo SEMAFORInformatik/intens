@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "gui/qt/GuiQtTableComboBoxItem.h"
-#include "gui/qt/GuiQwtSlider.h"
+#include "gui/qt/GuiQtSlider.h"
 
 #include <QTableView>
 #include "utils/Debugger.h"

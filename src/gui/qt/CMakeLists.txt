@@ -92,7 +92,7 @@ add_library(gui_qt OBJECT
         GuiQwtPropertyDialog.cc
         GuiQwtScaleDraw.cc
         GuiQwtScaleEngine.cc
-        GuiQwtSlider.cc
+        GuiQtSlider.cc
         GuiQwtThermo.cc
         GuiQtProgressBar.cc
         HelpWindow.cc

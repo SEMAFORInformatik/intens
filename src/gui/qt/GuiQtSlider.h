@@ -3,52 +3,54 @@
 // SPDX-License-Identifier: Apache-2.0
 
 
-#if !defined(GUI_QWT_SLIDER_H)
-#define GUI_QWT_SLIDER_H
+#if !defined(GUI_QT_SLIDER_H)
+#define GUI_QT_SLIDER_H
 
 #include "gui/qt/GuiQtDataField.h"
 #include "gui/GuiSlider.h"
 
-#include <qwt_slider.h>
+#include <QSlider>
 
-class GuiQwtSlider : public GuiQtDataField, public GuiSlider {
+class GuiQtSlider : public GuiQtDataField, public GuiSlider {
     Q_OBJECT
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
 public:
-  GuiQwtSlider( GuiElement *parent );
-  virtual ~GuiQwtSlider();
+  GuiQtSlider( GuiElement *parent );
+  GuiQtSlider( const GuiQtSlider &toggle );
+  virtual ~GuiQtSlider();
 
-  class MyQwtSlider : public QwtSlider{
+private:
+  class QtSlider : public QSlider{
   public:
-    MyQwtSlider( QWidget *parent, GuiQwtSlider *slider )
-    : QwtSlider( parent )
+    QtSlider( QWidget *parent, GuiQtSlider *slider )
+    : QSlider( parent )
       , m_slider( slider )
       , m_mouseDown( false ){}
-    ~MyQwtSlider(){}
+    ~QtSlider(){}
   public:
     virtual void mousePressEvent ( QMouseEvent * e ){
       m_mouseDown = true;
-      QwtSlider::mousePressEvent( e );
+      QSlider::mousePressEvent( e );
     }
     virtual void mouseReleaseEvent ( QMouseEvent * e ){
       m_mouseDown = false;
-      QwtSlider::mouseReleaseEvent( e );
+      QSlider::mouseReleaseEvent( e );
       m_slider->valueChange( value() );
     }
-#if QWT_VERSION < 0x060100
-    virtual void valueChange(){
-      QwtSlider::valueChange();
-      m_slider->valueChange( value() );
-    }
-#endif
+// #if QWT_VERSION < 0x060100
+//     virtual void valueChange(){
+//       QSlider::valueChange();
+//       m_slider->valueChange( value() );
+//     }
+// #endif
     bool mouseDown(){
       return m_mouseDown;
     }
   private:
     bool m_mouseDown;
-    GuiQwtSlider *m_slider;
+    GuiQtSlider *m_slider;
   };
 /*=============================================================================*/
 /* public member functions of ConfirmationListener                             */
@@ -63,6 +65,8 @@ public:
 public:
   virtual GuiElement::ElementType Type() { return GuiElement::type_Slider; }
   virtual void create();
+  virtual void enable();
+  virtual void disable();
   virtual void manage();
   virtual double getValue();
   virtual QWidget* myWidget();
@@ -80,6 +84,11 @@ public:
   virtual bool serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated = false);
 #endif
 /*=============================================================================*/
+/* public member functions of GuiDatafield                                  */
+/*=============================================================================*/
+public:
+  virtual GuiQtDataField *CloneForFieldgroupTable();
+/*=============================================================================*/
 /* protected member functions of GuiDatafield                                  */
 /*=============================================================================*/
 protected:
@@ -88,7 +97,7 @@ protected:
 /* public member functions                                                     */
 /*=============================================================================*/
 private slots:
-  void valueChange(double value);
+  void valueChange(int value);
 /*=============================================================================*/
 /* private member functions                                                    */
 /*=============================================================================*/
@@ -101,7 +110,7 @@ private slots:
 /* private Data                                                                */
 /*=============================================================================*/
 private:
-  MyQwtSlider              *m_sliderwidget;
+  QtSlider              *m_sliderwidget;
 };
 
 #endif

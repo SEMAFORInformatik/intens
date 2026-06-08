@@ -3,83 +3,73 @@
 // SPDX-License-Identifier: Apache-2.0
 
 
-#include <qwt_slider.h>
-
 #include "utils/Debugger.h"
 #include "utils/gettext.h"
-#include "GuiQwtSlider.h"
+#include "GuiQtSlider.h"
 
 /*=============================================================================*/
 /* Constructor / Destructor                                                    */
 /*=============================================================================*/
-GuiQwtSlider::GuiQwtSlider( GuiElement *parent )
+GuiQtSlider::GuiQtSlider( GuiElement *parent )
   : GuiQtDataField( parent ),
     m_sliderwidget( 0 )
 {
 }
 
-GuiQwtSlider::~GuiQwtSlider(){
+GuiQtSlider::GuiQtSlider( const GuiQtSlider &slider )
+  : GuiQtDataField( slider )
+  , m_sliderwidget( 0 )
+{}
+
+GuiQtSlider::~GuiQtSlider(){
   delete m_sliderwidget;
 }
 
 /*=============================================================================*/
 /* public member functions                                                     */
 /*=============================================================================*/
-void GuiQwtSlider::setRange( double min, double max, double stepsize ){
+void GuiQtSlider::setRange( double min, double max, double stepsize ){
   if ( m_sliderwidget == 0 ) return;
-#if QWT_VERSION < 0x060100
-  m_sliderwidget -> setRange( min, max, stepsize );
-#else
-  m_sliderwidget -> setScale( min, max );
-  m_sliderwidget -> setScaleStepSize(stepsize);
-#endif
+  m_sliderwidget -> setRange( min, max );
+  m_sliderwidget -> setSingleStep(stepsize);
 }
 
-// bool GuiQwtSlider::setLabel( const std::string &name ){
+// bool GuiQtSlider::setLabel( const std::string &name ){
 //   m_label = name;
 //   m_label_pixmap = false;
 //   return true;
 // }
 
-// bool GuiQwtSlider::setPixmap( const std::string &name ){
+// bool GuiQtSlider::setPixmap( const std::string &name ){
 //   m_label = name;
 //   m_label_pixmap = true;
 //   return true;
 // }
 
-void GuiQwtSlider::create(){
-  m_sliderwidget = new MyQwtSlider( getParent()->getQtElement()->myWidget(), this );
+void GuiQtSlider::create(){
+  getAttributes();
+  m_sliderwidget = new QtSlider( getParent()->getQtElement()->myWidget(), this );
+  m_sliderwidget->setEnabled( isEditable() );
   m_sliderwidget->setValue( 0 );
   // for demonstration, should be removed
   m_sliderwidget -> setOrientation( Qt::Horizontal );
-#if QWT_VERSION < 0x060100
-  m_sliderwidget -> setScalePosition( QwtSlider::BottomScale );
-#else
-  m_sliderwidget -> setScalePosition( QwtSlider::LeadingScale );
-#endif
+  m_sliderwidget -> setTickPosition(QSlider::TicksBelow);
   setRange( Attr()->getMin()
 	    , Attr()->getMax()
 	    , Attr()->getStep() );
   int width = (int)floor( m_sliderwidget->sizeHint().width() * 1.5 );
   m_sliderwidget -> setMinimumWidth( width );
-  // set some default values
-  // type of slider representation
-#if QWT_VERSION < 0x060000
-  m_sliderwidget -> setBgStyle( QwtSlider::BgBoth );
-#elif QWT_VERSION < 0x060100
-  m_sliderwidget -> setBackgroundStyle( QwtSlider::Trough|QwtSlider::Groove);
-#else
-  m_sliderwidget -> setTrough(true);
-  m_sliderwidget -> setGroove(true);
-#endif
 
-  connect( m_sliderwidget, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)) );
+  updateWidgetProperty();
+  m_param->DataItem()->setDimensionIndizes();
+
+  connect( m_sliderwidget, SIGNAL(valueChanged(int)), this, SLOT(valueChange(int)) );
 }
 
 /*=============================================================================*/
 /* set orientation of the slider, Horizontal or Vertical                       */
 /*=============================================================================*/
-void GuiQwtSlider::setOrientation( GuiElement::Orientation orientation ){
+void GuiQtSlider::setOrientation( GuiElement::Orientation orientation ){
   if ( m_sliderwidget == 0 ) return;
 
   if ( orientation == GuiElement::orient_Horizontal ){
@@ -93,34 +83,28 @@ void GuiQwtSlider::setOrientation( GuiElement::Orientation orientation ){
 /*=============================================================================*/
 /* set the description orientation of the slider, Left, Right, Bottom or Top   */
 /*=============================================================================*/
-void GuiQwtSlider::setScalePosition( GuiElement::Alignment alignment ){
+void GuiQtSlider::setScalePosition( GuiElement::Alignment alignment ){
   if ( m_sliderwidget == 0 ) return;
 
-#if QWT_VERSION < 0x060100
   if ( alignment == GuiElement::align_Left ){
-    m_sliderwidget -> setScalePosition( QwtSlider::LeftScale );
+    m_sliderwidget -> setOrientation(Qt::Vertical);
+    m_sliderwidget -> setTickPosition(QSlider::TicksLeft);
   }
   else if ( alignment == GuiElement::align_Right ){
-    m_sliderwidget -> setScalePosition( QwtSlider::RightScale );
+    m_sliderwidget -> setOrientation(Qt::Vertical);
+    m_sliderwidget -> setTickPosition(QSlider::TicksRight);
   }
   else if ( alignment == GuiElement::align_Bottom ){
-    m_sliderwidget -> setScalePosition( QwtSlider::BottomScale );
+    m_sliderwidget -> setOrientation(Qt::Horizontal);
+    m_sliderwidget -> setTickPosition(QSlider::TicksBelow);
   }
   else if ( alignment == GuiElement::align_Top ){
-    m_sliderwidget -> setScalePosition( QwtSlider::TopScale );
+    m_sliderwidget -> setOrientation(Qt::Horizontal);
+    m_sliderwidget -> setTickPosition(QSlider::TicksBelow);
   }
-#else
-  if ( alignment == GuiElement::align_Left ||
-       alignment == GuiElement::align_Top ){
-    m_sliderwidget -> setScalePosition( QwtSlider::LeadingScale );
-  } else if (alignment == GuiElement::align_Right ||
-             alignment == GuiElement::align_Bottom) {
-    m_sliderwidget -> setScalePosition( QwtSlider::TrailingScale );
-  }
-#endif
 }
 
-void GuiQwtSlider::valueChange(double value){
+void GuiQtSlider::valueChange(int value){
   if( !m_sliderwidget->mouseDown() )
     FinalWork();
 }
@@ -129,8 +113,8 @@ void GuiQwtSlider::valueChange(double value){
 /* FinalWork --                                                                */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwtSlider::FinalWork(){
-  BUG(BugGuiFld,"GuiQwtSlider::FinalWork");
+void GuiQtSlider::FinalWork(){
+  BUG(BugGuiFld,"GuiQtSlider::FinalWork");
 
   if( isRunning() ){
      // Falls noch eine Function aktiv ist, sind keine Eingaben moeglich. Diese
@@ -176,7 +160,7 @@ void GuiQwtSlider::FinalWork(){
 /* checkFormat --                                                              */
 /* --------------------------------------------------------------------------- */
 
-XferParameter::InputStatus  GuiQwtSlider::checkFormat(){
+XferParameter::InputStatus  GuiQtSlider::checkFormat(){
   BUG(BugGuiFld,"GuiQtTextfield::checkFormat");
   std::ostringstream os;
   os << m_sliderwidget->value();
@@ -188,7 +172,7 @@ XferParameter::InputStatus  GuiQwtSlider::checkFormat(){
 /* FinalWorkOk --                                                              */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwtSlider::FinalWorkOk(){
+void GuiQtSlider::FinalWorkOk(){
   BUG(BugGuiFld,"GuiQtTextfield::FinalWorkOk");
   doFinalWork();
   s_DialogIsAktive = false;
@@ -196,35 +180,72 @@ void GuiQwtSlider::FinalWorkOk(){
 
 
 // Implement this method if you need diffrent types of sliders
-void GuiQwtSlider::setBgStyle(){
+void GuiQtSlider::setBgStyle(){
+}
+
+/* --------------------------------------------------------------------------- */
+/* CloneForFieldgroupTable --                                                  */
+/* --------------------------------------------------------------------------- */
+
+GuiQtDataField *GuiQtSlider::CloneForFieldgroupTable(){
+  GuiQtSlider *txt = new GuiQtSlider( *this );
+  return txt;
 }
 
 /* --------------------------------------------------------------------------- */
 /* setInputValue --                                                            */
 /* --------------------------------------------------------------------------- */
 
-bool GuiQwtSlider::setInputValue(){
-  BUG(BugGuiFld,"GuiQwtSlider::setInputValue");
+bool GuiQtSlider::setInputValue(){
+  BUG(BugGuiFld,"GuiQtSlider::setInputValue");
   std::ostringstream os;
   os << m_sliderwidget->value();
 
-  if( m_param->setFormattedValue( os.str() ) ){
-    return true;
-  }
+  m_param->DataItem()->setValue(m_sliderwidget->value());
+  // if( m_param->setFormattedValue( os.str() ) ){
+  //   return true;
+  // }
   BUG_EXIT("setValue failed");
   return false;
 }
 
 /* --------------------------------------------------------------------------- */
+/* enable --                                                                   */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtSlider::enable(){
+  setDisabled(false);
+  if( m_sliderwidget == 0 ) return;
+
+  getAttributes();
+  m_sliderwidget->setEnabled( isEditable() );
+  //  setColors();
+}
+
+/* --------------------------------------------------------------------------- */
+/* disable --                                                                  */
+/* --------------------------------------------------------------------------- */
+
+void GuiQtSlider::disable(){
+  setDisabled(true);
+  if( m_sliderwidget == 0 ) return;
+
+  getAttributes();
+  m_sliderwidget->setEnabled( false );
+  //setColors();
+}
+
+
+/* --------------------------------------------------------------------------- */
 /* update --                                                                   */
 /* --------------------------------------------------------------------------- */
 
-void GuiQwtSlider::update( UpdateReason reason ){
-  BUG(BugGui,"GuiQwtSlider::update");
+void GuiQtSlider::update( UpdateReason reason ){
+  BUG(BugGui,"GuiQtSlider::update");
   if( m_param == 0 || m_sliderwidget == 0 ) return;
 
+  updateWidgetProperty();
   getAttributes();  // vergiss ja nicht diese Funktion aufzurufen!!!
-  bool changed = true;
 
   switch( reason ){
   case reason_FieldInput:
@@ -245,7 +266,7 @@ void GuiQwtSlider::update( UpdateReason reason ){
   // --------------------------------------------------------------
   // Zuerst wird nur der Wert geprüft.
   // --------------------------------------------------------------
-  if( isUpdated() ){
+  if( GuiDataField::isUpdated() ){
     std::string text;
     m_param->getFormattedValue( text );
     BUG_MSG("Value of " << m_param->getName() << " is '" << text << "'");
@@ -257,24 +278,24 @@ void GuiQwtSlider::update( UpdateReason reason ){
 }
 
 
-void GuiQwtSlider::manage(){
+void GuiQtSlider::manage(){
 }
 
-double GuiQwtSlider::getValue(){
+double GuiQtSlider::getValue(){
   return 0;
 }
 
-QWidget* GuiQwtSlider::myWidget(){
+QWidget* GuiQtSlider::myWidget(){
   return m_sliderwidget;
 }
 
-void GuiQwtSlider::serializeXML(std::ostream &os, bool recursive){
+void GuiQtSlider::serializeXML(std::ostream &os, bool recursive){
 }
 
 /* --------------------------------------------------------------------------- */
 /* serializeJson --                                                            */
 /* --------------------------------------------------------------------------- */
-bool GuiQwtSlider::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
+bool GuiQtSlider::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
   bool updated = GuiQtDataField::serializeJson(jsonObj, onlyUpdated);
   return updated;
 }
@@ -283,7 +304,7 @@ bool GuiQwtSlider::serializeJson(Json::Value& jsonObj, bool onlyUpdated){
 /* serializeProtobuf --                                                            */
 /* --------------------------------------------------------------------------- */
 #if HAVE_PROTOBUF
-bool GuiQwtSlider::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated){
+bool GuiQtSlider::serializeProtobuf(in_proto::ElementList* eles, bool onlyUpdated){
   auto element = eles->add_data_fields();
   bool updated = GuiQtDataField::serializeProtobuf(element, onlyUpdated);
   return updated;

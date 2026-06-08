@@ -64,7 +64,7 @@
 #include "gui/qt/GuiQtText.h"
 #include "gui/qt/GuiQtNavigator.h"
 #include "gui/qt/QtDialogUserPassword.h"
-#include "gui/qt/GuiQwtSlider.h"
+#include "gui/qt/GuiQtSlider.h"
 #include "gui/qt/GuiQtImage.h"
 #include "gui/qt/GuiQtLinePlot.h"
 #include "gui/qt/GuiQwtThermo.h"
@@ -657,7 +657,7 @@ GuiDataField* GuiQtFactory::createDataField  ( GuiElement *parent, XferDataItem 
     field = new GuiQtFieldButton( parent );
     break;
   case UserAttr::gui_kind_slider:
-    field = new GuiQwtSlider( parent );
+    field = new GuiQtSlider( parent );
     break;
   case UserAttr::gui_kind_progress:
     field = new GuiQtProgressBar(parent);
